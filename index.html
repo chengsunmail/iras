@@ -533,7 +533,7 @@
         <li>O₂ 分配：鱼池增氧（液氧/微孔）只供鱼虾生理耗氧；BF 粗孔曝气独立供硝化+DOM 耗氧</li>
         <li>盐度体系：Benson & Krause (1984) DO 饱和度 + 硝化盐度修正 f = max(1-0.01×S, 0.3)</li>
         <li>投资概算：15 类设备单价可编辑 × 工程放大系数 (1.8-2.5)，精度标注 ±40%</li>
-        <li>参数自洽性校验：峰均比检查、池内增氧告警、海水臭氧溴酸盐警告</li>
+        <li>参数自洽性校验：峰均比检查、海水臭氧溴酸盐警告</li>
       </ul>
     </section>
 
@@ -1368,13 +1368,8 @@ function simulateWaterQualityProcess(load, flowData, sp, proc) {
   const stages = [];
 
   // 节点1: 鱼池出水 (C_out, 本循环最高浓度)
-  const rawTankDO = DO_sat_target - deltaDOperCycle;
-  const DO_min_safe = DO_sat * 0.65;
-  const needsInPoolAeration = rawTankDO < DO_min_safe;
-  const tankDO = needsInPoolAeration ? DO_sat * 0.70 : rawTankDO;
-  const tankDONote = needsInPoolAeration
-    ? `T=${sp.tempOpt}°C · S=${S}‰ · DO饱和≈${DO_sat.toFixed(1)} · ⚠️需池内增氧`
-    : `T=${sp.tempOpt}°C${S > 0 ? ' · S=' + S + '‰' : ''} · DO饱和≈${DO_sat.toFixed(1)}`;
+  const tankDO = Math.max(DO_sat_target - deltaDOperCycle, 0);
+  const tankDONote = `T=${sp.tempOpt}°C${S > 0 ? ' · S=' + S + '‰' : ''} · DO饱和≈${DO_sat.toFixed(1)}`;
 
   let s = {
     id: 'tank', name: '鱼池', icon: '🐟',
@@ -1382,7 +1377,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc) {
     TAN: tanOut, TSS: tssOut, NO3: no3Out,
     DOM: domOut, Geosmin: geoOut,
     DO: tankDO, CO2: co2_tank,
-    notes: tankDONote, needsInPoolAeration
+    notes: tankDONote
   };
   stages.push({...s});
 
@@ -2389,14 +2384,6 @@ function renderStageWarnings(idx, load, stage, stageFarm, eq, sim) {
         text: `☣️ 海水 (${sal}‰) + 臭氧蛋分 → 溴酸盐 (BrO₃⁻) 风险! 海水中臭氧氧化溴离子产生致癌物。建议将蛋分切换为「空气模式」或严格控制 ORP < 350 mV。`
       });
     }
-  }
-
-  // 池内增氧告警 (高温/低密度/高投饵率 → 外部增氧塔不足)
-  if (sim && sim.stages && sim.stages[0] && sim.stages[0].needsInPoolAeration) {
-    warns.push({
-      level: 'warn',
-      text: `💨 仅靠外部增氧塔/锥形塔不足以维持池内 DO ≥ 安全值。实际工程需在养殖池内加装增氧设备 (池底微孔曝气盘/纳米管/池内锥形塔)。O₂ 总需求量 (kg/d) 不变, 但需分配为"外部增氧 + 池内增氧"两部分。`
-    });
   }
 
   if (warns.length === 0) {
