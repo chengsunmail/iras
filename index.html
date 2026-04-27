@@ -125,7 +125,7 @@
   .proc-grid select.input-ind {
     padding-right: 18px !important; /* 留出 dropdown 箭头位置 */
   }
-  /* v1.1.1: 自动计算的值用斜体 + 偏淡颜色, 让用户知道这是自动算的 */
+  /* v1.1: 自动计算的值用斜体 + 偏淡颜色, 让用户知道这是自动算的 */
   .proc-grid input.auto-value {
     font-style: italic;
     color: rgba(127, 217, 224, 0.85) !important;
@@ -135,7 +135,7 @@
     color: #e6f1ff !important;
   }
 
-  /* v1.1.1: 常用/全部 tab 切换 */
+  /* v1.1: 常用/全部 tab 切换 */
   .proc-tab-btn {
     background: rgba(15, 35, 64, 0.6);
     border: 1px solid rgba(34,211,238,0.3);
@@ -485,7 +485,7 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> v1.1.0 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> v1.1 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -511,7 +511,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: v1.1.0 · 发布日期: 2026-04-26</div>
+          <div>版本: v1.1 · 发布日期: 2026-04-26</div>
           <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -648,7 +648,7 @@
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
         <li>沿程节点拆分 "CO₂ 脱气塔" 和 "增氧" 两个独立节点</li>
         <li>新增工艺参数: 启用开关 / 单次脱气率 / 气液比 G:L / 水力负荷</li>
-        <li>v1.1.2 默认参数与工业实测对齐: G:L=3, 风压 2.5 kPa, 效率 0.6, 单次脱气 65%</li>
+        <li>默认参数与工业实测对齐 (基于 Delta Cooling Towers + Summerfelt 文献): G:L=3, 风压 2.5 kPa, 效率 0.6, 单次脱气 65%</li>
         <li>CAPEX 计入塔体 + 配套风机, OPEX 计入风机日电费</li>
         <li>关闭时 CO₂ 仅靠换水稀释, 高密度场会严重超标 (有警告)</li>
       </ul>
@@ -756,7 +756,7 @@
         <li><b>运行成本单价</b>：电费、液氧、甲醇、NaHCO₃（元/kg）</li>
         <li><b>设备直购单价</b>：15 类设备的默认单价，可按当地行情调整（每项显示推荐范围）</li>
         <li><b>工程总投资放大系数</b>：默认 2.2，范围 1.8-2.5（含管道/电气/自控/安装/土建）</li>
-        <li><b>CAPEX 折旧年限</b>（v1.1.2 新增）：设备 8 年（5-20 可调）+ 土建 20 年（10-30 可调）。年折旧 = 设备/年限<sub>设备</sub> + 土建/年限<sub>土建</sub>，自动摊到日成本，影响"元/kg 鱼"综合成本</li>
+        <li><b>CAPEX 折旧年限</b>（v1.1 新增）：设备 8 年（5-20 可调）+ 土建 20 年（10-30 可调）。年折旧 = 设备/年限<sub>设备</sub> + 土建/年限<sub>土建</sub>，自动摊到日成本，影响"元/kg 鱼"综合成本</li>
       </ul>
 
       <h3 class="mt-4 font-bold text-cyan-300">5.3 养殖参数</h3>
@@ -800,7 +800,7 @@
     </section>
 
     <!-- 6. 计算方法学 -->
-<!-- 参数手册 (v1.1.1 新增) -->
+<!-- 参数手册 -->
 <section id="help-paramref" class="mt-6">
   <h2 class="text-xl font-bold text-amber-400 border-b border-amber-700/50 pb-2">📋 参数手册</h2>
   <p class="mt-3 text-slate-400">本节列出 iRAS 全部 76 个参数的完整定义、典型范围和调整建议。按工程师的工作流程分为 9 组（A-I），每个参数包含字段名（代码 ID）、中文显示名、单位、默认值、典型范围、物理含义和调整建议。</p>
@@ -1109,8 +1109,8 @@
 <td class="py-1 pr-3 text-slate-400">min</td>
 <td class="py-1 pr-3 text-emerald-300/90">2</td>
 <td class="py-1 pr-3 text-slate-400">1.5-4</td>
-<td class="py-1 pr-3 text-slate-300">蛋分塔水力停留时间 (v1.1.2 新增)</td>
-<td class="py-1 text-slate-400 text-[11px]">Sanders Helgoland LE-315 商业实测 1.8-2.2 min (ScienceDirect 2023); v1.0/v1.1.0/v1.1.1 用 4 min 偏大 100%, 物理上 DOM 吸附是秒级反应</td>
+<td class="py-1 pr-3 text-slate-300">蛋分塔水力停留时间</td>
+<td class="py-1 text-slate-400 text-[11px]">Sanders Helgoland LE-315 商业实测 1.8-2.2 min (ScienceDirect 2023); 物理: DOM 吸附是秒级反应, 长 HRT 无收益</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">ozoneDose</td>
@@ -1163,7 +1163,7 @@
 <td class="py-1 pr-3 text-slate-400">—</td>
 <td class="py-1 pr-3 text-emerald-300/90">integrated</td>
 <td class="py-1 pr-3 text-slate-400">integrated/separated</td>
-<td class="py-1 pr-3 text-slate-300">AOP 反应器类型 (v1.1.2 新增)</td>
+<td class="py-1 pr-3 text-slate-300">AOP 反应器类型</td>
 <td class="py-1 text-slate-400 text-[11px]">集成型 (UV+O3 一体, ULTRAAQUA 等主流方案), HRT 1-3 min; 分体型 (O3 接触池 + UV 反应器, 大型项目), HRT 5-10 min</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
@@ -1172,8 +1172,8 @@
 <td class="py-1 pr-3 text-slate-400">min</td>
 <td class="py-1 pr-3 text-emerald-300/90">2 / 8</td>
 <td class="py-1 pr-3 text-slate-400">1-15</td>
-<td class="py-1 pr-3 text-slate-300">AOP 反应池水力停留时间 (v1.1.2 新增, 按 AOP 类型自动取默认)</td>
-<td class="py-1 text-slate-400 text-[11px]">集成型默认 2 min (UV 反应器内反应秒级); 分体型默认 8 min (含 O3 接触池); Schrader 2010 实测 1 min 接触 geosmin 去除 86-92%; v1.0/v1.1.0/v1.1.1 用 30 min 是污水标准, 严重偏大</td>
+<td class="py-1 pr-3 text-slate-300">AOP 反应池水力停留时间 (按 AOP 类型自动取默认)</td>
+<td class="py-1 text-slate-400 text-[11px]">集成型默认 2 min (UV 反应器内反应秒级); 分体型默认 8 min (含 O3 接触池); Schrader 2010 实测 1 min 接触 geosmin 去除 86-92%</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">rdfBackwash</td>
@@ -1226,8 +1226,8 @@
 <td class="py-1 pr-3 text-slate-400">kPa</td>
 <td class="py-1 pr-3 text-emerald-300/90">2.5</td>
 <td class="py-1 pr-3 text-slate-400">0.5-10</td>
-<td class="py-1 pr-3 text-slate-300">CO₂ 风机出口压力 (v1.1.2 修正 v1.1.0 默认值, CO₂ 脱气塔为 v1.1 新增设备)</td>
-<td class="py-1 text-slate-400 text-[11px]">浅塔(&lt;2m) 0.5-1.5, 中塔(2-4m) 1.5-3, 深塔(&gt;4m) 3-5; Delta Cooling Towers 实测 0.87-1.12 kPa; v1.1.0 默认 30 kPa 偏大 10-30 倍</td>
+<td class="py-1 pr-3 text-slate-300">CO₂ 风机出口压力</td>
+<td class="py-1 text-slate-400 text-[11px]">浅塔(&lt;2m) 0.5-1.5, 中塔(2-4m) 1.5-3, 深塔(&gt;4m) 3-5; Delta Cooling Towers 工业项目实测 0.87-1.12 kPa</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">co2BlowerEfficiency</td>
@@ -1235,8 +1235,8 @@
 <td class="py-1 pr-3 text-slate-400">%</td>
 <td class="py-1 pr-3 text-emerald-300/90">60</td>
 <td class="py-1 pr-3 text-slate-400">50-80</td>
-<td class="py-1 pr-3 text-slate-300">CO₂ 风机机械效率 (v1.1.2 修正 v1.1.0 默认值, CO₂ 脱气塔为 v1.1 新增设备)</td>
-<td class="py-1 text-slate-400 text-[11px]">罗茨风机 50-70, 离心风机 65-80, 工业惯例 60-70; v1.1.0 默认 50 偏低</td>
+<td class="py-1 pr-3 text-slate-300">CO₂ 风机机械效率</td>
+<td class="py-1 text-slate-400 text-[11px]">罗茨风机 50-70, 离心风机 65-80, 工业惯例 60-70</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">co2FallbackEff</td>
@@ -3586,7 +3586,7 @@ function renderStageBlock(idx, stage) {
       </div>
     <div class="proc-grid" data-proc-mode="common">
       <div data-common><label class="text-[10px] text-cyan-400">循环倍数(次/h)</label><input data-stage="${idx}" data-field="turnover" type="number" step="0.5" value="${stage.turnover||2}" class="stg-input input-ind !py-1 !text-xs"></div>
-      <div data-common><label class="text-[10px] text-cyan-400" title="换水率 (%/d, v1.1.2: 按系统总水体 V_total = 鱼池+工艺)&#10;例: 5%/d 表示每天换 V_total × 5% 的水量&#10;(v1.0/v1.1.0/v1.1.1 按鱼池水体, v1.1.2 改为行业标准 Timmons 2010)&#10;⚠️ 影响仅靠换水稀释的参数 (NO₃/Geosmin/DOM 无对应处理设备时), 浓度比 v1.0 算的低 ~37%">换水率(%/d)</label><input data-stage="${idx}" data-field="exchangeDaily" type="number" step="0.5" value="${stage.exchangeDaily||5}" class="stg-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-cyan-400" title="换水率 (%/d, v1.1: 按系统总水体 V_total = 鱼池+工艺)&#10;例: 5%/d 表示每天换 V_total × 5% 的水量&#10;v1.1 改为行业标准口径 (Timmons 2010 / 国家海水鱼体系), v1.0 是按鱼池水体&#10;⚠️ 影响仅靠换水稀释的参数 (NO₃/Geosmin/DOM 无对应处理设备时), 浓度比 v1.0 算的低 ~37%">换水率(%/d)</label><input data-stage="${idx}" data-field="exchangeDaily" type="number" step="0.5" value="${stage.exchangeDaily||5}" class="stg-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="微滤机 TSS 去除率 (%)&#10;范围: 60-85&#10;默认: 75&#10;含义: RDF 单次通过对 TSS 去除率, 60-80μm 筛网典型 70-80%&#10;何时调: 筛目细→调高, 低密度场→可降">微滤TSS↓(%)</label><input data-proc-stage="${idx}" data-proc-field="rdfTSS" type="number" step="1" value="${stage.proc.rdfTSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="生物滤池单次硝化效率 (%)&#10;范围: 50-80&#10;默认: 70&#10;含义: MBBR/MBF 单次通过对 TAN 去除率&#10;何时调: MBBR 用 60-75, 固定膜 70-80, 海水/低温→降">BF硝化↓(%)</label><input data-proc-stage="${idx}" data-proc-field="biofilterTAN" type="number" step="1" value="${stage.proc.biofilterTAN}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="UV 剂量 (mJ/cm²)&#10;范围: 20-60&#10;默认: 40&#10;含义: 紫外线杀菌剂量&#10;何时调: ≥30杀菌, ≥40灭活病毒, ≥60灭活孢子">UV剂量(mJ/cm²)</label><input data-proc-stage="${idx}" data-proc-field="uvDose" type="number" step="5" value="${stage.proc.uvDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -3631,14 +3631,14 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-slate-400" title="空气蛋分 DOM 单次去除 (%)&#10;范围: 30-50&#10;默认: 40&#10;含义: 空气模式蛋分对 DOM 去除率&#10;何时调: 海水鱼蛋白多→45-50">空气DOM↓(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerDOMEffAir" type="number" step="1" value="${stage.proc.skimmerDOMEffAir}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="臭氧蛋分 DOM 单次去除 (%)&#10;范围: 60-80&#10;默认: 70&#10;含义: 臭氧模式蛋分对 DOM 去除率&#10;何时调: 臭氧投加充分→75-80">臭氧DOM↓(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerDOMEffOzone" type="number" step="1" value="${stage.proc.skimmerDOMEffOzone}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="蛋分 TSS 单次去除率 (%)&#10;范围: 30-50&#10;默认: 40&#10;含义: 蛋分对 < 30μm 细颗粒 TSS 去除率">蛋分TSS↓(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerTSSEff" type="number" step="5" min="0" max="80" value="${stage.proc.skimmerTSSEff||40}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="蛋分塔 HRT (min, v1.1.2 新增)&#10;范围: 1.5-4&#10;默认: 2 (商业实测中位)&#10;依据: Sanders Helgoland LE-315 实测 1.8-2.2 min (ScienceDirect 2023)&#10;v1.0/v1.1.0/v1.1.1 用 4 min 偏大 100%">蛋分HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="skimmerHRT_min" type="number" step="0.5" min="1" max="6" value="${stage.proc.skimmerHRT_min||2}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="蛋分塔 HRT (min)&#10;范围: 1.5-4&#10;默认: 2 (商业实测中位)&#10;依据: Sanders Helgoland LE-315 实测 1.8-2.2 min (ScienceDirect 2023)&#10;物理: DOM 吸附是秒级反应, HRT 长无收益">蛋分HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="skimmerHRT_min" type="number" step="0.5" min="1" max="6" value="${stage.proc.skimmerHRT_min||2}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="臭氧投加率 (g O₃/g 饲料)&#10;范围: 0.005-0.015&#10;默认: 0.010&#10;含义: 蛋分臭氧投加比&#10;何时调: 海水严控≤0.010, 淡水可0.012-0.015">O₃投加率(g/g饲料)</label><input data-proc-stage="${idx}" data-proc-field="ozoneDose" type="number" step="0.005" value="${stage.proc.ozoneDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="AOP 高级氧化启用/停用">AOP启用</label><select data-proc-stage="${idx}" data-proc-field="aopEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.aopEnabled?'selected':''}>启用</option><option value="false" ${!stage.proc.aopEnabled?'selected':''}>停用</option></select></div>
       <div><label class="text-[10px] text-slate-400" title="AOP 类型 (v1.1.2 新增)&#10;集成型: UV+O3 一体反应器 (ULTRAAQUA 等), HRT 1-3 min&#10;分体型: O3 接触池 + UV 反应器, HRT 5-10 min (大型项目)&#10;切换会自动重置 HRT 默认值">AOP 类型</label><select data-proc-stage="${idx}" data-proc-field="aopType" class="stg-proc-select input-ind !py-1 !text-xs"><option value="integrated" ${(stage.proc.aopType||'integrated')==='integrated'?'selected':''}>集成型 (UV+O3一体)</option><option value="separated" ${stage.proc.aopType==='separated'?'selected':''}>分体型 (O3+UV分体)</option></select></div>
       <div><label class="text-[10px] text-slate-400" title="AOP 旁路流量比 (%)&#10;范围: 3-15&#10;默认: 5&#10;含义: 占循环总流量&#10;何时调: 土腥味重→10-15">AOP Q比(%)</label><input data-proc-stage="${idx}" data-proc-field="aopFlowPct" type="number" step="1" value="${stage.proc.aopFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="AOP geosmin 去除率 (%)&#10;范围: 85-95&#10;默认: 90&#10;含义: 单次对 geosmin/2-MIB (土腥味) 去除率&#10;何时调: 设备工艺决定, 一般不调">AOP geosmin↓(%)</label><input data-proc-stage="${idx}" data-proc-field="aopGeosminEff" type="number" step="1" value="${stage.proc.aopGeosminEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="AOP DOM 去除率 (%)&#10;范围: 5-15&#10;默认: 5 (保守)&#10;含义: 单次对总 DOM 去除率 (v1.1 修复 v1.0 误用 90%)&#10;何时调: 优化 AOP 系统→10-15">AOP DOM↓(%)</label><input data-proc-stage="${idx}" data-proc-field="aopDOMRemoval" type="number" step="1" min="0" max="20" value="${stage.proc.aopDOMRemoval||5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP 反应池 HRT (min, v1.1.2 可调)&#10;集成型默认: 2 (UV+O3一体反应器, ULTRAAQUA 等)&#10;分体型默认: 8 (O3接触池+UV分体, 大型项目)&#10;依据: Schrader 2010 实测 1 min 接触, geosmin 去除 86-92%&#10;v1.0/v1.1.0/v1.1.1 用 30 min 是污水标准, 严重偏大">AOP HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="aopHRT_min" type="number" step="0.5" min="1" max="30" value="${stage.proc.aopHRT_min||((stage.proc.aopType||'integrated')==='separated'?8:2)}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP 反应池 HRT (min)&#10;集成型默认: 2 (UV+O3一体反应器, ULTRAAQUA 等)&#10;分体型默认: 8 (O3接触池+UV分体, 大型项目)&#10;依据: Schrader 2010 实测 1 min 接触, geosmin 去除 86-92%&#10;切换 AOP 类型时自动重置默认, 用户可手动微调">AOP HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="aopHRT_min" type="number" step="0.5" min="1" max="30" value="${stage.proc.aopHRT_min||((stage.proc.aopType||'integrated')==='separated'?8:2)}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">🌫️ <b>CO₂ 脱气塔</b> (v1.1.2: 独立设备 + 风机参数可调)</div>
       <div data-common><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔启用/停用. 关闭时 CO₂ 仅靠换水稀释, 高密度场会严重超标">CO₂脱气启用</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.co2StripperEnabled!==false?'selected':''}>启用</option><option value="false" ${stage.proc.co2StripperEnabled===false?'selected':''}>停用</option></select></div>
       <div><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔单次效率 (%)&#10;范围: 50-85&#10;默认: 65&#10;含义: 单次脱气效率, G:L=3 浅塔约 60-70%">脱气效率(%)</label><input data-proc-stage="${idx}" data-proc-field="co2StripperEff" type="number" step="5" min="40" max="95" value="${stage.proc.co2StripperEff||65}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -4977,43 +4977,18 @@ function showV11UpgradeNotice() {
         <button id="v11NoticeClose" class="text-slate-400 hover:text-white text-2xl leading-none">×</button>
       </div>
       <div class="p-5 text-sm text-slate-200 space-y-3 max-h-[70vh] overflow-y-auto">
-        <p class="text-emerald-300 font-semibold">检测到 v1.0 保存方案。已自动用 v1.1 物理框架重新计算, 部分数值会变化。</p>
+        <p class="text-emerald-300 font-semibold">检测到 v1.0 保存方案。已自动用 v1.1 物理框架重新计算, 部分数值会变化, 这是物理修正后的真实值。</p>
 
         <div>
           <div class="font-bold text-cyan-300 mt-2">📐 数值会发生什么变化?</div>
           <ul class="list-disc list-inside text-xs text-slate-300 space-y-1 mt-1.5 pl-2">
-            <li><b>污染物日产量 ↓ 约 17%</b>: v1.0 的 peakFactor 被错误地放大了日量, v1.1 用严格量纲分离</li>
-            <li><b>BF 滤池容积 ≈ 持平</b> (±5%): 修正后 VTR 公式更精确</li>
+            <li><b>污染物日产量 ↓ 约 17%</b>: v1.0 的 peakFactor 错误地放大了日量, v1.1 严格分离日量/小时峰值/日均三套口径</li>
             <li><b>液氧/增氧设备 ↑ 30-40%</b>: v1.1 用真实小时峰值选型, v1.0 漏算了投喂峰值响应</li>
+            <li><b>BF 滤池容积 ≈ 持平</b> (±5%): 修正后 VTR 公式更精确</li>
+            <li><b>BF 风机功率 ↑ 约 30%</b>: 异养菌耗氧 0.05→0.10 (Boyd 2018 实测)</li>
             <li><b>制冷电耗 ↑ 17%</b>: 制冷 COP 拆分 (3.0) ≠ 制热 COP (4.0)</li>
             <li><b>DOM 浓度 ↑ 5-25%</b>: 修复 v1.0 错把 AOP geosmin 系数当 DOM 系数</li>
-            <li><b>BF 风机功率 ↑ 约 30%</b>: o2DOM 系数 0.05→0.10 (Boyd 2018 实测), 异养菌耗氧更准</li>
-            <li><b>v1.1.2: CO₂ 脱气塔风机参数修正</b> ⭐ 仅影响 v1.1.0/v1.1.1 (CO₂ 脱气塔是 v1.1 新增设备, v1.0 无此设备):
-              <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
-                <li>v1.1.0 初版默认 G:L=5、风压 30kPa、效率 0.5 → 风机功率虚高 10-15 倍</li>
-                <li>v1.1.2 默认 G:L=3、风压 2.5kPa、效率 0.6 → 落入 Delta Cooling Towers 实测 + Summerfelt 文献区间 (~10 kW/1000m³/h)</li>
-                <li>大菱鲆 1000t/yr 脱气塔风机 1536→~310 kW, 年电费节省 ~700 万</li>
-                <li>BF/主增氧风机效率 0.55→0.6 (无关脱气塔)</li>
-                <li>新增工艺参数: 风压(kPa)、风机效率(%) 可调</li>
-              </ul>
-            </li>
-            <li><b>v1.1.2: 系统体积建模 + 换水率口径修正</b> ⭐ 物理一致性:
-              <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
-                <li>v1.0 用 V_tank (鱼池水体) 算稳态浓度和换水量</li>
-                <li>v1.1.2 引入 V_process (BF/RDF/蛋分/脱气/管路等工艺水体, 典型 V_tank 的 30-60%)</li>
-                <li>V_total = V_tank + V_process, 行业标准 (Timmons 2010 / 国家海水鱼体系): 换水率口径按 V_total</li>
-                <li><b>影响 1: 换水量自动 +50% 左右</b> (按 V_total 算), 增加加热补水/碱度补偿成本</li>
-                <li><b>影响 2 (重要): 稳态浓度对 dilution 的敏感度因参数而异:</b>
-                  <ul class="list-circle list-inside ml-4 mt-0.5">
-                    <li>有完整处理工艺的参数 (TAN/TSS/CO₂): 浓度变化 &lt; 1% (BF/RDF/脱气是主导, dilution 是小项)</li>
-                    <li><b>仅靠换水稀释的参数</b> (无反硝化的 NO₃, 无 AOP 的 Geosmin, 无蛋分的 DOM): <b>浓度按 V_tank/V_total 缩放, 约 ↓37%</b></li>
-                  </ul>
-                </li>
-                <li>UI 显示鱼池水体/工艺水体/系统总水体三者, 用户清楚看到组成</li>
-                <li>⚠️ 老方案 (v1.0/v1.1.0/v1.1.1) 加载到 v1.1.2 后, 不上反硝化/AOP 的项目 NO₃/Geosmin 浓度会自动重算下降 ~37%, 这是物理修正后的真实值</li>
-              </ul>
-            </li>
-            <li><b>鱼生理耗氧按物种 + 温度自动算</b>: v1.0/v1.1 早期 0.25 一刀切, 现按 base×Q10 公式. 影响:
+            <li><b>鱼生理耗氧按物种 + 温度自动算</b> (v1.0 一刀切 0.25 kg O₂/kg 饲料):
               <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
                 <li>冷水鱼 (鲑/大菱鲆/鳗鲡) 增氧设备 ↓ 10-20%</li>
                 <li>温水淡水鱼 (罗非/加州鲈/鳜) 基本不变 (±5%)</li>
@@ -5021,32 +4996,30 @@ function showV11UpgradeNotice() {
                 <li>对虾场设备 ↑ 60% ⚠️ (甲壳代谢, 之前严重低估)</li>
               </ul>
             </li>
-            <li><b>CO₂ 脱气塔独立设备</b>: v1.0 隐藏在增氧节点, v1.1 显化为独立设备 + 风机</li>
-            <li><b>v1.1.2: 蛋分 + AOP 体积修正</b> ⭐ 基于商业工业项目实测:
+            <li><b>新增 CO₂ 脱气塔独立设备</b>: v1.0 仅在增氧节点扣 70% 写死。v1.1 作为独立设备建模, 含塔体 + 风机的 CAPEX 和 OPEX。<b>这是新增成本</b>, 不是节约。默认参数与 Delta Cooling Towers + Summerfelt 文献对齐</li>
+            <li><b>系统体积建模 + 换水率口径修正</b>:
               <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
-                <li><b>蛋分 HRT 4 → 2 min</b> (Sanders Helgoland LE-315 商业实测 1.8-2.2 min, ScienceDirect 2023). 物理: DOM 吸附是秒级反应, HRT 长无收益</li>
-                <li><b>AOP 改为按类型选 HRT</b>:
+                <li>v1.0 用鱼池水体 V_tank, v1.1 完整建模 V_total = V_tank + V_process (BF/RDF/管路等工艺水体)</li>
+                <li>换水率口径按 V_total (Timmons 2010 / 国家海水鱼体系标准): 换水量自动 +50% 左右</li>
+                <li>稳态浓度变化:
                   <ul class="list-circle list-inside ml-4 mt-0.5">
-                    <li>集成型 (UV+O3 一体反应器, ULTRAAQUA 等主流方案): HRT <b>2 min</b> 默认</li>
-                    <li>分体型 (O3 接触池 + UV 反应器, 大型项目): HRT <b>8 min</b> 默认</li>
-                    <li>用户可手动覆盖 HRT 值</li>
+                    <li>有完整处理工艺的参数 (TAN/TSS/CO₂): 变化 &lt; 1%</li>
+                    <li>仅靠换水稀释的参数 (无反硝化的 NO₃, 无 AOP 的 Geosmin, 无蛋分的 DOM): <b>浓度 ↓ 约 37%</b></li>
                   </ul>
                 </li>
-                <li>水质浓度无变化 (HRT 不影响去除效率, 只影响体积/CAPEX)</li>
-                <li>HRT 开放为可调参数 (skimmerHRT_min, aopHRT_min, aopType)</li>
               </ul>
             </li>
-            <li><b>整体 CAPEX 变化 < 5%</b>: BF 偏小与增氧偏大相互抵消</li>
+            <li><b>整体 CAPEX 变化 ±5%</b>: BF 偏小与增氧偏大相互抵消</li>
           </ul>
         </div>
 
         <div>
-          <div class="font-bold text-cyan-300 mt-3">🔧 物种库主要参数调整 (基于工业实测)</div>
+          <div class="font-bold text-cyan-300 mt-3">🔧 物种库参数调整 (基于工业实测)</div>
           <ul class="list-disc list-inside text-xs text-slate-300 space-y-1 mt-1.5 pl-2">
             <li>峰均比 peakFactor 统一 1.5 (Timmons 2010 标准)</li>
             <li>循环倍数 turnover 上调 (鲑鱼成鱼 2→3, 罗非成鱼 2→6)</li>
-            <li>密度 density 调整 (罗非成鱼 80→100, 参考 Blue Ridge 实测)</li>
-            <li>O₂ 目标饱和度按鱼种类别 (鲑鱼 165%, 海水 140%, 温水淡水 110-125%)</li>
+            <li>密度 density 调整 (罗非成鱼 80→100 参考 Blue Ridge, 大菱鲆 15/30/40→25/50/60 参考莱州东方海洋)</li>
+            <li>O₂ 目标饱和度按鱼种类别 (鲑鱼 165%, 海水温水 140%, 温水淡水 110-125%)</li>
             <li>DO 阈值按鱼种内置 (鲑鱼 0.75×饱和, 罗非 0.60×饱和等)</li>
           </ul>
         </div>
@@ -5055,10 +5028,14 @@ function showV11UpgradeNotice() {
           <div class="font-bold text-cyan-300 mt-3">✨ 新功能</div>
           <ul class="list-disc list-inside text-xs text-slate-300 space-y-1 mt-1.5 pl-2">
             <li>独立 CO₂ 脱气塔模型 (可关闭)</li>
+            <li>系统体积分项显示 (鱼池水体 / 工艺水体 / 系统总水体)</li>
+            <li>CAPEX 折旧自动摊销 (设备 8 年 + 土建 20 年, 用户可调)</li>
             <li>8 项工程安全系数 (按设备分别可调)</li>
             <li>制热/制冷 COP 拆分</li>
+            <li>蛋分 HRT 可调, AOP 区分集成型/分体型</li>
             <li>📊 文献基准对照 (无量纲强度指标 × 工业区间)</li>
             <li>水质阈值自适应 (DO 按饱和度+绝对值, CO₂ 按淡咸水)</li>
+            <li>📕 49 页技术手册 PDF</li>
           </ul>
         </div>
 
