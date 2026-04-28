@@ -73,6 +73,7 @@
     border-radius: 6px;
     padding: 8px 12px;
     width: 100%;
+    box-sizing: border-box;
     transition: all 0.2s;
   }
   .input-ind:focus {
@@ -185,7 +186,8 @@
     background: linear-gradient(160deg, #13304f, #0a1f3a);
     border: 2px solid var(--ind-border);
     border-radius: 10px;
-    min-width: 150px;
+    min-width: 105px;
+    flex: 1 1 110px;
     position: relative;
     transition: all 0.3s;
   }
@@ -195,11 +197,12 @@
     box-shadow: 0 6px 20px rgba(0,180,216,0.25);
   }
   .process-arrow {
-    flex: 1;
+    flex: 0 1 18px;
     height: 3px;
     background: linear-gradient(90deg, var(--ind-accent), var(--ind-accent2), var(--ind-ok));
     position: relative;
-    min-width: 40px;
+    min-width: 12px;
+    align-self: center;
     border-radius: 2px;
     box-shadow: 0 0 8px rgba(0,180,216,0.5);
   }
@@ -4090,8 +4093,8 @@ function renderStageBlock(idx, stage) {
   </details>
 
   <!-- 流程图 (默认展开) -->
-  <div class="relative py-4 px-2 overflow-x-auto">
-    <div class="flex items-stretch gap-2 min-w-max" data-flow="${idx}"></div>
+  <div class="relative py-4 px-2">
+    <div class="flex items-stretch gap-1.5 flex-wrap" data-flow="${idx}"></div>
 
     <!-- 6 个子面板: 反硝化 / 碱度 / 排污 / 热交换 / 蛋白分离器 / AOP -->
     <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
@@ -4188,7 +4191,7 @@ function renderFlow(idx, sim) {
   let html = '';
   sim.stages.forEach((st, i) => {
     html += `
-      <div class="process-node p-3 flex flex-col">
+      <div class="process-node p-2.5 flex flex-col">
         <div class="flex items-center gap-2 mb-2">
           <span class="node-icon">${st.icon}</span>
           <div>
