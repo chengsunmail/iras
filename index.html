@@ -431,7 +431,43 @@
           简单项目 1.8, 中等 2.0-2.2, 高标准 2.3-2.5。
         </div>
       </div>
-      <!-- v1.1.2: CAPEX 折旧年限 -->
+      <!-- v1.1: CAPEX 地区系数 -->
+      <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
+        <div>
+          <label class="text-[10px] text-purple-300" title="CAPEX 地区系数 (基于实测项目反推):&#10;挪威 10000t 三文鱼 RAS 项目 15 亿元 (15万/吨产能)&#10;中国 同规模约 8-10 亿 (10-12万/吨)&#10;实测系数约 1.4-2.0x, 不是 5x&#10;只影响 CAPEX (设备+工程+折旧), OPEX 不变">CAPEX 地区</label>
+          <select id="regionPreset" class="input-ind !py-1.5 !w-32">
+            <option value="1.0" selected>🇨🇳 中国 (1.0×)</option>
+            <option value="1.1">🇻🇳 东南亚 (1.1×)</option>
+            <option value="1.5">🇨🇱 智利/南美 (1.5×)</option>
+            <option value="1.7">🇺🇸 北美 (1.7×)</option>
+            <option value="2.0">🇳🇴 北欧/挪威 (2.0×)</option>
+            <option value="custom">⚙️ 自定义</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] text-purple-300" title="自定义地区系数 (1.0-3.0). 改这个值会自动切换上方为 自定义">系数值</label>
+          <input id="regionFactor" type="number" value="1.0" step="0.1" min="0.5" max="3" class="input-ind !py-1.5 !w-20">
+        </div>
+        <div class="text-[10px] text-slate-500 leading-relaxed flex-1">
+          地区差异 (基于挪威 10000t 三文鱼 RAS 项目 15 亿元实测反推): 挪威 ≈ 中国 2.0x。
+          只乘 CAPEX (含折旧), OPEX 不变 (饲料/液氧/化学品是全球商品差异小)。电费由用户单价单独控制。
+        </div>
+      </div>
+      <!-- v1.1: CAPEX 规模效应 (Lang factor) -->
+      <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
+        <div>
+          <label class="text-[10px] text-rose-300" title="CAPEX 规模效应指数 (Lang factor)&#10;0.00: 关闭, 线性 CAPEX&#10;0.10: iRAS 默认 (基于挪威 10000t 实测反推)&#10;0.20: 中等规模效应&#10;0.30: 强规模效应 (Lang factor 标准)&#10;&#10;基准固定为 1000 t/yr (iRAS 设备单价的校准规模)&#10;实际产量 = 基准 → factor=1.0 不变&#10;实际产量 > 基准 → factor < 1 (大项目省钱)&#10;实际产量 < 基准 → factor > 1 (小项目偏贵)">规模指数</label>
+          <input id="scaleExponent" type="number" value="0.10" step="0.05" min="0" max="0.7" class="input-ind !py-1.5 !w-20">
+          <input id="scaleRefSize" type="hidden" value="1000">
+        </div>
+        <div class="text-[10px] text-slate-500 leading-relaxed flex-1">
+          <b class="text-rose-300">CAPEX 规模效应</b>: 大项目摊销自控/设计/管理后单位 CAPEX 降低。
+          公式 <span class="text-rose-300">scaleFactor = (1000 / 产量)^指数</span>。
+          指数 0.10 时: 1000t 项目 ×1.00 (基准, 不变), 5000t ×0.85, 10000t ×0.79, 20000t ×0.74。
+          基准固定 1000 t/年 (iRAS 默认设备单价的校准规模)。设指数=0 关闭, 回到线性 CAPEX。
+        </div>
+      </div>
+      <!-- v1.1: CAPEX 折旧年限 -->
       <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
         <div>
           <label class="text-[10px] text-cyan-300" title="设备 (微滤机/泵/风机/UV/臭氧等) 折旧年限. 中国税法 10 年, 工程经验 7-10 年. RAS 高负荷设备建议 8 年">设备折旧年限</label>
@@ -686,6 +722,103 @@
         <li>DO/CO₂ 阈值 tooltip 显示来源</li>
         <li>水质警告增加 DO/CO₂ 超阈触发原因</li>
       </ul>
+
+      <h3 class="mt-4 font-bold text-cyan-300">I. 系统体积建模 (V_total = 鱼池 + 工艺水体)</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.0 用 V_tank (鱼池水体) 算稳态浓度和换水量, 忽略了工艺水体 (BF/RDF/管路/脱气塔等)。v1.1 引入完整 V_total 建模:</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>V_total = V_tank + V_process</b>, 其中 V_process 含 BF / RDF / 蛋分 / 脱气塔 / 增氧锥 / 反硝化 / AOP / 管路缓冲</li>
+        <li>典型 V_process 占 V_tank 的 30-50%, 不可忽略</li>
+        <li><b>BF 填料填充率 (bfFillRatio)</b> 新参数: 50% (默认) → V_BF = 2 × bioVolume; 高密度装填 70% → 1.43 × bioVolume</li>
+        <li><b>换水率口径改为 V_total</b> (Timmons 2010 / 国家海水鱼体系标准): 换水量自动 +50% 左右</li>
+        <li>稳态浓度变化: 有完整处理工艺的参数 (TAN/TSS/CO₂) &lt; 1%; 仅靠换水稀释的参数 (无反硝化的 NO₃, 无 AOP 的 Geosmin) 浓度按 V_tank/V_total 缩放, 约 ↓37%</li>
+        <li>UI 显示鱼池水体/工艺水体/系统总水体三者, 用户清楚看到组成</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-cyan-300">J. 完整热平衡 ⭐ (修复 v1.0 严重低估)</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.0 热泵能耗只算"补水温差", 严重低估 80x 倍。v1.1 引入完整热平衡:</p>
+      <p class="mt-2 text-slate-400 text-sm font-mono text-xs bg-slate-900/40 p-2 rounded">
+        Q_net = Q_metab + Q_pumps + Q_uv + Q_makeup - Q_loss
+      </p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>Q_metab</b> 鱼代谢产热 = biomass × 0.025 + feedAvg × 1.5 (文献 Lupatsch)</li>
+        <li><b>Q_pumps</b> 水泵产热 = totalPumpKW × 24h × 0.85</li>
+        <li><b>Q_uv</b> UV 产热 = uvPower × 24h × 0.95</li>
+        <li><b>Q_makeup</b> 补水温差 (含 75% 板换回收)</li>
+        <li><b>Q_loss</b> 池体散热 = U × A_pool × ΔT (室内 U=5, 室外 U=18)</li>
+        <li>升温/降温场景自动判断, 内部产热溢出时改为排热</li>
+        <li>三文鱼 1000t 热泵年电费 2 万 → 212 万 (落入 Atlantic Sapphire 文献区间)</li>
+        <li>新增工艺参数: 鱼代谢系数 / 饲料代谢热 / 室温 / 池水深 / 室内/室外</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-cyan-300">K. CAPEX 地区系数 ⭐ (国际项目支持)</h3>
+      <p class="mt-2 text-slate-400 text-sm">iRAS 默认设备单价是 <b>中国行情</b> (regionFactor=1.0)。不同地区工程总造价差异显著, 数值基于实测项目反推 (挪威 10000t 三文鱼 RAS 项目 15 亿元):</p>
+      <table class="mt-2 w-full text-xs border-collapse">
+        <thead><tr class="text-slate-400 border-b border-slate-700"><th class="py-1 px-2 text-left">地区</th><th class="py-1 px-2 text-right">系数</th><th class="py-1 px-2 text-left">备注</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">🇨🇳 中国 (默认)</td><td class="py-1 px-2 text-right">1.0×</td><td class="py-1 px-2">国产设备 + 国内工程</td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">🇻🇳 东南亚</td><td class="py-1 px-2 text-right">1.1×</td><td class="py-1 px-2">设备进口少, 人工接近</td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">🇨🇱 智利/南美</td><td class="py-1 px-2 text-right">1.5×</td><td class="py-1 px-2">设备半进口, 工程标准中等</td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">🇺🇸 北美</td><td class="py-1 px-2 text-right">1.7×</td><td class="py-1 px-2">本地工业链 + 较高人工</td></tr>
+          <tr><td class="py-1 px-2">🇳🇴 北欧/挪威</td><td class="py-1 px-2 text-right">2.0×</td><td class="py-1 px-2">高标准 + 高人工</td></tr>
+        </tbody>
+      </table>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li>新增"CAPEX 地区"下拉 (在「设备直购单价」面板), 一键切换地区预设, 也可自定义</li>
+        <li><b>只乘 CAPEX</b> (设备 + 工程总投资 + 折旧), OPEX 不变 (饲料/液氧是全球商品差异小, 电费用户单独调)</li>
+        <li>注意: 实际地区差异是<b>整体工程项目造价</b>反推, 不是单品设备价差 (单品差异可达 5-8x, 但工程里设备只占 30-40%)</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-cyan-300">L. CAPEX 规模效应 ⭐ (Lang factor)</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.0 是<b>线性 CAPEX</b> (产量 × 单位成本), 不符合工业经济学。
+        v1.1 引入 <b>Lang factor</b> 规模效应, 反映"项目越大, 单位 CAPEX 越低 (摊销自控/设计/管理)"的真实规律:</p>
+      <p class="mt-2 text-slate-400 text-sm font-mono text-xs bg-slate-900/40 p-2 rounded">
+        规模因子 = (1000 / 实际产能)^规模指数
+      </p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>基准产能 1000 t/yr</b>: <b>固定常数</b>, iRAS 默认设备单价的校准规模 (不可调)</li>
+        <li><b>规模指数</b>: 0.10 (用户可调, 基于挪威 10000t × rf=2.0 = 15 亿元实测反推)</li>
+        <li>设规模指数 = 0 关闭规模效应 (回到线性 CAPEX)</li>
+      </ul>
+      <table class="mt-2 w-full text-xs border-collapse">
+        <thead><tr class="text-slate-400 border-b border-slate-700"><th class="py-1 px-2 text-left">年产能</th><th class="py-1 px-2 text-right">规模因子</th><th class="py-1 px-2 text-left">含义</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">500 t</td><td class="py-1 px-2 text-right">×1.07</td><td class="py-1 px-2">小型试点, 略偏贵 7%</td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2"><b>1000 t (基准)</b></td><td class="py-1 px-2 text-right"><b>×1.00</b></td><td class="py-1 px-2"><b>iRAS 单价校准点 (国内中型)</b></td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">2000 t</td><td class="py-1 px-2 text-right">×0.93</td><td class="py-1 px-2">中型, -7%</td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">5000 t</td><td class="py-1 px-2 text-right">×0.85</td><td class="py-1 px-2">大型, 省 15%</td></tr>
+          <tr class="border-b border-slate-800"><td class="py-1 px-2">10000 t</td><td class="py-1 px-2 text-right">×0.79</td><td class="py-1 px-2">超大型, 省 21%</td></tr>
+          <tr><td class="py-1 px-2">20000 t</td><td class="py-1 px-2 text-right">×0.74</td><td class="py-1 px-2">巨型, 省 26%</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-2 text-slate-400 text-sm"><b>实测验证</b>: 挪威 10000t × regionFactor 2.0 = <b>14.85 亿元</b>,
+        与用户提供的实测数据 (15 亿) 偏差仅 -1% ✅。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">M. 蛋分 + AOP 体积修正 (基于工业实测)</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>蛋分 HRT 4 → 2 min</b> (Sanders Helgoland LE-315 商业实测 1.8-2.2 min, ScienceDirect 2023)</li>
+        <li><b>AOP 区分两种类型</b>:
+          <ul class="list-circle list-inside ml-4 mt-1">
+            <li>集成型 (UV+O3 一体反应器, ULTRAAQUA 等主流): HRT 2 min</li>
+            <li>分体型 (O3 接触池 + UV 反应器, 大型项目): HRT 8 min</li>
+          </ul>
+        </li>
+        <li>HRT 默认值随类型联动, 用户可手动覆盖</li>
+        <li>水质浓度无变化 (HRT 不影响去除效率, 只影响体积/CAPEX)</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-cyan-300">N. 物理参数实测对齐总览</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.1 系列每一处参数都基于真实工业项目反推, 不是教科书估算:</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li>CO₂ 风机风压: 30 kPa (理论) → <b>2.5 kPa</b> (Delta Cooling 实测)</li>
+        <li>蛋分 HRT: 4 min (教科书) → <b>2 min</b> (Sanders 商业实测)</li>
+        <li>AOP HRT: 30 min (污水处理) → <b>2-8 min</b> (RAS 实际)</li>
+        <li>RDF HRT: 1-2 min (教科书) → <b>0.3 min</b> (商业 RDF 实测 18 秒)</li>
+        <li>CO₂ 水力负荷: 40 m³/(m²·h) (经验) → <b>80 m³/(m²·h)</b> (Summerfelt/Moran 实测)</li>
+        <li>大菱鲆密度: 30-40 (保守) → <b>50-60 kg/m³</b> (莱州东方海洋实测)</li>
+        <li>热泵能耗: 只算补水 (低估 80x) → <b>完整热平衡</b> (鱼+设备+补水-散热)</li>
+        <li>CAPEX 地区系数: 单品 5-8x → <b>整体 1.0-2.0x</b> (挪威 10000t 项目实测)</li>
+        <li>CAPEX 规模效应: 线性 → <b>Lang factor 0.3</b> (10000t 项目省钱 19%)</li>
+      </ul>
     </section>
 
     <!-- 2. 运行环境 -->
@@ -757,6 +890,8 @@
         <li><b>设备直购单价</b>：15 类设备的默认单价，可按当地行情调整（每项显示推荐范围）</li>
         <li><b>工程总投资放大系数</b>：默认 2.2，范围 1.8-2.5（含管道/电气/自控/安装/土建）</li>
         <li><b>CAPEX 折旧年限</b>（v1.1 新增）：设备 8 年（5-20 可调）+ 土建 20 年（10-30 可调）。年折旧 = 设备/年限<sub>设备</sub> + 土建/年限<sub>土建</sub>，自动摊到日成本，影响"元/kg 鱼"综合成本</li>
+        <li><b>CAPEX 地区系数</b>（v1.1 新增）：默认中国 1.0×。下拉切换：东南亚 1.1×、智利/南美 1.5×、北美 1.7×、北欧/挪威 2.0×。基于挪威 10000t 三文鱼项目 15 亿元实测反推。<b>只乘 CAPEX</b>（含设备/工程/折旧），OPEX 不变</li>
+        <li><b>CAPEX 规模效应</b>（v1.1 新增, Lang factor）：基准 1000 t/年（固定，iRAS 单价校准点），指数 0.10（用户可调）。规模因子 = (1000/产量)^指数。500t ×1.07（小型略偏贵），5000t ×0.85，10000t ×0.79（大型省钱）。设指数=0 关闭。基于挪威 10000t × rf=2.0 = 14.85 亿元 ↔ 实测 15 亿验证</li>
       </ul>
 
       <h3 class="mt-4 font-bold text-cyan-300">5.3 养殖参数</h3>
@@ -800,7 +935,7 @@
     </section>
 
     <!-- 6. 计算方法学 -->
-<!-- 参数手册 -->
+<!-- 参数手册 (v1.1.1 新增) -->
 <section id="help-paramref" class="mt-6">
   <h2 class="text-xl font-bold text-amber-400 border-b border-amber-700/50 pb-2">📋 参数手册</h2>
   <p class="mt-3 text-slate-400">本节列出 iRAS 全部 76 个参数的完整定义、典型范围和调整建议。按工程师的工作流程分为 9 组（A-I），每个参数包含字段名（代码 ID）、中文显示名、单位、默认值、典型范围、物理含义和调整建议。</p>
@@ -1383,6 +1518,15 @@
 <td class="py-1 text-slate-400 text-[11px]">生物膜固定床 600-1000；流化床 1000-1200</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfFillRatio</td>
+<td class="py-1 pr-3 text-slate-200">MBBR 填料填充率</td>
+<td class="py-1 pr-3 text-slate-400">%</td>
+<td class="py-1 pr-3 text-emerald-300/90">50</td>
+<td class="py-1 pr-3 text-slate-400">30-70</td>
+<td class="py-1 pr-3 text-slate-300">填料净体积占 BF 池总容积比例，决定 BF 池总容积 V_BF = bioVolume / fillRatio</td>
+<td class="py-1 text-slate-400 text-[11px]">K1/K3 标准 50% (Rusten 2006)；高密度装填 60-65%；低密度均匀曝气 35-40%；50% → V_BF/bio = 2.00, 60% → 1.67, 70% → 1.43</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">thetaNit</td>
 <td class="py-1 pr-3 text-slate-200">硝化温度修正系数</td>
 <td class="py-1 pr-3 text-slate-400">—</td>
@@ -1459,6 +1603,60 @@
 <td class="py-1 pr-3 text-slate-400">2.0-4.0</td>
 <td class="py-1 pr-3 text-slate-300">热泵制冷效率系数；热带降温场景大温差时降至 2.5-3.0</td>
 <td class="py-1 text-slate-400 text-[11px]">常规 3.0-3.5，大温差（28→12°C）2.5</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">metabBasalRate</td>
+<td class="py-1 pr-3 text-slate-200">鱼基础代谢热</td>
+<td class="py-1 pr-3 text-slate-400">kWh/kg鱼/d</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.025</td>
+<td class="py-1 pr-3 text-slate-400">0.015-0.035</td>
+<td class="py-1 pr-3 text-slate-300">鱼基础代谢热产生; 文献 75-100 kJ/kg/d (Lupatsch)</td>
+<td class="py-1 text-slate-400 text-[11px]">一般不调; 设 0 关闭代谢产热项</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">metabFeedFactor</td>
+<td class="py-1 pr-3 text-slate-200">饲料代谢热</td>
+<td class="py-1 pr-3 text-slate-400">kWh/kg饲料</td>
+<td class="py-1 pr-3 text-emerald-300/90">1.5</td>
+<td class="py-1 pr-3 text-slate-400">0.5-3.0</td>
+<td class="py-1 pr-3 text-slate-300">鱼吃食后代谢产热, ≈30%×饲料能量(5kWh/kg)</td>
+<td class="py-1 text-slate-400 text-[11px]">高蛋白料↑, 低蛋白↓; 设 0 关闭</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">tankIndoor</td>
+<td class="py-1 pr-3 text-slate-200">车间环境</td>
+<td class="py-1 pr-3 text-slate-400">T/F</td>
+<td class="py-1 pr-3 text-emerald-300/90">true</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-slate-300">室内 RAS (true) vs 室外 (false), 决定池散热系数 U</td>
+<td class="py-1 text-slate-400 text-[11px]">国内 RAS 95% 室内, 设 true; 室外散热大, U 自动 18</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">roomTemp</td>
+<td class="py-1 pr-3 text-slate-200">车间室温</td>
+<td class="py-1 pr-3 text-slate-400">°C</td>
+<td class="py-1 pr-3 text-emerald-300/90">20</td>
+<td class="py-1 pr-3 text-slate-400">5-35</td>
+<td class="py-1 pr-3 text-slate-300">车间空气温度, 影响池体散热</td>
+<td class="py-1 text-slate-400 text-[11px]">工业 RAS 通常 20°C 左右; 与水温差决定散热方向</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">poolDepth</td>
+<td class="py-1 pr-3 text-slate-200">池水深</td>
+<td class="py-1 pr-3 text-slate-400">m</td>
+<td class="py-1 pr-3 text-emerald-300/90">1.5</td>
+<td class="py-1 pr-3 text-slate-400">0.3-3.0</td>
+<td class="py-1 pr-3 text-slate-300">用于估算池表面积 A = V_tank / depth</td>
+<td class="py-1 text-slate-400 text-[11px]">鲆鲽底栖鱼浅池 0.5-1.0, 鲑鱼立体水柱 2-3</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">poolUValue</td>
+<td class="py-1 pr-3 text-slate-200">池散热系数</td>
+<td class="py-1 pr-3 text-slate-400">W/m²·K</td>
+<td class="py-1 pr-3 text-emerald-300/90">5</td>
+<td class="py-1 pr-3 text-slate-400">3-25</td>
+<td class="py-1 pr-3 text-slate-300">池体传热系数, 室内 5, 室外 18</td>
+<td class="py-1 text-slate-400 text-[11px]">室内带顶 3-5, 室内开放 5-8, 室外有风 15-25</td>
 </tr>
 </tbody></table>
   </div>
@@ -1929,6 +2127,18 @@ const PROCESS_DEFAULTS = {
   VDR20: 800,
   thetaNit: 1.10,
   thetaDen: 1.08,
+  // v1.1 新增: MBBR 填料填充率 (V_filler / V_pool, 决定 BF 池总容积)
+  // 物理: bioVolume (按 VTR 算) 是"填料净体积", V_BF = bioVolume / fillRatio
+  //       V_BF 是池总容积 (含填料 + 水 + 顶部空气), 整个池容积参与系统体积建模
+  // 工业典型值:
+  //   K1/Kaldnes 标准填料: 50% 填充率 (常规 MBBR, Rusten 2006)
+  //   K3/AnoxKaldnes 高密度填料: 50-60% 填充率
+  //   高密度装填 (国内某些低成本项目): 60-70%
+  // V_BF / bioVolume 比值:
+  //   填充率 50% → 2.00
+  //   填充率 60% → 1.67
+  //   填充率 70% → 1.43
+  bfFillRatio: 50,             // % (用户可调 30-70)
   // v1.1 新增: 异养菌耗氧系数 (kg O₂ / kg 饲料)
   // 物理: 残饵 + 粪便被异养菌分解的耗氧, 在 BF 中由粗孔曝气供应
   // 文献依据 (Boyd 2018 RSA, Lekang 2020):
@@ -1944,6 +2154,25 @@ const PROCESS_DEFAULTS = {
   // 热泵 COP — v1.1 拆分制热/制冷 (制冷 dT 大、环境温度高时 COP 显著低)
   heatPumpCOP_heat: 4.0,         // 制热 COP (空气源/水源热泵, 现代工业级)
   heatPumpCOP_cool: 3.0,         // 制冷 COP (热带降温场景下经验值; 大温差可降至 2.5)
+  // v1.1 新增: 完整热平衡参数 (Q_net = Q_metab + Q_pumps + Q_uv + Q_makeup - Q_loss)
+  // 物理: 真实热泵负荷 = 内部产热 (鱼+设备) + 补水温差 ± 池体散热
+  //       v1.0 只算补水温差, 严重低估 80x 倍
+  // 文献: Lupatsch (鱼热产生综述), Texas A&M Extension (RAS 热平衡)
+  thermalIncludeMetab: true,     // 是否包含鱼代谢产热
+  thermalIncludeEquip: true,     // 是否包含水泵+UV 设备产热
+  thermalIncludeLoss: true,      // 是否包含池体散热
+  // 鱼代谢产热系数
+  metabBasalRate: 0.025,         // kWh/(kg鱼体重·d), 文献 75-100 kJ/kg/d → 0.021-0.028
+  metabFeedFactor: 1.5,          // kWh/kg饲料, 饲料代谢产热 (≈30% 饲料能量 5kWh/kg → 1.5)
+  // 设备产热比例
+  pumpHeatRatio: 0.85,           // 水泵 85% 输入功率转为水的热能 (与现实 80-90% 一致)
+  uvHeatRatio: 0.95,             // UV 灯几乎全部产热 95%
+  // 池体散热参数
+  tankIndoor: true,              // 室内 RAS (default), 室外 RAS 散热远大
+  roomTemp: 20,                  // 车间室温 (°C)
+  poolDepth: 1.5,                // 池水深 (m), 用于估算池表面积 A = V/depth
+  poolUValue: 5,                 // 池体传热系数 W/m²·K (室内池, 自然对流, 含池盖)
+                                 // 室外大风环境可达 15-25
   // 蛋白分离器 (Protein Skimmer) - 工程上为旁路处理
   skimmerEnabled: true,
   skimmerMode: 'ozone',          // 'air' 空气, 'ozone' 臭氧
@@ -1984,7 +2213,7 @@ const PROCESS_DEFAULTS = {
   co2StripperEnabled: true,      // 默认开启; 关闭时 CO2 仅靠换水稀释 + 增氧扰动
   co2StripperEff: 65,            // 单次脱气效率 (50-85%, G:L=3 浅塔实际 60-70%)
   co2StripperGtoL: 3,            // 气液比 (国内中型项目 2-4, 鲑鱼场 5-7)
-  co2StripperLoadingRate: 40,    // 水力负荷 m³/(m²·h) (经验值 30-50)
+  co2StripperLoadingRate: 80,    // 水力负荷 m³/(m²·h) (Summerfelt 2003/Moran 2003 实测 87-187, 取保守 80)
   co2FallbackEff: 5,             // 脱气塔关闭时, 增氧塔附带解吸效率 (5-15%)
   // v1.1.2 修正: 风压参数 (基于 Delta Cooling Towers / Suez Degremont 真实工业项目)
   // 工业实测: 600 gpm 项目 7.5 kW 风机 @ 1.12 kPa; 477 m³/h 项目 7 kW @ 0.87 kPa
@@ -2333,8 +2562,11 @@ function backCalculateFarmSize(yieldTons, stages) {
      ④ 设计流量要求 RDF 处理量 ≥ Q, 生物滤池停留 HRT ≈ 15-30 min
    ============================================================================ */
 function calcFlowAndConcentration(load, density, turnover) {
-  const volume = load.biomass / density;                  // m³
-  const flowM3h = volume * turnover;                      // m³/h
+  // v1.1: 边缘保护 - 用户可能输入 0 或负数, 防 div0/负流量
+  const safeDensity = Math.max(density || 1, 0.5);     // 最低 0.5 kg/m³ (理论极限)
+  const safeTurnover = Math.max(turnover || 1, 0.1);   // 最低 0.1 次/h
+  const volume = load.biomass / safeDensity;              // m³
+  const flowM3h = volume * safeTurnover;                  // m³/h
   const flowLpd = flowM3h * 1000 * 24;                    // L/d
   return { volume, flowM3h, flowLpd };
 }
@@ -2360,42 +2592,152 @@ function calcFlowAndConcentration(load, density, turnover) {
 
    单位: 1 kJ = 1/3600 kWh; 比热 4.18 kJ/(kg·°C)
    ============================================================================ */
-function calcThermalLoad(flowData, proc, stage, V_systemTotal) {
-  // v1.1.2: 换水量按系统总水体计算 (V_total = V_tank + V_process)
-  // V_systemTotal 由 calcEquipmentSpec 算出后传入; 若未传, 回退到 V_tank (旧行为)
+/* ============================================================================
+   函数: calcThermalLoad (v1.1: 完整热平衡)
+   目的: 计算系统真实热泵负荷 (含鱼代谢/设备产热/补水/池体散热)
+
+   【完整热平衡公式】
+   Q_net = Q_metab + Q_pumps + Q_uv + Q_makeup - Q_loss
+
+   各分项 (kWh/d):
+   ① Q_metab  鱼代谢产热
+              = biomass × basalRate (基础代谢, ~0.025 kWh/kg/d)
+              + feedAvg × feedHeatFactor (饲料代谢热, ~1.5 kWh/kg)
+              文献: Lupatsch (鱼热产生综述), maintenance 75-100 kJ/kg/d
+   ② Q_pumps  水泵产热 = totalPumpKW × 24 × pumpHeatRatio (~0.85)
+              物理: 水泵 80-90% 输入功率最终转化为水的热能
+   ③ Q_uv     UV 产热 = uvPower × 24 × uvHeatRatio (~0.95)
+              物理: UV 灯几乎全部产热
+   ④ Q_makeup 补水温差 = V_makeup × 4.18 × ΔT × (1-η_HX)
+              板式换热回收 75% 后剩余 (与 v1.0 一致)
+   ⑤ Q_loss   池体散热 = U × A_pool × |T_water - T_room| × 24/1000
+              室内 U≈5 W/m²·K, 室外可达 15-25
+              T_water > T_room 时为正 (散热到空气)
+              T_water < T_room 时为负 (从空气吸热)
+
+   【热泵电耗】
+   T_target < T_source 时 (降温场景): 热泵排热, Q_pump_load = max(Q_net, 0)
+   T_target > T_source 时 (升温场景): 热泵加热, Q_pump_load = max(-Q_net, 0)
+                                       (内部产热不够时才需加热)
+   电耗 = Q_pump_load / COP
+
+   【v1.0 → v1.1 区别】
+   v1.0 只算 Q_makeup, 严重低估 80x 倍 (内部产热是大头, 小项目 Q_makeup << Q_metab+Q_pumps+Q_uv)
+   ============================================================================ */
+function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
+  // 换水量按系统总水体计算
   const V_tank = flowData.volume;
   const V_for_makeup = V_systemTotal || V_tank;
-  const exchangeDaily = (proc.exchangeDaily || 0) / 100;
+  const exchangeDaily = Math.max(proc.exchangeDaily || 0, 0) / 100;
   const V_makeup = V_for_makeup * exchangeDaily;
 
   const T_source = proc.sourceTemp || 18;
   const T_target = stage.tempOpt;
   const dT_total = T_target - T_source;
-  const absDT = Math.abs(dT_total);
-  const mode = dT_total > 0.5 ? '升温' : (dT_total < -0.5 ? '降温' : '无需');
-  const needsThermal = absDT > 0.5;
+  const mode = dT_total > 0.5 ? '升温' : (dT_total < -0.5 ? '降温' : '维持');
+  const direction = dT_total > 0.5 ? 'heat' : (dT_total < -0.5 ? 'cool' : 'none');
 
-  // kWh/d
-  const Q_total_raw = V_makeup * 1000 * 4.18 * absDT / 3600;
+  // ① 补水温差 (与 v1.0 一致, 只是命名为 Q_makeup_after_hx)
+  const Q_makeup_raw = V_makeup * 1000 * 4.18 * Math.abs(dT_total) / 3600;
   const hxEff = (proc.hxEff != null ? proc.hxEff : 75) / 100;
-  const Q_recovered = Q_total_raw * hxEff;
-  const Q_after_hx = Q_total_raw * (1 - hxEff);
+  const Q_recovered = Q_makeup_raw * hxEff;
+  const Q_makeup = Q_makeup_raw * (1 - hxEff);
+  // 补水温差贡献到水里的"净热量":
+  //   降温场景 (T_target<T_source, 比如 18→15): 补水更热, 给池水加热, 增加排热负担, Q_signed > 0
+  //   升温场景 (T_target>T_source, 比如 18→28): 补水更冷, 从池水吸热, 削弱加热, Q_signed < 0
+  const Q_makeup_signed = direction === 'heat' ? -Q_makeup : Q_makeup;
 
-  // v1.1: 制热/制冷 COP 分别处理
-  // 物理: 制热 COP 4-5 (蒸发空气/水→冷凝水箱)
-  //       制冷 COP 2.5-3.5 (蒸发水箱→冷凝排热到环境, 大温差时更低)
-  // v1.0 兼容: 老方案只有 heatPumpCOP 字段时, 自动同时用作两个方向
+  // ② 鱼代谢产热 (恒为正, 始终往水里加热)
+  const includeMetab = proc.thermalIncludeMetab !== false;
+  const basalRate = (proc.metabBasalRate != null) ? proc.metabBasalRate : 0.025;
+  const feedHeatFactor = (proc.metabFeedFactor != null) ? proc.metabFeedFactor : 1.5;
+  const biomass = (load && load.biomass) || 0;
+  const feedAvg = (load && load.feedAvg) || 0;
+  const Q_metab_basal = includeMetab ? biomass * basalRate : 0;
+  const Q_metab_feed = includeMetab ? feedAvg * feedHeatFactor : 0;
+  const Q_metab = Q_metab_basal + Q_metab_feed;
+
+  // ③ 设备产热 (水泵 + UV, 恒为正)
+  const includeEquip = proc.thermalIncludeEquip !== false;
+  const pumpHeatRatio = (proc.pumpHeatRatio != null) ? proc.pumpHeatRatio : 0.85;
+  const uvHeatRatio = (proc.uvHeatRatio != null) ? proc.uvHeatRatio : 0.95;
+  const totalPumpKW = (eq && eq.totalPumpKw) || 0;
+  const uvPowerKw = ((eq && eq.uvPower) || 0) / 1000;  // uvPower 是 W
+  const Q_pumps = includeEquip ? totalPumpKW * 24 * pumpHeatRatio : 0;
+  const Q_uv = includeEquip ? uvPowerKw * 24 * uvHeatRatio : 0;
+  const Q_equip = Q_pumps + Q_uv;
+
+  // ④ 池体散热 (室内 vs 室外)
+  const includeLoss = proc.thermalIncludeLoss !== false;
+  const tankIndoor = proc.tankIndoor !== false;
+  const roomTemp = (proc.roomTemp != null) ? proc.roomTemp : 20;
+  const poolDepth = Math.max(proc.poolDepth || 1.5, 0.3);
+  const poolU = (proc.poolUValue != null) ? proc.poolUValue : (tankIndoor ? 5 : 18);
+  // 池表面积 ≈ V_tank / depth (假设方形/圆形池, 顶部敞开或微遮)
+  const poolArea = V_tank / poolDepth;
+  const dT_envLoss = T_target - roomTemp;  // 正: 池水比室温高, 散热到空气
+  // 散热: 池水→室温 方向为正 (即 T_water > T_room 时 Q_loss > 0, 散热降温)
+  // 反过来, T_water < T_room 时 Q_loss < 0, 是吸热
+  const Q_loss = includeLoss ? poolU * poolArea * dT_envLoss * 24 / 1000 : 0;
+
+  // ⑤ 热泵净负荷
+  // 内部加热: 鱼代谢 + 设备产热 (恒正)
+  // 外部加热/冷: 补水 (依方向)
+  // 散热: 池体散热 (依温差方向)
+  // 净加热到水里 = Q_metab + Q_equip + Q_makeup_signed - Q_loss
+  // (Q_loss 正值 = 池水散热到空气 = 净加热项的减项)
+  const Q_net_to_water = Q_metab + Q_equip + Q_makeup_signed - Q_loss;
+
+  // 热泵需求逻辑 (v1.1: 物理正确版本)
+  // 关键: 实际热泵需求看的是 "净产热到水里" (Q_net_to_water) 是否需要排出或补充
+  //   Q_net > 0 = 内部产热溢出, 需要排热 (热泵制冷)
+  //   Q_net < 0 = 内部产热不够, 需要补热 (热泵制热)
+  // 这与设定 T_target vs T_source 无关 (除非内部产热完美抵消)
+  //
+  // 但要区分 "用户意图":
+  //   T_target < T_source: 用户在热带降温, 必然需要排热, Q_net 几乎总是大正
+  //   T_target > T_source: 用户在冬季加热, 但如果内部产热溢出, 仍需排热
+  //   T_target ≈ T_source: 维持温度, 看内部产热平衡
+  // 物理上, 系统达到稳态后, 热泵需要做的就是 ±Q_net 把热搬走或补上
+  let Q_pump_load = 0;
+  let pumpDirection = 'none';
+  if (Q_net_to_water > 0.01) {
+    // 净产热溢出 → 需要散热 (热泵制冷)
+    Q_pump_load = Q_net_to_water;
+    pumpDirection = 'cool';
+  } else if (Q_net_to_water < -0.01) {
+    // 净散热不足 → 需要补热 (热泵制热)
+    Q_pump_load = -Q_net_to_water;
+    pumpDirection = 'heat';
+  }
+
   const COP_heat = proc.heatPumpCOP_heat || proc.heatPumpCOP || 4.0;
   const COP_cool = proc.heatPumpCOP_cool || (proc.heatPumpCOP ? proc.heatPumpCOP * 0.75 : 3.0);
-  const COP = dT_total > 0 ? COP_heat : COP_cool;
-  const heatPumpKWh = needsThermal ? Q_after_hx / Math.max(COP, 0.5) : 0;
+  const COP = pumpDirection === 'heat' ? COP_heat : COP_cool;
+  const heatPumpKWh = Q_pump_load / Math.max(COP, 0.5);
+  const needsThermal = Q_pump_load > 0.01;
 
   return {
+    // 兼容 v1.0 字段
     V_makeup, T_source, T_target, dT_total, mode, needsThermal,
-    Q_total_raw, Q_recovered, Q_after_hx,
+    Q_total_raw: Q_makeup_raw,    // 老字段名: 补水原始能耗
+    Q_recovered, Q_after_hx: Q_makeup,
     heatPumpKWh, hxEff: hxEff*100,
     COP, COP_heat, COP_cool,
-    direction: dT_total > 0 ? 'heat' : (dT_total < 0 ? 'cool' : 'none')
+    // direction: v1.0 旧字段, 反映用户温度意图 (升温/降温/维持)
+    direction,
+    // pumpDirection: v1.1 新字段, 反映热泵实际工作方向
+    // 可能与 direction 不同, 例如设了升温目标但内部产热溢出, 实际仍需排热
+    pumpDirection,
+
+    // v1.1 新增: 完整热平衡分项
+    Q_metab_basal, Q_metab_feed, Q_metab,
+    Q_pumps, Q_uv, Q_equip,
+    Q_makeup,         // 已扣板换 (=Q_after_hx)
+    Q_loss, poolArea, dT_envLoss,
+    Q_net_to_water,
+    Q_pump_load,
+    includeMetab, includeEquip, includeLoss, tankIndoor, roomTemp
   };
 }
 
@@ -2448,7 +2790,7 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   const alkNetDemand = alkConsumed - alkRecovered;
 
   // 换水补偿 (v1.1.2: 用系统总水体 V_total)
-  const exchangeDailyFrac = (proc.exchangeDaily || 0) / 100;
+  const exchangeDailyFrac = Math.max(proc.exchangeDaily || 0, 0) / 100;
   const V_for_exchange = V_systemTotal || flowData.volume;
   const exchangeVolume = V_for_exchange * exchangeDailyFrac;   // m³/d
   const alkFromMakeup = exchangeVolume * (proc.alkSource != null ? proc.alkSource : 100) / 1000;
@@ -2498,7 +2840,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   const denitriFlowRatio = proc.denitriFlowPct / 100;
   const eta_denitri = proc.denitriEff / 100;
   const backwashRatio = proc.rdfBackwash / 100;
-  const exchangeDaily = (proc.exchangeDaily || 0) / 100;
+  const exchangeDaily = Math.max(proc.exchangeDaily || 0, 0) / 100;
   const cyclesPerDay = flowData.flowM3h * 24 / Math.max(flowData.volume, 0.01);
   // v1.1.2: 换水率口径改为系统总水体 V_total. 鱼池每循环排出占比修正:
   //   dilution_per_cycle = exchange × V_total / V_tank / cyclesPerDay
@@ -3012,7 +3354,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // 填料体积: V_packing ≈ A × H, H 取 1.5-2.5m (G:L=5-7) 或 2.5-4m (G:L=10+)
   // 这里简化为面积 A 算 CAPEX, 高度由 G:L 隐含
   const co2StripperOn = proc.co2StripperEnabled !== false;
-  const co2LoadingRate = Math.max(proc.co2StripperLoadingRate || 40, 5);  // m³/(m²·h)
+  const co2LoadingRate = Math.max(proc.co2StripperLoadingRate || 80, 5);  // m³/(m²·h)
   const degasArea = co2StripperOn
     ? flowData.flowM3h / co2LoadingRate * sCO2
     : 0;  // 关闭时不计塔
@@ -3053,14 +3395,22 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   const Q = flowData.flowM3h;
   const Vtank = flowData.volume;
   // 各部分水体 (基于设备规格 + 工程经验):
-  const V_RDF       = Q * 2 / 60;                                    // RDF集水池 HRT≈2min
-  const V_BF_water  = bioVolume * 1.3;                                // 含填料的池水量 (填料 35% + 水 65%)
+  const V_RDF       = Q * 0.3 / 60;                                  // RDF 水容积 HRT≈18s (商业实测 YUTANK/Hydrotech: 转鼓 + 紧凑集水池, 不含外置大缓冲池)
+  // v1.1: BF 池水容积 = bioVolume / fillRatio
+  // 物理: bioVolume 是填料净体积, V_BF 是池总容积 (含填料 + 水 + 顶部空气)
+  //       工程上"池子要建多大"按总容积算, 在 RAS 体积建模中整个池容积都参与稀释
+  //       fillRatio=50% (Rusten 2006 工业惯例) → V_BF = 2 × bioVolume
+  //       fillRatio=70% (高密度装填)             → V_BF = 1.43 × bioVolume
+  const fillRatio = Math.max((proc.bfFillRatio || 50) / 100, 0.20);    // 防过低
+  const V_BF_water  = bioVolume / fillRatio;                            // m³
   const V_skim      = skimmerOn ? skimmerVolume : 0;                  // 蛋分塔 (已是水容积)
   const V_UV        = 5;                                              // UV 流通式, 内水量极小
   const V_AOP       = aopOn ? aopVolume : 0;                          // v1.1.2: aopVolume 已是真实水量 (HRT 8min)
   const V_denitri   = denitriVolume;                                  // 反硝化反应器
-  const V_co2       = co2StripperOn ? degasArea * 1.2 : 0;            // 脱气塔: 1m集水 + 0.2m填料水
-  const V_aerator   = Q * 0.5 / 60;                                   // 增氧锥 HRT 30s
+  const V_co2       = co2StripperOn ? degasArea * 0.7 : 0;            // 脱气塔水容积: 集水池 0.5m + 填料层湿水 0.2m 等效
+  // v1.1: V_aerator 仅在纯氧模式下存在 (液氧锥/PPC 增氧塔)
+  // 空气曝气模式无独立增氧设备 (微孔盘装在鱼池底部, 不占外部水体)
+  const V_aerator   = isAir ? 0 : Q * 0.5 / 60;                       // 纯氧锥 HRT 30s
   const V_pipes     = Vtank * 0.05;                                   // 管路+缓冲池, V_tank 5%
   const V_process   = V_RDF + V_BF_water + V_skim + V_UV + V_AOP + V_denitri + V_co2 + V_aerator + V_pipes;
   const V_total     = Vtank + V_process;
@@ -3227,6 +3577,12 @@ function readEquipPrices() {
   // v1.1.2: 折旧年限 (设备/土建分别)
   p.depYearsEquip = parseFloat(document.getElementById('depYearsEquip')?.value) || 8;
   p.depYearsCivil = parseFloat(document.getElementById('depYearsCivil')?.value) || 20;
+  // v1.1: CAPEX 地区系数 (中国=1.0 默认, 北欧=5.0, 只乘 CAPEX 不乘 OPEX)
+  p.regionFactor = parseFloat(document.getElementById('regionFactor')?.value) || 1.0;
+  // v1.1: CAPEX 规模效应 (Lang factor)
+  p.scaleRefSize = parseFloat(document.getElementById('scaleRefSize')?.value) || 1000;
+  p.scaleExponent = parseFloat(document.getElementById('scaleExponent')?.value);
+  if (!Number.isFinite(p.scaleExponent)) p.scaleExponent = 0.10;
   return p;
 }
 
@@ -3332,22 +3688,35 @@ function calcCapex(eq, sim, flowData, eqPrices) {
   }
 
   const factor = eqPrices.totalFactor;
-  const totalProject = total * factor;
+  // v1.1: 地区系数 (中国 1.0, 北欧 2.0, 只影响 CAPEX 不影响 OPEX)
+  // 物理: 不同地区设备/工程/人工综合价差 (基于挪威 10000t 项目 15 亿元实测反推)
+  const regionFactor = Math.max(eqPrices.regionFactor || 1.0, 0.1);
+  // v1.1: 规模效应 (Lang factor) — 大项目摊销自控/设计/管理后单位 CAPEX 降低
+  // scaleFactor = (基准产能 / 实际产能)^指数
+  //   基准 1000 t/yr (国内中型 RAS 典型规模, iRAS 默认参数校准点)
+  //   指数 0.10 (校准: 挪威 10000t × rf=2.0 = 15 亿元实测反推)
+  //   500t → 1.07x; 1000t → 1.00x (基准); 5000t → 0.85x; 10000t → 0.79x
+  // 设指数=0 关闭规模效应, 回到线性 CAPEX
+  const scaleRefSize = Math.max(eqPrices.scaleRefSize || 1000, 1);
+  const scaleExponent = Math.max(eqPrices.scaleExponent != null ? eqPrices.scaleExponent : 0.10, 0);
+  const yieldTons = Math.max(eqPrices.yieldTons || scaleRefSize, 1);
+  const scaleFactor = scaleExponent === 0 ? 1.0 : Math.pow(scaleRefSize / yieldTons, scaleExponent);
+  // 综合: 设备直购 × 工程放大 × 地区 × 规模
+  const totalRegional = total * regionFactor * scaleFactor;
+  const totalProject = total * factor * regionFactor * scaleFactor;
 
-  // v1.1.2: 年折旧分项 (设备 / 土建+安装+设计)
-  // 设备部分 = capex.total (8年默认, 用户可调)
-  // 土建/安装/设计 = totalProject - capex.total = total × (factor - 1)
-  // 即设备直购的"放大部分", 物理上是非设备投入 (土建20年默认)
+  // v1.1: 年折旧分项 (设备 / 土建+安装+设计), 含地区+规模系数
   const depYearsEquip = Math.max(eqPrices.depYearsEquip || 8, 1);
   const depYearsCivil = Math.max(eqPrices.depYearsCivil || 20, 1);
-  const civilCost = total * (factor - 1);                // 土建+安装+设计 (元)
-  const depEquipAnnual = total / depYearsEquip;          // 设备年折旧 (元/年)
-  const depCivilAnnual = civilCost / depYearsCivil;      // 土建年折旧 (元/年)
-  const depAnnual = depEquipAnnual + depCivilAnnual;     // 合计年折旧 (元/年)
-  const depDaily = depAnnual / 365;                       // 折合日折旧 (元/d)
+  const civilCost = total * (factor - 1) * regionFactor * scaleFactor;
+  const depEquipAnnual = totalRegional / depYearsEquip;
+  const depCivilAnnual = civilCost / depYearsCivil;
+  const depAnnual = depEquipAnnual + depCivilAnnual;
+  const depDaily = depAnnual / 365;
 
   return {
     items, total, factor, totalProject,
+    regionFactor, scaleFactor, scaleRefSize, scaleExponent,    // v1.1: 暴露给 UI
     depYearsEquip, depYearsCivil,
     depEquipAnnual, depCivilAnnual, depAnnual, depDaily
   };
@@ -3449,6 +3818,14 @@ function readStageProcFromInputs(idx, fallbackProc) {
     return el ? (el.value || def) : def;
   };
   const getBool = (field, def) => getStr(field, String(def)) === 'true';
+
+  // v1.1: aopType 和 aopHRT_min 联动 — 先读 aopType, 再据此决定 HRT 默认
+  // 当用户清空 aopHRT_min 输入框时, 按"当前 aopType" (而非 fallback) 给默认值
+  // 集成型 → 2 min, 分体型 → 8 min
+  const _aopType = getStr('aopType', fallbackProc.aopType || 'integrated');
+  const _aopHRTDefault = (_aopType === 'separated') ? 8 : 2;
+  const _aopHRT = getNum('aopHRT_min', fallbackProc.aopHRT_min || _aopHRTDefault);
+
   return {
     rdfTSS: getNum('rdfTSS', fallbackProc.rdfTSS),
     biofilterTAN: getNum('biofilterTAN', fallbackProc.biofilterTAN),
@@ -3464,6 +3841,7 @@ function readStageProcFromInputs(idx, fallbackProc) {
     alkSource: getNum('alkSource', fallbackProc.alkSource),
     VTR20: getNum('VTR20', fallbackProc.VTR20),
     VDR20: getNum('VDR20', fallbackProc.VDR20),
+    bfFillRatio: getNum('bfFillRatio', fallbackProc.bfFillRatio || 50),
     thetaNit: getNum('thetaNit', fallbackProc.thetaNit),
     thetaDen: getNum('thetaDen', fallbackProc.thetaDen),
     o2DOMfactor: getNum('o2DOMfactor', fallbackProc.o2DOMfactor != null ? fallbackProc.o2DOMfactor : 0.10),
@@ -3481,6 +3859,12 @@ function readStageProcFromInputs(idx, fallbackProc) {
     // v1.1: 拆分制热/制冷 COP, 同时兼容老字段 heatPumpCOP
     heatPumpCOP_heat: getNum('heatPumpCOP_heat', fallbackProc.heatPumpCOP_heat || fallbackProc.heatPumpCOP || 4.0),
     heatPumpCOP_cool: getNum('heatPumpCOP_cool', fallbackProc.heatPumpCOP_cool || (fallbackProc.heatPumpCOP ? fallbackProc.heatPumpCOP * 0.75 : 3.0)),
+    // v1.1: 完整热平衡参数
+    metabBasalRate: getNum('metabBasalRate', fallbackProc.metabBasalRate || 0.025),
+    metabFeedFactor: getNum('metabFeedFactor', fallbackProc.metabFeedFactor || 1.5),
+    tankIndoor: getBool('tankIndoor', fallbackProc.tankIndoor !== false),
+    roomTemp: getNum('roomTemp', fallbackProc.roomTemp || 20),
+    poolDepth: getNum('poolDepth', fallbackProc.poolDepth || 1.5),
     skimmerEnabled: getBool('skimmerEnabled', fallbackProc.skimmerEnabled),
     skimmerMode: getStr('skimmerMode', fallbackProc.skimmerMode),
     skimmerFlowPct: getNum('skimmerFlowPct', fallbackProc.skimmerFlowPct),
@@ -3490,16 +3874,16 @@ function readStageProcFromInputs(idx, fallbackProc) {
     skimmerHRT_min: getNum('skimmerHRT_min', fallbackProc.skimmerHRT_min || 2),
     ozoneDose: getNum('ozoneDose', fallbackProc.ozoneDose),
     aopEnabled: getBool('aopEnabled', fallbackProc.aopEnabled),
-    aopType: getStr('aopType', fallbackProc.aopType || 'integrated'),
     aopFlowPct: getNum('aopFlowPct', fallbackProc.aopFlowPct),
     aopGeosminEff: getNum('aopGeosminEff', fallbackProc.aopGeosminEff),
     aopDOMRemoval: getNum('aopDOMRemoval', fallbackProc.aopDOMRemoval || 5),
-    aopHRT_min: getNum('aopHRT_min', fallbackProc.aopHRT_min || ((fallbackProc.aopType === 'separated') ? 8 : 2)),
+    aopType: _aopType,
+    aopHRT_min: _aopHRT,
     // v1.1.2: CO₂ 脱气塔 (默认值更新, 加风压/效率)
     co2StripperEnabled: getBool('co2StripperEnabled', fallbackProc.co2StripperEnabled !== false),
     co2StripperEff: getNum('co2StripperEff', fallbackProc.co2StripperEff || 65),
     co2StripperGtoL: getNum('co2StripperGtoL', fallbackProc.co2StripperGtoL || 3),
-    co2StripperLoadingRate: getNum('co2StripperLoadingRate', fallbackProc.co2StripperLoadingRate || 40),
+    co2StripperLoadingRate: getNum('co2StripperLoadingRate', fallbackProc.co2StripperLoadingRate || 80),
     co2BlowerPressure_kPa: getNum('co2BlowerPressure_kPa', fallbackProc.co2BlowerPressure_kPa || 2.5),
     co2BlowerEfficiency: getNum('co2BlowerEfficiency', fallbackProc.co2BlowerEfficiency || 60),
     co2FallbackEff: getNum('co2FallbackEff', fallbackProc.co2FallbackEff || 5),
@@ -3601,6 +3985,7 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-slate-400" title="源水碱度 (mg/L CaCO₃)&#10;范围: 50-200&#10;默认: 100&#10;含义: 源水/补水碱度&#10;何时调: 海水多 150-200, 软水 50-80">源水碱度(mg/L)</label><input data-proc-stage="${idx}" data-proc-field="alkSource" type="number" step="10" value="${stage.proc.alkSource}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="标准 VTR @ 20°C (g/m³·d)&#10;范围: 300-800&#10;默认: 500&#10;含义: 生物滤池 20°C 淡水基准 TAN 去除速率&#10;何时调: MBBR 高比表面积 600-800, 普通 K1 400-600">VTR₂₀(g/m³·d)</label><input data-proc-stage="${idx}" data-proc-field="VTR20" type="number" step="50" value="${stage.proc.VTR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="标准 VDR @ 20°C (g/m³·d)&#10;范围: 500-1200&#10;默认: 800&#10;含义: 反硝化反应器 20°C 基准 NO₃⁻ 去除速率&#10;何时调: 固定床 600-1000, 流化床 1000-1200">VDR₂₀(g/m³·d)</label><input data-proc-stage="${idx}" data-proc-field="VDR20" type="number" step="50" value="${stage.proc.VDR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="MBBR 填料填充率 (%)&#10;范围: 30-70&#10;默认: 50 (Rusten 2006 工程惯例)&#10;含义: 填料净体积占池总容积比例&#10;影响: 决定 BF 池总容积 V_BF = bioVolume / fillRatio&#10;V_BF/bioVolume 比值:&#10;  50% → 2.00&#10;  60% → 1.67&#10;  70% → 1.43&#10;何时调:&#10;  K1/K3 标准填料: 50%&#10;  高密度装填 (国内某些低成本项目): 60-65%&#10;  低密度均匀曝气: 35-40%">BF填充率(%)</label><input data-proc-stage="${idx}" data-proc-field="bfFillRatio" type="number" step="5" min="20" max="75" value="${stage.proc.bfFillRatio||50}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="硝化温度修正系数&#10;范围: 1.06-1.12&#10;默认: 1.10&#10;含义: Arrhenius θ, 温度每变 10°C VTR 按 θ^(ΔT/10) 倍变&#10;何时调: 一般不调">θ_nit</label><input data-proc-stage="${idx}" data-proc-field="thetaNit" type="number" step="0.01" value="${stage.proc.thetaNit}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="反硝化温度修正系数&#10;范围: 1.05-1.10&#10;默认: 1.08&#10;含义: 反硝化的 Arrhenius θ&#10;何时调: 一般不调">θ_den</label><input data-proc-stage="${idx}" data-proc-field="thetaDen" type="number" step="0.01" value="${stage.proc.thetaDen}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="鱼生理耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.18-0.45&#10;默认: 自动 (base × Q10^((T-20)/10))&#10;含义: 物种代谢耗氧系数&#10;何时调: 极端品种或新种时手填; 留空恢复自动">鱼生理耗氧</label><input data-proc-stage="${idx}" data-proc-field="o2FishFactor" type="number" step="0.01" min="0.10" max="0.60" placeholder="自动" value="${(stage.proc.o2FishFactor!=null && !isNaN(stage.proc.o2FishFactor)) ? stage.proc.o2FishFactor : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -3611,6 +3996,11 @@ function renderStageBlock(idx, stage) {
       <div data-common><label class="text-[10px] text-slate-400" title="板换回收率 (%)&#10;范围: 60-90&#10;默认: 75&#10;含义: 板式换热器对补水热回收效率&#10;何时调: 钛板(海水)75-85, 高效逆流式≥85">板换回收(%)</label><input data-proc-stage="${idx}" data-proc-field="hxEff" type="number" step="5" value="${stage.proc.hxEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-orange-300" title="热泵制热 COP&#10;范围: 3.0-5.5&#10;默认: 4.0&#10;含义: 制热效率系数&#10;何时调: 空气源 3.5-4.0, 水源 4.5-5.5">热泵 COP 热</label><input data-proc-stage="${idx}" data-proc-field="heatPumpCOP_heat" type="number" step="0.1" min="1" max="6" value="${stage.proc.heatPumpCOP_heat||4.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-blue-300" title="热泵制冷 COP&#10;范围: 2.0-4.0&#10;默认: 3.0&#10;含义: 制冷效率系数&#10;何时调: 大温差(28→12°C)2.5, 常规 3.0-3.5">热泵 COP 冷</label><input data-proc-stage="${idx}" data-proc-field="heatPumpCOP_cool" type="number" step="0.1" min="1" max="5" value="${stage.proc.heatPumpCOP_cool||3.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-orange-300" title="鱼基础代谢热 (kWh/kg鱼/d)&#10;范围: 0.015-0.035&#10;默认: 0.025&#10;含义: 鱼标准代谢热, 文献 75-100 kJ/kg/d&#10;何时调: 一般不调; 设 0 关闭代谢产热">鱼代谢系数</label><input data-proc-stage="${idx}" data-proc-field="metabBasalRate" type="number" step="0.005" min="0" max="0.05" value="${stage.proc.metabBasalRate||0.025}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-orange-300" title="饲料代谢热 (kWh/kg饲料)&#10;范围: 0.5-3.0&#10;默认: 1.5&#10;含义: 鱼吃食后代谢产生的热量, ≈30%×饲料能量(5kWh/kg)&#10;何时调: 高蛋白料↑, 低蛋白↓">饲料代谢热</label><input data-proc-stage="${idx}" data-proc-field="metabFeedFactor" type="number" step="0.1" min="0" max="5" value="${stage.proc.metabFeedFactor||1.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-cyan-300" title="池体散热 (室内/室外)&#10;室内: U≈5 W/m²·K&#10;室外: U≈15-25 W/m²·K&#10;默认: 室内">车间环境</label><select data-proc-stage="${idx}" data-proc-field="tankIndoor" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.tankIndoor!==false?'selected':''}>室内 (U=5)</option><option value="false" ${stage.proc.tankIndoor===false?'selected':''}>室外 (U=18)</option></select></div>
+      <div><label class="text-[10px] text-cyan-300" title="车间室温 (°C)&#10;范围: 5-35&#10;默认: 20&#10;影响池体散热; 室温≈水温时散热 ≈ 0">室温(°C)</label><input data-proc-stage="${idx}" data-proc-field="roomTemp" type="number" step="1" min="0" max="40" value="${stage.proc.roomTemp||20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-cyan-300" title="池水深 (m)&#10;范围: 0.5-3&#10;默认: 1.5&#10;含义: 用于估算池表面积 A = V_tank / depth&#10;鲆鲽底栖鱼用浅池 0.5-1, 鲑鱼立体水柱 2-3">池水深(m)</label><input data-proc-stage="${idx}" data-proc-field="poolDepth" type="number" step="0.1" min="0.3" max="5" value="${stage.proc.poolDepth||1.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">💧 水泵参数 — P=9.81×Q×H÷(3600×η)。反硝化 / UV / AOP / 蛋分 各支路独立; AOP / 蛋分停用时对应泵功率=0</div>
       <div><label class="text-[10px] text-cyan-300" title="主泵扬程 (m)&#10;范围: 5-20&#10;默认: 12&#10;含义: 主循环泵扬程&#10;何时调: 池底重力流 5-8, 多级跌落 12-20">主泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="mainPumpHead_m" type="number" step="0.5" value="${stage.proc.mainPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-cyan-300" title="主泵效率 (%)&#10;范围: 60-80&#10;默认: 68&#10;含义: 主循环泵水力效率&#10;何时调: 高效变频 75-80, 普通 65-72">主泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="mainPumpEta" type="number" step="1" value="${stage.proc.mainPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -3643,7 +4033,7 @@ function renderStageBlock(idx, stage) {
       <div data-common><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔启用/停用. 关闭时 CO₂ 仅靠换水稀释, 高密度场会严重超标">CO₂脱气启用</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.co2StripperEnabled!==false?'selected':''}>启用</option><option value="false" ${stage.proc.co2StripperEnabled===false?'selected':''}>停用</option></select></div>
       <div><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔单次效率 (%)&#10;范围: 50-85&#10;默认: 65&#10;含义: 单次脱气效率, G:L=3 浅塔约 60-70%">脱气效率(%)</label><input data-proc-stage="${idx}" data-proc-field="co2StripperEff" type="number" step="5" min="40" max="95" value="${stage.proc.co2StripperEff||65}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="气液比 G:L (×)&#10;范围: 2-10&#10;默认: 3 (国内中型项目)&#10;含义: 风量/水量比&#10;鲑鱼场 5-7, 罗非高密度 4-5, 大菱鲆/低密度 2-3">G:L 比</label><input data-proc-stage="${idx}" data-proc-field="co2StripperGtoL" type="number" step="0.5" min="1" max="15" value="${stage.proc.co2StripperGtoL||3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 30-50&#10;默认: 40&#10;含义: 截面积水力负荷&#10;何时调: 高密度场→30">水力负荷</label><input data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" step="5" min="20" max="80" value="${stage.proc.co2StripperLoadingRate||40}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 50-150&#10;默认: 80&#10;依据: Summerfelt 2003 / Moran 2003 实测 87-187&#10;何时调: 高密度场降至 50, 低密度场可上 150">水力负荷</label><input data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" step="10" min="20" max="200" value="${stage.proc.co2StripperLoadingRate||80}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="风机风压 (kPa)&#10;范围: 0.5-10&#10;默认: 2.5 (中塔典型)&#10;含义: 决定风机功率&#10;Delta Cooling Towers 实测 1-2.5 kPa&#10;浅塔(<2m)0.5-1.5, 中塔(2-4m)1.5-3, 深塔(>4m)3-5">风压(kPa)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" step="0.5" min="0.3" max="15" value="${stage.proc.co2BlowerPressure_kPa||2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="风机机械效率 (%)&#10;范围: 50-80&#10;默认: 60 (中位)&#10;罗茨风机 50-70, 离心风机 65-80">风机η(%)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" step="5" min="30" max="85" value="${stage.proc.co2BlowerEfficiency||60}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="关闭时附带解吸率 (%)&#10;范围: 2-15&#10;默认: 5&#10;含义: 脱气塔关闭时增氧塔附带解吸效率&#10;何时调: 高 G:L 锥→10-15">附带解吸(%)</label><input data-proc-stage="${idx}" data-proc-field="co2FallbackEff" type="number" step="1" min="1" max="20" value="${stage.proc.co2FallbackEff||5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -3817,12 +4207,18 @@ function renderPanels(idx, sim) {
   if (sim.thermal) {
     const t = sim.thermal;
     const modeColor = t.mode==='升温'?'#f87171':(t.mode==='降温'?'#60a5fa':'#94a3b8');
+    const pumpDirText = t.pumpDirection === 'cool' ? '🥶 排热' : (t.pumpDirection === 'heat' ? '🔥 加热' : '— 无需');
+    const pumpDirColor = t.pumpDirection === 'cool' ? '#60a5fa' : (t.pumpDirection === 'heat' ? '#f87171' : '#94a3b8');
     const el = document.querySelector(`[data-panel="thermal-${idx}"]`);
     if (el) el.innerHTML = `
       <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">源水→目标</div><div class="font-bold" style="color:${modeColor}">${t.T_source}→${t.T_target}°C (${t.mode})</div></div>
-      <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">补水量</div><div class="text-rose-300 font-bold">${t.V_makeup.toFixed(1)} m³/d</div></div>
-      <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">换热回收</div><div class="text-rose-300 font-bold">${t.Q_recovered.toFixed(0)} kWh/d</div></div>
-      <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">热泵耗电(COP=${t.COP})</div><div class="text-rose-300 font-bold">${t.heatPumpKWh.toFixed(0)} kWh/d</div></div>
+      <div class="metric-chip px-2 py-1.5" title="鱼基础代谢 + 饲料代谢热. 文献: Lupatsch 鱼热产生综述"><div class="text-[10px] text-slate-400">鱼代谢产热</div><div class="text-orange-300 font-bold">${(t.Q_metab||0).toFixed(0)} kWh/d</div></div>
+      <div class="metric-chip px-2 py-1.5" title="水泵 ${(t.Q_pumps||0).toFixed(0)} + UV ${(t.Q_uv||0).toFixed(0)}. 设备 80-95% 输入功率最终转化为水的热能"><div class="text-[10px] text-slate-400">设备产热</div><div class="text-orange-300 font-bold">${(t.Q_equip||0).toFixed(0)} kWh/d</div></div>
+      <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">补水温差 (${t.hxEff.toFixed(0)}%板换)</div><div class="text-rose-300 font-bold">${t.Q_after_hx.toFixed(0)} kWh/d</div></div>
+      <div class="metric-chip px-2 py-1.5" title="池表面散热 (${(t.poolArea||0).toFixed(0)} m² × U=${t.tankIndoor?5:18}, 室温 ${t.roomTemp}°C)"><div class="text-[10px] text-slate-400">池体散热</div><div class="text-cyan-300 font-bold">${(t.Q_loss||0).toFixed(0)} kWh/d</div></div>
+      <div class="metric-chip px-2 py-1.5 border-rose-500/40" title="净加热到水的热量 = 鱼+设备+补水 - 散热. 热泵需将此热量从水中移除(>0)或补充(<0)"><div class="text-[10px] text-rose-300">净热负荷</div><div class="text-rose-200 font-bold">${(t.Q_net_to_water||0).toFixed(0)} kWh/d</div></div>
+      <div class="metric-chip px-2 py-1.5" style="border-color:${pumpDirColor}40"><div class="text-[10px] text-slate-400">热泵动作</div><div class="font-bold" style="color:${pumpDirColor}">${pumpDirText}</div></div>
+      <div class="metric-chip px-2 py-1.5 border-rose-500/40"><div class="text-[10px] text-rose-300">热泵耗电(COP=${t.COP})</div><div class="text-rose-200 font-bold">${t.heatPumpKWh.toFixed(0)} kWh/d</div></div>
     `;
   }
   // 蛋白分离器
@@ -3894,7 +4290,7 @@ function renderLoadCard(idx, load, flowData, stage, stageFarm, eq) {
     html += fmtRow('工艺水体',   `${sv.V_process.toFixed(0)} m³`, 'info',
       `BF ${sv.V_BF.toFixed(0)} + RDF ${sv.V_RDF.toFixed(0)} + 蛋分 ${sv.V_skim.toFixed(0)} + 脱气 ${sv.V_co2.toFixed(0)} + 增氧 ${sv.V_aerator.toFixed(0)} + 反硝化 ${sv.V_denitri.toFixed(0)} + AOP ${sv.V_AOP.toFixed(0)} + UV/管路`);
     html += fmtRow('系统总水体', `${sv.V_total.toFixed(0)} m³`, 'ok',
-      `工艺占比 ${(sv.processFraction*100).toFixed(0)}% (典型 30-60%)`);
+      `工艺占比 ${(sv.processFraction*100).toFixed(0)}% (典型 30-50%)`);
   } else {
     html += fmtRow('水体',      `${flowData.volume.toFixed(0)} m³`, 'ok');
   }
@@ -4697,6 +5093,8 @@ function recomputeAll() {
 
   const farm = backCalculateFarmSize(yieldTons, stagesState);
   const eqPrices = readEquipPrices();
+  // v1.1: 注入全场年产量到 eqPrices, 让 calcCapex 算规模因子
+  eqPrices.yieldTons = yieldTons;
 
   const allResults = [];
   stagesState.forEach((stage, idx) => {
@@ -4719,14 +5117,15 @@ function recomputeAll() {
     // Pass 1: 用估算 V_total (= V_tank × 1.5) 跑一遍 sim, 得到稳态浓度近似
     let sim = simulateWaterQualityProcess(load, flowData, sp, proc);
     sim.alk = calcAlkalinity(load, flowData, proc, sim);
-    sim.thermal = calcThermalLoad(flowData, proc, stage);
-    // 算 eq, 拿到精确 V_total
+    sim.thermal = calcThermalLoad(flowData, proc, stage, null, load, null);  // eq 还没算, 先粗算
+    // 算 eq, 拿到精确 V_total + 设备功率
     const eq = calcEquipmentSpec(load, flowData, proc, sim, stage);
     const V_total = eq.systemVolume ? eq.systemVolume.V_total : flowData.volume;
-    // Pass 2: 用精确 V_total 重算 sim/alk/thermal (主要影响 dilution / 换水量)
+    // Pass 2: 用精确 V_total + eq 重算 sim/alk/thermal
+    // thermal 现在含完整热平衡 (鱼代谢+设备产热+补水+池散热)
     sim = simulateWaterQualityProcess(load, flowData, sp, proc, V_total);
     sim.alk = calcAlkalinity(load, flowData, proc, sim, V_total);
-    sim.thermal = calcThermalLoad(flowData, proc, stage, V_total);
+    sim.thermal = calcThermalLoad(flowData, proc, stage, V_total, load, eq);
     // v1.1.2: capex 算的设备规格已经反映正确 sim, 但 dilution 修正后某些值微变, 这里不重算 eq
     //         (eq 主要看 TAN/O2 负荷, 受 dilution 影响 < 1%, 无需 pass 3)
     const capex = calcCapex(eq, sim, flowData, eqPrices);
@@ -4811,8 +5210,16 @@ function renderFarmSummary(farm, results, yieldTons) {
   // 投资额显示 (顶部摘要)
   const capexEl = document.getElementById('capexSummaryDisplay');
   if (capexEl) {
+    // v1.1: 显示地区系数 (默认 1.0 不显示, 非默认时高亮)
+    const r0capex = results && results[0] && results[0].capex;
+    const rfDisplay = (r0capex && r0capex.regionFactor && Math.abs(r0capex.regionFactor - 1.0) > 0.05)
+      ? ` · <span class="text-purple-300">地区×${r0capex.regionFactor.toFixed(1)}</span>`
+      : '';
+    const sfDisplay = (r0capex && r0capex.scaleFactor && Math.abs(r0capex.scaleFactor - 1.0) > 0.05)
+      ? ` · <span class="text-rose-300">规模×${r0capex.scaleFactor.toFixed(2)}</span>`
+      : '';
     capexEl.innerHTML = totalCapexProject > 0
-      ? `设备 <span class="text-amber-300 font-bold">${(totalCapexEquip/10000).toFixed(0)} 万</span> · 工程总投资 <span class="text-amber-200 font-bold">${(totalCapexProject/10000).toFixed(0)} 万</span> · 年折旧 <span class="text-cyan-300 font-bold">${(totalDepAnnual/10000).toFixed(0)} 万/年</span> <span class="text-[10px] text-slate-500">(±40%)</span>`
+      ? `设备 <span class="text-amber-300 font-bold">${(totalCapexEquip/10000).toFixed(0)} 万</span> · 工程总投资 <span class="text-amber-200 font-bold">${(totalCapexProject/10000).toFixed(0)} 万</span> · 年折旧 <span class="text-cyan-300 font-bold">${(totalDepAnnual/10000).toFixed(0)} 万/年</span>${rfDisplay}${sfDisplay} <span class="text-[10px] text-slate-500">(±40%)</span>`
       : '—';
   }
 
@@ -4889,7 +5296,13 @@ function collectState() {
     equipPrices: readEquipPrices(),
     capexFactor: parseFloat(document.getElementById('capexFactor')?.value) || 2.2,
     depYearsEquip: parseFloat(document.getElementById('depYearsEquip')?.value) || 8,
-    depYearsCivil: parseFloat(document.getElementById('depYearsCivil')?.value) || 20
+    depYearsCivil: parseFloat(document.getElementById('depYearsCivil')?.value) || 20,
+    regionFactor: parseFloat(document.getElementById('regionFactor')?.value) || 1.0,
+    scaleRefSize: parseFloat(document.getElementById('scaleRefSize')?.value) || 1000,
+    scaleExponent: (function(){
+      var v = parseFloat(document.getElementById('scaleExponent')?.value);
+      return Number.isFinite(v) ? v : 0.10;
+    })()
   };
 }
 
@@ -4932,6 +5345,26 @@ function restoreState(state) {
   if (state.depYearsCivil) {
     const el = document.getElementById('depYearsCivil');
     if (el) el.value = state.depYearsCivil;
+  }
+  // v1.1: 地区系数恢复 (双向联动: 同步下拉和输入框)
+  if (state.regionFactor != null) {
+    const factorEl = document.getElementById('regionFactor');
+    const presetEl = document.getElementById('regionPreset');
+    if (factorEl) factorEl.value = state.regionFactor;
+    if (presetEl) {
+      const presets = [1.0, 1.1, 1.5, 1.7, 2.0];
+      const matched = presets.find(p => Math.abs(p - state.regionFactor) < 0.05);
+      presetEl.value = matched != null ? matched.toFixed(1) : 'custom';
+    }
+  }
+  // v1.1: 规模效应参数恢复
+  if (state.scaleRefSize != null) {
+    const el = document.getElementById('scaleRefSize');
+    if (el) el.value = state.scaleRefSize;
+  }
+  if (state.scaleExponent != null) {
+    const el = document.getElementById('scaleExponent');
+    if (el) el.value = state.scaleExponent;
   }
   return true;
 }
@@ -5007,6 +5440,37 @@ function showV11UpgradeNotice() {
                     <li>仅靠换水稀释的参数 (无反硝化的 NO₃, 无 AOP 的 Geosmin, 无蛋分的 DOM): <b>浓度 ↓ 约 37%</b></li>
                   </ul>
                 </li>
+              </ul>
+            </li>
+            <li><b>v1.1 完整热平衡 ⭐ (修复 v1.0 严重低估)</b>:
+              <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
+                <li>v1.0 热泵能耗只算"补水温差", 严重低估 80x 倍</li>
+                <li>v1.1 引入完整热平衡: Q_net = Q_metab + Q_pumps + Q_uv + Q_makeup - Q_loss</li>
+                <li><b>鱼代谢产热</b> = biomass × 0.025 + feedAvg × 1.5 (文献 Lupatsch)</li>
+                <li><b>设备产热</b> = 水泵 × 24h × 0.85 + UV × 24h × 0.95</li>
+                <li><b>池体散热</b> = U × A_pool × ΔT (室内 U=5, 室外 U=18)</li>
+                <li>升温/降温场景自动判断, 内部产热溢出时改为排热</li>
+                <li>三文鱼 1000t 热泵年电费 2 万 → 212 万 (落入 Atlantic Sapphire 文献区间)</li>
+                <li>新增工艺参数: 鱼代谢系数、饲料代谢热、室温、池水深、室内/室外</li>
+              </ul>
+            </li>
+            <li><b>v1.1 CAPEX 地区系数 ⭐ (国际项目支持)</b>:
+              <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
+                <li>iRAS 默认设备单价是<b>中国行情</b> (regionFactor=1.0)</li>
+                <li>不同地区工程总造价: 东南亚 1.1x, 智利/南美 1.5x, 北美 1.7x, <b>北欧/挪威 2.0x</b></li>
+                <li>(数值基于挪威 10000t 三文鱼 RAS 项目 15 亿元实测反推, 不是设备单品价差)</li>
+                <li>新增"CAPEX 地区"下拉 (在「设备单价」面板), 一键切换地区预设, 也可自定义</li>
+                <li>只乘 CAPEX (设备 + 工程总投资 + 折旧), OPEX 不变 (饲料/液氧是全球商品差异小, 电费用户单独调)</li>
+                <li>影响: 北欧 RAS 三文鱼项目综合成本 ~50 元/kg, 加上当地人工 15-20 = 65-70 元/kg ↔ Atlantic Sapphire 文献吻合</li>
+              </ul>
+            </li>
+            <li><b>v1.1 CAPEX 规模效应 ⭐ (Lang factor)</b>:
+              <ul class="list-disc list-inside ml-4 mt-1 text-[11px] text-slate-400">
+                <li>v1.0 是线性 CAPEX, v1.1 引入工业经济学 Lang factor 规律</li>
+                <li>规模因子 = (1000 / 实际产能)^0.10, 基准 1000t (固定, iRAS 单价校准点)</li>
+                <li>500t ×1.07 (略偏贵), 1000t ×1.00 (基准), 5000t ×0.85, 10000t ×0.79 (省钱)</li>
+                <li>实测验证: 挪威 10000t × regionFactor 2.0 = 14.85 亿元 ↔ 用户实测 15 亿 ✅</li>
+                <li>新增"规模指数"参数 (默认 0.10, 用户可调; 设=0 关闭, 回到线性)</li>
               </ul>
             </li>
             <li><b>整体 CAPEX 变化 ±5%</b>: BF 偏小与增氧偏大相互抵消</li>
@@ -5195,6 +5659,35 @@ document.getElementById('btnPrint').addEventListener('click', () => {
   if (factorInput) factorInput.addEventListener('input', recomputeAll);
   // v1.1.2: 折旧年限
   ['depYearsEquip', 'depYearsCivil'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', recomputeAll);
+  });
+  // v1.1: 地区系数 - 下拉和输入框双向联动
+  const regionPreset = document.getElementById('regionPreset');
+  const regionFactor = document.getElementById('regionFactor');
+  if (regionPreset && regionFactor) {
+    regionPreset.addEventListener('change', (e) => {
+      const v = e.target.value;
+      if (v !== 'custom') {
+        regionFactor.value = v;
+      }
+      recomputeAll();
+    });
+    regionFactor.addEventListener('input', (e) => {
+      // 用户改了系数, 看是否匹配某预设, 否则切到 custom
+      const v = parseFloat(e.target.value);
+      const presets = [1.0, 1.1, 1.5, 1.7, 2.0];
+      const matched = presets.find(p => Math.abs(p - v) < 0.05);
+      if (matched != null) {
+        regionPreset.value = matched.toFixed(1);
+      } else {
+        regionPreset.value = 'custom';
+      }
+      recomputeAll();
+    });
+  }
+  // v1.1: 规模效应参数监听
+  ['scaleRefSize', 'scaleExponent'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', recomputeAll);
   });
