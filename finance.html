@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iRAS 投资财务评价</title>
+<!--
+  iRAS v1.4: 投资财务评价独立页面
+  数据源: localStorage['iRAS_financeExport'] (从主页面 "投资财务评价" 按钮传入)
+  输出: 8 张标准财务表 + NPV/IRR + 敏感性分析 + Excel 导出
+-->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 16px; }
+  header {
+    border-bottom: 2px solid #be185d;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  h1 { color: #fda4af; font-size: 20px; font-weight: 600; margin: 0; }
+  h2 { color: #fda4af; font-size: 16px; margin: 24px 0 8px 0; padding-bottom: 4px; border-bottom: 1px solid #475569; }
+  h3 { color: #fbcfe8; font-size: 14px; margin: 16px 0 6px 0; }
+  .meta { color: #94a3b8; font-size: 12px; }
+  .btn {
+    background: #4c1d24; color: #fda4af; border: 1px solid #be185d;
+    padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;
+  }
+  .btn:hover { background: #6d2235; color: #fed7e2; }
+  .btn-primary { background: #be185d; color: white; border-color: #be185d; }
+  .btn-primary:hover { background: #db2777; color: white; }
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+  }
+  .empty .big { font-size: 48px; margin-bottom: 12px; }
+  /* 输入区 */
+  .input-section {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px 16px;
+  }
+  .input-grid .field { display: flex; flex-direction: column; }
+  .input-grid label {
+    font-size: 11px;
+    color: #cbd5e1;
+    margin-bottom: 3px;
+  }
+  .input-grid label .hint { color: #64748b; font-size: 10px; margin-left: 4px; }
+  .input-grid input, .input-grid select {
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .input-grid input:focus, .input-grid select:focus {
+    outline: none;
+    border-color: #be185d;
+  }
+  .group-title {
+    grid-column: 1 / -1;
+    color: #fda4af;
+    font-size: 12px;
+    font-weight: 600;
+    border-top: 1px dashed #475569;
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+  .group-title:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+  /* 关键指标卡片 */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .kpi {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .kpi .label { color: #94a3b8; font-size: 11px; margin-bottom: 4px; }
+  .kpi .value { font-size: 20px; font-weight: 600; color: #fbcfe8; font-family: ui-monospace, monospace; }
+  .kpi .unit { font-size: 11px; color: #64748b; margin-left: 4px; }
+  .kpi.good .value { color: #86efac; }
+  .kpi.warn .value { color: #fcd34d; }
+  .kpi.bad .value { color: #fca5a5; }
+  /* 表格 */
+  .table-wrapper { overflow-x: auto; margin-bottom: 12px; }
+  table.fin {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    background: #1e293b;
+  }
+  table.fin th, table.fin td {
+    border: 1px solid #334155;
+    padding: 4px 8px;
+    text-align: right;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    white-space: nowrap;
+  }
+  table.fin th {
+    background: #334155;
+    color: #fbcfe8;
+    text-align: center;
+    font-weight: 600;
+    font-family: -apple-system, "PingFang SC", sans-serif;
+  }
+  table.fin td:first-child {
+    text-align: left;
+    background: #1e293b;
+    color: #cbd5e1;
+    font-family: -apple-system, "PingFang SC", sans-serif;
+    position: sticky; left: 0;
+  }
+  table.fin tr.subtotal td { background: #2a3f5f; color: #fed7e2; font-weight: 600; }
+  table.fin tr.total td { background: #4c1d24; color: #fed7e2; font-weight: 700; }
+  table.fin tr:hover td { background: #2a3f5f; }
+  table.fin tr.subtotal:hover td { background: #364860; }
+  table.fin .neg { color: #fca5a5; }
+  table.fin .pos { color: #86efac; }
+  /* 图表区 */
+  .chart-area {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .chart-row { grid-template-columns: 1fr; } }
+  /* 提示框 */
+  .note {
+    background: #1e293b;
+    border-left: 3px solid #be185d;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 11px;
+    color: #cbd5e1;
+  }
+  .note .label { color: #fda4af; font-weight: 600; }
+  /* 打印 */
+  @media print {
+    body { background: white; color: #111; font-size: 10px; }
+    .no-print { display: none !important; }
+    .input-section, table.fin, .kpi, .chart-area, .note {
+      background: white !important; color: #111 !important; border-color: #999 !important;
+    }
+    h1, h2, h3 { color: #be185d !important; }
+    .kpi .value { color: #be185d !important; }
+    table.fin th { background: #f0f0f0 !important; color: #111 !important; }
+    table.fin td:first-child { background: #fafafa !important; color: #111 !important; }
+    table.fin tr.subtotal td { background: #ffe5ec !important; color: #111 !important; }
+    table.fin tr.total td { background: #fbcfe8 !important; color: #111 !important; }
+    .table-wrapper { overflow: visible; }
+    table.fin { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>💰 iRAS 投资财务评价</h1>
+      <div class="meta" id="metaLine">等待主页面数据加载…</div>
+    </div>
+    <div class="no-print" style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn" id="btnRecalc" title="按当前输入重新计算">🔄 重新计算</button>
+      <button class="btn btn-primary" id="btnExportXlsx" title="导出 8 张标准表 Excel">📊 导出 Excel</button>
+      <button class="btn" id="btnPrint" title="打印 / 保存 PDF">🖨️ 打印</button>
+    </div>
+  </header>
+
+  <!-- 输入区 (默认收起, 用户调参后实时重算) -->
+  <div class="input-section no-print">
+    <div class="input-grid">
+      <div class="group-title">📈 销售与产能</div>
+      <div class="field">
+        <label>售价 <span class="hint">(元/kg)</span></label>
+        <input type="number" id="inpPrice" step="0.5" value="60">
+      </div>
+      <div class="field">
+        <label>项目年限 <span class="hint">(年)</span></label>
+        <input type="number" id="inpYears" step="1" min="5" max="30" value="15">
+      </div>
+      <div class="field">
+        <label>第 1 年达产率 <span class="hint">(%)</span></label>
+        <input type="number" id="inpRamp1" step="5" value="30">
+      </div>
+      <div class="field">
+        <label>第 2 年达产率 <span class="hint">(%)</span></label>
+        <input type="number" id="inpRamp2" step="5" value="70">
+      </div>
+      <div class="field">
+        <label>第 3 年起达产率 <span class="hint">(%)</span></label>
+        <input type="number" id="inpRamp3" step="5" value="100">
+      </div>
+      <div class="field">
+        <label>建设期 <span class="hint">(年, 含调试)</span></label>
+        <input type="number" id="inpBuildYears" step="0.5" min="0.5" max="3" value="1">
+      </div>
+
+      <div class="group-title">💵 投资与筹资</div>
+      <div class="field">
+        <label>流动资金 <span class="hint">(% × 年 OPEX)</span></label>
+        <input type="number" id="inpWorkingCap" step="1" min="0" max="50" value="15">
+      </div>
+      <div class="field">
+        <label>自有资金比例 <span class="hint">(%)</span></label>
+        <input type="number" id="inpOwnPct" step="5" min="0" max="100" value="30">
+      </div>
+      <div class="field">
+        <label>贷款利率 <span class="hint">(% 年)</span></label>
+        <input type="number" id="inpLoanRate" step="0.1" min="0" max="15" value="5">
+      </div>
+      <div class="field">
+        <label>还款方式</label>
+        <select id="inpLoanMethod">
+          <option value="equal_principal">等额本金</option>
+          <option value="equal_payment" selected>等额本息</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>还款年限 <span class="hint">(年)</span></label>
+        <input type="number" id="inpLoanYears" step="1" min="1" max="20" value="8">
+      </div>
+
+      <div class="group-title">📊 评价参数</div>
+      <div class="field">
+        <label>折现率 <span class="hint">(% 年, 用于 NPV)</span></label>
+        <input type="number" id="inpDiscount" step="0.5" min="0" max="20" value="8">
+      </div>
+      <div class="field">
+        <label>所得税率 <span class="hint">(%)</span></label>
+        <input type="number" id="inpTaxRate" step="1" min="0" max="35" value="25">
+      </div>
+      <div class="field">
+        <label>销售税金附加 <span class="hint">(%, 农产品免征用 0)</span></label>
+        <input type="number" id="inpSalesTax" step="0.1" min="0" max="20" value="0">
+      </div>
+      <div class="field">
+        <label>修理费率 <span class="hint">(% × 设备年, 默认 2%)</span></label>
+        <input type="number" id="inpRepairRate" step="0.5" min="0" max="10" value="2">
+      </div>
+      <div class="field">
+        <label>管理费率 <span class="hint">(% × 销售收入)</span></label>
+        <input type="number" id="inpAdminRate" step="0.5" min="0" max="20" value="3">
+      </div>
+      <div class="field">
+        <label>人工成本 <span class="hint">(万元/年, 默认按规模估)</span></label>
+        <input type="number" id="inpLaborCost" step="10" min="0" value="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- 主内容区 -->
+  <div id="mainContent">
+    <div class="empty">
+      <div class="big">⏳</div>
+      <div>从主页面点击 <strong>💰 投资财务评价</strong> 加载方案数据</div>
+      <!-- v1.5 Bug 37: 弹窗拦截 / 主页面关闭时, 手动加载 JSON 备份 -->
+      <div style="margin-top: 18px; font-size: 13px; color: #94a3b8;">
+        或将主页面下载的 <code>iRAS_财务评价_*.json</code> 拖入此区域 / 点击下方按钮选择文件
+      </div>
+      <div style="margin-top: 12px;">
+        <label style="display: inline-block; padding: 8px 16px; background: #0ea5e9; color: white; border-radius: 6px; cursor: pointer;">
+          📂 选择 JSON 文件
+          <input type="file" id="inpLoadJson" accept=".json,application/json" style="display: none;">
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- v1.5: 共享财务计算模块 (与 report.html 共用, Bug 6 修复) -->
+<script src="finance-core.js"></script>
+<script>
+// ===========================================================================
+//   iRAS Finance — 财务评价页
+//
+//   流程: load 数据 → 收集用户输入 → calc() → render() 各张表 + KPI + 图
+//   重算: 用户改输入 → input 事件 → debounce 重算
+//
+//   v1.5: 核心计算 (calculateCore/calculate/buildLoanSchedule/npv/irr/sensitivityAnalysis)
+//         已迁移到 finance-core.js, 此处仅保留 UI 渲染逻辑.
+// ===========================================================================
+
+const SHARE_KEY = 'iRAS_financeExport';
+const STATE = { data: null, params: null, calc: null };
+
+// ---------------- 数据加载 ----------------
+function tryLoadFromStorage(label) {
+  try {
+    const stashed = localStorage.getItem(SHARE_KEY) || sessionStorage.getItem(SHARE_KEY);
+    if (stashed) {
+      const parsed = JSON.parse(stashed);
+      // 用完即清, 防陈旧数据(但保留备用 key 给其他页面)
+      try { localStorage.removeItem(SHARE_KEY); } catch(e) {}
+      try { sessionStorage.removeItem(SHARE_KEY); } catch(e) {}
+      STATE.data = parsed;
+      bootstrap(label || 'iRAS 主页面方案');
+      return true;
+    }
+  } catch(e) { console.warn('load fail:', e); }
+  return false;
+}
+
+function bootstrap(srcLabel) {
+  if (!STATE.data || !STATE.data.results) return;
+  const d = STATE.data;
+  document.getElementById('metaLine').textContent =
+    `${d.speciesName || d.species} · 年产 ${d.yieldTons} t · ` +
+    `保存时间 ${new Date(d.savedAt).toLocaleString('zh-CN')} · ` +
+    `数据源 ${srcLabel}`;
+  // v1.5 Bug 32 修复: 售价仅在用户未自定义时填默认 (与 laborCost 同口径)
+  //   旧版每次 bootstrap 都强制覆盖, 用户从主页面更新方案再回来时自定义售价丢失
+  const priceEl = document.getElementById('inpPrice');
+  if (priceEl) {
+    const defaultPrice = guessDefaultPrice(d.species);
+    const cur = parseFloat(priceEl.value);
+    if (!Number.isFinite(cur) || cur === 0) {
+      priceEl.value = defaultPrice;
+    }
+  }
+  // 人工成本默认按规模估算
+  const laborEl = document.getElementById('inpLaborCost');
+  if (laborEl && +laborEl.value === 0) {
+    laborEl.value = estimateLaborCost(d.yieldTons);  // 万元/年
+  }
+  recalc();
+}
+
+// 鱼种默认售价 (元/kg, 出厂价, 不含人工/分销/物流)
+function guessDefaultPrice(species) {
+  const map = {
+    salmon: 60, turbot: 80, grouper: 130, perch: 50,
+    mandarin: 90, tilapia: 22, eel: 110, shrimp: 55
+  };
+  return map[species] || 50;
+}
+
+// 人工成本估算 (万元/年): 5 万元/人/年, 按规模配人
+function estimateLaborCost(yieldTons) {
+  if (yieldTons < 100) return 30;        // 5 人
+  if (yieldTons < 300) return 60;        // 10 人
+  if (yieldTons < 1000) return 120;      // 20 人
+  if (yieldTons < 3000) return 240;      // 40 人
+  return 360;                             // 60+ 人
+}
+
+function getParams() {
+  const num = (id, def) => {
+    const v = parseFloat(document.getElementById(id).value);
+    return Number.isFinite(v) ? v : def;
+  };
+  return {
+    price:        num('inpPrice', 60),
+    years:        Math.round(num('inpYears', 15)),
+    ramp1:        num('inpRamp1', 30) / 100,
+    ramp2:        num('inpRamp2', 70) / 100,
+    ramp3:        num('inpRamp3', 100) / 100,
+    buildYears:   num('inpBuildYears', 1),
+    workingCap:   num('inpWorkingCap', 15) / 100,
+    ownPct:       num('inpOwnPct', 30) / 100,
+    loanRate:     num('inpLoanRate', 5) / 100,
+    loanMethod:   document.getElementById('inpLoanMethod').value,
+    loanYears:    Math.round(num('inpLoanYears', 8)),
+    discount:     num('inpDiscount', 8) / 100,
+    taxRate:      num('inpTaxRate', 25) / 100,
+    salesTax:     num('inpSalesTax', 0) / 100,
+    repairRate:   num('inpRepairRate', 2) / 100,
+    adminRate:    num('inpAdminRate', 3) / 100,
+    // v1.5 Bug 31: 默认 0 触发 bootstrap.estimateLaborCost 按规模估算
+    //   旧默认 60 万 与 estimateLaborCost (1000t = 120万) 不一致, 让小规模项目看到 60 但自动改成 60 万,
+    //   而 1000t 项目空载默认值就该是 120 万
+    laborCost:    num('inpLaborCost', 0) * 10000  // 万元 → 元
+  };
+}
+
+// ---------------- 财务计算入口 (v1.5: 代理到 finance-core.js) ----------------
+const calculateCore       = (data, p) => window.iRASFinance.calculateCore(data, p);
+const calculate           = (data, p) => window.iRASFinance.calculate(data, p);
+const buildLoanSchedule   = (L, r, n, m) => window.iRASFinance.buildLoanSchedule(L, r, n, m);
+const npv                 = (cfs, rate) => window.iRASFinance.npv(cfs, rate);
+const irr                 = (cfs) => window.iRASFinance.irr(cfs);
+const sensitivityAnalysis = (data, base) => window.iRASFinance.sensitivityAnalysis(data, base);
+
+
+// ---------------- 渲染 ----------------
+const fmt = {
+  wan:  v => isFinite(v) ? (v / 10000).toLocaleString('zh-CN', { maximumFractionDigits: 1 }) : '—',
+  yi:   v => isFinite(v) ? (v / 1e8).toLocaleString('zh-CN', { maximumFractionDigits: 3 }) : '—',
+  pct:  v => isFinite(v) ? (v * 100).toFixed(2) + '%' : '—',
+  num:  (v, d) => isFinite(v) ? v.toLocaleString('zh-CN', { maximumFractionDigits: d || 0 }) : '—',
+  yr:   v => isFinite(v) && v > 0 ? v.toFixed(2) + ' 年' : '—'
+};
+
+function recalc() {
+  if (!STATE.data) return;
+  const p = getParams();
+  STATE.params = p;
+  const c = calculate(STATE.data, p);
+  STATE.calc = c;
+  if (c) renderAll(c);
+  else renderEmpty();
+}
+
+function renderEmpty() {
+  document.getElementById('mainContent').innerHTML =
+    '<div class="empty"><div class="big">⚠️</div><div>计算失败. 请检查主页面方案是否完整(有 CAPEX 和 OPEX 数据).</div></div>';
+}
+
+function renderAll(c) {
+  const main = document.getElementById('mainContent');
+  let html = '';
+  html += renderKPIs(c);
+  html += renderInvestTable(c);       // 表 1: 投资估算
+  html += renderFundingTable(c);      // 表 2: 资金来源运用 + 还款
+  html += renderCostTable(c);         // 表 3: 总成本费用估算
+  html += renderRevenueTable(c);      // 表 4: 销售收入和税金
+  html += renderProfitTable(c);       // 表 5: 损益表
+  html += renderCashFlowTable(c, 'total');  // 表 6: 现金流量表 (全投资)
+  html += renderCashFlowTable(c, 'equity'); // 表 7: 现金流量表 (自有资金)
+  html += renderSensitivityTable(c);  // 表 8: 敏感性分析
+  html += renderCharts(c);            // 图表
+  html += renderNotes(c);
+  main.innerHTML = html;
+  // 渲染完成后绑定 SVG 图(必须 DOM 就位后)
+  drawCashFlowChart(c);
+  drawSensitivityChart(c);
+  drawCostBreakdownChart(c);
+}
+
+function renderKPIs(c) {
+  const ind = c.indicators;
+  // 颜色: IRR > 折现率 = good, > 0 但 < 折现率 = warn, ≤ 0 = bad
+  const irrTot = ind.irrTotal;
+  const cls = (v, t) => isFinite(v) && v > t ? 'good' : (isFinite(v) && v > 0 ? 'warn' : 'bad');
+  let html = '<div class="kpi-row">';
+  html += `<div class="kpi ${cls(irrTot, c.params.discount)}"><div class="label">全投资 IRR (税后)</div><div class="value">${fmt.pct(irrTot)}</div></div>`;
+  html += `<div class="kpi ${cls(ind.irrEquity, c.params.discount)}"><div class="label">自有资金 IRR</div><div class="value">${fmt.pct(ind.irrEquity)}</div></div>`;
+  html += `<div class="kpi ${ind.npvTotal > 0 ? 'good' : 'bad'}"><div class="label">全投资 NPV @ ${fmt.pct(c.params.discount)}</div><div class="value">${fmt.wan(ind.npvTotal)}<span class="unit">万元</span></div></div>`;
+  html += `<div class="kpi"><div class="label">静态回收期 (全投资)</div><div class="value">${fmt.yr(ind.paybackTotal)}</div></div>`;
+  html += `<div class="kpi"><div class="label">动态回收期 (全投资)</div><div class="value">${fmt.yr(ind.paybackTotalDisc)}</div></div>`;
+  html += `<div class="kpi"><div class="label">盈亏平衡点 (BEP)</div><div class="value">${ind.bepPct.toFixed(1)}<span class="unit">% 满产</span></div></div>`;
+  html += '</div>';
+  return html;
+}
+
+function renderInvestTable(c) {
+  const inv = c.capex;
+  let html = '<h2>表 1: 投资估算 (Investment Estimate)</h2>';
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:240px">项目</th><th style="min-width:120px">金额 (万元)</th><th>占总投资 (%)</th></tr></thead><tbody>';
+  const tot = inv.totalInvest;
+  const pct = v => tot > 0 ? (v/tot*100).toFixed(1) + '%' : '—';
+  html += `<tr><td>1. 设备购置费</td><td>${fmt.wan(inv.equip)}</td><td>${pct(inv.equip)}</td></tr>`;
+  html += `<tr><td>2. 土建/安装/电气/自控/设计</td><td>${fmt.wan(inv.civil)}</td><td>${pct(inv.civil)}</td></tr>`;
+  html += `<tr class="subtotal"><td>3. 工程总投资 (固定资产)</td><td>${fmt.wan(inv.fixedAsset)}</td><td>${pct(inv.fixedAsset)}</td></tr>`;
+  html += `<tr><td>4. 流动资金 (${(c.params.workingCap*100).toFixed(0)}% × 年 OPEX)</td><td>${fmt.wan(inv.workingCapital)}</td><td>${pct(inv.workingCapital)}</td></tr>`;
+  html += `<tr class="total"><td>5. 项目总投资</td><td>${fmt.wan(tot)}</td><td>100.0%</td></tr>`;
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function renderFundingTable(c) {
+  let html = '<h2>表 2: 资金来源运用 + 还款计划</h2>';
+  html += '<h3>2.1 资金来源</h3>';
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:240px">来源</th><th>金额 (万元)</th><th>占比</th></tr></thead><tbody>';
+  const cap = c.capex;
+  const tot = cap.totalInvest;
+  // v1.5 审计回合 3: Bug 2 修复后, ownEquity = ownEquityFixed + workingCapital, 不再是 totalInvest × ownPct
+  //   旧版显示 (30%) 是 fixedAsset 自有占比, 但表里横总是 totalInvest, 占比 (35.4%, 67.7%) 不对.
+  //   正确口径: 拆 3 行 (固资自有 / 固资贷款 / 流动资金自有), 让横竖都平.
+  const pctOf = v => tot > 0 ? (v / tot * 100).toFixed(1) + '%' : '—';
+  html += `<tr><td>自有资金 — 固定资产 (${(c.params.ownPct*100).toFixed(0)}% × 固资)</td><td>${fmt.wan(cap.ownEquityFixed)}</td><td>${pctOf(cap.ownEquityFixed)}</td></tr>`;
+  html += `<tr><td>自有资金 — 流动资金 (100%)</td><td>${fmt.wan(cap.workingCapital)}</td><td>${pctOf(cap.workingCapital)}</td></tr>`;
+  html += `<tr><td>银行贷款 (${((1-c.params.ownPct)*100).toFixed(0)}% × 固资, 年利率 ${(c.params.loanRate*100).toFixed(1)}%, ${c.params.loanYears} 年)</td><td>${fmt.wan(cap.loan)}</td><td>${pctOf(cap.loan)}</td></tr>`;
+  html += `<tr class="subtotal"><td>小计: 自有资金合计</td><td>${fmt.wan(cap.ownEquity)}</td><td>${pctOf(cap.ownEquity)}</td></tr>`;
+  html += `<tr class="total"><td>合计</td><td>${fmt.wan(tot)}</td><td>100.0%</td></tr>`;
+  html += '</tbody></table></div>';
+  // 加一行小字说明
+  html += `<div style="font-size: 11px; color: #94a3b8; margin: 8px 0 16px;">注: v1.5 起,银行贷款仅覆盖固定资产部分 (国际工程口径),流动资金 100% 由项目主体自筹。这也是为何"自有资金占比 ${pctOf(cap.ownEquity)}"略大于"自有资金率 ${(c.params.ownPct*100).toFixed(0)}%"。</div>`;
+
+  if (c.loanSchedule.length > 0) {
+    html += '<h3>2.2 还款计划 (' + (c.params.loanMethod === 'equal_payment' ? '等额本息' : '等额本金') + ')</h3>';
+    html += '<div class="table-wrapper"><table class="fin">';
+    html += '<thead><tr><th>年份</th><th>偿还利息 (万元)</th><th>偿还本金 (万元)</th><th>当年合计</th><th>剩余本金</th></tr></thead><tbody>';
+    let totInt = 0, totPrin = 0;
+    c.loanSchedule.forEach(s => {
+      totInt += s.interest; totPrin += s.principal;
+      html += `<tr><td>第 ${s.year} 年</td><td>${fmt.wan(s.interest)}</td><td>${fmt.wan(s.principal)}</td><td>${fmt.wan(s.interest + s.principal)}</td><td>${fmt.wan(s.balance)}</td></tr>`;
+    });
+    html += `<tr class="total"><td>合计</td><td>${fmt.wan(totInt)}</td><td>${fmt.wan(totPrin)}</td><td>${fmt.wan(totInt + totPrin)}</td><td>—</td></tr>`;
+    html += '</tbody></table></div>';
+  }
+  return html;
+}
+
+function renderCostTable(c) {
+  // 满产年(t=3)的成本结构作展示
+  const sat = c.yearly.find(y => y.ramp >= 0.95) || c.yearly[c.yearly.length-1];
+  let html = '<h2>表 3: 总成本费用估算 (满产年, 元/年)</h2>';
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:240px">项目</th><th>金额 (万元)</th><th>占总成本 (%)</th></tr></thead><tbody>';
+  const total = sat.opCostTotal + sat.dep + sat.interest;
+  const pct = v => total > 0 ? (v/total*100).toFixed(1) + '%' : '—';
+  html += `<tr><td>1. 经营成本 (饲料/电/液氧/化学品 等 OPEX)</td><td>${fmt.wan(sat.operatingCost)}</td><td>${pct(sat.operatingCost)}</td></tr>`;
+  html += `<tr><td>2. 修理费 (${(c.params.repairRate*100).toFixed(1)}% × 设备)</td><td>${fmt.wan(sat.repairCost)}</td><td>${pct(sat.repairCost)}</td></tr>`;
+  html += `<tr><td>3. 管理费 (${(c.params.adminRate*100).toFixed(1)}% × 销售收入)</td><td>${fmt.wan(sat.adminCost)}</td><td>${pct(sat.adminCost)}</td></tr>`;
+  html += `<tr><td>4. 人工成本</td><td>${fmt.wan(sat.laborCost)}</td><td>${pct(sat.laborCost)}</td></tr>`;
+  html += `<tr class="subtotal"><td>5. 经营成本小计</td><td>${fmt.wan(sat.opCostTotal)}</td><td>${pct(sat.opCostTotal)}</td></tr>`;
+  html += `<tr><td>6. 折旧费 (设备 ${c.params.years > 8 ? '8' : c.params.years} 年 + 土建 20 年)</td><td>${fmt.wan(sat.dep)}</td><td>${pct(sat.dep)}</td></tr>`;
+  html += `<tr><td>7. 财务费用 (利息, 还款期内)</td><td>${fmt.wan(sat.interest)}</td><td>${pct(sat.interest)}</td></tr>`;
+  html += `<tr class="total"><td>8. 总成本费用</td><td>${fmt.wan(total)}</td><td>100.0%</td></tr>`;
+  html += '</tbody></table></div>';
+  // 单位成本
+  const yieldKgFull = c.yieldKg * sat.ramp;
+  if (yieldKgFull > 0) {
+    html += `<div class="note"><span class="label">单位成本</span> 满产年总成本 ${fmt.wan(total)} 万元, 产量 ${fmt.num(yieldKgFull/1000)} 吨, 单位成本 <strong>${fmt.num(total/yieldKgFull, 2)} 元/kg</strong></div>`;
+  }
+  return html;
+}
+
+function renderRevenueTable(c) {
+  let html = '<h2>表 4: 销售收入和税金</h2>';
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:120px">年份</th><th>达产率</th><th>产量 (t)</th><th>单价 (元/kg)</th><th>销售收入 (万元)</th><th>销售税金 (万元)</th><th>净销售收入</th></tr></thead><tbody>';
+  c.yearly.forEach(y => {
+    if (y.year === 0) return;  // 建设期不显示
+    const tons = c.yieldKg * y.ramp / 1000;
+    html += `<tr><td>第 ${y.year} 年</td><td>${(y.ramp*100).toFixed(0)}%</td><td>${fmt.num(tons, 1)}</td><td>${c.params.price}</td><td>${fmt.wan(y.revenue)}</td><td>${fmt.wan(y.salesTax)}</td><td>${fmt.wan(y.netRevenue)}</td></tr>`;
+  });
+  // 合计
+  const sum = c.yearly.reduce((s, y) => ({
+    revenue: s.revenue + y.revenue,
+    salesTax: s.salesTax + y.salesTax,
+    netRevenue: s.netRevenue + y.netRevenue
+  }), { revenue: 0, salesTax: 0, netRevenue: 0 });
+  html += `<tr class="total"><td>合计 (${c.params.years} 年)</td><td>—</td><td>—</td><td>—</td><td>${fmt.wan(sum.revenue)}</td><td>${fmt.wan(sum.salesTax)}</td><td>${fmt.wan(sum.netRevenue)}</td></tr>`;
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function renderProfitTable(c) {
+  let html = '<h2>表 5: 损益表 (Income Statement)</h2>';
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:140px">项目 (万元)</th>';
+  c.yearly.forEach(y => {
+    if (y.year === 0) return;
+    html += `<th>第 ${y.year} 年</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  const rows = [
+    ['1. 销售收入',    y => y.revenue],
+    ['2. 销售税金',    y => -y.salesTax,        'neg'],
+    ['3. 经营成本',    y => -y.opCostTotal,     'neg'],
+    ['4. 折旧',        y => -y.dep,             'neg'],
+    ['5. 利息',        y => -y.interest,        'neg'],
+    ['6. 利润总额',    y => y.profitBefore,     'sub'],
+    ['7. 所得税',      y => -y.tax,             'neg'],
+    ['8. 净利润',      y => y.profitNet,        'tot']
+  ];
+  rows.forEach(r => {
+    const cls = r[2] === 'sub' ? 'subtotal' : r[2] === 'tot' ? 'total' : '';
+    html += `<tr class="${cls}"><td>${r[0]}</td>`;
+    c.yearly.forEach(y => {
+      if (y.year === 0) return;
+      const v = r[1](y);
+      const tdCls = (r[2] === 'neg' && v < 0) ? '' : (v < 0 ? 'neg' : '');
+      html += `<td class="${tdCls}">${fmt.wan(v)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function renderCashFlowTable(c, type) {
+  const isTotal = type === 'total';
+  let html = `<h2>表 ${isTotal ? '6' : '7'}: 现金流量表 (${isTotal ? '全投资' : '自有资金'})</h2>`;
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:140px">年份</th><th>现金流入 (万元)</th><th>现金流出</th><th>净现金流</th><th>累计净现金流</th><th>累计折现 NPV</th></tr></thead><tbody>';
+  c.yearly.forEach(y => {
+    const cf = isTotal ? y.cfTotal : y.cfEquity;
+    const cum = isTotal ? y.cumTotal : y.cumEquity;
+    const cumDisc = isTotal ? y.cumTotalDisc : y.cumEquityDisc;
+    // 流入流出粗略拆分 (用于呈现, 不影响净额)
+    const inflow = y.revenue + (y.year === 0 && !isTotal ? c.capex.ownEquity : 0)
+                  + (y.year === c.params.years ? y.wcRecovery + y.salvage : 0);
+    const outflow = inflow - cf;
+    html += `<tr><td>第 ${y.year} 年${y.year === 0 ? ' (建设期)' : ''}</td><td>${fmt.wan(inflow)}</td><td>${fmt.wan(outflow)}</td><td class="${cf < 0 ? 'neg' : (cf > 0 ? 'pos' : '')}">${fmt.wan(cf)}</td><td class="${cum < 0 ? 'neg' : 'pos'}">${fmt.wan(cum)}</td><td class="${cumDisc < 0 ? 'neg' : 'pos'}">${fmt.wan(cumDisc)}</td></tr>`;
+  });
+  // 末尾 NPV/IRR 行
+  const npvVal = isTotal ? c.indicators.npvTotal : c.indicators.npvEquity;
+  const irrVal = isTotal ? c.indicators.irrTotal : c.indicators.irrEquity;
+  html += `<tr class="total"><td>NPV @ ${(c.params.discount*100).toFixed(1)}%</td><td colspan="4">${fmt.wan(npvVal)} 万元</td><td>IRR = ${fmt.pct(irrVal)}</td></tr>`;
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function renderSensitivityTable(c) {
+  let html = '<h2>表 8: 敏感性分析</h2>';
+  html += '<div class="table-wrapper"><table class="fin">';
+  html += '<thead><tr><th style="min-width:200px">敏感因子</th><th>低值 IRR</th><th>基准 IRR</th><th>高值 IRR</th><th>IRR 摆动</th><th>低值 NPV (万)</th><th>高值 NPV (万)</th></tr></thead><tbody>';
+  const base = c.sensitivity.baseIRR;
+  c.sensitivity.factors.forEach(r => {
+    html += `<tr><td>${r.label}</td><td class="${r.irrLow < base ? 'neg' : 'pos'}">${fmt.pct(r.irrLow)}</td><td>${fmt.pct(base)}</td><td class="${r.irrHigh > base ? 'pos' : 'neg'}">${fmt.pct(r.irrHigh)}</td><td><strong>${fmt.pct(r.irrSwing)}</strong></td><td>${fmt.wan(r.npvLow)}</td><td>${fmt.wan(r.npvHigh)}</td></tr>`;
+  });
+  html += '</tbody></table></div>';
+  html += '<div class="note"><span class="label">解读</span> 因子按 IRR 摆动从大到小排. 摆动越大说明项目对该因子越敏感, 是风险管控的优先项. 一般售价/产量/CAPEX 是 RAS 项目的三大敏感因子.</div>';
+  return html;
+}
+
+function renderCharts(c) {
+  let html = '<h2>📈 图表分析</h2>';
+  html += '<div class="chart-area">';
+  html += '<div class="chart-row">';
+  html += '<div><h3>累计现金流曲线</h3><svg id="chartCashFlow" width="100%" height="320" viewBox="0 0 600 320"></svg></div>';
+  html += '<div><h3>敏感性 Tornado 图 (按 IRR 摆动)</h3><svg id="chartSensitivity" width="100%" height="320" viewBox="0 0 600 320"></svg></div>';
+  html += '</div>';
+  html += '<div style="margin-top:16px;"><h3>满产年成本结构</h3><svg id="chartCostBreakdown" width="100%" height="200" viewBox="0 0 800 200"></svg></div>';
+  html += '</div>';
+  return html;
+}
+
+function renderNotes(c) {
+  let html = '<h2>📝 评价结论与说明</h2>';
+  const ind = c.indicators;
+  const irrT = ind.irrTotal;
+  const ok = isFinite(irrT) && irrT > c.params.discount;
+  html += '<div class="note" style="border-left-color: ' + (ok ? '#10b981' : '#ef4444') + ';">';
+  html += '<span class="label">基准结论</span> ';
+  if (ok) {
+    html += `项目全投资 IRR (${fmt.pct(irrT)}) <strong>高于</strong>折现率 ${fmt.pct(c.params.discount)}, NPV 为正 (${fmt.wan(ind.npvTotal)} 万元), 财务上<strong>可行</strong>. `;
+    html += `静态投资回收期 ${fmt.yr(ind.paybackTotal)}, 动态回收期 ${fmt.yr(ind.paybackTotalDisc)}. `;
+  } else {
+    html += `项目 IRR (${fmt.pct(irrT)}) <strong>低于</strong>折现率, NPV 为负, 财务上<strong>不可行</strong>. `;
+    html += `需重新优化售价 / 成本 / 投资规模.`;
+  }
+  html += '</div>';
+  // 敏感性提示
+  const top1 = c.sensitivity.factors[0];
+  const top2 = c.sensitivity.factors[1];
+  if (top1) {
+    html += `<div class="note"><span class="label">关键风险因子</span> 项目对 <strong>${top1.label}</strong> 最敏感 (IRR 摆动 ${fmt.pct(top1.irrSwing)}), 其次是 <strong>${top2 ? top2.label : '—'}</strong>. 建议在执行阶段重点关注这些因子的实际偏离.</div>`;
+  }
+  // 报告附属说明
+  html += `<div class="note"><span class="label">说明</span> 本评价基于 iRAS 模型自动生成 CAPEX/OPEX, 输入参数由用户在本页面顶部设置. 计算依据国家发改委可研编制规范, 但不替代正式可研报告. 实际投资决策请结合专业财务和工程评审.</div>`;
+  return html;
+}
+
+// ---------------- SVG 图表 ----------------
+function drawCashFlowChart(c) {
+  const svg = document.getElementById('chartCashFlow');
+  if (!svg) return;
+  const W = 600, H = 320, m = { l: 60, r: 20, t: 20, b: 40 };
+  const innerW = W - m.l - m.r, innerH = H - m.t - m.b;
+  const ys = c.yearly;
+  const xs = ys.map(y => y.year);
+  // 全投资 + 自有资金 两条曲线
+  const cumT = ys.map(y => y.cumTotal);
+  const cumE = ys.map(y => y.cumEquity);
+  const minY = Math.min(...cumT, ...cumE, 0);
+  const maxY = Math.max(...cumT, ...cumE, 0);
+  const xScale = i => m.l + i / (xs.length - 1) * innerW;
+  const yScale = v => m.t + innerH - (v - minY) / (maxY - minY) * innerH;
+
+  let svgHTML = '';
+  // 网格 + 0 轴
+  for (let i = 0; i <= 5; i++) {
+    const y = m.t + i / 5 * innerH;
+    const v = maxY - i / 5 * (maxY - minY);
+    svgHTML += `<line x1="${m.l}" y1="${y}" x2="${W - m.r}" y2="${y}" stroke="#334155" stroke-dasharray="2,2"/>`;
+    svgHTML += `<text x="${m.l - 6}" y="${y + 3}" fill="#94a3b8" font-size="10" text-anchor="end">${(v/10000).toFixed(0)}万</text>`;
+  }
+  // 0 轴突出
+  if (minY < 0 && maxY > 0) {
+    const y0 = yScale(0);
+    svgHTML += `<line x1="${m.l}" y1="${y0}" x2="${W - m.r}" y2="${y0}" stroke="#94a3b8" stroke-width="1.5"/>`;
+  }
+  // x 轴
+  xs.forEach((x, i) => {
+    if (i % 2 === 0 || i === xs.length - 1) {
+      svgHTML += `<text x="${xScale(i)}" y="${H - m.b + 16}" fill="#94a3b8" font-size="10" text-anchor="middle">${x}</text>`;
+    }
+  });
+  svgHTML += `<text x="${W/2}" y="${H - 6}" fill="#cbd5e1" font-size="11" text-anchor="middle">年份</text>`;
+
+  // 两条折线
+  const pathT = cumT.map((v, i) => `${i === 0 ? 'M' : 'L'} ${xScale(i)} ${yScale(v)}`).join(' ');
+  const pathE = cumE.map((v, i) => `${i === 0 ? 'M' : 'L'} ${xScale(i)} ${yScale(v)}`).join(' ');
+  svgHTML += `<path d="${pathT}" stroke="#fbcfe8" stroke-width="2" fill="none"/>`;
+  svgHTML += `<path d="${pathE}" stroke="#7dd3fc" stroke-width="2" fill="none" stroke-dasharray="4,3"/>`;
+  // 数据点
+  cumT.forEach((v, i) => {
+    svgHTML += `<circle cx="${xScale(i)}" cy="${yScale(v)}" r="3" fill="#fbcfe8"/>`;
+  });
+  cumE.forEach((v, i) => {
+    svgHTML += `<circle cx="${xScale(i)}" cy="${yScale(v)}" r="2.5" fill="#7dd3fc"/>`;
+  });
+  // 图例
+  svgHTML += `<rect x="${m.l + 10}" y="${m.t + 6}" width="14" height="2" fill="#fbcfe8"/>`;
+  svgHTML += `<text x="${m.l + 28}" y="${m.t + 11}" fill="#cbd5e1" font-size="11">全投资累计现金流</text>`;
+  svgHTML += `<rect x="${m.l + 10}" y="${m.t + 22}" width="14" height="2" fill="#7dd3fc"/>`;
+  svgHTML += `<text x="${m.l + 28}" y="${m.t + 27}" fill="#cbd5e1" font-size="11">自有资金累计现金流</text>`;
+  svg.innerHTML = svgHTML;
+}
+
+function drawSensitivityChart(c) {
+  const svg = document.getElementById('chartSensitivity');
+  if (!svg) return;
+  const W = 600, H = 320, m = { l: 130, r: 30, t: 20, b: 40 };
+  const innerW = W - m.l - m.r;
+  const factors = c.sensitivity.factors;
+  const base = c.sensitivity.baseIRR;
+  // x 轴范围: 看所有 low/high IRR 极值
+  const allVals = factors.flatMap(f => [f.irrLow, f.irrHigh]);
+  const minV = Math.min(...allVals, base) - 0.02;
+  const maxV = Math.max(...allVals, base) + 0.02;
+  const xScale = v => m.l + (v - minV) / (maxV - minV) * innerW;
+
+  let svgHTML = '';
+  // 基准线
+  svgHTML += `<line x1="${xScale(base)}" y1="${m.t}" x2="${xScale(base)}" y2="${H - m.b}" stroke="#fda4af" stroke-width="1.5" stroke-dasharray="3,3"/>`;
+  svgHTML += `<text x="${xScale(base)}" y="${m.t - 4}" fill="#fda4af" font-size="10" text-anchor="middle">基准 ${fmt.pct(base)}</text>`;
+  // 每个因子一条柱
+  const barH = (H - m.t - m.b) / factors.length * 0.65;
+  const rowH = (H - m.t - m.b) / factors.length;
+  factors.forEach((f, i) => {
+    const yC = m.t + (i + 0.5) * rowH;
+    const xLow = xScale(f.irrLow), xHigh = xScale(f.irrHigh);
+    const x = Math.min(xLow, xHigh), w = Math.abs(xHigh - xLow);
+    svgHTML += `<rect x="${x}" y="${yC - barH/2}" width="${w}" height="${barH}" fill="#7e22ce" opacity="0.65" stroke="#a855f7" stroke-width="1"/>`;
+    // 标签
+    svgHTML += `<text x="${m.l - 6}" y="${yC + 4}" fill="#cbd5e1" font-size="11" text-anchor="end">${f.label}</text>`;
+    // 端点值
+    svgHTML += `<text x="${xLow}" y="${yC + 4}" fill="#fbcfe8" font-size="9" text-anchor="${xLow < xHigh ? 'end' : 'start'}" dx="${xLow < xHigh ? -3 : 3}">${fmt.pct(f.irrLow)}</text>`;
+    svgHTML += `<text x="${xHigh}" y="${yC + 4}" fill="#fbcfe8" font-size="9" text-anchor="${xHigh > xLow ? 'start' : 'end'}" dx="${xHigh > xLow ? 3 : -3}">${fmt.pct(f.irrHigh)}</text>`;
+  });
+  // x 轴刻度
+  for (let i = 0; i <= 5; i++) {
+    const v = minV + i / 5 * (maxV - minV);
+    const x = xScale(v);
+    svgHTML += `<line x1="${x}" y1="${H - m.b}" x2="${x}" y2="${H - m.b + 4}" stroke="#94a3b8"/>`;
+    svgHTML += `<text x="${x}" y="${H - m.b + 16}" fill="#94a3b8" font-size="10" text-anchor="middle">${(v*100).toFixed(0)}%</text>`;
+  }
+  svgHTML += `<text x="${W/2}" y="${H - 6}" fill="#cbd5e1" font-size="11" text-anchor="middle">IRR (%)</text>`;
+  svg.innerHTML = svgHTML;
+}
+
+function drawCostBreakdownChart(c) {
+  const svg = document.getElementById('chartCostBreakdown');
+  if (!svg) return;
+  const W = 800, H = 200, m = { l: 60, r: 20, t: 20, b: 40 };
+  const sat = c.yearly.find(y => y.ramp >= 0.95) || c.yearly[c.yearly.length-1];
+  // 构建 6 项成本
+  const items = [
+    { label: '经营成本(饲料/电/液氧)', val: sat.operatingCost, color: '#f97316' },
+    { label: '修理费',                val: sat.repairCost,     color: '#06b6d4' },
+    { label: '管理费',                val: sat.adminCost,      color: '#a855f7' },
+    { label: '人工成本',              val: sat.laborCost,      color: '#10b981' },
+    { label: '折旧',                  val: sat.dep,            color: '#eab308' },
+    { label: '财务费用(利息)',        val: sat.interest,       color: '#ef4444' }
+  ];
+  const total = items.reduce((s, i) => s + i.val, 0);
+  if (total <= 0) { svg.innerHTML = '<text x="400" y="100" fill="#94a3b8" text-anchor="middle">无数据</text>'; return; }
+  // 横向堆叠条
+  let xCursor = m.l;
+  const innerW = W - m.l - m.r;
+  let svgHTML = '';
+  items.forEach((it, i) => {
+    const w = it.val / total * innerW;
+    svgHTML += `<rect x="${xCursor}" y="${m.t}" width="${w}" height="40" fill="${it.color}" opacity="0.85"/>`;
+    if (w > 60) {
+      svgHTML += `<text x="${xCursor + w/2}" y="${m.t + 25}" fill="white" font-size="10" text-anchor="middle">${(it.val/total*100).toFixed(1)}%</text>`;
+    }
+    xCursor += w;
+  });
+  // 图例 (两行)
+  items.forEach((it, i) => {
+    const col = i % 3;
+    const row = Math.floor(i / 3);
+    const x = m.l + col * 230;
+    const y = m.t + 70 + row * 22;
+    svgHTML += `<rect x="${x}" y="${y - 8}" width="14" height="14" fill="${it.color}"/>`;
+    svgHTML += `<text x="${x + 20}" y="${y + 3}" fill="#cbd5e1" font-size="11">${it.label} (${fmt.wan(it.val)} 万)</text>`;
+  });
+  svg.innerHTML = svgHTML;
+}
+
+// ---------------- Excel 导出 ----------------
+function exportExcel() {
+  if (!STATE.calc) { alert('请先完成计算'); return; }
+  if (typeof XLSX === 'undefined' || !XLSX.utils) {
+    alert('Excel 导出库 (SheetJS) 加载失败.\n可能原因: 网络不通 / CDN 被屏蔽.\n\n请检查网络后刷新页面再试, 或使用 "🖨️ 打印" 保存为 PDF.');
+    return;
+  }
+  const c = STATE.calc;
+  const wb = XLSX.utils.book_new();
+
+  // 表 1: 投资估算
+  const t1 = [
+    ['项目', '金额 (元)', '占比'],
+    ['1. 设备购置费', c.capex.equip, (c.capex.equip/c.capex.totalInvest*100).toFixed(1)+'%'],
+    ['2. 土建/安装/电气/自控/设计', c.capex.civil, (c.capex.civil/c.capex.totalInvest*100).toFixed(1)+'%'],
+    ['3. 工程总投资 (固定资产)', c.capex.fixedAsset, (c.capex.fixedAsset/c.capex.totalInvest*100).toFixed(1)+'%'],
+    ['4. 流动资金', c.capex.workingCapital, (c.capex.workingCapital/c.capex.totalInvest*100).toFixed(1)+'%'],
+    ['5. 项目总投资', c.capex.totalInvest, '100%']
+  ];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t1), '1. 投资估算');
+
+  // 表 2: 资金来源运用
+  // v1.5 审计回合 16: 与 HTML 表同口径 (Bug 2 修复后, ownEquity 占比 ≠ ownPct)
+  const _pctTot = v => c.capex.totalInvest > 0 ? (v / c.capex.totalInvest * 100).toFixed(1) + '%' : '—';
+  const t2 = [
+    ['项目', '金额 (元)', '占比'],
+    ['自有资金 — 固定资产', c.capex.ownEquityFixed, _pctTot(c.capex.ownEquityFixed)],
+    ['自有资金 — 流动资金 (100%)', c.capex.workingCapital, _pctTot(c.capex.workingCapital)],
+    ['银行贷款 (' + ((1-c.params.ownPct)*100).toFixed(0) + '% × 固资)', c.capex.loan, _pctTot(c.capex.loan)],
+    ['小计: 自有资金合计', c.capex.ownEquity, _pctTot(c.capex.ownEquity)],
+    ['合计', c.capex.totalInvest, '100.0%'],
+    [],
+    ['还款计划', '利息 (元)', '本金 (元)', '当年合计', '剩余本金']
+  ];
+  c.loanSchedule.forEach(s => t2.push(['第 ' + s.year + ' 年', s.interest, s.principal, s.interest + s.principal, s.balance]));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t2), '2. 资金来源');
+
+  // 表 3-5: 损益相关 (合并到一张工作表, 按年陈列)
+  const yrs = c.yearly.filter(y => y.year > 0);
+  const t3 = [['项目 (元)', ...yrs.map(y => '第 ' + y.year + ' 年')]];
+  const rows = [
+    ['销售收入',     'revenue'],
+    ['销售税金',     'salesTax'],
+    ['净销售收入',   'netRevenue'],
+    ['经营成本',     'operatingCost'],
+    ['修理费',       'repairCost'],
+    ['管理费',       'adminCost'],
+    ['人工成本',     'laborCost'],
+    ['总经营成本',   'opCostTotal'],
+    ['折旧',         'dep'],
+    ['利息',         'interest'],
+    ['利润总额',     'profitBefore'],
+    ['所得税',       'tax'],
+    ['净利润',       'profitNet']
+  ];
+  rows.forEach(r => t3.push([r[0], ...yrs.map(y => y[r[1]])]));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t3), '3. 损益表');
+
+  // 表 6/7: 现金流量表
+  ['全投资', '自有资金'].forEach((label, idx) => {
+    const t = [['年份', '净现金流 (元)', '累计现金流', '累计折现 NPV']];
+    c.yearly.forEach(y => {
+      const cf = idx === 0 ? y.cfTotal : y.cfEquity;
+      const cum = idx === 0 ? y.cumTotal : y.cumEquity;
+      const cumD = idx === 0 ? y.cumTotalDisc : y.cumEquityDisc;
+      t.push(['第 ' + y.year + ' 年', cf, cum, cumD]);
+    });
+    const npvVal = idx === 0 ? c.indicators.npvTotal : c.indicators.npvEquity;
+    const irrVal = idx === 0 ? c.indicators.irrTotal : c.indicators.irrEquity;
+    t.push([], ['NPV (元)', npvVal], ['IRR', (irrVal*100).toFixed(2) + '%']);
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t), (idx === 0 ? '6' : '7') + '. ' + label + '现金流');
+  });
+
+  // 表 8: 敏感性
+  const t8 = [['敏感因子', '低值 IRR', '基准 IRR', '高值 IRR', 'IRR 摆动', '低值 NPV', '高值 NPV']];
+  c.sensitivity.factors.forEach(f => {
+    t8.push([f.label, f.irrLow, c.sensitivity.baseIRR, f.irrHigh, f.irrSwing, f.npvLow, f.npvHigh]);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t8), '8. 敏感性分析');
+
+  // KPI 汇总
+  const kpi = [
+    ['指标', '数值'],
+    ['全投资 IRR (税后)', (c.indicators.irrTotal*100).toFixed(2) + '%'],
+    ['自有资金 IRR', (c.indicators.irrEquity*100).toFixed(2) + '%'],
+    ['全投资 NPV @ ' + (c.params.discount*100).toFixed(1) + '% (元)', c.indicators.npvTotal],
+    ['静态投资回收期 (年)', c.indicators.paybackTotal],
+    ['动态投资回收期 (年)', c.indicators.paybackTotalDisc],
+    ['盈亏平衡产量 (% 满产)', c.indicators.bepPct.toFixed(1) + '%']
+  ];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(kpi), '关键指标');
+
+  const fname = `iRAS_财务评价_${STATE.data.species}_${STATE.data.yieldTons}t_${new Date().toISOString().slice(0,10)}.xlsx`;
+  XLSX.writeFile(wb, fname);
+}
+
+// ---------------- 事件绑定 ----------------
+let recalcTimer = null;
+function debounceRecalc() {
+  clearTimeout(recalcTimer);
+  recalcTimer = setTimeout(recalc, 250);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) 输入控件实时重算
+  const inputs = ['inpPrice','inpYears','inpRamp1','inpRamp2','inpRamp3','inpBuildYears',
+                  'inpWorkingCap','inpOwnPct','inpLoanRate','inpLoanMethod','inpLoanYears',
+                  'inpDiscount','inpTaxRate','inpSalesTax','inpRepairRate','inpAdminRate','inpLaborCost'];
+  inputs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', debounceRecalc);
+  });
+  // 2) 主按钮
+  document.getElementById('btnRecalc').addEventListener('click', recalc);
+  document.getElementById('btnExportXlsx').addEventListener('click', exportExcel);
+  document.getElementById('btnPrint').addEventListener('click', () => window.print());
+
+  // v1.5 Bug 37+46: JSON 文件手动加载 + schema 验证
+  function loadFromJsonObject(parsed, srcLabel) {
+    // Bug 46: schema 验证
+    if (!parsed || typeof parsed !== 'object') {
+      alert('JSON 解析失败: 不是有效对象');
+      return false;
+    }
+    // P&ID 导出格式 (主页面 buildPIDExport 写的) 有 pidSchema + results.summary.finance
+    // 这里只接受 P&ID 导出格式 (不接受 collectState 原始方案, 后者用于主页面 restoreState)
+    if (!parsed.pidSchema && !(parsed.results && parsed.results.summary && parsed.results.summary.finance)) {
+      alert('JSON 格式不识别: 缺少 pidSchema 或 results.summary.finance 字段.\n请确认这是从主页面点击「投资财务评价」时下载的 JSON 备份, 不是「保存方案」原始 JSON.');
+      return false;
+    }
+    STATE.data = parsed;
+    bootstrap(srcLabel || '手动加载的 JSON');
+    return true;
+  }
+  const fileInput = document.getElementById('inpLoadJson');
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          loadFromJsonObject(JSON.parse(ev.target.result), `文件 ${file.name}`);
+        } catch (err) {
+          alert('JSON 解析失败: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
+  // 拖拽支持
+  document.body.addEventListener('dragover', (e) => { e.preventDefault(); });
+  document.body.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        loadFromJsonObject(JSON.parse(ev.target.result), `拖入文件 ${file.name}`);
+      } catch (err) {
+        alert('JSON 解析失败: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  // 3) 数据加载
+  if (!tryLoadFromStorage()) {
+    // 留空, 等用户从主页面打开 或 手动加载 JSON
+  }
+
+  // 4) postMessage 监听 (主页面再次点 → 通知刷新)
+  window.addEventListener('message', (ev) => {
+    if (ev && ev.data && ev.data.type === 'iRAS_FINANCE_RELOAD') {
+      tryLoadFromStorage('iRAS 主页面方案 (刷新载入)');
+    }
+  });
+});
+</script>
+</body>
+</html>

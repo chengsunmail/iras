@@ -1,0 +1,3230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>iRAS P&ID v2.0 — 骨架</title>
+<style>
+  /* ============================================================
+     iRAS P&ID v2.0 骨架样式
+     设计基调: 工程制图工具, 亮灰底, 信息密度高, 无装饰动画
+     参考: AutoCAD / EPLAN / dwg 风格 (而非品牌网站)
+     ============================================================ */
+  :root {
+    --bg:        #ECEAE3;
+    --panel:    #FAFAF6;
+    --canvas:   #FFFFFF;
+    --line:     #C8C5BB;
+    --line-2:   #DEDBD2;
+    --ink:      #1F1F1E;
+    --ink-2:    #5C5B57;
+    --ink-3:    #95938C;
+    --accent:   #185FA5;
+    --accent-2: #C04545;
+    --warn:     #B97A0E;
+    --ok:       #4A7B3A;
+    --code-bg:  #F2F0E7;
+    --shadow:   0 1px 2px rgba(0,0,0,0.04);
+    --mono:     ui-monospace, "SF Mono", "JetBrains Mono", Consolas, monospace;
+    --sans:     -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== 顶栏 ===== */
+  header.topbar {
+    flex: 0 0 auto;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .brand .ver {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-left: 6px;
+    font-weight: 400;
+  }
+  .topbar .summary {
+    flex: 1 1 auto;
+    display: flex;
+    gap: 18px;
+    font-size: 12px;
+    color: var(--ink-2);
+    overflow: hidden;
+  }
+  .summary-item { white-space: nowrap; }
+  .summary-item b {
+    color: var(--ink);
+    font-family: var(--mono);
+    font-weight: 500;
+    margin-left: 4px;
+  }
+  .summary-item.muted { color: var(--ink-3); font-style: italic; }
+
+  .topbar .actions { display: flex; gap: 6px; flex-shrink: 0; }
+  button {
+    font-family: inherit;
+    font-size: 12px;
+    padding: 5px 11px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--panel);
+    color: var(--ink);
+    cursor: pointer;
+    transition: none;
+  }
+  button:hover { background: #fff; border-color: var(--ink-2); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.primary:hover { background: #0d4677; border-color: #0d4677; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ===== 主体三栏 ===== */
+  .main {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: 220px 1fr 360px;
+    overflow: hidden;
+  }
+
+  /* ===== 左栏 ===== */
+  aside.left {
+    background: var(--panel);
+    border-right: 1px solid var(--line);
+    padding: 14px 14px;
+    overflow-y: auto;
+    font-size: 12px;
+  }
+  .section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .layer-list {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-bottom: 22px;
+  }
+  .layer-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .layer-row:hover { background: rgba(0,0,0,0.03); }
+  .layer-row input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
+  .layer-row .label { color: var(--ink); }
+  .layer-row .swatch { width: 14px; height: 3px; border-radius: 1px; }
+  .layer-row[data-disabled="true"] { opacity: 0.45; cursor: not-allowed; }
+
+  .meta-list { font-family: var(--mono); font-size: 11px; line-height: 1.7; color: var(--ink-2); }
+  .meta-list dt { color: var(--ink-3); }
+  .meta-list dd { color: var(--ink); margin-bottom: 6px; }
+
+  /* ===== 中栏 ===== */
+  main.canvas-area {
+    background: var(--bg);
+    overflow: auto;
+    position: relative;
+    display: flex; align-items: stretch; justify-content: stretch;
+  }
+  .canvas-frame {
+    flex: 1;
+    margin: 18px;
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    position: relative;
+    min-height: calc(100% - 36px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .canvas-placeholder {
+    text-align: center;
+    color: var(--ink-3);
+    font-size: 12px;
+    line-height: 1.8;
+    max-width: 360px;
+    padding: 20px;
+  }
+  .canvas-placeholder .big {
+    font-size: 14px;
+    color: var(--ink-2);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .canvas-placeholder code {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--code-bg); padding: 1px 5px; border-radius: 2px;
+  }
+  svg.pid-svg { display: block; width: 100%; height: 100%; }
+
+  /* ============================================================
+     SVG 内部元素样式 — 工程图视觉语言
+     用 CSS 定义而非内联属性, 方便图层切换/打印/导出复用
+     ============================================================ */
+  svg.pid-svg text {
+    font-family: var(--sans);
+    fill: var(--ink);
+  }
+  svg.pid-svg text.tag {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    fill: var(--ink);
+  }
+  svg.pid-svg text.name {
+    font-size: 11.5px;
+    fill: var(--ink);
+  }
+  svg.pid-svg text.sub {
+    font-size: 10px;
+    fill: var(--ink-2);
+    font-style: italic;
+  }
+  svg.pid-svg text.param {
+    font-family: var(--mono);
+    font-size: 10px;
+    fill: var(--ink-2);
+  }
+  svg.pid-svg text.line-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    fill: var(--accent);
+    font-weight: 500;
+  }
+  svg.pid-svg text.band-label {
+    font-size: 10px;
+    fill: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* 设备框 — 不同类型用色块 fill + 顶部色条加强识别 */
+  svg.pid-svg .equip-box {
+    stroke: var(--ink-2);
+    stroke-width: 1.2;
+    fill: #fff;
+  }
+  svg.pid-svg .equip-box.kind-tank      { fill: #E8F0F8; }
+  svg.pid-svg .equip-box.kind-filter    { fill: #F4EBDC; }
+  svg.pid-svg .equip-box.kind-bio       { fill: #E5EFE0; }
+  svg.pid-svg .equip-box.kind-uv        { fill: #E8E2F4; }
+  svg.pid-svg .equip-box.kind-degas     { fill: #F4E8D4; }
+  svg.pid-svg .equip-box.kind-aerator   { fill: #F4DDDC; }
+  /* 顶部色条 — 比 fill 更深, 让 kind 一眼可读 */
+  svg.pid-svg .equip-band {
+    stroke: none;
+  }
+  svg.pid-svg .equip-band.kind-tank     { fill: #5A8AB8; }
+  svg.pid-svg .equip-band.kind-filter   { fill: #B89668; }
+  svg.pid-svg .equip-band.kind-bio      { fill: #6B9658; }
+  svg.pid-svg .equip-band.kind-uv       { fill: #8B7AB8; }
+  svg.pid-svg .equip-band.kind-degas    { fill: #C49A4F; }
+  svg.pid-svg .equip-band.kind-aerator  { fill: #C06464; }
+
+  /* 设备图标内部 (v2.1) — 用 eq- 前缀避免和外部 stroke/fill 冲突 */
+  svg.pid-svg .equip-icon .eq-stroke      { stroke: #1F1F1E; stroke-width: 1.4; fill: none; }
+  svg.pid-svg .equip-icon .eq-stroke-thin { stroke: #1F1F1E; stroke-width: 0.7; fill: none; }
+  svg.pid-svg .equip-icon .eq-fill-light  { fill: #FAFAF7; }
+  svg.pid-svg .equip-icon .eq-fill-water  { fill: #E8EFF7; }
+  svg.pid-svg .equip-icon .eq-fill-medium { fill: #DDD8C8; }
+
+  /* 主管线 */
+  svg.pid-svg .main-line {
+    stroke: var(--accent);
+    stroke-width: 2.4;
+    fill: none;
+  }
+  svg.pid-svg .main-line.return {
+    stroke: var(--accent);
+    stroke-width: 2.2;
+  }
+
+  /* 旁路管线 — 比主管细, 颜色稍浅 */
+  svg.pid-svg .bypass-line {
+    stroke: #5A8AB8;
+    stroke-width: 1.8;
+    fill: none;
+  }
+
+  /* 旁路环边界 — 浅色背景框, 圆角, 透明度低 */
+  svg.pid-svg .bypass-envelope {
+    fill: #F7F5EE;
+    fill-opacity: 0.6;
+    stroke: #C8C5BB;
+    stroke-width: 0.8;
+    stroke-dasharray: 4 3;
+  }
+  /* 不同 kind 的 envelope 略微染色 */
+  svg.pid-svg .bypass-envelope.kind-aerator { fill: #FAEDEA; }
+  svg.pid-svg .bypass-envelope.kind-uv      { fill: #F2EBF8; }
+  svg.pid-svg .bypass-envelope.kind-bio     { fill: #ECF3E6; }
+
+  /* 旁路标题文字 (在 envelope 顶左侧) */
+  svg.pid-svg text.bypass-title {
+    font-size: 11px;
+    font-weight: 600;
+    fill: #5C5B57;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* 气体/介质管 — 虚线 */
+  svg.pid-svg .gas-line {
+    stroke: #8B6F47;
+    stroke-width: 1.4;
+    fill: none;
+    stroke-dasharray: 6 3;
+  }
+  /* 载热介质 (热泵) — 红色虚线 */
+  svg.pid-svg .thermal-line {
+    stroke: #C04545;
+    stroke-width: 1.4;
+    fill: none;
+    stroke-dasharray: 8 3;
+  }
+
+  /* 控制信号 — 短虚线 */
+  svg.pid-svg .signal-line {
+    stroke: var(--accent-2);
+    stroke-width: 1.0;
+    fill: none;
+    stroke-dasharray: 2 2;
+  }
+
+  /* 仪表泡泡 */
+  svg.pid-svg .instrument-bubble {
+    stroke: var(--ink-2);
+    stroke-width: 1.0;
+    fill: #fff;
+  }
+  svg.pid-svg .instrument-bubble-line {
+    stroke: var(--ink-2);
+    stroke-width: 0.8;
+    fill: none;
+    stroke-dasharray: 2 2;
+  }
+  svg.pid-svg text.instrument-text {
+    font-family: var(--mono);
+    font-size: 9px;
+    fill: var(--ink);
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  /* 泵符号 */
+  svg.pid-svg .pump-circle {
+    stroke: var(--ink);
+    stroke-width: 1.3;
+    fill: #fff;
+  }
+  svg.pid-svg .pump-triangle {
+    stroke: var(--ink);
+    stroke-width: 1.3;
+    fill: var(--ink);
+  }
+
+  /* 工艺带分隔线 (debug 时显示, 后续可隐藏) */
+  svg.pid-svg .band-rule {
+    stroke: var(--line-2);
+    stroke-width: 0.6;
+    stroke-dasharray: 2 4;
+    fill: none;
+  }
+  .canvas-watermark {
+    position: absolute; bottom: 8px; right: 12px;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--ink-3); pointer-events: none;
+  }
+  .canvas-area.drag-over .canvas-frame {
+    border-color: var(--accent);
+    border-style: dashed;
+    background: #F4F8FC;
+  }
+  .canvas-area.drag-over .canvas-frame::after {
+    content: "释放以载入 JSON";
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 16px; font-weight: 500;
+    background: rgba(244,248,252,0.8); pointer-events: none;
+  }
+
+  /* ===== 右栏 ===== */
+  aside.right {
+    background: var(--panel);
+    border-left: 1px solid var(--line);
+    overflow-y: auto;
+    font-size: 12px;
+    display: flex; flex-direction: column;
+  }
+  .inspector-header {
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-2);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .inspector-header .title { font-weight: 600; font-size: 12px; }
+  .inspector-header select {
+    font-family: var(--mono); font-size: 11px;
+    padding: 2px 4px;
+    border: 1px solid var(--line); border-radius: 2px;
+    background: var(--canvas);
+  }
+  .inspector-body {
+    flex: 1 1 auto; overflow-y: auto;
+    padding: 8px 12px 60px;
+    font-family: var(--mono); font-size: 11px; line-height: 1.65;
+  }
+  .empty-state {
+    padding: 30px 20px; text-align: center; color: var(--ink-3);
+  }
+  .empty-state .hint { margin-top: 10px; font-size: 11px; line-height: 1.7; }
+  .empty-state code { font-family: var(--mono); background: var(--code-bg); padding: 1px 4px; border-radius: 2px; }
+
+  /* ===== 数据树 ===== */
+  details.tree-node {
+    border-left: 1px solid var(--line-2);
+    margin-left: 2px;
+    padding-left: 8px;
+  }
+  details.tree-node[open] > summary { color: var(--ink); }
+  details.tree-node summary {
+    cursor: pointer; list-style: none;
+    color: var(--ink-2);
+    padding: 1px 0; user-select: none;
+  }
+  details.tree-node summary::-webkit-details-marker { display: none; }
+  details.tree-node summary::before {
+    content: "▸";
+    display: inline-block; width: 12px;
+    color: var(--ink-3); font-size: 9px;
+  }
+  details.tree-node[open] > summary::before { content: "▾"; }
+  .tree-key { color: var(--accent); }
+  .tree-key.disabled { color: var(--ink-3); text-decoration: line-through; }
+  .tree-val { color: var(--ink); }
+  .tree-val.string { color: #886F1F; }
+  .tree-val.number { color: #1F5C8A; }
+  .tree-val.boolean { color: var(--ok); }
+  .tree-val.null { color: var(--ink-3); font-style: italic; }
+  .tree-leaf {
+    padding: 0 0 0 12px;
+    color: var(--ink-2);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .tree-leaf .unit { color: var(--ink-3); margin-left: 3px; }
+
+  /* ===== 浮层提示 ===== */
+  .toast {
+    position: fixed;
+    bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: #fff;
+    padding: 8px 16px; border-radius: 3px;
+    font-size: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    z-index: 100;
+    max-width: 80%;
+  }
+  .toast.error { background: var(--accent-2); }
+  .toast.warn  { background: var(--warn); }
+
+  input[type="file"] { display: none; }
+
+  /* ===== 状态栏 ===== */
+  .statusbar {
+    flex: 0 0 auto;
+    background: var(--panel);
+    border-top: 1px solid var(--line);
+    padding: 4px 14px;
+    font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    display: flex; gap: 16px; justify-content: space-between;
+  }
+  .statusbar .right-info { display: flex; gap: 14px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">iRAS P&amp;ID<span class="ver">v2.0-skeleton</span></div>
+  <div class="summary" id="topSummary">
+    <span class="summary-item muted">未载入数据</span>
+  </div>
+  <div class="actions">
+    <button id="btnLoadSample">📂 加载示例</button>
+    <button id="btnLoadFile">📁 选择 JSON 文件</button>
+    <input type="file" id="fileInput" accept=".json,application/json">
+    <button id="btnClear" disabled>清空</button>
+  </div>
+</header>
+
+<div class="main">
+  <aside class="left">
+    <div class="section-title">图层 (Layers)</div>
+    <div class="layer-list" id="layerList">
+      <label class="layer-row" data-layer="process">
+        <input type="checkbox" checked>
+        <span class="label">主流程 Process</span>
+        <span class="swatch" style="background:#185FA5"></span>
+      </label>
+      <label class="layer-row" data-layer="bypass">
+        <input type="checkbox" checked>
+        <span class="label">旁路 Bypass</span>
+        <span class="swatch" style="background:#5A8AB8"></span>
+      </label>
+      <label class="layer-row" data-layer="utility">
+        <input type="checkbox" checked>
+        <span class="label">公用工程 Utility</span>
+        <span class="swatch" style="background:#8B6F47"></span>
+      </label>
+      <label class="layer-row" data-layer="instrument">
+        <input type="checkbox" checked>
+        <span class="label">仪表 Instrument</span>
+        <span class="swatch" style="background:#5C5B57"></span>
+      </label>
+      <label class="layer-row" data-layer="control">
+        <input type="checkbox" checked>
+        <span class="label">控制 Control</span>
+        <span class="swatch" style="background:#C04545"></span>
+      </label>
+      <label class="layer-row" data-layer="annotation">
+        <input type="checkbox" checked>
+        <span class="label">注释/标题 Annot.</span>
+        <span class="swatch" style="background:#1F1F1E"></span>
+      </label>
+    </div>
+
+    <div class="section-title">元数据 (Meta)</div>
+    <dl class="meta-list" id="metaList">
+      <dd style="color:var(--ink-3); font-style:italic;">—</dd>
+    </dl>
+  </aside>
+
+  <main class="canvas-area" id="canvasArea">
+    <div class="canvas-frame" id="canvasFrame">
+      <svg class="pid-svg" id="pidSvg" viewBox="0 0 2150 1280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <!-- 主流程箭头 -->
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M2 1 L8 5 L2 9" fill="none" stroke="context-stroke"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <g id="layer-process"></g>
+        <g id="layer-bypass"></g>
+        <g id="layer-utility"></g>
+        <g id="layer-instrument"></g>
+        <g id="layer-annotation"></g>
+      </svg>
+      <div class="canvas-placeholder" id="canvasPlaceholder">
+        <div class="big">P&amp;ID 渲染区</div>
+        <div>骨架阶段未实现绘制。</div>
+        <div style="margin-top:8px;">载入 <code>iRAS_PID_*.json</code> 后,可在右栏检查解析的数据结构。</div>
+        <div style="margin-top:14px; color:var(--ink-3);">M1 后续步骤将在此画出主流程 / 旁路 / 仪表等元素。</div>
+      </div>
+      <div class="canvas-watermark">SVG 1800 × 1220 · A2 横版</div>
+    </div>
+  </main>
+
+  <aside class="right">
+    <div class="inspector-header">
+      <div class="title">数据 Inspector</div>
+      <select id="stageSelect" disabled>
+        <option>未载入</option>
+      </select>
+    </div>
+    <div class="inspector-body" id="inspectorBody">
+      <div class="empty-state">
+        <div>等待数据载入</div>
+        <div class="hint">
+          可以:<br>
+          • 点 <code>📂 加载示例</code> 试用<br>
+          • 点 <code>📁 选择 JSON 文件</code> 选文件<br>
+          • 直接拖 JSON 到画布
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="statusbar">
+  <div id="statusLeft">就绪</div>
+  <div class="right-info">
+    <span id="statusSchema">schema: —</span>
+    <span id="statusStages">阶段: —</span>
+    <span id="statusBytes">大小: —</span>
+  </div>
+</div>
+
+<!--
+  内嵌示例 JSON. 注入工具会在以下两条 marker 行之间替换内容
+  marker 是带前后破折号 + 7位 hex 的串, 不会撞到任何合法 JSON 内容
+-->
+<script id="sampleData" type="application/json">
+{"pidSchema":"1.0","irasVersion":"1.1.0","savedAt":"2026-04-30T21:05:38.407Z","species":"salmon","speciesName":"三文鱼 Salmon","tanCoef":0.092,"yieldTons":1000,"stages":[{"name":"苗种期","weightStart":0.1,"weightEnd":50,"months":6,"FCR":1,"protein":0.5,"feedRate":0.03,"peakFactor":1.5,"tempOpt":12,"density":30,"mortality":0.15,"turnover":4,"exchangeDaily":8,"feedPrice":12,"salinity":0,"DOmin_satRatio":0.75,"DOmin_abs":6,"o2FishFactor":0.2,"o2BaseFactor":0.32,"o2Q10":2,"metabRefTemp":15,"proc":{"rdfTSS":75,"biofilterTAN":70,"uvDose":40,"uvFlowPct":10,"denitriFlowPct":10,"denitriEff":80,"rdfBackwash":2,"aerationMode":"o2","o2SatTarget":170,"o2AbsorptionEff":85,"alkTarget":150,"alkSource":100,"VTR20":500,"VDR20":800,"thetaNit":1.1,"thetaDen":1.08,"bfFillRatio":50,"o2DOMfactor":0.1,"sourceSS":10,"sourcePH":7.5,"sourceTemp":18,"hxEff":75,"heatPumpCOP_heat":4,"heatPumpCOP_cool":3,"thermalIncludeMetab":true,"thermalIncludeEquip":true,"thermalIncludeLoss":true,"metabBasalRate":0,"metabFeedFactor":1.5,"pumpHeatRatio":0.85,"uvHeatRatio":0.95,"tankIndoor":true,"roomTemp":20,"poolDepth":1.5,"poolUValue":5,"skimmerEnabled":true,"skimmerMode":"ozone","skimmerFlowPct":20,"skimmerDOMEffAir":40,"skimmerDOMEffOzone":70,"skimmerTSSEff":40,"skimmerHRT_min":2,"ozoneDose":0.01,"aopEnabled":true,"aopType":"integrated","aopFlowPct":5,"aopGeosminEff":90,"aopDOMRemoval":5,"aopHRT_min":2,"co2StripperEnabled":true,"co2StripperEff":65,"co2StripperGtoL":3,"co2StripperLoadingRate":80,"co2FallbackEff":5,"co2BlowerPressure_kPa":2.5,"co2BlowerEfficiency":60,"safetyBio":1.15,"safetyAerator":1.1,"safetyBFblow":1.1,"safetyRDF":1.1,"safetyDenitri":1.1,"safetySkimmer":1.1,"safetyCO2":1.15,"safetyUV":1.1,"mainPumpHead_m":12,"mainPumpEta":68,"denitriPumpHead_m":10,"denitriPumpEta":60,"uvPumpHead_m":10,"uvPumpEta":60,"aopPumpHead_m":10,"aopPumpEta":60,"skimmerPumpHead_m":6,"skimmerPumpEta":60,"rdfBackwashPumpHead_m":8,"rdfBackwashPumpEta":55,"miscElecKWhPerDay":50}},{"name":"幼鱼期","weightStart":50,"weightEnd":500,"months":8,"FCR":1.1,"protein":0.45,"feedRate":0.015,"peakFactor":1.5,"tempOpt":14,"density":50,"mortality":0.08,"turnover":3,"exchangeDaily":6,"feedPrice":12,"salinity":0,"DOmin_satRatio":0.75,"DOmin_abs":6,"o2BaseFactor":0.32,"o2Q10":2,"metabRefTemp":15,"proc":{"rdfTSS":75,"biofilterTAN":70,"uvDose":40,"uvFlowPct":10,"denitriFlowPct":10,"denitriEff":80,"rdfBackwash":2,"aerationMode":"o2","o2SatTarget":165,"o2AbsorptionEff":85,"alkTarget":150,"alkSource":100,"VTR20":500,"VDR20":800,"thetaNit":1.1,"thetaDen":1.08,"bfFillRatio":50,"o2DOMfactor":0.1,"sourceSS":10,"sourcePH":7.5,"sourceTemp":18,"hxEff":75,"heatPumpCOP_heat":4,"heatPumpCOP_cool":3,"thermalIncludeMetab":true,"thermalIncludeEquip":true,"thermalIncludeLoss":true,"metabBasalRate":0,"metabFeedFactor":1.5,"pumpHeatRatio":0.85,"uvHeatRatio":0.95,"tankIndoor":true,"roomTemp":20,"poolDepth":1.5,"poolUValue":5,"skimmerEnabled":true,"skimmerMode":"ozone","skimmerFlowPct":20,"skimmerDOMEffAir":40,"skimmerDOMEffOzone":70,"skimmerTSSEff":40,"skimmerHRT_min":2,"ozoneDose":0.01,"aopEnabled":true,"aopType":"integrated","aopFlowPct":5,"aopGeosminEff":90,"aopDOMRemoval":5,"aopHRT_min":2,"co2StripperEnabled":true,"co2StripperEff":65,"co2StripperGtoL":3,"co2StripperLoadingRate":80,"co2FallbackEff":5,"co2BlowerPressure_kPa":2.5,"co2BlowerEfficiency":60,"safetyBio":1.15,"safetyAerator":1.1,"safetyBFblow":1.1,"safetyRDF":1.1,"safetyDenitri":1.1,"safetySkimmer":1.1,"safetyCO2":1.15,"safetyUV":1.1,"mainPumpHead_m":12,"mainPumpEta":68,"denitriPumpHead_m":10,"denitriPumpEta":60,"uvPumpHead_m":10,"uvPumpEta":60,"aopPumpHead_m":10,"aopPumpEta":60,"skimmerPumpHead_m":6,"skimmerPumpEta":60,"rdfBackwashPumpHead_m":8,"rdfBackwashPumpEta":55,"miscElecKWhPerDay":50}},{"name":"中鱼期","weightStart":500,"weightEnd":2000,"months":6,"FCR":1.2,"protein":0.42,"feedRate":0.01,"peakFactor":1.5,"tempOpt":15,"density":60,"mortality":0.04,"turnover":2.5,"exchangeDaily":5,"feedPrice":12,"salinity":12,"DOmin_satRatio":0.75,"DOmin_abs":6,"o2BaseFactor":0.32,"o2Q10":2,"metabRefTemp":15,"proc":{"rdfTSS":75,"biofilterTAN":70,"uvDose":40,"uvFlowPct":10,"denitriFlowPct":10,"denitriEff":80,"rdfBackwash":2,"aerationMode":"o2","o2SatTarget":165,"o2AbsorptionEff":85,"alkTarget":150,"alkSource":100,"VTR20":500,"VDR20":800,"thetaNit":1.1,"thetaDen":1.08,"bfFillRatio":50,"o2DOMfactor":0.1,"sourceSS":10,"sourcePH":7.5,"sourceTemp":18,"hxEff":75,"heatPumpCOP_heat":4,"heatPumpCOP_cool":3,"thermalIncludeMetab":true,"thermalIncludeEquip":true,"thermalIncludeLoss":true,"metabBasalRate":0,"metabFeedFactor":1.5,"pumpHeatRatio":0.85,"uvHeatRatio":0.95,"tankIndoor":true,"roomTemp":20,"poolDepth":1.5,"poolUValue":5,"skimmerEnabled":true,"skimmerMode":"ozone","skimmerFlowPct":20,"skimmerDOMEffAir":40,"skimmerDOMEffOzone":70,"skimmerTSSEff":40,"skimmerHRT_min":2,"ozoneDose":0.01,"aopEnabled":true,"aopType":"integrated","aopFlowPct":5,"aopGeosminEff":90,"aopDOMRemoval":5,"aopHRT_min":2,"co2StripperEnabled":true,"co2StripperEff":65,"co2StripperGtoL":3,"co2StripperLoadingRate":80,"co2FallbackEff":5,"co2BlowerPressure_kPa":2.5,"co2BlowerEfficiency":60,"safetyBio":1.15,"safetyAerator":1.1,"safetyBFblow":1.1,"safetyRDF":1.1,"safetyDenitri":1.1,"safetySkimmer":1.1,"safetyCO2":1.15,"safetyUV":1.1,"mainPumpHead_m":12,"mainPumpEta":68,"denitriPumpHead_m":10,"denitriPumpEta":60,"uvPumpHead_m":10,"uvPumpEta":60,"aopPumpHead_m":10,"aopPumpEta":60,"skimmerPumpHead_m":6,"skimmerPumpEta":60,"rdfBackwashPumpHead_m":8,"rdfBackwashPumpEta":55,"miscElecKWhPerDay":50}},{"name":"成鱼期","weightStart":2000,"weightEnd":5000,"months":4,"FCR":1.2,"protein":0.4,"feedRate":0.0095,"peakFactor":1.5,"tempOpt":15,"density":70,"mortality":0.03,"turnover":3,"exchangeDaily":4,"feedPrice":12,"salinity":30,"DOmin_satRatio":0.75,"DOmin_abs":6,"o2BaseFactor":0.32,"o2Q10":2,"metabRefTemp":15,"proc":{"rdfTSS":75,"biofilterTAN":70,"uvDose":40,"uvFlowPct":10,"denitriFlowPct":10,"denitriEff":80,"rdfBackwash":2,"aerationMode":"o2","o2SatTarget":160,"o2AbsorptionEff":85,"alkTarget":150,"alkSource":100,"VTR20":500,"VDR20":800,"thetaNit":1.1,"thetaDen":1.08,"bfFillRatio":50,"o2DOMfactor":0.1,"sourceSS":10,"sourcePH":7.5,"sourceTemp":18,"hxEff":75,"heatPumpCOP_heat":4,"heatPumpCOP_cool":3,"thermalIncludeMetab":true,"thermalIncludeEquip":true,"thermalIncludeLoss":true,"metabBasalRate":0,"metabFeedFactor":1.5,"pumpHeatRatio":0.85,"uvHeatRatio":0.95,"tankIndoor":true,"roomTemp":20,"poolDepth":1.5,"poolUValue":5,"skimmerEnabled":true,"skimmerMode":"ozone","skimmerFlowPct":20,"skimmerDOMEffAir":40,"skimmerDOMEffOzone":70,"skimmerTSSEff":40,"skimmerHRT_min":2,"ozoneDose":0.01,"aopEnabled":true,"aopType":"integrated","aopFlowPct":5,"aopGeosminEff":90,"aopDOMRemoval":5,"aopHRT_min":2,"co2StripperEnabled":true,"co2StripperEff":65,"co2StripperGtoL":3,"co2StripperLoadingRate":80,"co2FallbackEff":5,"co2BlowerPressure_kPa":2.5,"co2BlowerEfficiency":60,"safetyBio":1.15,"safetyAerator":1.1,"safetyBFblow":1.1,"safetyRDF":1.1,"safetyDenitri":1.1,"safetySkimmer":1.1,"safetyCO2":1.15,"safetyUV":1.1,"mainPumpHead_m":12,"mainPumpEta":68,"denitriPumpHead_m":10,"denitriPumpEta":60,"uvPumpHead_m":10,"uvPumpEta":60,"aopPumpHead_m":10,"aopPumpEta":60,"skimmerPumpHead_m":6,"skimmerPumpEta":60,"rdfBackwashPumpHead_m":8,"rdfBackwashPumpEta":55,"miscElecKWhPerDay":50}}],"prices":{"elec":0.7,"o2":1.2,"methanol":3.5,"naHCO3":2.5},"equipPrices":{"rdf":500,"biofilter":4500,"uv":10000,"skimmer":25000,"ozone":100000,"aop":35000,"denitri":5500,"degas":20000,"mainPump":3500,"branchPump":3000,"blower":4000,"o2tower":350,"o2tank":100000,"heatPump":2000,"heatExch":1200,"totalFactor":2.2,"depYearsEquip":8,"depYearsCivil":20,"regionFactor":1,"scaleRefSize":1000,"scaleExponent":0.1},"capexFactor":2.2,"depYearsEquip":8,"depYearsCivil":20,"regionFactor":1,"scaleRefSize":1000,"scaleExponent":0.1,"results":{"perStage":[{"stageName":"苗种期","farm":{"biomass":3181.996829435495,"tankCount":null,"yearGrowth":11649.297773793514,"volume":106.06656098118316,"density":30},"load":{"feedMax":95.45990488306484,"feedAvg":31.915884311763055,"tanDaily":4.391155624620983,"tssDaily":28.63797146491945,"domDaily":9.545990488306485,"co2Daily":26.251473842842834,"o2DailyTotal":48.70555266943735,"o2PeakHourly":3.0440970418398345},"flow":{"volumeTank":106.06656098118316,"volumeTotal":182.01901779215527,"flowMain":424.26624392473263,"turnover":4,"tempOpt":12,"salinity":0},"equipment":{"rdf":{"tag":"F-201","flow":466.6928683172059,"tssEff":75,"backwashPct":2},"bf":{"tag":"B-301","volume":21.64951373778404,"tanEff":70,"designTAN":5.04982896831413,"fillRatio":50,"vtrAtT":233.25369010486654,"vdrAtT":432.2151076015806},"uv":{"tag":"D-401","flow":42.42662439247326,"dose":40,"powerKw":1.59},"co2":{"tag":"C-501","enabled":true,"eff":65,"gToL":3,"loadingRate":80,"spec":{"enabled":true,"area":6.098827256418032,"eff":65,"GtoL":3,"airFlow":1272.798731774198,"blowerKw":2.946293360588421,"pressure_kPa":5,"blowerEta":0.6,"basis":"循环 424 × G:L 3 × 5kPa / 60%η"}},"o2cone":{"tag":"A-601","enabled":true,"satTarget":170,"absorptionEff":85,"peakSupplyKgH":1.5442043436966375,"spec":{"mode":"纯氧增氧 (液氧 + 锥形增氧塔)","basis":"小时峰值 1.19 kg/h × safety 1.1 ÷ 吸收85%","param1Label":"峰值供氧能力","param1Value":"1.54 kg/h","param2Label":"锥形塔流量","param2Value":"424 m³/h","towerFlowM3h":424.26624392473263,"peakSupplyKgH":1.5442043436966375}},"skimmer":{"tag":"S-701","enabled":true,"mode":"ozone","flowPct":20,"domEff":70,"tssEff":40,"volume":3.1112857887813727,"ozoneKgD":0.9545990488306484},"aop":{"tag":"X-901","enabled":true,"type":"integrated","flowPct":5,"geosminEff":90,"domEff":5,"volume":0.707110406541221,"ozoneKgD":0.2545597463548396},"denitri":{"tag":"R-801","enabled":true,"flowPct":10,"no3Eff":80,"flow":42.42662439247326,"volume":8.605642759199883,"designNO3":3.71948881114834,"no3RemovedKgD":3.381353464680309,"methanolKgD":8.351943057760364},"ozoneGen":{"tag":"G-901","totalKgD":1.209158795185488,"powerKw":0.5038161646606201},"bfBlower":{"tag":"K-302","spec":{"basis":"小时峰值 1.85 kg/h × safety 1.1","o2PeakKgH":2.0359330538816764,"o2Demand":48.86239329316024,"airFlow":1.536785215792328,"power":2.1344239108226777}}},"pumps":{"main":{"tag":"P-101","kw":20.402214965204056,"flow":424.26624392473263,"headM":12,"eta":68,"vfd":true},"uvBranch":{"tag":"P-401","kw":1.926875857824827,"needed":true},"denitriBranch":{"tag":"P-601","kw":1.926875857824827,"needed":true},"aopBranch":{"tag":"P-701","kw":0.9634379289124139,"needed":true},"skimmerBranch":{"tag":"P-501","kw":2.312251029389793,"needed":true},"backwash":{"tag":"P-202","kw":0.33632742245669717,"duty":"RDF 反冲"},"totalKw":27.867983061612613},"thermal":{"needsThermal":true,"mode":"cool","tSource":18,"tTarget":12,"dT":-6,"heatPumpKWhPerDay":276.74426442467615,"heatPumpAvgKw":11.5,"hxEffPct":75,"cop":3,"qMakeupM3D":14.561521423372422},"instruments":[{"tag":"DO-101","type":"DO","loc":"T-101","controlsTo":"P-101_VFD"},{"tag":"pH-102","type":"pH","loc":"T-101","controlsTo":"NaHCO3_dosing"},{"tag":"TT-103","type":"T","loc":"T-101","controlsTo":"H-801"},{"tag":"LT-104","type":"L","loc":"T-101"},{"tag":"PDS-201","type":"PDS","loc":"F-201"},{"tag":"DO-301","type":"DO","loc":"B-301"},{"tag":"AT-302","type":"TAN","loc":"B-301_out"},{"tag":"DO-601","type":"DO","loc":"A-601"}]},{"stageName":"幼鱼期","farm":{"biomass":41087.70357089496,"tankCount":null,"yearGrowth":96649.48453608247,"volume":821.7540714178992,"density":50},"load":{"feedMax":616.3155535634244,"feedAvg":291.2724191498376,"tanDaily":25.515463917525768,"tssDaily":184.8946660690273,"domDaily":61.63155535634244,"co2Daily":178.91131466104906,"o2DailyTotal":308.3545452129254,"o2PeakHourly":19.27215907580784},"flow":{"volumeTank":821.7540714178992,"volumeTotal":1198.5068093083928,"flowMain":2465.2622142536975,"turnover":3,"tempOpt":14,"salinity":0},"equipment":{"rdf":{"tag":"F-201","flow":2711.7884356790673,"tssEff":75,"backwashPct":2},"bf":{"tag":"B-301","volume":103.96506177835055,"tanEff":70,"designTAN":29.34278350515463,"fillRatio":50,"vtrAtT":282.2369650268885,"vdrAtT":504.13570150648366},"uv":{"tag":"D-401","flow":246.52622142536973,"dose":40,"powerKw":9.22},"co2":{"tag":"C-501","enabled":true,"eff":65,"gToL":3,"loadingRate":80,"spec":{"enabled":true,"area":35.4381443298969,"eff":65,"GtoL":3,"airFlow":7395.7866427610925,"blowerKw":17.119876487872897,"pressure_kPa":5,"blowerEta":0.6,"basis":"循环 2465 × G:L 3 × 5kPa / 60%η"}},"o2cone":{"tag":"A-601","enabled":true,"satTarget":165,"absorptionEff":85,"peakSupplyKgH":10.52419498006171,"spec":{"mode":"纯氧增氧 (液氧 + 锥形增氧塔)","basis":"小时峰值 8.13 kg/h × safety 1.1 ÷ 吸收85%","param1Label":"峰值供氧能力","param1Value":"10.52 kg/h","param2Label":"锥形塔流量","param2Value":"2465 m³/h","towerFlowM3h":2465.2622142536975,"peakSupplyKgH":10.52419498006171}},"skimmer":{"tag":"S-701","enabled":true,"mode":"ozone","flowPct":20,"domEff":70,"tssEff":40,"volume":18.07858957119378,"ozoneKgD":6.163155535634244},"aop":{"tag":"X-901","enabled":true,"type":"integrated","flowPct":5,"geosminEff":90,"domEff":5,"volume":4.108770357089496,"ozoneKgD":1.4791573285522186},"denitri":{"tag":"R-801","enabled":true,"flowPct":10,"no3Eff":80,"flow":246.52622142536973,"volume":42.870686946970324,"designNO3":21.612643838075737,"no3RemovedKgD":19.647858034614305,"methanolKgD":48.53020934549734},"ozoneGen":{"tag":"G-901","totalKgD":7.642312864186463,"powerKw":3.18429702674436},"bfBlower":{"tag":"K-302","spec":{"basis":"小时峰值 11.14 kg/h × safety 1.1","o2PeakKgH":12.25380925033617,"o2Demand":294.0914220080681,"airFlow":9.249554083889016,"power":12.8466028942903}}},"pumps":{"main":{"tag":"P-101","kw":118.55010942072929,"flow":2465.2622142536975,"headM":12,"eta":68,"vfd":true},"uvBranch":{"tag":"P-401","kw":11.196399223068875,"needed":true},"denitriBranch":{"tag":"P-601","kw":11.196399223068875,"needed":true},"aopBranch":{"tag":"P-701","kw":5.598199611534439,"needed":true},"skimmerBranch":{"tag":"P-501","kw":13.435679067682653,"needed":true},"backwash":{"tag":"P-202","kw":1.9542805916629309,"duty":"RDF 反冲"},"totalKw":161.93106713774705},"thermal":{"needsThermal":true,"mode":"cool","tSource":18,"tTarget":14,"dT":-4,"heatPumpKWhPerDay":1787.174517533782,"heatPumpAvgKw":74.5,"hxEffPct":75,"cop":3,"qMakeupM3D":71.91040855850356},"instruments":[{"tag":"DO-101","type":"DO","loc":"T-101","controlsTo":"P-101_VFD"},{"tag":"pH-102","type":"pH","loc":"T-101","controlsTo":"NaHCO3_dosing"},{"tag":"TT-103","type":"T","loc":"T-101","controlsTo":"H-801"},{"tag":"LT-104","type":"L","loc":"T-101"},{"tag":"PDS-201","type":"PDS","loc":"F-201"},{"tag":"DO-301","type":"DO","loc":"B-301"},{"tag":"AT-302","type":"TAN","loc":"B-301_out"},{"tag":"DO-601","type":"DO","loc":"A-601"}]},{"stageName":"中鱼期","farm":{"biomass":131550.6872852234,"tankCount":null,"yearGrowth":309278.350515464,"volume":2192.5114547537232,"density":60},"load":{"feedMax":1315.506872852234,"feedAvg":1016.8055359412514,"tanDaily":50.83118556701032,"tssDaily":394.6520618556702,"domDaily":131.5506872852234,"co2Daily":409.2896854161826,"o2DailyTotal":661.5144310836843,"o2PeakHourly":41.344651942730266},"flow":{"volumeTank":2192.5114547537232,"volumeTotal":2991.71318139608,"flowMain":5481.278636884308,"turnover":2.5,"tempOpt":15,"salinity":12},"equipment":{"rdf":{"tag":"F-201","flow":6029.40650057274,"tssEff":75,"backwashPct":2},"bf":{"tag":"B-301","volume":213.96307401739702,"tanEff":70,"designTAN":58.455863402061865,"fillRatio":50,"vtrAtT":273.20538214602817,"vdrAtT":544.4665576270023},"uv":{"tag":"D-401","flow":548.1278636884308,"dose":40,"powerKw":20.5},"co2":{"tag":"C-501","enabled":true,"eff":65,"gToL":3,"loadingRate":80,"spec":{"enabled":true,"area":78.79338040521192,"eff":65,"GtoL":3,"airFlow":16443.835910652924,"blowerKw":38.06443497836325,"pressure_kPa":5,"blowerEta":0.6,"basis":"循环 5481 × G:L 3 × 5kPa / 60%η"}},"o2cone":{"tag":"A-601","enabled":true,"satTarget":165,"absorptionEff":85,"peakSupplyKgH":24.07586384801074,"spec":{"mode":"纯氧增氧 (液氧 + 锥形增氧塔)","basis":"小时峰值 18.60 kg/h × safety 1.1 ÷ 吸收85%","param1Label":"峰值供氧能力","param1Value":"24.08 kg/h","param2Label":"锥形塔流量","param2Value":"5481 m³/h","towerFlowM3h":5481.278636884308,"peakSupplyKgH":24.07586384801074}},"skimmer":{"tag":"S-701","enabled":true,"mode":"ozone","flowPct":20,"domEff":70,"tssEff":40,"volume":40.19604333715159,"ozoneKgD":13.15506872852234},"aop":{"tag":"X-901","enabled":true,"type":"integrated","flowPct":5,"geosminEff":90,"domEff":5,"volume":9.13546439480718,"ozoneKgD":3.288767182130585},"denitri":{"tag":"R-801","enabled":true,"flowPct":10,"no3Eff":80,"flow":548.1278636884308,"volume":79.0794166958121,"designNO3":43.05609778752011,"no3RemovedKgD":39.14190707956373,"methanolKgD":96.68051048652242},"ozoneGen":{"tag":"G-901","totalKgD":16.443835910652925,"powerKw":6.851598296105386},"bfBlower":{"tag":"K-302","spec":{"basis":"小时峰值 22.74 kg/h × safety 1.1","o2PeakKgH":25.01463286619417,"o2Demand":600.35118878866,"airFlow":18.881818286680378,"power":26.224747620389415}}},"pumps":{"main":{"tag":"P-101","kw":263.58501680311304,"flow":5481.278636884308,"headM":12,"eta":68,"vfd":true},"uvBranch":{"tag":"P-401","kw":24.894140475849564,"needed":true},"denitriBranch":{"tag":"P-601","kw":24.894140475849564,"needed":true},"aopBranch":{"tag":"P-701","kw":12.447070237924782,"needed":true},"skimmerBranch":{"tag":"P-501","kw":29.87296857101948,"needed":true},"backwash":{"tag":"P-202","kw":4.34515906487556,"duty":"RDF 反冲"},"totalKw":360.03849562863195},"thermal":{"needsThermal":true,"mode":"cool","tSource":18,"tTarget":15,"dT":-3,"heatPumpKWhPerDay":4188.46215953967,"heatPumpAvgKw":174.5,"hxEffPct":75,"cop":3,"qMakeupM3D":149.585659069804},"instruments":[{"tag":"DO-101","type":"DO","loc":"T-101","controlsTo":"P-101_VFD"},{"tag":"pH-102","type":"pH","loc":"T-101","controlsTo":"NaHCO3_dosing"},{"tag":"TT-103","type":"T","loc":"T-101","controlsTo":"H-801"},{"tag":"LT-104","type":"L","loc":"T-101"},{"tag":"PDS-201","type":"PDS","loc":"F-201"},{"tag":"DO-301","type":"DO","loc":"B-301"},{"tag":"AT-302","type":"TAN","loc":"B-301_out"},{"tag":"DO-601","type":"DO","loc":"A-601"}]},{"stageName":"成鱼期","farm":{"biomass":236941.58075601372,"tankCount":null,"yearGrowth":600000,"volume":3384.87972508591,"density":70},"load":{"feedMax":2250.9450171821304,"feedAvg":1972.6027397260275,"tanDaily":82.83477663230241,"tssDaily":675.2835051546391,"domDaily":225.09450171821305,"co2Daily":700.329733720124,"o2DailyTotal":1112.9801463606525,"o2PeakHourly":69.56125914754078},"flow":{"volumeTank":3384.87972508591,"volumeTotal":4894.180020774394,"flowMain":10154.639175257731,"turnover":3,"tempOpt":15,"salinity":30},"equipment":{"rdf":{"tag":"F-201","flow":11170.103092783505,"tssEff":75,"backwashPct":2},"bf":{"tag":"B-301","volume":438.3347758034366,"tanEff":70,"designTAN":95.25999312714777,"fillRatio":50,"vtrAtT":217.3224630707042,"vdrAtT":544.4665576270023},"uv":{"tag":"D-401","flow":1015.4639175257731,"dose":40,"powerKw":37.98},"co2":{"tag":"C-501","enabled":true,"eff":65,"gToL":3,"loadingRate":80,"spec":{"enabled":true,"area":145.97293814432987,"eff":65,"GtoL":3,"airFlow":30463.91752577319,"blowerKw":70.51832760595647,"pressure_kPa":5,"blowerEta":0.6,"basis":"循环 10155 × G:L 3 × 5kPa / 60%η"}},"o2cone":{"tag":"A-601","enabled":true,"satTarget":160,"absorptionEff":85,"peakSupplyKgH":41.195866689419056,"spec":{"mode":"纯氧增氧 (液氧 + 锥形增氧塔)","basis":"小时峰值 31.83 kg/h × safety 1.1 ÷ 吸收85%","param1Label":"峰值供氧能力","param1Value":"41.20 kg/h","param2Label":"锥形塔流量","param2Value":"10155 m³/h","towerFlowM3h":10154.639175257731,"peakSupplyKgH":41.195866689419056}},"skimmer":{"tag":"S-701","enabled":true,"mode":"ozone","flowPct":20,"domEff":70,"tssEff":40,"volume":74.46735395189005,"ozoneKgD":22.509450171821303},"aop":{"tag":"X-901","enabled":true,"type":"integrated","flowPct":5,"geosminEff":90,"domEff":5,"volume":16.924398625429554,"ozoneKgD":6.092783505154639},"denitri":{"tag":"R-801","enabled":true,"flowPct":10,"no3Eff":80,"flow":1015.4639175257731,"volume":129.4187595455275,"designNO3":70.46418650211011,"no3RemovedKgD":64.05835136555464,"methanolKgD":158.22412787291998},"ozoneGen":{"tag":"G-901","totalKgD":28.602233676975942,"powerKw":11.917597365406642},"bfBlower":{"tag":"K-302","spec":{"basis":"小时峰值 37.73 kg/h × safety 1.1","o2PeakKgH":41.50089837628866,"o2Demand":996.0215610309278,"airFlow":31.326161213986,"power":43.508557241647225}}},"pumps":{"main":{"tag":"P-101","kw":488.31867798665854,"flow":10154.639175257731,"headM":12,"eta":68,"vfd":true},"uvBranch":{"tag":"P-401","kw":46.118986254295535,"needed":true},"denitriBranch":{"tag":"P-601","kw":46.118986254295535,"needed":true},"aopBranch":{"tag":"P-701","kw":23.059493127147768,"needed":true},"skimmerBranch":{"tag":"P-501","kw":55.34278350515465,"needed":true},"backwash":{"tag":"P-202","kw":8.049859418931582,"duty":"RDF 反冲"},"totalKw":667.0087865464836},"thermal":{"needsThermal":true,"mode":"cool","tSource":18,"tTarget":15,"dT":-3,"heatPumpKWhPerDay":7259.579017125288,"heatPumpAvgKw":302.5,"hxEffPct":75,"cop":3,"qMakeupM3D":195.76720083097575},"instruments":[{"tag":"DO-101","type":"DO","loc":"T-101","controlsTo":"P-101_VFD"},{"tag":"pH-102","type":"pH","loc":"T-101","controlsTo":"NaHCO3_dosing"},{"tag":"TT-103","type":"T","loc":"T-101","controlsTo":"H-801"},{"tag":"LT-104","type":"L","loc":"T-101"},{"tag":"PDS-201","type":"PDS","loc":"F-201"},{"tag":"DO-301","type":"DO","loc":"B-301"},{"tag":"AT-302","type":"TAN","loc":"B-301_out"},{"tag":"DO-601","type":"DO","loc":"A-601"}]}],"summary":{"designStage":"成鱼期","designStageIdx":3,"totalLOXKgD":2131.6,"peakFlowM3H":10155,"totalSystemVolume":9266,"tagPrefix":"salmon-1000t"}}}
+</script>
+
+<script>
+"use strict";
+
+// ============================================================================
+// iRAS P&ID v2.0 骨架 — 数据载入 + Inspector + 图层切换
+//
+// M1 进度:
+//  ✅ 拖拽/选择 JSON 载入
+//  ✅ pidSchema 校验 + 错误提示
+//  ✅ 数据树展示 (按阶段)
+//  ✅ 图层切换 (DOM 已就位, 内容待 M1 后续填充)
+//  ✅ 内嵌示例 JSON (零依赖演示)
+//  ⬜ 设备符号渲染 (M1 步骤 3-4)
+//  ⬜ 正交路由 (M1 步骤 5)
+//  ⬜ 出版级抛光 (M1 步骤 7)
+// ============================================================================
+
+const STATE = {
+  data: null,
+  designStageIdx: null,
+};
+
+const SUPPORTED_SCHEMA_MAJOR = 1;
+
+// 用一个 hex 校验 sentinel 是否还在 (没被注入工具替换). 拼接构造避免被简单 string-replace 命中
+const UNINJECTED_SENTINEL_HEX = '9d7e2a4';
+function looksLikePlaceholder(txt) {
+  // 形如 %%---SAMPLE-PAYLOAD-INJECT-HERE-XXXX---%% 的串都视作未注入
+  return /^%%-+SAMPLE-PAYLOAD-INJECT-HERE-[0-9a-f]+-+%%$/i.test(txt);
+}
+
+// ─── 工具 ─────────────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+function fmtBytes(n) {
+  if (n < 1024) return n + ' B';
+  if (n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+  return (n/1024/1024).toFixed(2) + ' MB';
+}
+function fmtNum(v) {
+  if (v == null || isNaN(v)) return '—';
+  if (Math.abs(v) >= 1000) return Math.round(v).toLocaleString();
+  if (Math.abs(v) >= 100)  return v.toFixed(0);
+  if (Math.abs(v) >= 10)   return v.toFixed(1);
+  if (Math.abs(v) >= 1)    return v.toFixed(2);
+  return v.toFixed(3);
+}
+function toast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), type === 'error' ? 5000 : 2800);
+}
+
+// ─── 渲染引擎 ─────────────────────────────────────────────────
+// 设计原则:
+//  • 所有坐标来自 GRID, 不允许在调用点出现魔数
+//  • 设备绘制函数返回 { node, ports }, ports 是命名锚点字典
+//  • 连线声明式: drawMainLine(fromPort, toPort, label) — 引擎算坐标
+//  • 第一版用直线连接, 步骤 5 升级正交路由
+// ──────────────────────────────────────────────────────────────
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+const GRID = {
+  cellW: 360,         // 列间距 (设备中心 → 中心) — 拉宽给支路一行 4 设备分布留空间
+  marginX: 60,
+  marginY: 40,
+  bands: {
+    source:  { y:  100, label: '源水预处理 SOURCE WATER' },
+    main:    { y:  220, label: '主循环 MAIN PROCESS' },
+    bypass:  { y:  560, label: '旁路工艺 BYPASS' },
+    utility: { y:  900, label: '公用工程 UTILITY' },
+    chem:    { y: 1100, label: '化学品计量 CHEMICAL' },
+  },
+  // (v2.1: bypass 回到单行, 不再用 bypassRowY)
+  bypassRowY: function(rowIdx) { return 560; },   // 兼容老代码
+  eq:      { w: 180, h: 110 },
+  eqSmall: { w: 140, h:  80 },
+  pump:    { r:  18 },
+};
+
+/**
+ * 根据 (band, col) 返回设备中心 x,y. col 是 0-indexed.
+ */
+function gridCenter(band, col) {
+  return {
+    x: GRID.marginX + col * GRID.cellW + GRID.eq.w / 2,
+    y: GRID.bands[band].y + GRID.eq.h / 2,
+  };
+}
+
+/**
+ * SVG 元素辅助构造
+ */
+function svgEl(name, attrs, parent) {
+  const el = document.createElementNS(SVG_NS, name);
+  if (attrs) {
+    for (const k in attrs) {
+      if (attrs[k] != null) el.setAttribute(k, attrs[k]);
+    }
+  }
+  if (parent) parent.appendChild(el);
+  return el;
+}
+
+/**
+ * 设备框. 返回 { node, ports }
+ *   node:  <g>, 已 append 到 parent
+ *   ports: { left, right, top, bottom, in, out, center } 各为 {x,y}
+ *
+ * params 是 [string, ...] — 内部参数行 (3-4 行)
+ */
+// ─── 设备图标库 v2.1 ─────────────────────────────────────────
+// 每个 tag 对应一个 ISA 风格的工程图标. 图标在标准 200x140 viewBox 内绘制.
+// ports 用相对坐标 (200x140 系内). 渲染时缩放到实际尺寸.
+//
+// 端口命名约定:
+//   in   - 主进水
+//   out  - 主出水
+//   air  - 空气进 (MBBR / CO2 塔 / 蛋分)
+//   gas  - 气体出 (CO2 塔顶)
+//   o2   - 氧气进 (增氧锥 / AOP)
+//   foam - 泡沫排出 (蛋分)
+//   carbon - 碳源加注 (反硝化)
+//
+// renderer 通过 'left/right/top/bottom' 访问端口时, 我们做语义映射:
+//   left  → in
+//   right → out
+//   top   → 默认 in (顶进设备如 CO2 塔) 或 air (底进设备)
+//   bottom → 默认 out (底出设备) 或 air
+const EQUIP_ICON_VBOX_W = 200;
+const EQUIP_ICON_VBOX_H = 140;
+
+const EQUIP_ICONS = {
+  // S-101 集水池 (矮宽矩形 + 水位线 + 排泥锥底, v1.3.x)
+  'S-101': {
+    inner: `
+      <!-- 池体: 矮宽矩形, 表示鱼池底排重力流汇集 -->
+      <path class="eq-stroke eq-fill-water"
+            d="M 25 50 L 25 100 L 95 120 L 105 120 L 175 100 L 175 50 Z" />
+      <!-- 水位线 (距池顶 ~8) -->
+      <line x1="25" y1="58" x2="175" y2="58" class="eq-stroke-thin" stroke="#5A8AB8"/>
+      <g class="eq-stroke-thin" stroke="#5A8AB8" fill="none">
+        <path d="M 35 68 Q 45 64 55 68 T 75 68 T 95 68 T 115 68 T 135 68 T 155 68 T 165 68"/>
+        <path d="M 45 84 Q 60 80 75 84 T 105 84 T 135 84 T 155 84"/>
+      </g>
+      <!-- 进水: 左侧水平 (从主管直接进入, 避免 90° 拐弯) -->
+      <line x1="15" y1="68" x2="25" y2="68" class="eq-stroke"/>
+      <!-- 出水: 右侧 (送主泵) -->
+      <line x1="175" y1="80" x2="185" y2="80" class="eq-stroke"/>
+      <!-- 排泥: 底部 V 形锥底标识 -->
+      <line x1="100" y1="120" x2="100" y2="130" class="eq-stroke-thin"/>
+      <!-- 液位计 LG (右侧小圆) -->
+      <circle cx="170" cy="62" r="5" class="eq-stroke-thin" fill="#fff"/>
+      <text x="170" y="65" text-anchor="middle" font-family="ui-monospace,monospace" font-size="6" fill="#5C5B57">LG</text>
+    `,
+    ports: {
+      in:     { x:  15, y:  68, dir: 'W' },     // v1.3.x: 左侧水平进水 (从主管直接进, 不再拐弯)
+      out:    { x: 185, y:  80, dir: 'E' },     // 右侧出水 (送主泵)
+      left:   { x:  15, y:  68, dir: 'W' },
+      right:  { x: 185, y:  80, dir: 'E' },
+      top:    { x: 100, y:  50, dir: 'N' },
+      bottom: { x: 100, y: 130, dir: 'S' },
+    },
+  },
+  // T-101 鱼池 (侧视矩形水池)
+  'T-101': {
+    inner: `
+      <path class="eq-stroke eq-fill-water"
+            d="M 30 38 L 30 110 L 170 110 L 170 38" />
+      <line x1="32" y1="46" x2="168" y2="46" class="eq-stroke-thin" stroke="#5A8AB8"/>
+      <g class="eq-stroke-thin" stroke="#5A8AB8" fill="none">
+        <path d="M 40 56 Q 48 52 56 56 T 72 56 T 88 56 T 104 56 T 120 56 T 136 56 T 152 56 T 160 56"/>
+        <path d="M 50 70 Q 60 66 70 70 T 90 70 T 110 70 T 130 70 T 150 70"/>
+      </g>
+      <g fill="#5A8AB8">
+        <path d="M 70 84 L 78 80 L 82 84 L 78 88 Z M 65 84 L 70 81 L 70 87 Z" />
+        <path d="M 110 92 L 118 88 L 122 92 L 118 96 Z M 105 92 L 110 89 L 110 95 Z" />
+      </g>
+      <line x1="30" y1="110" x2="100" y2="118" class="eq-stroke-thin"/>
+      <line x1="100" y1="118" x2="170" y2="110" class="eq-stroke-thin"/>
+      <!-- 出水管: 水池右下角接弯头, 表示侧抽出水 -->
+      <line x1="170" y1="98" x2="180" y2="98" class="eq-stroke"/>
+    `,
+    ports: {
+      in:     { x:  50, y:  38, dir: 'N' },     // 顶部进水 (左偏)
+      out:    { x: 180, y:  98, dir: 'E' },     // 右侧底部出水 (RAS 侧抽)
+      left:   { x:  30, y:  74, dir: 'W' },
+      right:  { x: 180, y:  98, dir: 'E' },
+      top:    { x:  50, y:  38, dir: 'N' },
+      bottom: { x: 100, y: 118, dir: 'S' },
+    },
+  },
+  // F-201 微滤机 (倾斜转鼓)
+  'F-201': {
+    inner: `
+      <ellipse cx="100" cy="70" rx="58" ry="34" class="eq-stroke eq-fill-light"/>
+      <g class="eq-stroke-thin" fill="none">
+        <circle cx="76" cy="60" r="2"/><circle cx="92" cy="56" r="2"/>
+        <circle cx="108" cy="58" r="2"/><circle cx="124" cy="62" r="2"/>
+        <circle cx="80" cy="74" r="2"/><circle cx="96" cy="72" r="2"/>
+        <circle cx="112" cy="74" r="2"/>
+        <circle cx="84" cy="86" r="2"/><circle cx="100" cy="86" r="2"/>
+        <circle cx="116" cy="86" r="2"/>
+      </g>
+      <line x1="42" y1="70" x2="158" y2="70" class="eq-stroke-thin"/>
+      <circle cx="100" cy="70" r="3" class="eq-stroke eq-fill-medium"/>
+    `,
+    ports: {
+      in:     { x:  42, y:  70, dir: 'W' },
+      out:    { x: 158, y:  70, dir: 'E' },
+      left:   { x:  42, y:  70, dir: 'W' },
+      right:  { x: 158, y:  70, dir: 'E' },
+      top:    { x: 100, y:  36, dir: 'N' },
+      bottom: { x: 100, y: 104, dir: 'S' },
+    },
+  },
+  // B-301 MBBR 生物滤池
+  'B-301': {
+    inner: `
+      <rect x="60" y="20" width="80" height="100" rx="4" class="eq-stroke eq-fill-water"/>
+      <path class="eq-stroke" d="M 60 28 Q 100 12 140 28" fill="#E8EFF7"/>
+      <g class="eq-stroke-thin" fill="#fff">
+        <circle cx="74" cy="60" r="3"/><circle cx="86" cy="68" r="3"/>
+        <circle cx="100" cy="58" r="3"/><circle cx="116" cy="64" r="3"/>
+        <circle cx="128" cy="58" r="3"/><circle cx="78" cy="76" r="3"/>
+        <circle cx="92" cy="80" r="3"/><circle cx="108" cy="76" r="3"/>
+        <circle cx="122" cy="78" r="3"/><circle cx="84" cy="92" r="3"/>
+        <circle cx="100" cy="94" r="3"/><circle cx="118" cy="92" r="3"/>
+      </g>
+      <line x1="64" y1="108" x2="136" y2="108" class="eq-stroke"/>
+      <g fill="#8B6F47">
+        <circle cx="72" cy="104" r="1.2"/><circle cx="84" cy="104" r="1.2"/>
+        <circle cx="96" cy="104" r="1.2"/><circle cx="108" cy="104" r="1.2"/>
+        <circle cx="120" cy="104" r="1.2"/><circle cx="132" cy="104" r="1.2"/>
+      </g>
+    `,
+    ports: {
+      in:     { x:  60, y:  40, dir: 'W' },
+      out:    { x: 140, y:  40, dir: 'E' },
+      air:    { x: 100, y: 120, dir: 'S' },
+      left:   { x:  60, y:  40, dir: 'W' },
+      right:  { x: 140, y:  40, dir: 'E' },
+      top:    { x: 100, y:  20, dir: 'N' },
+      bottom: { x: 100, y: 120, dir: 'S' },
+    },
+  },
+  // C-501 CO2 脱气塔 (高瘦塔, 逆流脱气: 水顶进, 空气底进, CO2 顶出, 水底出)
+  'C-501': {
+    inner: `
+      <rect x="75" y="14" width="50" height="112" rx="3" class="eq-stroke eq-fill-light"/>
+      <path class="eq-stroke" d="M 75 22 Q 100 6 125 22" fill="#FAFAF7"/>
+      <g class="eq-stroke-thin" fill="none">
+        <path d="M 80 36 Q 88 32 96 36 T 120 36"/>
+        <path d="M 80 50 Q 88 46 96 50 T 120 50"/>
+        <path d="M 80 64 Q 88 60 96 64 T 120 64"/>
+        <path d="M 80 78 Q 88 74 96 78 T 120 78"/>
+        <path d="M 80 92 Q 88 88 96 92 T 120 92"/>
+        <path d="M 80 106 Q 88 102 96 106 T 120 106"/>
+      </g>
+      <line x1="78" y1="28" x2="122" y2="28" class="eq-stroke-thin"/>
+      <!-- CO2 气出: 塔顶 -->
+      <line x1="100" y1="14" x2="100" y2="6" class="eq-stroke"/>
+      <!-- 水进: 塔顶左侧水平短管 (逆流脱气: 水顶进) -->
+      <line x1="60" y1="22" x2="75" y2="22" class="eq-stroke"/>
+      <!-- 水出: 塔底右侧水平短管 (脱气后水底出) -->
+      <line x1="125" y1="118" x2="140" y2="118" class="eq-stroke"/>
+      <!-- 空气进: 塔底左侧 -->
+      <line x1="75" y1="118" x2="60" y2="118" class="eq-stroke"/>
+      <line x1="60" y1="118" x2="60" y2="130" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+    `,
+    ports: {
+      in:     { x:  60, y:  22, dir: 'W' },     // 主进水: 塔顶左侧 (从左水平进入塔顶)
+      out:    { x: 140, y: 118, dir: 'E' },     // 主出水: 塔底右侧 (向右水平流出)
+      gas:    { x: 100, y:   6, dir: 'N' },     // CO2 出 - 顶
+      air:    { x:  60, y: 130, dir: 'S' },     // 空气进 - 底左侧
+      // 兼容映射
+      left:   { x:  60, y:  22, dir: 'W' },
+      right:  { x: 140, y: 118, dir: 'E' },
+      top:    { x: 100, y:   6, dir: 'N' },
+      bottom: { x: 100, y: 126, dir: 'S' },
+    },
+  },
+  // A-601 增氧锥 (Speece cone, 顶窄底宽 — 水从顶进, 在锥内流速渐降, 底出)
+  'A-601': {
+    inner: `
+      <!-- 正锥形: 顶窄底宽 -->
+      <path class="eq-stroke eq-fill-water" d="M 90 24 L 110 24 L 150 116 L 50 116 Z"/>
+      <!-- 内部水流纹: 表示水流向下 + 渐扩散 -->
+      <g class="eq-stroke-thin" stroke="#5A8AB8" fill="none">
+        <path d="M 78 88 Q 100 92 122 88"/>
+        <path d="M 70 72 Q 100 78 130 72"/>
+        <path d="M 64 56 Q 100 64 136 56"/>
+        <path d="M 60 40 Q 100 50 140 40"/>
+      </g>
+      <!-- 锥底盖板 -->
+      <line x1="50" y1="116" x2="150" y2="116" class="eq-stroke"/>
+      <!-- 进水接头: 锥顶左侧水平短管 (主流程从左水平进入) -->
+      <line x1="60" y1="24" x2="90" y2="24" class="eq-stroke"/>
+      <!-- O2 进: 锥顶右侧 -->
+      <line x1="110" y1="24" x2="140" y2="24" class="eq-stroke"/>
+      <line x1="140" y1="24" x2="140" y2="14" class="eq-stroke"/>
+      <!-- 出水管: 锥底中央向下 -->
+      <line x1="100" y1="116" x2="100" y2="126" class="eq-stroke"/>
+    `,
+    ports: {
+      in:     { x:  60, y:  24, dir: 'W' },     // 锥顶左侧水平进入
+      out:    { x: 100, y: 126, dir: 'S' },     // 锥底出水
+      o2:     { x: 140, y:  14, dir: 'N' },     // 顶部 O₂ 进
+      left:   { x:  60, y:  24, dir: 'W' },
+      right:  { x: 150, y: 116, dir: 'E' },     // 锥底右角
+      top:    { x: 100, y:  24, dir: 'N' },     // 锥顶 (回流主管用)
+      bottom: { x: 100, y: 126, dir: 'S' },
+    },
+  },
+  // S-701 蛋白分离器
+  'S-701': {
+    inner: `
+      <rect x="80" y="40" width="40" height="80" rx="3" class="eq-stroke eq-fill-water"/>
+      <ellipse cx="100" cy="32" rx="28" ry="14" class="eq-stroke eq-fill-light"/>
+      <line x1="80" y1="40" x2="80" y2="32" class="eq-stroke"/>
+      <line x1="120" y1="40" x2="120" y2="32" class="eq-stroke"/>
+      <g fill="#fff" class="eq-stroke-thin">
+        <circle cx="88" cy="60" r="2"/><circle cx="100" cy="56" r="2.5"/>
+        <circle cx="112" cy="60" r="2"/><circle cx="92" cy="76" r="2.5"/>
+        <circle cx="108" cy="74" r="2"/><circle cx="100" cy="90" r="2"/>
+        <circle cx="88" cy="94" r="1.5"/><circle cx="112" cy="92" r="2"/>
+      </g>
+      <line x1="100" y1="18" x2="100" y2="8" class="eq-stroke"/>
+      <line x1="80" y1="60" x2="64" y2="60" class="eq-stroke"/>
+      <line x1="120" y1="100" x2="136" y2="100" class="eq-stroke"/>
+      <line x1="100" y1="120" x2="100" y2="130" class="eq-stroke"/>
+    `,
+    ports: {
+      in:     { x:  64, y:  60, dir: 'W' },
+      out:    { x: 136, y: 100, dir: 'E' },
+      foam:   { x: 100, y:   8, dir: 'N' },
+      air:    { x: 100, y: 130, dir: 'S' },
+      left:   { x:  64, y:  60, dir: 'W' },
+      right:  { x: 136, y: 100, dir: 'E' },
+      top:    { x: 100, y:   8, dir: 'N' },
+      bottom: { x: 100, y: 130, dir: 'S' },
+    },
+  },
+  // D-401 UV 消毒
+  'D-401': {
+    inner: `
+      <rect x="36" y="46" width="128" height="48" rx="6" class="eq-stroke eq-fill-light"/>
+      <ellipse cx="36" cy="70" rx="6" ry="24" class="eq-stroke eq-fill-light"/>
+      <ellipse cx="164" cy="70" rx="6" ry="24" class="eq-stroke eq-fill-light"/>
+      <line x1="44" y1="58" x2="156" y2="58" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+      <line x1="44" y1="70" x2="156" y2="70" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+      <line x1="44" y1="82" x2="156" y2="82" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+      <text x="100" y="74" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#5C2A8B">UV</text>
+      <line x1="30" y1="70" x2="18" y2="70" class="eq-stroke"/>
+      <line x1="170" y1="70" x2="182" y2="70" class="eq-stroke"/>
+    `,
+    ports: {
+      in:     { x:  18, y:  70, dir: 'W' },
+      out:    { x: 182, y:  70, dir: 'E' },
+      left:   { x:  18, y:  70, dir: 'W' },
+      right:  { x: 182, y:  70, dir: 'E' },
+      top:    { x: 100, y:  46, dir: 'N' },
+      bottom: { x: 100, y:  94, dir: 'S' },
+    },
+  },
+  // R-801 反硝化反应器
+  'R-801': {
+    inner: `
+      <rect x="60" y="20" width="80" height="100" rx="4" class="eq-stroke eq-fill-light"/>
+      <path class="eq-stroke" d="M 60 28 Q 100 12 140 28" fill="#FAFAF7"/>
+      <g class="eq-stroke-thin">
+        <line x1="68" y1="42" x2="132" y2="42"/>
+        <line x1="68" y1="56" x2="132" y2="56"/>
+        <line x1="68" y1="70" x2="132" y2="70"/>
+        <line x1="68" y1="84" x2="132" y2="84"/>
+        <line x1="68" y1="98" x2="132" y2="98"/>
+        <line x1="76" y1="38" x2="76" y2="102"/>
+        <line x1="92" y1="38" x2="92" y2="102"/>
+        <line x1="108" y1="38" x2="108" y2="102"/>
+        <line x1="124" y1="38" x2="124" y2="102"/>
+      </g>
+      <text x="100" y="116" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" font-weight="600" fill="#3D7A3D">NO₃→N₂</text>
+      <line x1="100" y1="20" x2="100" y2="10" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+    `,
+    ports: {
+      in:     { x:  60, y:  40, dir: 'W' },
+      out:    { x: 140, y:  40, dir: 'E' },
+      carbon: { x: 100, y:  10, dir: 'N' },
+      left:   { x:  60, y:  40, dir: 'W' },
+      right:  { x: 140, y:  40, dir: 'E' },
+      top:    { x: 100, y:  10, dir: 'N' },
+      bottom: { x: 100, y: 120, dir: 'S' },
+    },
+  },
+  // X-901 AOP 高级氧化
+  'X-901': {
+    inner: `
+      <rect x="36" y="36" width="128" height="68" rx="6" class="eq-stroke eq-fill-light"/>
+      <ellipse cx="36" cy="70" rx="6" ry="34" class="eq-stroke eq-fill-light"/>
+      <ellipse cx="164" cy="70" rx="6" ry="34" class="eq-stroke eq-fill-light"/>
+      <line x1="44" y1="50" x2="156" y2="50" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+      <line x1="44" y1="60" x2="156" y2="60" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+      <text x="100" y="56" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" font-weight="600" fill="#5C2A8B">UV</text>
+      <g fill="#fff" class="eq-stroke-thin">
+        <circle cx="60" cy="86" r="2"/><circle cx="76" cy="92" r="2.5"/>
+        <circle cx="92" cy="84" r="2"/><circle cx="108" cy="90" r="2.5"/>
+        <circle cx="124" cy="86" r="2"/><circle cx="140" cy="92" r="2"/>
+      </g>
+      <text x="100" y="100" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" font-weight="600" fill="#8B6F47">O₃</text>
+      <line x1="30" y1="70" x2="18" y2="70" class="eq-stroke"/>
+      <line x1="170" y1="70" x2="182" y2="70" class="eq-stroke"/>
+      <line x1="100" y1="36" x2="100" y2="24" class="eq-stroke-thin" stroke-dasharray="2 2"/>
+    `,
+    ports: {
+      in:     { x:  18, y:  70, dir: 'W' },
+      out:    { x: 182, y:  70, dir: 'E' },
+      o2:     { x: 100, y:  24, dir: 'N' },
+      left:   { x:  18, y:  70, dir: 'W' },
+      right:  { x: 182, y:  70, dir: 'E' },
+      top:    { x: 100, y:  24, dir: 'N' },
+      bottom: { x: 100, y: 116, dir: 'S' },
+    },
+  },
+  // V-901 LOX 储罐 (液氧储罐, 立式圆柱)
+  'V-901': {
+    inner: `
+      <!-- 立式圆柱储罐: 圆角矩形 + 顶部封头 -->
+      <rect x="60" y="32" width="80" height="80" rx="3" class="eq-stroke eq-fill-light"/>
+      <!-- 顶部椭圆封头 -->
+      <ellipse cx="100" cy="32" rx="40" ry="10" class="eq-stroke eq-fill-light"/>
+      <!-- 底部椭圆封头 (虚线表示在罐体后) -->
+      <path class="eq-stroke" d="M 60 112 Q 100 122 140 112" fill="none"/>
+      <!-- 安全阀: 顶部三角形 -->
+      <path class="eq-stroke" d="M 96 22 L 100 14 L 104 22 Z" fill="#fff"/>
+      <line x1="100" y1="22" x2="100" y2="32" class="eq-stroke"/>
+      <!-- LOX 标识 -->
+      <text x="100" y="74" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#3D6BA8">LOX</text>
+      <!-- 底部支腿 (4 条短斜线) -->
+      <line x1="68" y1="118" x2="64" y2="128" class="eq-stroke"/>
+      <line x1="80" y1="118" x2="78" y2="128" class="eq-stroke"/>
+      <line x1="120" y1="118" x2="122" y2="128" class="eq-stroke"/>
+      <line x1="132" y1="118" x2="136" y2="128" class="eq-stroke"/>
+      <!-- 出气管: 顶部右侧 -->
+      <line x1="130" y1="32" x2="140" y2="32" class="eq-stroke"/>
+      <line x1="140" y1="32" x2="140" y2="20" class="eq-stroke"/>
+    `,
+    ports: {
+      out:    { x: 140, y:  20, dir: 'N' },     // 顶部气出 (送往 A-601)
+      top:    { x: 140, y:  20, dir: 'N' },
+      left:   { x:  60, y:  72, dir: 'W' },
+      right:  { x: 140, y:  72, dir: 'E' },
+      bottom: { x: 100, y: 128, dir: 'S' },
+      in:     { x:  60, y:  72, dir: 'W' },
+    },
+  },
+  // G-901 O₃ 发生器 (电气机柜外形)
+  'G-901': {
+    inner: `
+      <!-- 电气机柜: 矩形, 比储罐更"机器"感 (用方角) -->
+      <rect x="40" y="20" width="120" height="100" rx="2" class="eq-stroke eq-fill-light"/>
+      <!-- 顶部小色条表示控制面板 -->
+      <rect x="40" y="20" width="120" height="8" class="eq-stroke" fill="#D4DCE6"/>
+      <!-- 内部: O₃ 标识 + 电极符号 -->
+      <text x="100" y="60" text-anchor="middle" font-family="ui-monospace, monospace" font-size="20" font-weight="700" fill="#5C2A8B">O₃</text>
+      <!-- 电极对 (上下两条带波纹) -->
+      <line x1="58" y1="78" x2="142" y2="78" class="eq-stroke-thin"/>
+      <line x1="58" y1="98" x2="142" y2="98" class="eq-stroke-thin"/>
+      <!-- 电极间放电 (Z 字形) -->
+      <path class="eq-stroke-thin" stroke="#C49A4F" d="M 70 80 L 72 88 L 68 92 L 70 96" fill="none"/>
+      <path class="eq-stroke-thin" stroke="#C49A4F" d="M 100 80 L 102 88 L 98 92 L 100 96" fill="none"/>
+      <path class="eq-stroke-thin" stroke="#C49A4F" d="M 130 80 L 132 88 L 128 92 L 130 96" fill="none"/>
+      <!-- 闪电符号: 表示电源 -->
+      <path class="eq-stroke-thin" d="M 50 32 L 47 38 L 50 38 L 47 44" fill="none" stroke="#C49A4F"/>
+      <!-- 进气 (左侧空气进) -->
+      <line x1="30" y1="70" x2="40" y2="70" class="eq-stroke"/>
+      <!-- 出气 (右侧 O₃ 出) -->
+      <line x1="160" y1="70" x2="170" y2="70" class="eq-stroke"/>
+    `,
+    ports: {
+      in:     { x:  30, y:  70, dir: 'W' },     // 空气进
+      out:    { x: 170, y:  70, dir: 'E' },     // O₃ 出
+      top:    { x: 100, y:  20, dir: 'N' },
+      left:   { x:  30, y:  70, dir: 'W' },
+      right:  { x: 170, y:  70, dir: 'E' },
+      bottom: { x: 100, y: 120, dir: 'S' },
+    },
+  },
+  // K-302 罗茨风机 (Roots blower: 椭圆外壳 + 内部双叶轮)
+  'K-302': {
+    inner: `
+      <!-- 圆形外壳 (鼓风机标准 ISA 符号) -->
+      <circle cx="100" cy="70" r="44" class="eq-stroke eq-fill-light"/>
+      <!-- 内部双叶轮 (Roots 双转子特征) -->
+      <ellipse cx="84" cy="70" rx="14" ry="8" class="eq-stroke-thin" fill="#fff"
+               transform="rotate(30 84 70)"/>
+      <ellipse cx="116" cy="70" rx="14" ry="8" class="eq-stroke-thin" fill="#fff"
+               transform="rotate(-30 116 70)"/>
+      <!-- 中心点 -->
+      <circle cx="84" cy="70" r="2" fill="#1F1F1E"/>
+      <circle cx="116" cy="70" r="2" fill="#1F1F1E"/>
+      <!-- 进气口 (左侧, 大于出气) -->
+      <line x1="56" y1="70" x2="40" y2="70" class="eq-stroke"/>
+      <line x1="40" y1="64" x2="40" y2="76" class="eq-stroke"/>
+      <!-- 出气口 (右侧) -->
+      <line x1="144" y1="70" x2="160" y2="70" class="eq-stroke"/>
+      <!-- 标识 -->
+      <text x="100" y="118" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#5C5B57">BLOWER</text>
+    `,
+    ports: {
+      in:     { x:  40, y:  70, dir: 'W' },
+      out:    { x: 160, y:  70, dir: 'E' },
+      top:    { x: 100, y:  26, dir: 'N' },
+      left:   { x:  40, y:  70, dir: 'W' },
+      right:  { x: 160, y:  70, dir: 'E' },
+      bottom: { x: 100, y: 114, dir: 'S' },
+    },
+  },
+  // H-801 热泵机组 (矩形机柜 + 制冷剂循环)
+  'H-801': {
+    inner: `
+      <!-- 矩形机柜 -->
+      <rect x="40" y="24" width="120" height="92" rx="2" class="eq-stroke eq-fill-light"/>
+      <!-- 顶部色条 (机柜外壳) -->
+      <rect x="40" y="24" width="120" height="6" class="eq-stroke" fill="#E8D4D4"/>
+      <!-- 内部: 制冷剂循环回路 (椭圆环) -->
+      <ellipse cx="100" cy="74" rx="42" ry="26" class="eq-stroke-thin" fill="none"/>
+      <!-- 4 个组件标识在椭圆四角 -->
+      <!-- 压缩机 (顶部) -->
+      <circle cx="100" cy="48" r="6" class="eq-stroke-thin" fill="#fff"/>
+      <text x="100" y="51" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" font-weight="600" fill="#1F1F1E">C</text>
+      <!-- 冷凝器 (右) -->
+      <rect x="138" y="68" width="10" height="12" class="eq-stroke-thin" fill="#fff"/>
+      <line x1="140" y1="71" x2="146" y2="71" class="eq-stroke-thin"/>
+      <line x1="140" y1="74" x2="146" y2="74" class="eq-stroke-thin"/>
+      <line x1="140" y1="77" x2="146" y2="77" class="eq-stroke-thin"/>
+      <!-- 蒸发器 (左) -->
+      <rect x="52" y="68" width="10" height="12" class="eq-stroke-thin" fill="#fff"/>
+      <line x1="54" y1="71" x2="60" y2="71" class="eq-stroke-thin"/>
+      <line x1="54" y1="74" x2="60" y2="74" class="eq-stroke-thin"/>
+      <line x1="54" y1="77" x2="60" y2="77" class="eq-stroke-thin"/>
+      <!-- 膨胀阀 (底部菱形) -->
+      <path class="eq-stroke-thin" d="M 100 96 L 104 100 L 100 104 L 96 100 Z" fill="#fff"/>
+      <!-- 流向箭头 (制冷模式: 顺时针) -->
+      <path class="eq-stroke-thin" stroke="#5A8AB8" d="M 130 50 L 134 53 L 132 57" fill="none"/>
+      <!-- HP 标识 -->
+      <text x="100" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" font-weight="600" fill="#5C5B57">HP</text>
+      <!-- 热水进出 (左右两侧) -->
+      <line x1="30" y1="70" x2="40" y2="70" class="eq-stroke"/>
+      <line x1="160" y1="70" x2="170" y2="70" class="eq-stroke"/>
+    `,
+    ports: {
+      in:     { x:  30, y:  70, dir: 'W' },
+      out:    { x: 170, y:  70, dir: 'E' },
+      top:    { x: 100, y:  24, dir: 'N' },
+      left:   { x:  30, y:  70, dir: 'W' },
+      right:  { x: 170, y:  70, dir: 'E' },
+      bottom: { x: 100, y: 116, dir: 'S' },
+    },
+  },
+};
+
+/**
+ * 设备渲染. 如果 tag 在 EQUIP_ICONS 字典里, 用真实 ISA 图标; 否则用矩形 fallback.
+ *
+ * 关键点:
+ *   - icon 在 200x140 标准 viewBox 内绘制. 实际渲染时缩放到 GRID.eq.w × GRID.eq.h
+ *   - 文字标签 (tag/name/参数) 放在 icon 下方, 不再叠在框内
+ *   - ports 从 icon 字典里读, 缩放到画布坐标
+ */
+function drawEquipBox(parent, cx, cy, opts) {
+  const w = opts.w || GRID.eq.w;
+  const h = opts.h || GRID.eq.h;
+  const x = cx - w / 2;
+  const y = cy - h / 2;
+
+  const g = svgEl('g', {
+    'class': 'equip',
+    'data-tag': opts.tag,
+    'data-cx': cx,
+    'data-cy': cy,
+    'data-w': w,
+    'data-h': h,
+  }, parent);
+
+  const iconDef = EQUIP_ICONS[opts.tag];
+
+  if (iconDef) {
+    // ─── icon 模式 ───
+    // 把 icon 内部 SVG 缩放到 (x, y, w, h) 区域内
+    // viewBox 200x140, 缩放因子 sx = w/200, sy = h/140
+    const sx = w / EQUIP_ICON_VBOX_W;
+    const sy = h / EQUIP_ICON_VBOX_H;
+    const iconG = svgEl('g', {
+      'class': 'equip-icon',
+      transform: 'translate(' + x + ',' + y + ') scale(' + sx + ',' + sy + ')',
+    }, g);
+    // 用 innerHTML 写入 SVG 内部 (浏览器会解析 SVG 元素)
+    iconG.innerHTML = iconDef.inner;
+
+    // tag 在图标顶上方
+    // tagOffsetY: 主路设备默认 -56 (上挪避开仪表泡泡), 旁路设备建议 -6 (贴近图标顶)
+    // tagOffsetX: 水平偏移 (默认 0), 用于避开设备正上方的管线 (例如 A-601 顶上的回水主管)
+    const tagOffsetY = opts.tagOffsetY != null ? opts.tagOffsetY : -56;
+    const tagOffsetX = opts.tagOffsetX || 0;
+    svgEl('text', {
+      'class': 'tag',
+      x: cx + tagOffsetX, y: y + tagOffsetY, 'text-anchor': 'middle',
+      'font-size': 13, 'font-weight': 600,
+    }, g).textContent = opts.tag;
+
+    // 中文名 + 英文 + 参数: 放在图标下方
+    // 文字左对齐到设备 left, 避开主路设备包围盒中部下方的支路取水竖管 (典型: B-301 文字撞 UV/反硝化取水管)
+    // textAlign 选项: 'middle' (默认) | 'left' | 'right'
+    const textAlign = opts.textAlign || 'middle';
+    // textAlign 4 种语义:
+    //   'middle'       — 文字居中在图标下方 (默认)
+    //   'left'         — 文字左对齐到设备 left, 在图标下方
+    //   'right'        — 文字块整体放在设备 right 外侧, 块内每行左对齐
+    //                     (避开下方支路取水/回水竖管, 因为竖管常落在设备包围盒内部)
+    //   'rightOutside' — 同 'right', 保留作为别名
+    let textX, textAnchor, textY, lineH;
+    let useBlockGroup = false;
+    if (textAlign === 'right' || textAlign === 'rightOutside') {
+      // 块在子 group 内左对齐渲染 (x=0 起), 然后 transform 把块平移到设备 right 外
+      // y 平移到设备 bottom 区域 (与 'left' / 'middle' 模式同高)
+      useBlockGroup = true;
+      textX = 0;
+      textAnchor = 'start';
+      textY = 14;                  // 子 group 内: 第一行 baseline 14 (留出第一行高度)
+      lineH = 13;
+    } else {
+      textX = textAlign === 'left' ? x : cx;
+      textAnchor = textAlign === 'left' ? 'start' : 'middle';
+      textY = y + h + 14;
+      lineH = 13;
+      // 微调: 正值往右, 负值往左 (适用于 middle/left 模式)
+      textX += (opts.textOffsetX || 0);
+    }
+
+    // 决定 text 渲染父节点: 普通 g 或子 group
+    const textParent = useBlockGroup
+      ? svgEl('g', { 'class': 'equip-text-block' }, g)
+      : g;
+
+    svgEl('text', {
+      'class': 'name',
+      x: textX, y: textY, 'text-anchor': textAnchor,
+      'font-size': 11,
+    }, textParent).textContent = opts.name || '';
+    textY += lineH + 1;
+    if (opts.sub) {
+      svgEl('text', {
+        'class': 'sub',
+        x: textX, y: textY, 'text-anchor': textAnchor,
+        'font-size': 9, 'font-style': 'italic', fill: '#5C5B57',
+      }, textParent).textContent = opts.sub;
+      textY += lineH;
+    }
+    const params = opts.params || [];
+    params.forEach((p, i) => {
+      svgEl('text', {
+        'class': 'param',
+        x: textX, y: textY + i * lineH, 'text-anchor': textAnchor,
+        'font-size': 9, fill: '#5C5B57',
+      }, textParent).textContent = p;
+    });
+
+    // 'right' / 'rightOutside': 测量子 group 宽度, transform 把整块平移到设备 right 外
+    if (useBlockGroup) {
+      try {
+        const bbox = textParent.getBBox();
+        // 目标位置:
+        //   左缘 = 设备 right + 12 (在设备外侧 12px padding)
+        //   顶部 baseline 区域 = 设备 bottom + 14 (与 left/middle 模式同高度)
+        const offsetX = opts.textOffsetX || 0;       // 微调: 正值往右, 负值往左
+        const dx = (x + w + 12) - bbox.x + offsetX;
+        const finalDy = (y + h) - bbox.y + 4;
+        textParent.setAttribute('transform', 'translate(' + dx + ',' + finalDy + ')');
+      } catch (e) {
+        // fallback: 测量失败 (SVG 还没渲染) — 用估算宽度
+        textParent.setAttribute('transform', 'translate(' + (x + w + 12 + (opts.textOffsetX || 0)) + ',' + (y + h - 14) + ')');
+      }
+    }
+
+    // 端口: 把 icon 字典里的端口坐标 (在 200x140 系) 映射到画布坐标
+    const ports = {};
+    Object.keys(iconDef.ports).forEach(key => {
+      const p = iconDef.ports[key];
+      ports[key] = {
+        x: x + p.x * sx,
+        y: y + p.y * sy,
+        dir: p.dir,
+      };
+    });
+    // 兜底: 如果 in/out/left/right/top/bottom/center 中有缺, 用包围盒默认值
+    if (!ports.center) ports.center = { x: cx, y: cy, dir: null };
+    if (!ports.left)   ports.left   = { x: x,     y: cy,    dir: 'W' };
+    if (!ports.right)  ports.right  = { x: x + w, y: cy,    dir: 'E' };
+    if (!ports.top)    ports.top    = { x: cx,    y: y,     dir: 'N' };
+    if (!ports.bottom) ports.bottom = { x: cx,    y: y + h, dir: 'S' };
+    if (!ports.in)     ports.in     = ports.left;
+    if (!ports.out)    ports.out    = ports.right;
+
+    return { node: g, ports: ports };
+  }
+
+  // ─── fallback: 矩形模式 ───
+  svgEl('rect', {
+    'class': 'equip-box' + (opts.kind ? ' kind-' + opts.kind : ''),
+    x: x, y: y, width: w, height: h, rx: 2, ry: 2,
+  }, g);
+
+  if (opts.kind) {
+    svgEl('rect', {
+      'class': 'equip-band kind-' + opts.kind,
+      x: x + 1, y: y + 1, width: w - 2, height: 4, rx: 1,
+    }, g);
+  }
+
+  svgEl('text', {
+    'class': 'tag',
+    x: cx, y: y + 22, 'text-anchor': 'middle',
+  }, g).textContent = opts.tag;
+
+  svgEl('text', {
+    'class': 'name',
+    x: cx, y: y + 39, 'text-anchor': 'middle',
+  }, g).textContent = opts.name || '';
+
+  if (opts.sub) {
+    svgEl('text', {
+      'class': 'sub',
+      x: cx, y: y + 53, 'text-anchor': 'middle',
+    }, g).textContent = opts.sub;
+  }
+
+  const params = opts.params || [];
+  const lineH = 13;
+  const startY = y + h - 8 - (params.length - 1) * lineH;
+  params.forEach((p, i) => {
+    svgEl('text', {
+      'class': 'param',
+      x: cx, y: startY + i * lineH, 'text-anchor': 'middle',
+    }, g).textContent = p;
+  });
+
+  return {
+    node: g,
+    ports: {
+      left:   { x: x,         y: cy,        dir: 'W' },
+      right:  { x: x + w,     y: cy,        dir: 'E' },
+      top:    { x: cx,        y: y,         dir: 'N' },
+      bottom: { x: cx,        y: y + h,     dir: 'S' },
+      in:     { x: x,         y: cy,        dir: 'W' },
+      out:    { x: x + w,     y: cy,        dir: 'E' },
+      center: { x: cx,        y: cy,        dir: null },
+    },
+  };
+}
+
+/**
+ * 主泵符号: 圆 + 内三角 (ISA-5.1 标准离心泵)
+ * 嵌在主流程线段中间, 把线打断
+ */
+function drawMainPump(parent, cx, cy, opts) {
+  const r = GRID.pump.r;
+  const g = svgEl('g', { 'class': 'pump', 'data-tag': opts.tag }, parent);
+
+  svgEl('circle', { 'class': 'pump-circle', cx: cx, cy: cy, r: r }, g);
+  // 内三角: 朝右 (= 流向)
+  const triPath = `M ${cx - r * 0.4} ${cy - r * 0.55} L ${cx + r * 0.65} ${cy} L ${cx - r * 0.4} ${cy + r * 0.55} Z`;
+  svgEl('path', { 'class': 'pump-triangle', d: triPath }, g);
+
+  // tag 位置: 'right' (默认右侧) / 'bottom' (圆下方) / 'left' (左侧) / 'utility' (上下分: tag 上, name/参数 多行下)
+  const tagSide = opts.tagSide || 'bottom';
+  if (tagSide === 'right') {
+    svgEl('text', {
+      'class': 'tag',
+      x: cx + r + 6, y: cy - 2, 'text-anchor': 'start',
+      'font-size': 11,
+    }, g).textContent = opts.tag;
+    if (opts.params && opts.params.length) {
+      svgEl('text', {
+        'class': 'param',
+        x: cx + r + 6, y: cy + 11, 'text-anchor': 'start',
+      }, g).textContent = opts.params.join(' · ');
+    }
+  } else if (tagSide === 'left') {
+    svgEl('text', {
+      'class': 'tag',
+      x: cx - r - 6, y: cy - 2, 'text-anchor': 'end',
+      'font-size': 11,
+    }, g).textContent = opts.tag;
+    if (opts.params && opts.params.length) {
+      svgEl('text', {
+        'class': 'param',
+        x: cx - r - 6, y: cy + 11, 'text-anchor': 'end',
+      }, g).textContent = opts.params.join(' · ');
+    }
+  } else if (tagSide === 'utility') {
+    // utility 风格: tag 在符号上方贴近, 中文名/英文/参数多行在符号下方 (与 V-901/G-901 等矩形 utility 视觉一致)
+    svgEl('text', {
+      'class': 'tag',
+      x: cx, y: cy - r - 8, 'text-anchor': 'middle',
+      'font-size': 13, 'font-weight': 600,
+    }, g).textContent = opts.tag;
+    let utilY = cy + r + 14;
+    if (opts.name) {
+      svgEl('text', {
+        'class': 'name',
+        x: cx, y: utilY, 'text-anchor': 'middle',
+        'font-size': 11,
+      }, g).textContent = opts.name;
+      utilY += 14;
+    }
+    if (opts.sub) {
+      svgEl('text', {
+        'class': 'sub',
+        x: cx, y: utilY, 'text-anchor': 'middle',
+        'font-size': 9, 'font-style': 'italic', fill: '#5C5B57',
+      }, g).textContent = opts.sub;
+      utilY += 13;
+    }
+    if (opts.params && opts.params.length) {
+      opts.params.forEach((p, i) => {
+        svgEl('text', {
+          'class': 'param',
+          x: cx, y: utilY + i * 12, 'text-anchor': 'middle',
+          'font-size': 9, fill: '#5C5B57',
+        }, g).textContent = p;
+      });
+    }
+  } else {
+    svgEl('text', {
+      'class': 'tag',
+      x: cx, y: cy + r + 18, 'text-anchor': 'middle',
+      'font-size': 11,
+    }, g).textContent = opts.tag;
+    if (opts.params && opts.params.length) {
+      svgEl('text', {
+        'class': 'param',
+        x: cx, y: cy + r + 32, 'text-anchor': 'middle',
+      }, g).textContent = opts.params.join(' · ');
+    }
+  }
+
+  // VFD 标记 (在圆右上角, 比左侧更远离主管线进口)
+  if (opts.vfd) {
+    const vx = cx + r + 4;
+    const vy = cy - r - 2;
+    svgEl('rect', {
+      x: vx, y: vy - 9, width: 24, height: 12,
+      fill: '#fff', stroke: '#5C5B57', 'stroke-width': 0.8, rx: 1,
+    }, g);
+    svgEl('text', {
+      x: vx + 12, y: vy,
+      'text-anchor': 'middle',
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+      'font-size': 9, fill: '#1F1F1E',
+    }, g).textContent = 'VFD';
+  }
+
+  return {
+    node: g,
+    ports: {
+      left:  { x: cx - r, y: cy, dir: 'W' },
+      right: { x: cx + r, y: cy, dir: 'E' },
+      top:   { x: cx,     y: cy - r, dir: 'N' },
+      bottom:{ x: cx,     y: cy + r, dir: 'S' },
+      in:    { x: cx - r, y: cy, dir: 'W' },
+      out:   { x: cx + r, y: cy, dir: 'E' },
+      center:{ x: cx,     y: cy, dir: null },
+    },
+  };
+}
+
+/**
+ * 正交路由器: 从 portA(沿其 dir 离开)走到 portB(沿其 dir 进入), 返回 polyline 点集
+ *
+ * 路由策略 (按优先级):
+ *  1. 直线: 端口对齐且方向兼容 → 1 段
+ *  2. L 形 (1 拐): 一个端口水平离开, 另一个垂直离开 (不同维度) → 2 段
+ *  3. Z/U 形 (2 拐): 同方向 (E→W 或 N→S) → 3 段, 中点劈开
+ *  4. 复杂场景 (4 拐): 极少触发, 兜底
+ *
+ * stubLen: 离开端口的最小直行距离, 防止管线立刻拐进设备
+ * @param {Object} portA  {x, y, dir}
+ * @param {Object} portB  {x, y, dir}
+ * @returns {Array<{x,y}>} 折线点集 (含端点)
+ */
+/**
+ * 把端点沿其 dir 的反方向后退 gap 像素.
+ * 用于让 marker-end 箭头尖端不顶进设备框 (终点本来 = 设备框边缘, 退回后箭头尖在框外 gap px)
+ */
+function retractPort(p, gap) {
+  if (!p.dir) return { x: p.x, y: p.y, dir: p.dir };
+  // dir 表示 "进入 p 的方向", 反方向就是远离设备
+  const dx = p.dir === 'W' ? gap : (p.dir === 'E' ? -gap : 0);
+  const dy = p.dir === 'N' ? gap : (p.dir === 'S' ? -gap : 0);
+  return { x: p.x + dx, y: p.y + dy, dir: p.dir };
+}
+
+function orthogonalRoute(portA, portB, opts) {
+  opts = opts || {};
+  const stub = opts.stubLen != null ? opts.stubLen : 12;
+
+  // 端口"离开后第一个拐点"的位置
+  function stubPoint(p) {
+    switch (p.dir) {
+      case 'E': return { x: p.x + stub, y: p.y };
+      case 'W': return { x: p.x - stub, y: p.y };
+      case 'N': return { x: p.x,        y: p.y - stub };
+      case 'S': return { x: p.x,        y: p.y + stub };
+      default:  return { x: p.x,        y: p.y };
+    }
+  }
+
+  const a = portA, b = portB;
+  const aStub = stubPoint(a);
+  const bStub = stubPoint(b);
+
+  // ── 情况 1: 完美对齐直线 ──
+  // E→W 同 y 行: 直接一条水平线
+  if (a.dir === 'E' && b.dir === 'W' && Math.abs(a.y - b.y) < 0.5 && b.x > a.x) {
+    return [a, b];
+  }
+  // W→E 同 y 行 (反向)
+  if (a.dir === 'W' && b.dir === 'E' && Math.abs(a.y - b.y) < 0.5 && b.x < a.x) {
+    return [a, b];
+  }
+  // N→S / S→N 同 x 列
+  if (a.dir === 'N' && b.dir === 'S' && Math.abs(a.x - b.x) < 0.5 && b.y < a.y) {
+    return [a, b];
+  }
+  if (a.dir === 'S' && b.dir === 'N' && Math.abs(a.x - b.x) < 0.5 && b.y > a.y) {
+    return [a, b];
+  }
+
+  // ── 情况 2 & 3: 同向 H↔H 或 V↔V (常见: E→W 主流程) ──
+  // E→W: 出右 → 入左, 中间需要拐到中点 x 处再往下/上
+  if ((a.dir === 'E' && b.dir === 'W') || (a.dir === 'W' && b.dir === 'E')) {
+    if (Math.abs(a.y - b.y) < 0.5) {
+      // 共 y, 已被情况 1 cover; 这里走不到
+      return [a, b];
+    }
+    // 中点 x — 让水平段对称
+    const midX = (aStub.x + bStub.x) / 2;
+    return [
+      a,
+      { x: midX, y: a.y },
+      { x: midX, y: b.y },
+      b,
+    ];
+  }
+
+  // N→S 或 S→N
+  if ((a.dir === 'N' && b.dir === 'S') || (a.dir === 'S' && b.dir === 'N')) {
+    if (Math.abs(a.x - b.x) < 0.5) return [a, b];
+    const midY = (aStub.y + bStub.y) / 2;
+    return [
+      a,
+      { x: a.x, y: midY },
+      { x: b.x, y: midY },
+      b,
+    ];
+  }
+
+  // ── 情况 4: 正交方向 (E→S, S→W, ...) — L 形 1 拐 ──
+  // 选哪个端点先转弯, 取决于方向
+  // 例: E→S (出东, 入南) → 走到 b.x, 再下到 b
+  if (a.dir === 'E' || a.dir === 'W') {
+    // a 水平离开, b 垂直进入 → 路径: a → (b.x, a.y) → b
+    return [a, { x: b.x, y: a.y }, b];
+  } else {
+    // a 垂直离开, b 水平进入 → 路径: a → (a.x, b.y) → b
+    return [a, { x: a.x, y: b.y }, b];
+  }
+}
+
+/**
+ * 把 polyline 点集渲染为 SVG path. 拐角处加小圆角 (cornerR)
+ */
+function pointsToPath(pts, cornerR) {
+  if (pts.length < 2) return '';
+  if (pts.length === 2 || !cornerR) {
+    // 直线或不要圆角
+    return 'M ' + pts.map(p => p.x + ' ' + p.y).join(' L ');
+  }
+  // 圆角拐弯: 每个中间点用 quadratic-like 直角圆弧
+  let d = 'M ' + pts[0].x + ' ' + pts[0].y;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const prev = pts[i - 1], curr = pts[i], next = pts[i + 1];
+    // 进入方向上往回退 cornerR
+    const inDx = Math.sign(curr.x - prev.x), inDy = Math.sign(curr.y - prev.y);
+    const outDx = Math.sign(next.x - curr.x), outDy = Math.sign(next.y - curr.y);
+    const r = Math.min(
+      cornerR,
+      Math.hypot(curr.x - prev.x, curr.y - prev.y) / 2,
+      Math.hypot(next.x - curr.x, next.y - curr.y) / 2
+    );
+    const p1 = { x: curr.x - inDx * r, y: curr.y - inDy * r };
+    const p2 = { x: curr.x + outDx * r, y: curr.y + outDy * r };
+    d += ' L ' + p1.x + ' ' + p1.y;
+    d += ' Q ' + curr.x + ' ' + curr.y + ' ' + p2.x + ' ' + p2.y;
+  }
+  const last = pts[pts.length - 1];
+  d += ' L ' + last.x + ' ' + last.y;
+  return d;
+}
+
+/**
+ * 找折线里"最长水平段"的中点, 用于放标签 (避免标签压在垂直段上)
+ */
+function longestHorizontalMid(pts) {
+  let bestLen = -1, bestMid = null;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1];
+    if (Math.abs(a.y - b.y) < 0.5) {
+      const len = Math.abs(b.x - a.x);
+      if (len > bestLen) {
+        bestLen = len;
+        bestMid = { x: (a.x + b.x) / 2, y: a.y };
+      }
+    }
+  }
+  return bestMid;
+}
+
+/**
+ * 主管线 (正交路由版)
+ * portA, portB: 必须含 dir 字段
+ */
+function drawMainLine(parent, portA, portB, label) {
+  const g = svgEl('g', { 'class': 'flow-line' }, parent);
+  const portBRetracted = retractPort(portB, 6);
+  const pts = orthogonalRoute(portA, portBRetracted);
+  const d = pointsToPath(pts, 5);
+
+  svgEl('path', {
+    'class': 'main-line',
+    d: d,
+    'marker-end': 'url(#arrow)',
+  }, g);
+
+  if (label) {
+    const mid = longestHorizontalMid(pts) || {
+      x: (portA.x + portBRetracted.x) / 2,
+      y: (portA.y + portBRetracted.y) / 2,
+    };
+    svgEl('text', {
+      'class': 'line-label',
+      x: mid.x, y: mid.y - 8, 'text-anchor': 'middle',
+    }, g).textContent = label;
+  }
+
+  return g;
+}
+
+/**
+ * 通用线条 (复用正交路由 + path 渲染), 但允许指定 CSS class
+ */
+function drawLine(parent, portA, portB, opts) {
+  opts = opts || {};
+  const g = svgEl('g', { 'class': opts.gClass || 'flow-line' }, parent);
+  // 终点退回 6px, 让箭头尖不顶进目标设备
+  const endGap = opts.endGap != null ? opts.endGap : 6;
+  const portBRetracted = (opts.arrow !== false) ? retractPort(portB, endGap) : portB;
+  const pts = orthogonalRoute(portA, portBRetracted);
+  const d = pointsToPath(pts, opts.cornerR != null ? opts.cornerR : 5);
+
+  const pathAttrs = {
+    'class': opts.lineClass || 'main-line',
+    d: d,
+    fill: 'none',
+  };
+  if (opts.arrow !== false) pathAttrs['marker-end'] = 'url(#arrow)';
+
+  svgEl('path', pathAttrs, g);
+
+  if (opts.label) {
+    const mid = longestHorizontalMid(pts) || {
+      x: (portA.x + portBRetracted.x) / 2,
+      y: (portA.y + portBRetracted.y) / 2,
+    };
+    svgEl('text', {
+      'class': 'line-label',
+      x: mid.x, y: mid.y - 8, 'text-anchor': 'middle',
+    }, g).textContent = opts.label;
+  }
+
+  return g;
+}
+
+/**
+ * 仪表泡泡: 圆 + 内部双行文字 (类型/编号), 可选虚线连到设备
+ *   pos: { x, y } 泡泡中心
+ *   anchor: { x, y } 设备上的连接点 (虚线另一端), null 则不画连线
+ */
+function drawInstrumentBubble(parent, pos, anchor, type, number) {
+  const r = 14;
+  const g = svgEl('g', { 'class': 'instrument', 'data-tag': type + '-' + number }, parent);
+
+  if (anchor) {
+    svgEl('line', {
+      'class': 'instrument-bubble-line',
+      x1: pos.x, y1: pos.y, x2: anchor.x, y2: anchor.y,
+    }, g);
+  }
+
+  svgEl('circle', { 'class': 'instrument-bubble', cx: pos.x, cy: pos.y, r: r }, g);
+  // 中线
+  svgEl('line', {
+    x1: pos.x - r + 1, y1: pos.y, x2: pos.x + r - 1, y2: pos.y,
+    stroke: '#5C5B57', 'stroke-width': 0.6,
+  }, g);
+
+  svgEl('text', {
+    'class': 'instrument-text',
+    x: pos.x, y: pos.y - 4,
+  }, g).textContent = type;
+  svgEl('text', {
+    'class': 'instrument-text',
+    x: pos.x, y: pos.y + 6,
+    'font-size': 8,
+  }, g).textContent = number;
+
+  return {
+    node: g,
+    ports: {
+      top:    { x: pos.x, y: pos.y - r, dir: 'N' },
+      bottom: { x: pos.x, y: pos.y + r, dir: 'S' },
+      left:   { x: pos.x - r, y: pos.y, dir: 'W' },
+      right:  { x: pos.x + r, y: pos.y, dir: 'E' },
+    },
+  };
+}
+
+/**
+ * 画一个 "off-page connector" 短箭头 + 标签 (代替长跨 band 连线)
+ *
+ *   port:      设备端口 (含 dir), stub 从这里出发
+ *   medium:    介质名, 例如 "气态 O₂"
+ *   peerTag:   配对设备 tag, 例如 "A-601"
+ *   role:      'source' | 'target'
+ *              source = 介质从此设备出去 → 标签 "→ peerTag"
+ *              target = 介质从别处进来 → 标签 "← peerTag"
+ *   lineClass: 短线样式 ('gas-line' / 'thermal-line' / 'signal-line')
+ *   colOffset: 同设备多 stub 时的横向偏移 (默认 0)
+ */
+function drawStub(parent, port, medium, peerTag, role, lineClass, colOffset, opts) {
+  colOffset = colOffset || 0;
+  opts = opts || {};
+  const STUB_LEN = 28;
+  const g = svgEl('g', { 'class': 'stub', 'data-peer': peerTag }, parent);
+
+  let dx = 0, dy = 0;
+  if (port.dir === 'N') dy = -1;
+  else if (port.dir === 'S') dy = 1;
+  else if (port.dir === 'E') dx = 1;
+  else if (port.dir === 'W') dx = -1;
+
+  let perpDx = 0, perpDy = 0;
+  if (port.dir === 'N' || port.dir === 'S') perpDx = 1;
+  else perpDy = 1;
+
+  const startX = port.x + perpDx * colOffset;
+  const startY = port.y + perpDy * colOffset;
+  const endX   = startX + dx * STUB_LEN;
+  const endY   = startY + dy * STUB_LEN;
+
+  const linePts = role === 'source'
+    ? { x1: startX, y1: startY, x2: endX, y2: endY }
+    : { x1: endX,   y1: endY,   x2: startX, y2: startY };
+
+  svgEl('path', {
+    'class': lineClass,
+    d: 'M ' + linePts.x1 + ' ' + linePts.y1 + ' L ' + linePts.x2 + ' ' + linePts.y2,
+    fill: 'none',
+    'marker-end': 'url(#arrow)',
+  }, g);
+
+  const labelX = endX + dx * 6;
+  const labelY = endY + dy * 6;
+  let textAnchor = 'middle';
+  if (port.dir === 'E') textAnchor = 'start';
+  else if (port.dir === 'W') textAnchor = 'end';
+
+  const mediumColor = lineClass === 'thermal-line' ? '#C04545'
+                    : lineClass === 'signal-line'  ? '#C04545'
+                    :                                '#8B6F47';
+  const arrow = role === 'source' ? '→ ' : '← ';
+
+  // 单行模式: 介质和 tag 合并 — 紧凑版, 给空间不足处用
+  if (opts.compact) {
+    svgEl('text', {
+      x: labelX, y: labelY + (port.dir === 'N' ? -4 : 10),
+      'text-anchor': textAnchor,
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+      'font-size': 9, 'font-weight': 600,
+      fill: '#1F1F1E',
+    }, g).textContent = arrow + peerTag + ' (' + medium + ')';
+  } else {
+    // 介质行
+    svgEl('text', {
+      x: labelX, y: labelY + (port.dir === 'N' ? -4 : 8),
+      'text-anchor': textAnchor,
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+      'font-size': 9,
+      fill: mediumColor,
+    }, g).textContent = medium;
+
+    // 配对 tag 行
+    svgEl('text', {
+      x: labelX, y: labelY + (port.dir === 'N' ? -16 : 19),
+      'text-anchor': textAnchor,
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+      'font-size': 9, 'font-weight': 600,
+      fill: '#1F1F1E',
+    }, g).textContent = arrow + peerTag;
+  }
+
+  return g;
+}
+
+/**
+ * 在 layer 里查找设备的端口. 返回 { left, right, top, bottom } 各 {x,y,dir}
+ * 用于跨图层连接 (旁路 → 主流程, 公用 → 主流程)
+ */
+function lookupEquipPorts(tag) {
+  const equipG = document.querySelector('.equip[data-tag="' + tag + '"]');
+  if (!equipG) return null;
+
+  const cx = parseFloat(equipG.getAttribute('data-cx'));
+  const cy = parseFloat(equipG.getAttribute('data-cy'));
+  const w  = parseFloat(equipG.getAttribute('data-w'));
+  const h  = parseFloat(equipG.getAttribute('data-h'));
+  if (!isFinite(cx) || !isFinite(cy)) return null;
+
+  // 如果是 icon 模式且字典里有自定义端口, 用图标定义的端口
+  // 否则用矩形包围盒的 4 边中点
+  const iconDef = EQUIP_ICONS[tag];
+  if (iconDef && iconDef.ports) {
+    const sx = w / EQUIP_ICON_VBOX_W;
+    const sy = h / EQUIP_ICON_VBOX_H;
+    const x = cx - w / 2;
+    const y = cy - h / 2;
+    const ports = {};
+    Object.keys(iconDef.ports).forEach(key => {
+      const p = iconDef.ports[key];
+      ports[key] = { x: x + p.x * sx, y: y + p.y * sy, dir: p.dir };
+    });
+    if (!ports.center) ports.center = { x: cx, y: cy, dir: null };
+    return ports;
+  }
+
+  // fallback: 矩形 4 边中点
+  return {
+    left:   { x: cx - w / 2,  y: cy,        dir: 'W' },
+    right:  { x: cx + w / 2,  y: cy,        dir: 'E' },
+    top:    { x: cx,          y: cy - h / 2, dir: 'N' },
+    bottom: { x: cx,          y: cy + h / 2, dir: 'S' },
+    center: { x: cx,          y: cy,        dir: null },
+    in:     { x: cx - w / 2,  y: cy,        dir: 'W' },
+    out:    { x: cx + w / 2,  y: cy,        dir: 'E' },
+  };
+}
+
+// ─── 旁路图层 ─────────────────────────────────────────────────
+// 设计: 每条旁路独占一个垂直行 (rowIdx 0..3), 圈上 envelope 表示独立工艺单元
+// 每个环包含: 取水点 + 支路泵 + 处理设备 + 回水点 (4 元素水平排列)
+function renderBypass(stage) {
+  const layer = $('layer-bypass');
+  layer.innerHTML = '';
+
+  const eq = stage.equipment;
+  const pumps = stage.pumps;
+  const flowMain = stage.flow.flowMain;
+  const uvFlowPct = eq.uv.flow ? Math.round(eq.uv.flow / flowMain * 100) : 0;
+
+  // 候选旁路 (3 条: 蛋分 / 反硝化 / UV)
+  // v1.3.x: 主流路径 T-101 → RDF → MBBR → CO2 → S-101 → P-101 → A-601 → 回 T-101
+  //   - skimmer  : F-201 → B-301 (RDF 后取水, MBBR 前回水)
+  //   - denitri  : B-301 → C-501 (MBBR 后取水, CO2 前回水)
+  //   - UV       : C-501 → S-101 (CO2 后取水, 集水池前回水)
+  //   - AOP      : 已改为公用工程层 (按需投运), 不在旁路图层中, 见 renderUtility
+  const candidates = [
+    { item: eq.skimmer, pump: pumps.skimmerBranch, mainFrom: 'F-201', mainTo: 'B-301',
+      name: '蛋白分离器', sub: 'Protein skimmer', kind: 'aerator',
+      params: function(s) { return ['α ' + s.flowPct + '%', 'η_DOM ' + s.domEff + '%', 'V ' + fmtNum(s.volume) + ' m³']; }
+    },
+    { item: eq.denitri, pump: pumps.denitriBranch, mainFrom: 'B-301', mainTo: 'C-501',
+      name: '反硝化反应器', sub: 'Denitrification', kind: 'bio',
+      params: function(s) { return ['α ' + s.flowPct + '%', 'η_NO₃ ' + s.no3Eff + '%', 'V ' + fmtNum(s.volume) + ' m³']; }
+    },
+    { item: eq.uv, pump: pumps.uvBranch, mainFrom: 'C-501', mainTo: 'S-101',
+      name: 'UV 消毒', sub: 'UV sterilizer', kind: 'uv',
+      forceEnabled: true,
+      flowPctOverride: uvFlowPct,
+      params: function(s) { return ['α ' + uvFlowPct + '%', fmtNum(s.powerKw) + ' kW', s.dose + ' mJ/cm²']; }
+    },
+  ];
+
+  const enabled = candidates.filter(c => c.item && (c.forceEnabled || c.item.enabled));
+  const N = enabled.length;
+  if (N === 0) return;
+
+  // v1.3.x: 旁路布局 — 单层简单布局
+  //   - 每条旁路的设备 cx = 它的主流段中点 (mainFrom.right + mainTo.left)/2
+  //   - 取水/回水 T 接头在主管连线上 (不接进设备)
+  //   - 三条旁路 (skimmer/denitri/UV) 各占独立段, 不存在同段共享
+  //   - AOP 已改为公用工程层 (按需投运), 不在此处
+  const tapFromCount = {};
+  const tapToCount = {};
+  enabled.forEach(c => {
+    tapFromCount[c.mainFrom] = (tapFromCount[c.mainFrom] || 0) + 1;
+    tapToCount[c.mainTo]     = (tapToCount[c.mainTo]   || 0) + 1;
+  });
+
+  // 旁路区基线 y (单层布局)
+  const baseRowY = GRID.bands.bypass.y;
+
+  enabled.forEach((c, idx) => {
+    const fromPorts = lookupEquipPorts(c.mainFrom);
+    const toPorts   = lookupEquipPorts(c.mainTo);
+    if (!fromPorts || !toPorts) return;
+
+    // T 接头位置 (3 条旁路均独占主流段, 不需要 offset 错开)
+    //   主管连线用的是 ports.out (mainFrom) → ports.in (mainTo), 所以 T 接头 y 要跟它们一致
+    //   x: mainFrom 设备 out.x + 30 (取水)  /  mainTo 设备 in.x - 30 (回水)
+    //   y: fromPorts.out.y / toPorts.in.y (与主管线一致, 保证 T 接头小圆贴在主管上)
+    //   注: orthogonalRoute 在端口方向上先走 stub, 30px 处通常仍在 stub 范围或 stub 后的同 y 段
+    const TAP_BASE_OFFSET = 30;
+    const fromOutPort = fromPorts.out || fromPorts.right;
+    const toInPort    = toPorts.in    || toPorts.left;
+    const tapInPort  = {
+      x: fromOutPort.x + TAP_BASE_OFFSET,
+      y: fromOutPort.y,
+      dir: 'S'
+    };
+    const tapOutPort = {
+      x: toInPort.x - TAP_BASE_OFFSET,
+      y: toInPort.y,
+      dir: 'S'
+    };
+
+    // v1.3.x: 支流布局
+    //   - 泵 cx = 取水 T 接头 x (确保取水管竖向纯直线, 无水平拐)
+    //   - 设备 cx = 泵 cx + 110 (设备在泵右侧 110px)
+    //   - 旁路在主流下方一行 (baseRowY)
+    const pumpCx = tapInPort.x;
+    const eqCx   = pumpCx + 110;
+    const rowY = baseRowY;
+    const eqCy = rowY + GRID.eq.h / 2;
+    // 取水水平走廊 y: 主流下方 60px (远离主流也远离旁路设备)
+    const tapBendY = rowY - 60;
+
+    // ─── 设备 ───
+    const eqNode = drawEquipBox(layer, eqCx, eqCy, {
+      tag: c.item.tag, name: c.name, sub: c.sub, kind: c.kind,
+      params: c.params(c.item),
+      tagOffsetY: -6,         // 旁路设备没仪表泡泡, tag 贴近图标顶 (默认 -56 是给主路避仪表用的)
+    });
+
+    // ─── 泵 ───
+    const pumpCy = eqCy;
+    const pumpNode = drawMainPump(layer, pumpCx, pumpCy, {
+      tag: c.pump.tag,
+      vfd: false,
+      params: [fmtNum(c.pump.kw) + ' kW'],
+      tagSide: 'left',
+    });
+
+    // ─── 取水管 (竖向直线): T 接头 → pump.top, 一条垂直直线
+    // 因为 pumpCx == tapInPort.x, 直接两点一直线即可
+    const inPath = [
+      tapInPort,
+      pumpNode.ports.top,
+    ];
+    const inD = pointsToPath(inPath, 5);
+    svgEl('path', {
+      'class': 'bypass-line',
+      d: inD, fill: 'none',
+      'marker-end': 'url(#arrow)',
+    }, layer);
+
+    // v1.3.x: T 接头标记 (取水点) — 在主流管线上画小实心圆
+    svgEl('circle', {
+      cx: tapInPort.x, cy: tapInPort.y,
+      r: 3, fill: '#1F1F1E', stroke: 'none',
+      'class': 'tap-junction',
+    }, layer);
+
+    // 流量百分比标签 (在取水竖管中点右侧)
+    const flowPctLabel = (c.item.flowPct != null ? c.item.flowPct : c.flowPctOverride) + '%';
+    svgEl('text', {
+      'class': 'line-label',
+      x: tapInPort.x + 6,
+      y: (tapInPort.y + pumpNode.ports.top.y) / 2,
+      'text-anchor': 'start',
+    }, layer).textContent = flowPctLabel;
+
+    // ─── 泵 → 设备 (水平直线) ───
+    drawLine(layer, pumpNode.ports.right, eqNode.ports.left, {
+      lineClass: 'bypass-line',
+    });
+
+    // ─── 回水管 (L 形): 设备右 → 水平到 T 接头 x → 上行到主管 ───
+    // 末段是竖直上行, 箭头朝上指向主管 T 接头 (而非水平箭头, 视觉上更符合"汇入主管"语义)
+    const outPath = [
+      eqNode.ports.right,
+      { x: tapOutPort.x, y: eqNode.ports.right.y },
+      tapOutPort,
+    ];
+    const outD = pointsToPath(outPath, 5);
+    svgEl('path', {
+      'class': 'bypass-line',
+      d: outD, fill: 'none',
+      'marker-end': 'url(#arrow)',
+    }, layer);
+
+    // v1.3.x: T 接头标记 (回水点) — 在主流管线上画小实心圆, 标识"在此处汇入主流"
+    svgEl('circle', {
+      cx: tapOutPort.x, cy: tapOutPort.y,
+      r: 3, fill: '#1F1F1E', stroke: 'none',
+      'class': 'tap-junction',
+    }, layer);
+  });
+}
+
+// ─── 公用工程图层 ─────────────────────────────────────────────
+function renderUtility(stage) {
+  const layer = $('layer-utility');
+  layer.innerHTML = '';
+
+  const eq = stage.equipment;
+  const pumps = stage.pumps;
+  const thermal = stage.thermal;
+  // v1.3.x: LOX 显示当前阶段的氧耗 (而非全场总和), 让阶段切换时数据跟着变
+  // stage.load.o2DailyTotal: 该阶段每日氧耗 (kg/d), 由 buildPIDExport 写入
+  const stageLOXKgD = (stage.load && stage.load.o2DailyTotal != null)
+    ? stage.load.o2DailyTotal
+    : STATE.data.results.summary.totalLOXKgD;   // fallback (老数据没 stage.load.o2DailyTotal)
+
+  // 公用工程设备从左到右顺序: LOX → O3发生器 → 风机 → 热泵 → 反冲泵
+  // 用 col 0..4 依次摆 (用 small 尺寸节省纵向空间)
+  const utilityItems = [];
+
+  // LOX 罐 — 当前阶段氧耗
+  utilityItems.push({
+    col: 0,
+    spec: {
+      tag: 'V-901', name: 'LOX 储罐', sub: 'Liquid O₂ tank', kind: 'tank',
+      tagOffsetY: -6,
+      params: [fmtNum(stageLOXKgD) + ' kg/d', '3 t 储罐'],
+    },
+    connectsTo: { tag: 'A-601', mediumClass: 'gas-line', label: '气态 O₂' },
+  });
+
+  // O3 发生器 (只在用了臭氧时画)
+  const usesOzone = (eq.skimmer.enabled && eq.skimmer.mode === 'ozone') || eq.aop.enabled;
+  if (usesOzone && eq.ozoneGen) {
+    // O₃ stub 目标: 优先 X-901 (AOP), 否则 S-701 (臭氧蛋分)
+    const o3Target = eq.aop.enabled ? 'X-901' : 'S-701';
+    utilityItems.push({
+      col: 1,
+      spec: {
+        tag: eq.ozoneGen.tag, name: 'O₃ 发生器', sub: 'Ozone generator', kind: 'aerator',
+        tagOffsetY: -6,
+        params: [
+          fmtNum(eq.ozoneGen.totalKgD) + ' kg/d',
+          fmtNum(eq.ozoneGen.powerKw) + ' kW',
+        ],
+      },
+      connectsTo: { tag: o3Target, mediumClass: 'gas-line', label: 'O₃' },
+    });
+  }
+
+  // 罗茨风机 (BF 曝气)
+  if (eq.bfBlower && eq.bfBlower.spec) {
+    utilityItems.push({
+      col: 2,
+      spec: {
+        tag: eq.bfBlower.tag, name: '罗茨风机', sub: 'BF blower', kind: 'filter',
+        tagOffsetY: -6,
+        params: [
+          'Q ' + fmtNum(eq.bfBlower.spec.airFlow) + ' Nm³/min',
+          fmtNum(eq.bfBlower.spec.power) + ' kW',
+        ],
+      },
+      connectsTo: { tag: 'B-301', mediumClass: 'gas-line', label: '空气' },
+    });
+  }
+
+  // 热泵
+  if (thermal && thermal.needsThermal) {
+    const modeLabel = thermal.mode === 'cool' ? '制冷模式' : (thermal.mode === 'heat' ? '制热模式' : '维持');
+    utilityItems.push({
+      col: 3,
+      spec: {
+        tag: 'H-801', name: '热泵机组', sub: 'Heat pump', kind: 'aerator',
+        tagOffsetY: -6,
+        params: [
+          fmtNum(thermal.heatPumpAvgKw) + ' kW (avg)',
+          'COP ' + thermal.cop,
+          modeLabel,
+        ],
+      },
+      connectsTo: { tag: 'T-101', mediumClass: 'thermal-line', label: thermal.mode === 'cool' ? '排热' : '供热' },
+    });
+  }
+
+  // RDF 反冲泵
+  if (pumps.backwash && pumps.backwash.kw > 0) {
+    utilityItems.push({
+      col: 4,
+      spec: null,    // 反冲泵用泵符号, 不用方框
+      pumpTag: pumps.backwash.tag,
+      pumpName: 'RDF 反冲泵',
+      pumpSub: 'Backwash pump',
+      pumpParams: [fmtNum(pumps.backwash.kw) + ' kW'],
+    });
+  }
+
+  // v1.3.x: AOP 高级氧化 — 从旁路改为公用工程 (按需投运, 不常驻主流)
+  // 工艺: 从主管取水 (CO2 后) → AOP → 处理后水回主管 (集水池前)
+  //   旁路图层撤掉 AOP 后, 这里用 stub 概念连接到 S-101 (集水池) 表示"AOP 处理后送集水池"
+  if (eq.aop && eq.aop.enabled) {
+    utilityItems.push({
+      col: 5,
+      spec: {
+        tag: eq.aop.tag, name: 'AOP 高级氧化', sub: 'O₃+UV AOP', kind: 'uv',
+        tagOffsetY: -6,
+        params: [
+          'α ' + eq.aop.flowPct + '%',
+          'V ' + fmtNum(eq.aop.volume) + ' m³',
+          'geosmin ↓' + eq.aop.geosminEff + '%',
+        ],
+      },
+      connectsTo: { tag: 'S-101', mediumClass: 'process-line', label: 'AOP→集水池' },
+    });
+  }
+
+  // 渲染所有公用设备
+  // v1.3.x: utility 设备间用紧凑间距 (cellW_utility=220), 不再用 360 全局间距
+  //   设备 small (140) + 80 通道 = 220, 6 个设备总宽 6×220+90=1410, 预留充足
+  const UTILITY_CELL_W = 220;
+  const utilityY = GRID.bands.utility.y + GRID.eq.h / 2;
+  utilityItems.forEach((item, idx) => {
+    const c = {
+      x: GRID.marginX + item.col * UTILITY_CELL_W + GRID.eqSmall.w / 2,
+      y: utilityY,
+    };
+
+    if (item.spec) {
+      const node = drawEquipBox(layer, c.x, c.y, item.spec);
+
+      // 跨 band 用 stub 连接 (只在源端画 — target 端的标签会和仪表泡泡撞)
+      if (item.connectsTo) {
+        const targetPorts = lookupEquipPorts(item.connectsTo.tag);
+        if (targetPorts) {
+          // 源端 stub: 从 utility 设备顶部朝上, 标 "→ 目标 tag (介质)"
+          drawStub(layer, node.ports.top,
+            item.connectsTo.label, item.connectsTo.tag, 'source',
+            item.connectsTo.mediumClass);
+        }
+      }
+    } else if (item.pumpTag) {
+      // utility 风格的泵: tag 在符号上方, name/sub/params 多行在符号下方
+      drawMainPump(layer, c.x, c.y, {
+        tag: item.pumpTag, vfd: false,
+        tagSide: 'utility',
+        name: item.pumpName,
+        sub: item.pumpSub,
+        params: item.pumpParams,
+      });
+    }
+  });
+}
+
+// ─── 仪表图层 ─────────────────────────────────────────────────
+function renderInstruments(stage) {
+  const layer = $('layer-instrument');
+  layer.innerHTML = '';
+
+  // schema instruments 的 tag 形如 "DO-101", 拆出 type 和 number
+  // loc 是设备 tag, 如 "T-101"; 仪表泡泡放在该设备上方 28px
+  // 同一设备多个仪表横向错开
+  const byLoc = {};
+  (stage.instruments || []).forEach(inst => {
+    const loc = inst.loc.replace(/_.*$/, '');   // 'B-301_out' → 'B-301'
+    if (!byLoc[loc]) byLoc[loc] = [];
+    byLoc[loc].push(inst);
+  });
+
+  Object.keys(byLoc).forEach(locTag => {
+    const ports = lookupEquipPorts(locTag);
+    if (!ports) return;
+    const insts = byLoc[locTag];
+    insts.forEach((inst, idx) => {
+      // 沿设备顶上方排, 左偏; 单仪表则居中
+      const offset = (idx - (insts.length - 1) / 2) * 32;
+      const pos = { x: ports.top.x + offset, y: ports.top.y - 36 };
+      const parts = inst.tag.split('-');
+      const type = parts[0];
+      const number = parts[1] || '';
+      drawInstrumentBubble(layer, pos, ports.top, type, number);
+    });
+  });
+}
+
+// ─── 控制信号图层 ─────────────────────────────────────────────
+function renderControl(stage) {
+  const layer = $('layer-control');
+  layer.innerHTML = '';
+
+  // schema 里 instrument.controlsTo 给出控制目标. 简化第一版:
+  // 每个有 controlsTo 的仪表, 画一条虚线从仪表泡泡到目标设备的某个端口
+  // 由于仪表泡泡是 layer-instrument 渲染的, 这里需要重新计算其位置
+  // 用同样的算法找位置 (代码重复, 可接受 — M1 第一版)
+  const byLoc = {};
+  (stage.instruments || []).forEach(inst => {
+    const loc = inst.loc.replace(/_.*$/, '');
+    if (!byLoc[loc]) byLoc[loc] = [];
+    byLoc[loc].push(inst);
+  });
+
+  // 控制目标 → 设备 tag 映射
+  const targetMap = {
+    'P-101_VFD': 'P-101',         // DO 控泵 VFD
+    'NaHCO3_dosing': null,        // 加药泵不在画面里, 暂略
+    'H-801': 'H-801',             // T 控热泵
+  };
+
+  Object.keys(byLoc).forEach(locTag => {
+    const sourcePorts = lookupEquipPorts(locTag);
+    if (!sourcePorts) return;
+    const insts = byLoc[locTag];
+
+    // 先过滤出有 controlsTo 且目标存在的仪表
+    const ctrlInsts = insts.filter(inst => {
+      if (!inst.controlsTo) return false;
+      const targetTag = targetMap[inst.controlsTo];
+      if (!targetTag) return false;
+      const targetNode = document.querySelector('.equip[data-tag="' + targetTag + '"] rect.equip-box') ||
+                         document.querySelector('.pump[data-tag="' + targetTag + '"]');
+      return !!targetNode;
+    });
+
+    // 控制 stub 在设备顶上方 (比仪表泡泡更高), 用宽间距 (≥ 标签宽度) 避免标签撞
+    const STUB_X_SPACING = 140;   // 紧凑标签宽 ~110, 间距 140 安全
+    ctrlInsts.forEach((inst, idx) => {
+      const targetTag = targetMap[inst.controlsTo];
+      const offset = (idx - (ctrlInsts.length - 1) / 2) * STUB_X_SPACING;
+      // stub 起点: 设备顶上方 30 (在仪表泡泡上方); x = 设备 cx + offset
+      const sourceStubPort = {
+        x: sourcePorts.top.x + offset,
+        y: sourcePorts.top.y - 30,
+        dir: 'N',
+      };
+      drawStub(layer, sourceStubPort, '控制', targetTag, 'source', 'signal-line', 0, { compact: true });
+    });
+  });
+}
+
+
+// ─── 注释/标题栏图层 ─────────────────────────────────────────
+function renderAnnotation(stage) {
+  const layer = $('layer-annotation');
+  layer.innerHTML = '';
+
+  const d = STATE.data;
+
+  drawTitleBlock(layer, d, stage);
+  drawLegend(layer);
+  drawEquipmentList(layer, stage);
+}
+
+/**
+ * 标题栏: 右下角, 严格按 GB/T 工程图标准格式
+ */
+function drawTitleBlock(parent, d, stage) {
+  const x = 1290, y = 1130;
+  const w = 540, h = 130;
+  const g = svgEl('g', { 'class': 'title-block' }, parent);
+
+  svgEl('rect', { x: x, y: y, width: w, height: h,
+    fill: '#fff', stroke: '#1F1F1E', 'stroke-width': 1.4,
+  }, g);
+
+  const rowH = h / 4;
+  for (let i = 1; i < 4; i++) {
+    svgEl('line', { x1: x, y1: y + i * rowH, x2: x + w, y2: y + i * rowH,
+      stroke: '#5C5B57', 'stroke-width': 0.6 }, g);
+  }
+  const c1 = x + w * 0.6;
+  const c2 = x + w * 0.8;
+  for (let i = 0; i < 4; i++) {
+    svgEl('line', { x1: c1, y1: y + i * rowH, x2: c1, y2: y + (i + 1) * rowH,
+      stroke: '#5C5B57', 'stroke-width': 0.6 }, g);
+    svgEl('line', { x1: c2, y1: y + i * rowH, x2: c2, y2: y + (i + 1) * rowH,
+      stroke: '#5C5B57', 'stroke-width': 0.6 }, g);
+  }
+
+  const PAD = 8;
+  function cell(x0, y0, label, value, opts) {
+    opts = opts || {};
+    svgEl('text', {
+      x: x0 + PAD, y: y0 + 11,
+      'font-size': 8, fill: '#5C5B57',
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+    }, g).textContent = label;
+    svgEl('text', {
+      x: x0 + PAD, y: y0 + 25,
+      'font-size': opts.size || 11, fill: '#1F1F1E',
+      'font-weight': opts.bold ? 600 : 400,
+    }, g).textContent = value || '—';
+  }
+
+  cell(x,         y + 0 * rowH, '项目', d.speciesName + '  ' + d.yieldTons + ' t/yr', { size: 13, bold: true });
+  cell(c1,        y + 0 * rowH, '设计单位', '', { size: 10 });
+  cell(c2,        y + 0 * rowH, '日期', d.savedAt ? d.savedAt.slice(0, 10) : '—');
+
+  cell(x,         y + 1 * rowH, '图名', 'RAS 工艺管道仪表流程图 P&ID', { size: 12 });
+  cell(c1,        y + 1 * rowH, '校对', '');
+  cell(c2,        y + 1 * rowH, '比例', 'NTS');
+
+  cell(x,         y + 2 * rowH, '设计阶段', stage.stageName + ' · 主流量 ' + fmtNum(stage.flow.flowMain) + ' m³/h', { size: 11 });
+  cell(c1,        y + 2 * rowH, '审核', '');
+  cell(c2,        y + 2 * rowH, '图号', d.results.summary.tagPrefix + '-PID-001');
+
+  const keyParams = [
+    'O₂ ' + fmtNum(stage.load.o2DailyTotal) + ' kg/d',
+    '系统 ' + fmtNum(stage.flow.volumeTotal) + ' m³',
+    '泵 ' + fmtNum(stage.pumps.totalKw) + ' kW',
+  ].join('  ·  ');
+  cell(x,         y + 3 * rowH, '关键参数', keyParams, { size: 10 });
+  cell(c1,        y + 3 * rowH, '阶段',
+    (d.results.summary.designStageIdx + 1) + ' / ' + d.results.perStage.length);
+  cell(c2,        y + 3 * rowH, '版本', 'v2.1');
+}
+
+function drawLegend(parent) {
+  // 紧凑横向 legend, 放在设备表上方
+  const x = 60, y = 1095;
+  const h = 22;
+  const g = svgEl('g', { 'class': 'legend' }, parent);
+
+  // 线类型: 5 行水平排, 单行高度
+  const lineDefs = [
+    { text: '主管线',  cls: 'main-line' },
+    { text: '旁路',    cls: 'bypass-line' },
+    { text: '气体',    cls: 'gas-line' },
+    { text: '载热',    cls: 'thermal-line' },
+  ];
+
+  // 标题前缀
+  svgEl('text', {
+    x: x, y: y + h * 0.6,
+    'font-size': 9, fill: '#5C5B57',
+    'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+  }, g).textContent = '图例:';
+
+  let cursorX = x + 50;
+  lineDefs.forEach(def => {
+    // 线段
+    svgEl('line', {
+      x1: cursorX, y1: y + h * 0.6 - 2,
+      x2: cursorX + 26, y2: y + h * 0.6 - 2,
+      'class': def.cls,
+    }, g);
+    // 文字
+    const labelX = cursorX + 32;
+    svgEl('text', {
+      x: labelX, y: y + h * 0.6 + 1,
+      'font-size': 10, fill: '#1F1F1E',
+    }, g).textContent = def.text;
+    cursorX = labelX + def.text.length * 11 + 22;   // 中文字符约 11px 宽 + 间距
+  });
+}
+
+function drawEquipmentList(parent, stage) {
+  const x = 60, y = 1130;
+  const w = 1200, h = 130;
+  const g = svgEl('g', { 'class': 'equipment-list' }, parent);
+
+  svgEl('rect', { x: x, y: y, width: w, height: h,
+    fill: '#fff', stroke: '#5C5B57', 'stroke-width': 0.8,
+  }, g);
+
+  svgEl('text', {
+    x: x + 12, y: y + 14,
+    'font-size': 9, fill: '#5C5B57',
+    'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+  }, g).textContent = '主要设备表 EQUIPMENT LIST';
+
+  const eq = stage.equipment;
+  const pumps = stage.pumps;
+  const flowMain = stage.flow.flowMain;
+  const uvFlowPct = eq.uv.flow ? Math.round(eq.uv.flow / flowMain * 100) : 0;
+  const items = [];
+  // 主流程 (按工艺顺序: 鱼池 → RDF → MBBR → CO2 → 集水池 → 主泵 → 氧锥 → 回鱼池)
+  items.push({ tag: 'T-101', name: '鱼池', spec: 'V ' + fmtNum(stage.flow.volumeTank) + ' m³' });
+  items.push({ tag: eq.rdf.tag, name: '微滤机', spec: 'Q ' + fmtNum(eq.rdf.flow) + ' m³/h, η ' + eq.rdf.tssEff + '%' });
+  items.push({ tag: eq.bf.tag, name: 'MBBR 生物滤池', spec: 'V ' + fmtNum(eq.bf.volume) + ' m³, η_TAN ' + eq.bf.tanEff + '%' });
+  if (eq.co2.enabled) items.push({ tag: eq.co2.tag, name: 'CO₂ 脱气塔', spec: 'G:L ' + eq.co2.gToL + ', η ' + eq.co2.eff + '%' });
+  // v1.3.x: 集水池 S-101 (CO2 后清水缓冲, 主泵正压吸入)
+  if (eq.sump && eq.sump.enabled) {
+    items.push({ tag: eq.sump.tag, name: '集水池', spec: 'V ' + fmtNum(eq.sump.volume) + ' m³, HRT ' + fmtNum(eq.sump.hrt_min) + ' min' });
+  }
+  // 主泵 (集水池后, 氧锥前)
+  items.push({ tag: pumps.main.tag, name: '主循环泵 (VFD, 集水池后)', spec: fmtNum(pumps.main.kw) + ' kW, H ' + pumps.main.headM + ' m' });
+  // 增氧锥 (主泵下游, 氧合水进鱼池前最后一步)
+  if (eq.o2cone.enabled) {
+    items.push({ tag: eq.o2cone.tag, name: '增氧锥', spec: fmtNum(eq.o2cone.peakSupplyKgH) + ' kg O₂/h, η ' + eq.o2cone.absorptionEff + '%' });
+  }
+  // 旁路 (3 个: 蛋分/UV/反硝化; AOP 已挪到公用工程)
+  if (eq.skimmer.enabled) items.push({ tag: eq.skimmer.tag, name: '蛋白分离器 (旁路)', spec: 'α ' + eq.skimmer.flowPct + '%, V ' + fmtNum(eq.skimmer.volume) + ' m³' });
+  items.push({ tag: eq.uv.tag, name: 'UV 消毒 (旁路)', spec: 'α ' + uvFlowPct + '%, ' + fmtNum(eq.uv.powerKw) + ' kW @ ' + eq.uv.dose + ' mJ/cm²' });
+  if (eq.denitri.enabled) items.push({ tag: eq.denitri.tag, name: '反硝化反应器 (旁路)', spec: 'α ' + eq.denitri.flowPct + '%, V ' + fmtNum(eq.denitri.volume) + ' m³' });
+  // 公用工程
+  // v1.3.x: LOX 显示当前阶段氧耗 (而非全场总和)
+  const stageO2KgD = (stage.load && stage.load.o2DailyTotal != null)
+    ? stage.load.o2DailyTotal
+    : STATE.data.results.summary.totalLOXKgD;
+  items.push({ tag: 'V-901', name: 'LOX 储罐', spec: fmtNum(stageO2KgD) + ' kg/d' });
+  if (eq.ozoneGen) items.push({ tag: eq.ozoneGen.tag, name: 'O₃ 发生器', spec: fmtNum(eq.ozoneGen.totalKgD) + ' kg/d, ' + fmtNum(eq.ozoneGen.powerKw) + ' kW' });
+  if (eq.aop.enabled) items.push({ tag: eq.aop.tag, name: 'AOP 高级氧化 (公用工程)', spec: 'α ' + eq.aop.flowPct + '%, V ' + fmtNum(eq.aop.volume) + ' m³' });
+  if (eq.bfBlower && eq.bfBlower.spec) items.push({ tag: eq.bfBlower.tag, name: '罗茨风机', spec: fmtNum(eq.bfBlower.spec.airFlow) + ' Nm³/min, ' + fmtNum(eq.bfBlower.spec.power) + ' kW' });
+  if (stage.thermal && stage.thermal.needsThermal) items.push({ tag: 'H-801', name: '热泵机组', spec: fmtNum(stage.thermal.heatPumpAvgKw) + ' kW (avg), COP ' + stage.thermal.cop });
+
+  const headerY = y + 28;
+  // 三列表头, 两栏布局
+  const colW = w / 2;
+  ['Tag', '设备名称', '规格 / 关键参数'].forEach((t, i) => {
+    const offsetX = i === 0 ? 0 : (i === 1 ? 60 : 180);
+    svgEl('text', {
+      x: x + 12 + offsetX, y: headerY,
+      'font-size': 9, fill: '#5C5B57',
+      'font-weight': 600,
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+    }, g).textContent = t;
+    // 第二栏的表头
+    svgEl('text', {
+      x: x + 12 + colW + offsetX, y: headerY,
+      'font-size': 9, fill: '#5C5B57',
+      'font-weight': 600,
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+    }, g).textContent = t;
+  });
+  svgEl('line', { x1: x + 6, y1: headerY + 4, x2: x + w - 6, y2: headerY + 4,
+    stroke: '#C8C5BB', 'stroke-width': 0.6 }, g);
+
+  const rowH = 11.5;
+  const PER_COL = Math.ceil(items.length / 2);
+  items.forEach((item, i) => {
+    const colIdx = Math.floor(i / PER_COL);
+    const rowIdx = i % PER_COL;
+    const cx = x + 12 + colIdx * colW;
+    const cy = headerY + 14 + rowIdx * rowH;
+
+    svgEl('text', {
+      x: cx, y: cy,
+      'font-size': 9, fill: '#1F1F1E',
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+      'font-weight': 600,
+    }, g).textContent = item.tag;
+    svgEl('text', {
+      x: cx + 60, y: cy,
+      'font-size': 9, fill: '#1F1F1E',
+    }, g).textContent = item.name;
+    svgEl('text', {
+      x: cx + 180, y: cy,
+      'font-size': 9, fill: '#5C5B57',
+      'font-family': 'ui-monospace, "SF Mono", Consolas, monospace',
+    }, g).textContent = item.spec;
+  });
+}
+
+
+function renderProcessFlow(stageData) {
+  const layer = $('layer-process');
+  layer.innerHTML = '';
+
+  const eq = stageData.equipment;
+  const flow = stageData.flow;
+  const pumps = stageData.pumps;
+
+  // 构建主流程设备序列 (按工艺顺序). 跳过未启用的可选设备.
+  // v1.3.x: 主流路径 (mainline 拓扑, 工程上正确的物理流路):
+  //   T-101(鱼池) → RDF → MBBR → CO2 → S-101(集水池) → P-101(主泵) → A-601(氧锥) → 回 T-101
+  // 工艺解释:
+  //   - 鱼池底排重力流先经过 RDF/MBBR/CO2 处理 (低头压, 重力或低压驱动)
+  //   - 处理后清水落到集水池 (清水缓冲, 主泵正压吸入)
+  //   - 主泵把清水推过氧锥 (氧锥需要正压吸收液氧)
+  //   - 氧合后水回鱼池给鱼用
+  // bypass 拓扑暂不使用 (UI 选项保留, 此版本仅按 mainline 渲染)
+  const seq = [];
+  const o2coneEnabled = eq.o2cone && eq.o2cone.enabled;
+
+  // 鱼池 T-101: 虚拟设备, 数据从 flow + farm 推 — 主流路径起点 (出底排进 RDF)
+  seq.push({
+    tag: 'T-101',
+    name: '鱼池',
+    sub: 'Fish tank',
+    kind: 'tank',
+    params: [
+      'V ' + fmtNum(flow.volumeTank) + ' m³',
+      'T ' + fmtNum(flow.tempOpt) + '°C',
+      'S ' + fmtNum(flow.salinity) + '‰',
+    ],
+  });
+
+  // 微滤机 (重力流入, 第一道处理)
+  seq.push({
+    tag: eq.rdf.tag,
+    name: '微滤机',
+    sub: 'Drum filter',
+    kind: 'filter',
+    textAlign: 'middle',     // 文字居中放设备正下方
+    params: [
+      'Q ' + fmtNum(eq.rdf.flow) + ' m³/h',
+      'η_TSS ' + eq.rdf.tssEff + '%',
+    ],
+  });
+
+  // MBBR 生物滤池
+  seq.push({
+    tag: eq.bf.tag,
+    name: 'MBBR 生物滤池',
+    sub: 'Biofilter',
+    kind: 'bio',
+    textAlign: 'middle',     // 文字居中放设备正下方
+    params: [
+      'V ' + fmtNum(eq.bf.volume) + ' m³',
+      'η_TAN ' + eq.bf.tanEff + '%',
+      '填充率 ' + eq.bf.fillRatio + '%',
+    ],
+  });
+
+  // 注: UV 是旁路, 不在主流程序列 (v1.1 uvFlowPct 默认 10%, 由 renderBypass 处理)
+
+  // CO2 脱气塔 (可选)
+  if (eq.co2.enabled) {
+    seq.push({
+      tag: eq.co2.tag,
+      name: 'CO₂ 脱气塔',
+      sub: 'CO₂ stripper',
+      kind: 'degas',
+      textAlign: 'middle',     // 文字居中放设备正下方
+      params: [
+        'G:L ' + eq.co2.gToL,
+        'η ' + eq.co2.eff + '%',
+      ],
+    });
+  }
+
+  // v1.3.x: 集水池 S-101 — 处理后清水缓冲, 主泵正压吸入. 图标用 small 尺寸 (140×80) 避免占用过多空间
+  if (eq.sump && eq.sump.enabled) {
+    seq.push({
+      tag: eq.sump.tag,
+      name: '集水池',
+      sub: 'Sump',
+      kind: 'tank',
+      w: GRID.eqSmall.w, h: GRID.eqSmall.h,    // 缩小图标
+      params: [
+        'V ' + fmtNum(eq.sump.volume) + ' m³',
+        'HRT ' + fmtNum(eq.sump.hrt_min) + ' min',
+      ],
+    });
+  }
+
+  // 增氧锥 A-601 — 主泵下游, 氧合水进鱼池前最后一步 (主泵 P-101 由独立 drawMainPump 渲染, 视觉插在 S-101 和 A-601 之间)
+  if (o2coneEnabled) {
+    seq.push({
+      tag: eq.o2cone.tag,
+      name: '增氧锥',
+      sub: 'O₂ cone',
+      kind: 'aerator',
+      // tag 文字 (A-601) 默认在设备正上方居中, 但设备正上方有回 T-101 的回水主管竖管 (x = A-601.cx)
+      //   → tag 文字撞回水竖管. 把 tag 往左挪 60px 避开
+      tagOffsetX: -60,
+      params: [
+        'sat ' + eq.o2cone.satTarget + '%',
+        'η ' + eq.o2cone.absorptionEff + '%',
+      ],
+    });
+  }
+
+  // 渲染设备 — 按列等距排
+  const equipNodes = [];
+  seq.forEach((spec, i) => {
+    let c = gridCenter('main', i);
+    // v1.3.x: S-101 集水池下移, 让顶部进水管 y 对齐前一个设备的出水 y
+    //   C-501 (脱气塔) 出水 y 在塔底, 远低于其他设备的 right.y
+    //   不下移 S-101 的话, C-501 → S-101 主管会走拐弯 (从 C-501 底→ 横向→ 上行进 S-101 顶)
+    //   下移 S-101 后, 直线水平进 S-101 顶部
+    if (spec.tag === 'S-101' && i > 0) {
+      const prevNode = equipNodes[i - 1];
+      if (prevNode && prevNode.ports && prevNode.ports.out) {
+        // v1.3.x: S-101 进水端口现为 W 方向 (左侧水平), viewBox 内位置 (15, 68)
+        // 让 S-101.in.y_canvas == prevNode.out.y → 主管 E→W 同 y 直线 (orthogonalRoute 情况 1)
+        // S-101.in.y = (cy-h/2) + 68*(h/140)
+        //   设 in.y = prevOutY → cy = prevOutY + h/2 - 68*(h/140) = prevOutY + h*(70-68)/140 = prevOutY + h*2/140
+        // retract 在 W 方向只影响 x, 不影响 y, 故不需要补偿
+        const sumpH = spec.h || GRID.eq.h;
+        c = { x: c.x, y: prevNode.ports.out.y + sumpH * 2 / 140 };
+      }
+    }
+    equipNodes.push(drawEquipBox(layer, c.x, c.y, spec));
+  });
+
+  // v1.3.x: 主泵 P-101 位置: 集水池 S-101 之后, 氧锥 A-601 之前
+  //   - 集水池正压吸入主泵 (避免汽蚀)
+  //   - 主泵推水过氧锥 (氧锥需正压吸收液氧)
+  //   - 氧合水进鱼池
+  // 兼容: 若集水池未启用 (理论不会, V_sump 公式始终 >=20), 退回到 seq 末尾 - 1 (主泵插在末段前)
+  const sumpIdx = seq.findIndex(s => s.tag === 'S-101');
+  const pumpAnchorIdx = sumpIdx >= 0 ? sumpIdx : Math.max(0, equipNodes.length - 2);
+  const pumpC = {
+    x: (equipNodes[pumpAnchorIdx].ports.right.x + equipNodes[pumpAnchorIdx + 1].ports.left.x) / 2,
+    y: equipNodes[pumpAnchorIdx].ports.right.y,
+  };
+  const pump = drawMainPump(layer, pumpC.x, pumpC.y, {
+    tag: pumps.main.tag,
+    vfd: pumps.main.vfd,
+    params: [fmtNum(pumps.main.kw) + ' kW', 'H ' + pumps.main.headM + 'm'],
+  });
+
+  // 主流程连线
+  // 0..pumpAnchorIdx-1: 重力流/低压段 (T-101 → RDF → MBBR → CO2 → S-101)
+  //                       第一段 (T-101 → RDF) 标主流量
+  for (let i = 0; i < pumpAnchorIdx; i++) {
+    const label = (i === 0) ? fmtNum(flow.flowMain) + ' m³/h' : null;
+    drawMainLine(layer, equipNodes[i].ports.out, equipNodes[i + 1].ports.in, label);
+  }
+  // S-101 → P-101 → A-601 (主泵两端短连线)
+  drawMainLine(layer, equipNodes[pumpAnchorIdx].ports.out, pump.ports.in);
+  drawMainLine(layer, pump.ports.out, equipNodes[pumpAnchorIdx + 1].ports.in);
+  // pumpAnchorIdx+1 之后各段 (一般只剩 0 段, 因 A-601 即末端)
+  for (let i = pumpAnchorIdx + 1; i < equipNodes.length - 1; i++) {
+    drawMainLine(layer, equipNodes[i].ports.out, equipNodes[i + 1].ports.in);
+  }
+
+  // 末端设备 → 鱼池 回流 (绕到顶上方)
+  const last = equipNodes[equipNodes.length - 1];
+  const first = equipNodes[0];
+  const returnY = first.ports.top.y - 140;   // 在主流程上方 140px (留出 stub + 仪表区)
+  const returnPath = [
+    'M', last.ports.top.x, last.ports.top.y,
+    'L', last.ports.top.x, returnY,
+    'L', first.ports.top.x, returnY,
+    'L', first.ports.top.x, first.ports.top.y,
+  ].join(' ');
+  const retG = svgEl('g', { 'class': 'flow-line return' }, layer);
+  svgEl('path', {
+    'class': 'main-line return',
+    d: returnPath,
+    'marker-end': 'url(#arrow)',
+  }, retG);
+  svgEl('text', {
+    'class': 'line-label',
+    x: (last.ports.top.x + first.ports.top.x) / 2,
+    y: returnY - 6,
+    'text-anchor': 'middle',
+  }, retG).textContent = '回流至鱼池 ' + fmtNum(flow.flowMain) + ' m³/h';
+}
+
+/**
+ * 清空所有图层内容
+ */
+function clearAllLayers() {
+  ['process', 'bypass', 'utility', 'instrument', 'control', 'annotation'].forEach(name => {
+    const g = $('layer-' + name);
+    if (g) g.innerHTML = '';
+  });
+}
+
+/**
+ * 总渲染入口 — 数据载入或阶段切换后调用
+ */
+// ─── 跳线 (Jumpers / Crossover bridges) ───────────────────────
+//
+// 工程图惯例: 两条线交叉但不连接时, 被跨越的一方画半圆"驼峰",
+// 表示"跨过去, 不接通". 这里采用最简单的规则:
+//   - 水平段 跨 垂直段 (垂直段上出现驼峰)
+//   - 所有可见线 (主管/旁路/气体/载热) 都参与交叉检测
+//   - 控制信号 (signal-line) 太细且短, 不参与
+//   - 每个交叉点用一个独立的 SVG group 覆盖, 不修改原 path
+//
+// 实现思路: SVG path 的 d 属性是 "M x y L x y L x y ..." 形式.
+// 我们解析每个 path 的点序列, 拆成水平段/垂直段, 然后两两求交.
+
+const JUMPER_RADIUS = 6;        // 半圆驼峰半径
+const JUMPER_STROKE = 2.4;      // 驼峰线宽 (与主管一致)
+const JUMPER_BG_PAD = 1.5;      // 白色覆盖矩形比线宽多出的 padding
+
+/**
+ * 解析 SVG path 的 d 属性, 返回点序列数组 [{x,y}, ...]
+ * 只处理 M / L / Q (Q 视作直接到终点, 忽略控制点)
+ */
+function parsePathPoints(d) {
+  if (!d) return [];
+  const tokens = d.trim().split(/[\s,]+/);
+  const pts = [];
+  let i = 0;
+  while (i < tokens.length) {
+    const cmd = tokens[i];
+    if (cmd === 'M' || cmd === 'L') {
+      const x = parseFloat(tokens[i + 1]);
+      const y = parseFloat(tokens[i + 2]);
+      if (!isNaN(x) && !isNaN(y)) pts.push({ x: x, y: y });
+      i += 3;
+    } else if (cmd === 'Q') {
+      // Q cx cy x y — 我们忽略控制点, 直接取终点
+      // (Q 用于圆角拐弯, 端点已在前一段的 L 终点附近)
+      const x = parseFloat(tokens[i + 3]);
+      const y = parseFloat(tokens[i + 4]);
+      if (!isNaN(x) && !isNaN(y)) pts.push({ x: x, y: y });
+      i += 5;
+    } else {
+      // 跳过未知 token (单字母指令或单数字)
+      i += 1;
+    }
+  }
+  return pts;
+}
+
+/**
+ * 把点序列拆成线段, 仅保留水平/垂直段 (忽略斜线 — 工程图里斜线很少, 而且圆角段产生的微小斜线意义不大)
+ * 每段: { type: 'H'|'V', x1, y1, x2, y2, src: <pathElement> }
+ */
+function pointsToSegments(pts, src) {
+  const segs = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1];
+    // 守门: 跳过 NaN / undefined 端点
+    if (!isFinite(a.x) || !isFinite(a.y) || !isFinite(b.x) || !isFinite(b.y)) continue;
+    const dx = Math.abs(a.x - b.x);
+    const dy = Math.abs(a.y - b.y);
+    if (dy < 1 && dx >= 2) {
+      segs.push({
+        type: 'H',
+        x1: Math.min(a.x, b.x), y1: a.y,
+        x2: Math.max(a.x, b.x), y2: a.y,
+        src: src,
+      });
+    } else if (dx < 1 && dy >= 2) {
+      segs.push({
+        type: 'V',
+        x1: a.x, y1: Math.min(a.y, b.y),
+        x2: a.x, y2: Math.max(a.y, b.y),
+        src: src,
+      });
+    }
+  }
+  return segs;
+}
+
+/**
+ * 找两条段的交叉点. 必须一 H 一 V, 且 V.x 严格在 H 中间、H.y 严格在 V 中间
+ * (排除端点交叉 — 那些是设备的"接头", 不是跨线)
+ */
+function findCrossing(s1, s2) {
+  let h, v;
+  if (s1.type === 'H' && s2.type === 'V') { h = s1; v = s2; }
+  else if (s1.type === 'V' && s2.type === 'H') { h = s2; v = s1; }
+  else return null;
+
+  const eps = 2;
+  // 垂直段 x = v.x1 (== v.x2); 水平段 y = h.y1 (== h.y2)
+  const vx = v.x1;
+  const hy = h.y1;
+  if (vx <= h.x1 + eps || vx >= h.x2 - eps) return null;
+  if (hy <= v.y1 + eps || hy >= v.y2 - eps) return null;
+  return { x: vx, y: hy, hSeg: h, vSeg: v };
+}
+
+/**
+ * 在指定点画一个跳线驼峰 (水平线跨过垂直线)
+ * 半圆开口朝下, 中心在 (cx, cy), 半径 r
+ * 由于水平线 stroke 颜色已知, 我们用同色画半圆 + 白色背景擦除被跨段
+ */
+function drawJumper(parent, cx, cy, hPath) {
+  const r = JUMPER_RADIUS;
+  const hStroke = window.getComputedStyle(hPath).stroke;
+  const hWidth  = parseFloat(window.getComputedStyle(hPath).strokeWidth) || JUMPER_STROKE;
+
+  const g = svgEl('g', { 'class': 'jumper' }, parent);
+
+  // 1. 白色背景矩形: 把被跨段在交叉点附近一小段 "擦" 掉
+  //    (实际上垂直线在该点不应被打断 — 我们留它通过, 但水平线在驼峰处要让出位置)
+  //    宽 2r, 高比线宽宽几像素
+  svgEl('rect', {
+    x: cx - r, y: cy - hWidth / 2 - JUMPER_BG_PAD,
+    width: 2 * r, height: hWidth + 2 * JUMPER_BG_PAD,
+    fill: '#fff', stroke: 'none',
+  }, g);
+
+  // 2. 半圆驼峰 (开口朝下): 从 (cx-r, cy) 画到 (cx+r, cy), 弧顶在 (cx, cy-r)
+  //    SVG arc: M start A rx ry rotation large-arc-flag sweep-flag end
+  svgEl('path', {
+    d: 'M ' + (cx - r) + ' ' + cy +
+       ' A ' + r + ' ' + r + ' 0 0 1 ' + (cx + r) + ' ' + cy,
+    fill: 'none',
+    stroke: hStroke,
+    'stroke-width': hWidth,
+    'stroke-linecap': 'round',
+  }, g);
+
+  return g;
+}
+
+/**
+ * 主入口: 扫描所有可见路径, 找交叉, 画跳线
+ * 在 renderAll 末尾调用
+ */
+function processJumpers() {
+  // 收集所有需要参与交叉检测的 path
+  // 排除: 控制信号 (signal-line, 太细)、仪表泡泡的连接线 (instrument-bubble-line)
+  const selectors = [
+    '#layer-process path.main-line',
+    '#layer-process path.return',
+    '#layer-bypass path.main-line',
+    '#layer-bypass path.bypass-line',
+    '#layer-utility path.main-line',
+    '#layer-utility path.bypass-line',
+    '#layer-utility path.gas-line',
+    '#layer-utility path.thermal-line',
+  ];
+  const paths = [];
+  selectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(p => paths.push(p));
+  });
+
+  // 解析每条 path 为段集合
+  const allSegs = [];
+  paths.forEach(p => {
+    const d = p.getAttribute('d');
+    const pts = parsePathPoints(d);
+    const segs = pointsToSegments(pts, p);
+    allSegs.push.apply(allSegs, segs);
+  });
+
+  // 创建 jumpers 容器 (清空前一次)
+  let jumpersGroup = $('layer-jumpers');
+  if (jumpersGroup) jumpersGroup.remove();
+  jumpersGroup = svgEl('g', { id: 'layer-jumpers' }, $('pidSvg'));
+
+  // 两两找交叉, 同一 path 内的段不算 (避免自交叉)
+  const drawn = new Set();   // 去重: 同一坐标只画一个驼峰
+  for (let i = 0; i < allSegs.length; i++) {
+    for (let j = i + 1; j < allSegs.length; j++) {
+      const s1 = allSegs[i], s2 = allSegs[j];
+      if (s1.src === s2.src) continue;       // 同 path
+      const cx = findCrossing(s1, s2);
+      if (!cx) continue;
+      const key = Math.round(cx.x) + ',' + Math.round(cx.y);
+      if (drawn.has(key)) continue;
+      drawn.add(key);
+      drawJumper(jumpersGroup, cx.x, cx.y, cx.hSeg.src);
+    }
+  }
+  return drawn.size;
+}
+
+
+function renderAll() {
+  clearAllLayers();
+  // 清掉上一次的 jumpers
+  const oldJumpers = $('layer-jumpers');
+  if (oldJumpers) oldJumpers.remove();
+
+  if (!STATE.data) {
+    $('canvasPlaceholder').style.display = '';
+    return;
+  }
+  $('canvasPlaceholder').style.display = 'none';
+  const stage = STATE.data.results.perStage[STATE.designStageIdx];
+
+  // 先画主流程 (其他层用 lookupEquipPorts 依赖主流程已渲染的设备坐标)
+  renderProcessFlow(stage);
+  renderBypass(stage);
+  renderUtility(stage);
+  renderInstruments(stage);
+  // renderControl(stage);   // 控制信号 stub 已移除 (v2.1: 信息密度过高, 工程图意义不大)
+  renderAnnotation(stage);
+
+  // 最后扫描所有可见线条, 在交叉点画跳线
+  processJumpers();
+}
+
+
+// ─── Schema 校验 ──────────────────────────────────────────────
+function validateSchema(d) {
+  if (!d || typeof d !== 'object') return { ok: false, error: '不是有效的 JSON 对象' };
+
+  // 兼容 iRAS v1.2 用户保存的方案 (有 stages 但缺 pidSchema/results)
+  const isOldUserScheme = d.stages && Array.isArray(d.stages) && !d.results;
+
+  if (!d.pidSchema) {
+    if (isOldUserScheme) {
+      return {
+        ok: false,
+        error: '该方案文件不含 P&ID 数据 (缺 pidSchema 和 results 字段)。\n\n解决: 在 iRAS 主页面 (index.html) 加载该方案 → 等待计算完成 → 重新点 "💾 保存方案" → 用新文件加载本页面。\n\n或: 直接从 iRAS 主页面点 "📐 输出 P&ID" 按钮跳转过来 (推荐).'
+      };
+    }
+    return {
+      ok: false,
+      error: '缺少 pidSchema 字段 — 这看起来是 v1.1 原版 JSON, 没打过 P&ID 补丁。请用打过补丁的 v1.1 重新导出 (按"📐 导出 P&ID 数据"按钮)。'
+    };
+  }
+
+  const major = parseInt(String(d.pidSchema).split('.')[0], 10);
+  if (!Number.isFinite(major)) {
+    return { ok: false, error: 'pidSchema 版本号无法解析: ' + d.pidSchema };
+  }
+  if (major > SUPPORTED_SCHEMA_MAJOR) {
+    return {
+      ok: false,
+      error: 'pidSchema ' + d.pidSchema + ' 版本过新, 此 v2.0 骨架仅支持 ' + SUPPORTED_SCHEMA_MAJOR + '.x'
+    };
+  }
+
+  if (!d.results) {
+    if (isOldUserScheme) {
+      return {
+        ok: false,
+        error: '该方案文件不含设备数据 (results 字段缺失)。请回到 iRAS 主页面重新导出。'
+      };
+    }
+    return { ok: false, error: '缺少 results 字段' };
+  }
+  if (!Array.isArray(d.results.perStage)) return { ok: false, error: 'results.perStage 必须是数组' };
+  if (!d.results.perStage.length) return { ok: false, error: 'results.perStage 为空 — v1.1 端没有阶段数据' };
+  if (!d.results.summary)      return { ok: false, error: '缺少 results.summary' };
+
+  const idx = d.results.summary.designStageIdx;
+  if (idx == null || idx < 0 || idx >= d.results.perStage.length) {
+    return { ok: false, error: 'designStageIdx ' + idx + ' 越界 (perStage.length = ' + d.results.perStage.length + ')' };
+  }
+
+  return { ok: true };
+}
+
+// ─── 加载逻辑 ─────────────────────────────────────────────────
+function loadFromText(text, sourceLabel) {
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (e) {
+    toast('JSON 解析失败: ' + e.message, 'error');
+    return;
+  }
+
+  const v = validateSchema(parsed);
+  if (!v.ok) {
+    toast(v.error, 'error');
+    console.error('[v2.0 skeleton] 校验失败:', v.error, parsed);
+    return;
+  }
+
+  STATE.data = parsed;
+  STATE.designStageIdx = parsed.results.summary.designStageIdx;
+  refreshAll(text.length, sourceLabel);
+  toast('已载入: ' + sourceLabel + ' (' + parsed.results.perStage.length + ' 阶段)');
+}
+
+function loadFromFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) { loadFromText(e.target.result, file.name); };
+  reader.onerror = function() { toast('文件读取失败', 'error'); };
+  reader.readAsText(file);
+}
+
+function loadSample() {
+  const sampleEl = $('sampleData');
+  const txt = sampleEl ? sampleEl.textContent.trim() : '';
+  if (!txt || looksLikePlaceholder(txt)) {
+    toast('内嵌示例数据未注入 — 请用 "选择 JSON 文件" 载入外部文件', 'warn');
+    return;
+  }
+  loadFromText(txt, '内嵌示例 (三文鱼 1000 t/yr)');
+}
+
+function clearData() {
+  STATE.data = null;
+  STATE.designStageIdx = null;
+  refreshAll();
+  toast('已清空');
+}
+
+// ─── UI 刷新 ───────────────────────────────────────────────────
+function refreshAll(byteSize, sourceLabel) {
+  refreshTopSummary();
+  refreshMeta();
+  refreshStageSelect();
+  refreshInspector();
+  refreshLayerEnableState();
+  refreshStatusBar(byteSize, sourceLabel);
+  renderAll();      // ← 渲染 SVG 图形
+  $('btnClear').disabled = !STATE.data;
+}
+
+function refreshTopSummary() {
+  const el = $('topSummary');
+  if (!STATE.data) {
+    el.innerHTML = '<span class="summary-item muted">未载入数据</span>';
+    return;
+  }
+  const d = STATE.data;
+  const ds = d.results.perStage[STATE.designStageIdx];
+  el.innerHTML = [
+    '<span class="summary-item">物种<b>' + (d.speciesName || d.species) + '</b></span>',
+    '<span class="summary-item">规模<b>' + d.yieldTons + ' t/yr</b></span>',
+    '<span class="summary-item">设计阶段<b>' + ds.stageName + '</b></span>',
+    '<span class="summary-item">主流量<b>' + fmtNum(ds.flow.flowMain) + ' m³/h</b></span>',
+    '<span class="summary-item">系统水量<b>' + fmtNum(ds.flow.volumeTotal) + ' m³</b></span>',
+    '<span class="summary-item">峰值氧需<b>' + fmtNum(ds.load.o2PeakHourly) + ' kg/h</b></span>'
+  ].join('');
+}
+
+function refreshMeta() {
+  const el = $('metaList');
+  if (!STATE.data) {
+    el.innerHTML = '<dd style="color:var(--ink-3); font-style:italic;">—</dd>';
+    return;
+  }
+  const d = STATE.data;
+  const savedAt = d.savedAt ? new Date(d.savedAt).toLocaleString('zh-CN', {hour12:false}) : '—';
+  el.innerHTML =
+    '<dt>pidSchema</dt><dd>' + d.pidSchema + '</dd>' +
+    '<dt>iRAS 版本</dt><dd>' + (d.irasVersion || '—') + '</dd>' +
+    '<dt>导出时间</dt><dd>' + savedAt + '</dd>' +
+    '<dt>tag 命名空间</dt><dd>' + (d.results.summary.tagPrefix || '—') + '</dd>' +
+    '<dt>全场峰流</dt><dd>' + fmtNum(d.results.summary.peakFlowM3H) + ' m³/h</dd>' +
+    '<dt>全场水量</dt><dd>' + fmtNum(d.results.summary.totalSystemVolume) + ' m³</dd>' +
+    '<dt>全场氧耗</dt><dd>' + fmtNum(d.results.summary.totalLOXKgD) + ' kg/d</dd>';
+}
+
+function refreshStageSelect() {
+  const sel = $('stageSelect');
+  if (!STATE.data) {
+    sel.innerHTML = '<option>未载入</option>';
+    sel.disabled = true;
+    return;
+  }
+  const stages = STATE.data.results.perStage;
+  const designIdx = STATE.data.results.summary.designStageIdx;
+  sel.innerHTML = stages.map(function(s, i) {
+    return '<option value="' + i + '"' +
+      (i === STATE.designStageIdx ? ' selected' : '') + '>' +
+      s.stageName + (i === designIdx ? '  ★ 设计点' : '') + '</option>';
+  }).join('');
+  sel.disabled = false;
+}
+
+function refreshInspector() {
+  const el = $('inspectorBody');
+  if (!STATE.data) {
+    el.innerHTML =
+      '<div class="empty-state">' +
+        '<div>等待数据载入</div>' +
+        '<div class="hint">' +
+          '可以:<br>' +
+          '• 点 <code>📂 加载示例</code> 试用<br>' +
+          '• 点 <code>📁 选择 JSON 文件</code> 选文件<br>' +
+          '• 直接拖 JSON 到画布' +
+        '</div>' +
+      '</div>';
+    return;
+  }
+  const stage = STATE.data.results.perStage[STATE.designStageIdx];
+  el.innerHTML = '';
+  el.appendChild(renderTreeNode('stage', stage, true));
+}
+
+function renderTreeNode(key, val, isRoot) {
+  if (val === null || val === undefined) return leaf(key, val);
+  if (typeof val !== 'object') return leaf(key, val);
+  if (Array.isArray(val))      return arrayNode(key, val);
+
+  const det = document.createElement('details');
+  det.className = 'tree-node';
+  if (isRoot || ['farm', 'load', 'flow', 'equipment', 'pumps', 'thermal'].indexOf(key) >= 0) {
+    det.open = true;
+  }
+  const sum = document.createElement('summary');
+  const isDisabled = val.enabled === false;
+  let html = '<span class="tree-key' + (isDisabled ? ' disabled' : '') + '">' + key + '</span>';
+  if (val.tag) html += ' <span class="tree-val string">' + val.tag + '</span>';
+  if ('enabled' in val) {
+    html += ' <span class="tree-val ' + (val.enabled ? 'boolean' : 'null') + '">' +
+            (val.enabled ? '✓ enabled' : '✗ disabled') + '</span>';
+  }
+  if (val.kw != null && html.indexOf('kW') < 0) {
+    html += ' <span class="tree-val number">' + fmtNum(val.kw) + '<span class="unit"> kW</span></span>';
+  }
+  if (val.flowMain != null) {
+    html += ' <span class="tree-val number">' + fmtNum(val.flowMain) + '<span class="unit"> m³/h</span></span>';
+  }
+  sum.innerHTML = html;
+  det.appendChild(sum);
+
+  for (const k in val) {
+    if (Object.prototype.hasOwnProperty.call(val, k)) {
+      det.appendChild(renderTreeNode(k, val[k], false));
+    }
+  }
+  return det;
+}
+
+function arrayNode(key, arr) {
+  const det = document.createElement('details');
+  det.className = 'tree-node';
+  const sum = document.createElement('summary');
+  sum.innerHTML = '<span class="tree-key">' + key + '</span> <span class="tree-val null">[' + arr.length + ']</span>';
+  det.appendChild(sum);
+  arr.forEach(function(v, i) { det.appendChild(renderTreeNode('[' + i + ']', v, false)); });
+  return det;
+}
+
+function leaf(key, val) {
+  const div = document.createElement('div');
+  div.className = 'tree-leaf';
+  let cls, txt;
+  if (val === null) { cls = 'null'; txt = 'null'; }
+  else if (val === undefined) { cls = 'null'; txt = 'undefined'; }
+  else if (typeof val === 'string') { cls = 'string'; txt = '"' + val + '"'; }
+  else if (typeof val === 'boolean') { cls = 'boolean'; txt = String(val); }
+  else if (typeof val === 'number') { cls = 'number'; txt = fmtNum(val); }
+  else { cls = ''; txt = String(val); }
+  div.innerHTML = '<span class="tree-key">' + key + '</span>: <span class="tree-val ' + cls + '">' + txt + '</span>';
+  return div;
+}
+
+function refreshLayerEnableState() {
+  document.querySelectorAll('.layer-row').forEach(function(row) {
+    row.dataset.disabled = 'false';
+  });
+}
+
+function refreshStatusBar(byteSize, sourceLabel) {
+  $('statusLeft').textContent = STATE.data
+    ? '已载入: ' + (sourceLabel || '(无名)')
+    : '就绪';
+  $('statusSchema').textContent = 'schema: ' + (STATE.data ? STATE.data.pidSchema : '—');
+  $('statusStages').textContent = '阶段: ' + (STATE.data ? STATE.data.results.perStage.length : '—');
+  $('statusBytes').textContent = '大小: ' + (byteSize ? fmtBytes(byteSize) : '—');
+}
+
+function toggleLayer(layerName, visible) {
+  const g = $('layer-' + layerName);
+  if (!g) return;
+  g.style.display = visible ? '' : 'none';
+}
+
+function bindEvents() {
+  $('btnLoadSample').addEventListener('click', loadSample);
+  $('btnLoadFile').addEventListener('click', function() { $('fileInput').click(); });
+  $('fileInput').addEventListener('change', function(e) {
+    const f = e.target.files[0];
+    if (f) loadFromFile(f);
+    e.target.value = '';
+  });
+  $('btnClear').addEventListener('click', clearData);
+
+  const area = $('canvasArea');
+  ['dragover', 'dragenter'].forEach(function(evt) {
+    area.addEventListener(evt, function(e) { e.preventDefault(); area.classList.add('drag-over'); });
+  });
+  ['dragleave', 'dragend', 'drop'].forEach(function(evt) {
+    area.addEventListener(evt, function(e) { e.preventDefault(); area.classList.remove('drag-over'); });
+  });
+  area.addEventListener('drop', function(e) {
+    const f = e.dataTransfer.files[0];
+    if (f) {
+      if (!f.name.endsWith('.json')) { toast('请拖入 .json 文件', 'warn'); return; }
+      loadFromFile(f);
+    }
+  });
+
+  document.querySelectorAll('.layer-row input[type="checkbox"]').forEach(function(cb) {
+    cb.addEventListener('change', function(e) {
+      const row = e.target.closest('.layer-row');
+      toggleLayer(row.dataset.layer, e.target.checked);
+    });
+  });
+
+  $('stageSelect').addEventListener('change', function(e) {
+    STATE.designStageIdx = parseInt(e.target.value, 10);
+    refreshTopSummary();
+    refreshInspector();
+    renderAll();    // ← 阶段切换时重画
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  bindEvents();
+  refreshAll();
+  console.info('[iRAS P&ID v2.0 骨架] 就绪. 调试: window.STATE');
+  window.STATE = STATE;
+
+  // v1.3 集成: 自动从 localStorage 加载 iRAS 主页面传入的方案数据
+  // (v1.3.x: 由 sessionStorage 改为 localStorage, 避免新窗口偶尔读不到)
+  function tryLoadFromSessionStorage(label) {
+    try {
+      const stashed = localStorage.getItem('iRAS_pidExport') || sessionStorage.getItem('iRAS_pidExport');
+      if (stashed) {
+        loadFromText(stashed, label || 'iRAS 主页面方案 (自动载入)');
+        // 用完即清, 防止陈旧数据
+        localStorage.removeItem('iRAS_pidExport');
+        sessionStorage.removeItem('iRAS_pidExport');
+        return true;
+      }
+    } catch(e) { console.warn('storage 自动载入失败:', e); }
+    return false;
+  }
+  // 第一次打开窗口: DOMContentLoaded 时直接读
+  tryLoadFromSessionStorage();
+
+  // 复用窗口场景: 主页面再次点 "输出 P&ID" 时, 主页通过 postMessage 通知, 这里重新加载
+  window.addEventListener('message', function(ev) {
+    if (ev && ev.data && ev.data.type === 'iRAS_PID_RELOAD') {
+      tryLoadFromSessionStorage('iRAS 主页面方案 (刷新载入)');
+    }
+  });
+});
+</script>
+</body>
+</html>

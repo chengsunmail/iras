@@ -1,131 +1,169 @@
-# 🌊 iRAS · 循环水养殖工程设计平台
+# iRAS 循环水养殖工程设计平台
 
-**iRAS** (intelligent Recirculating Aquaculture System) 是一款面向水产养殖工程师、设计院、高校研究者的 RAS 工程设计与仿真工具。
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![Version](https://img.shields.io/badge/version-1.5.0-green.svg)
+![Status](https://img.shields.io/badge/status-stable-brightgreen.svg)
 
-输入年产量目标和鱼种 → 系统自动反推多阶段养殖规模、仿真水处理工艺、估算设备规格和投资运行成本。
-
-**纯前端单文件，双击 `index.html` 即可使用，无需安装任何软件。**
-
----
-
-## ✨ 功能特点
-
-- **多阶段养殖规模反推**：尾数流守恒 + Little's Law，从年产量精确反推各阶段存塘量、水体、投饵量
-- **精确循环方程水质仿真**：C_out = Δ/(1-R)，沿程每个处理单元（RDF → 蛋分 → BF → UV → 增氧）浓度阶跃可视化，闭合验证误差 = 0
-- **O₂ 按位置分配**：鱼池主增氧（液氧/微孔）只供鱼虾生理耗氧；BF 粗孔曝气独立供硝化 + DOM 耗氧，两套不重叠
-- **盐度体系**：Benson & Krause (1984) DO 饱和度公式 + USGS 盐度修正；硝化效率盐度修正 f = max(1-0.01×S, 0.3)；海水臭氧溴酸盐警告
-- **主流串联 + 旁路混合建模**：蛋白分离器、AOP、反硝化均按旁路（流量比 × 单次效率 = 系统效率）建模
-- **投资概算**：15 类设备单价可编辑 × 工程放大系数 (1.8-2.5)，精度标注 ±40%
-- **运行成本核算**：峰值 + 日均双口径（电费/液氧/甲醇/NaHCO₃/饲料/热泵）
+iRAS 是一个面向**水产养殖工程师、设计院、高校研究者**的循环水养殖系统(Recirculating Aquaculture System)工程设计开源工具。覆盖**工艺设计 → P&ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成**的完整工作流。
 
 ---
 
-## 🐟 支持的品种
+## 主要功能
 
-| 品种 | 水温 | 盐度 | 总周期 | 阶段数 |
-|------|------|------|--------|--------|
-| 🐟 三文鱼 Salmon | 12-15°C | 淡→海水 | 24 月 | 4 |
-| 🐠 大菱鲆 Turbot | 16°C | 海水 28‰ | 18 月 | 3 |
-| 🎣 加州鲈 Largemouth Bass | 25°C | 淡水 | 10 月 | 3 |
-| 🐍 鳗鲡 Eel | 26-28°C | 淡水 | 12 月 | 3 |
-| 🏅 鳜鱼 Mandarin Fish | 26°C | 淡水 | 8 月 | 2 |
-| 🐡 罗非鱼 Tilapia | 28°C | 淡水 | 8 月 | 3 |
-| 🪸 石斑鱼 Grouper | 27°C | 海水 30‰ | 12 月 | 3 |
-| 🦐 南美白对虾 L.vannamei | 30°C | 半咸水 15‰ | 4 月 | 3 |
-| 🧪 自定义 Custom | 可调 | 可调 | 可调 | 1+ |
+### v1.0–v1.3:工艺设计与工程化
+- **多阶段养殖规模反推**(尾数流守恒 + Little's Law)
+- **精确循环方程水质稳态仿真**(TAN / TSS / DOM / NO₃ / DO / CO₂)
+- **主流串联 + 旁路并联**混合建模(蛋分 / 反硝化 / AOP)
+- **盐度修正**(DO 饱和度 + 硝化效率 + 海水臭氧溴酸盐警告)
+- **设备规格与选型**(RDF / BF / UV / CO₂ 脱气 / 蛋分 / AOP / 反硝化 / 增氧 / 泵)
+- **多模块并联 + N+1 备用**(v1.3 新增)
+- **P&ID 工艺图自动生成**(v1.3.x 新增)
+- **设备清单导出**(v1.3.x 新增)
 
----
+### v1.2:全局气候 + 双节点稳态热平衡
+- **温带 / 亚热带 / 北欧 / 中国南方** 4 工况一键切换
+- **车间空气-水体双节点联立求解**(车间散热 + 鱼代谢热 + 板换回收)
+- **挪威 / 海南 / 青岛**等典型场景热泵装机自动估算
 
-## 🚀 快速开始
+### v1.4:投资财务评价
+- **NPV / IRR / 投资回收期 / 盈亏平衡点**完整计算
+- **8 张标准财务表**(收入 / 成本 / 利润 / 现金流 / 还款 / 敏感性等)
+- **5 因子敏感性分析**(售价 / CAPEX / 产量 / 饲料 / 电费)
+- **Excel 一键导出**(SheetJS,7 个工作表)
 
-1. 下载 `index.html` 文件（下载后可改名为 `iRAS.html`）
-2. 双击用浏览器打开（Chrome / Edge / Firefox / Safari）
-3. 选择鱼种 → 填写年产量目标（吨/年）
-4. 系统自动计算，展开各阶段卡片查看详细结果
-5. 调整工艺参数后结果即时刷新
-6. 点「💾 保存方案」导出 JSON / 点「🖨️ 打印」导出 PDF
-
-### 在线版
-
-> 🔗 [在线体验]()（部署后填入链接）
-
----
-
-## 🔧 技术栈
-
-- **前端**：HTML5 + JavaScript (ES2020+) + Tailwind CSS (CDN) + Chart.js
-- **架构**：纯前端单文件 SPA，无后端，无数据库
-- **数据存储**：localStorage 自动保存 + JSON 文件导出/导入
-- **打印**：CSS @media print + JS 展开折叠区 → 浏览器原生打印/PDF
+### v1.5:可研报告生成器 ⭐ 新增
+- **16 章扩展版可研报告**(发改委政府立项编制规范)
+- **20 字段项目元数据**(项目身份 / 业主 / 用地 / 编制单位)
+- **3 张嵌入图**(工艺流程示意图 / 累计现金流 / Tornado 敏感性)
+- **8 鱼种条件分支**(三文鱼 / 大菱鲆 / 石斑 / 加州鲈 / 鳜 / 罗非 / 鳗 / 对虾)
+- **.docx 文档输出**(浏览器侧 docx.js 生成)
 
 ---
 
-## 📐 核心算法
+## 快速开始
 
-### 精确循环方程
+### 方式 1:在线下载
 
-```
-R = Π(1 - η_i) × (1 - dilution)     总通过率（串联相乘）
-C_out = Δ / (1 - R)                   鱼池出水（本循环最高浓度）
-C_in  = Δ × R / (1 - R)               增氧后回水（下循环起点）
+从 [Releases](https://github.com/chengsunmail/iras/releases) 下载最新版 zip 包,解压后双击 `index.html` 即可在浏览器中打开。
+
+### 方式 2:本地克隆
+
+```bash
+git clone https://github.com/chengsunmail/iras.git
+cd iras
+# 双击 index.html 在浏览器中打开
 ```
 
-沿程递减：`C_out × (1-η_rdf) × (1-η_skim) × (1-η_bio) × ... = C_in`，闭合验证误差 = 0。
+### 系统要求
 
-### O₂ 需求三部分
-
-| 来源 | 公式 | 供应位置 |
-|------|------|----------|
-| 鱼虾生理耗氧 | feed × 0.25 | 鱼池主增氧（液氧/微孔） |
-| 硝化菌耗氧 | TAN × 4.57 | BF 粗孔曝气 |
-| 有机物氧化 | feed × 0.05 | BF 粗孔曝气 |
-
-### 化学计量
-
-- 硝化：1 g TAN-N → 消耗 4.57 g O₂ + 7.14 g CaCO₃ 碱度
-- 反硝化：1 g NO₃-N → 回收 3.57 g CaCO₃ 碱度，消耗 2.47 g 甲醇
-- NaHCO₃ 换算：1 kg NaHCO₃ ≈ 0.595 kg CaCO₃ 当量
-- CO₂：feed × 0.25 × 1.375 (RQ ≈ 1, 摩尔比 44/32)
+- 任何现代浏览器(Chrome / Edge / Firefox / Safari)
+- **无需安装,无需后端,无需联网**(首次加载 Tailwind / nunjucks / docx.js / SheetJS 需要联网,之后可离线使用)
 
 ---
 
-## 📖 使用说明书
+## 文档
 
-点击软件右上角 `[? 帮助]` 按钮可查看内嵌的完整使用说明书（9 章）。
+📕 **完整技术手册 v1.5(102 页 PDF)**:[下载](https://github.com/chengsunmail/iras/releases)
+- 工艺原理与文献校准
+- 设备设计公式与默认参数
+- 4 工况成本基线
+- 投资财务评价方法
+- 可研报告生成器
+- 完整符号表 + 参考文献 + 鱼种参数表
+
+📖 **在线使用说明**:在主页面点击右上角 "? 帮助" 按钮
 
 ---
 
-## 📄 许可证
+## 使用场景
 
-本项目基于 [GNU Affero General Public License v3 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html) 开源。
+iRAS 适用于以下场景:
+
+- ✅ **设计院**:RAS 项目的早期工艺方案 / 概算 / 可研草稿
+- ✅ **业主 / 投资方**:RAS 项目可行性快速评估
+- ✅ **设备商 / 总包**:项目选型与方案对比
+- ✅ **高校 / 研究者**:RAS 工程教学与课程设计
+- ✅ **政府机构**:RAS 产业园规划与项目评审
+
+iRAS **不适合**的场景:
+
+- ❌ 替代正式的环境影响评价 / 安全评价 / 节能评价(必须由有资质机构出具)
+- ❌ 替代施工图详细设计(本工具是工程概算阶段,精度 ±40%)
+- ❌ 替代专业财务软件做 Monte Carlo 模拟(本工具是单点确定性现金流模型)
+
+---
+
+## 引用
+
+如在学术论文、工程报告或商业项目中使用 iRAS,请引用:
 
 ```
-Copyright (C) 2026 海南登登科技咨询有限公司
-Copyright (C) 2026 孙程 <6881509@qq.com>
+孙程 (2026). iRAS 循环水养殖工程设计平台 (Version 1.5.0).
+海南登登科技咨询有限公司. https://github.com/chengsunmail/iras
+```
+
+或 BibTeX 格式:
+
+```bibtex
+@software{iras2026,
+  author       = {Sun, Cheng},
+  title        = {iRAS: Recirculating Aquaculture System
+                  Engineering Design Platform},
+  version      = {1.5.0},
+  year         = {2026},
+  publisher    = {Hainan Dengdeng Technology Consulting Co., Ltd.},
+  url          = {https://github.com/chengsunmail/iras}
+}
 ```
 
 ---
 
-## 📚 参考文献
+## 协议与商业服务
 
-1. Timmons, M.B., Ebeling, J.M. (2010). *Recirculating Aquaculture*, 2nd ed.
-2. Sharma, B., Ahlert, R.C. (1977). Nitrification and nitrogen removal. *Water Research*.
-3. Benson, B.B., Krause, D. (1984). DO concentration in freshwater/seawater. *Limnol. Oceanogr.*
-4. USEPA (2006). *UV Disinfection Guidance Manual* (UVDGM).
-5. Summerfelt, S.T. et al. (2009). Ozonation in RAS. *Aquacultural Engineering*.
-6. Mateju, V. et al. (1992). Biological water denitrification. *Enzyme Microb. Tech.*
-7. Rusten, B. et al. (2006). Nitrification in saline water. *Aquacultural Engineering*.
+本项目以 **GNU Affero General Public License v3 (AGPL v3)** 协议开源。
+
+**重要提示**:AGPL v3 要求,如果您**通过网络向用户提供 iRAS 的服务或基于 iRAS 修改的服务**,您必须以相同协议开源服务端代码。详见 [LICENSE](LICENSE) 文件。
+
+如需以下服务:
+
+- 📋 **可研报告 / 工艺方案咨询**
+- 🔧 **iRAS 二次开发或定制**
+- 📚 **行业培训或专题讲座**
+- 🤝 **项目深度合作**
+
+请通过邮件联系:**6881509@qq.com**
 
 ---
 
-## ⚠️ 免责声明
+## 维护方
 
-本工具的计算结果仅供工程概算参考。实际工程须结合现场水质监测、批量试验数据、当地规范与专业工程师判断。投资概算精度约 ±40%。因使用本软件的计算结果产生的任何工程决策后果，作者与公司不承担责任。
+**海南登登科技咨询有限公司**
+作者:**孙程**
+
+物理模型基于公开文献和工业实测数据校准(Timmons 2010、国家海水鱼产业技术体系、Atlantic Sapphire 公开数据等)。
 
 ---
 
-## 📬 联系
+## 版本历史
 
-- 邮箱：6881509@qq.com
-- 作者：孙程
-- 单位：海南登登科技咨询有限公司
+| 版本 | 日期 | 主要内容 |
+|---|---|---|
+| v1.5 | 2026-05 | 可研报告生成器(16 章 + docx + 模板引擎) |
+| v1.4 | 2026-05 | 投资财务评价(NPV/IRR + 8 张标准表 + Excel 导出) |
+| v1.3 | 2026-05 | 多模块并联 + N+1 备用 + P&ID + 设备清单 |
+| v1.2 | 2026-05 | 全局气候 + 双节点稳态热平衡 + 4 工况对比 |
+| v1.1 | 2026-04 | 物理框架重构 + CAPEX/OPEX + V_total 完整建模 |
+| v1.0 | 2026-04 | 稳态浓度计算 + 设备选型 |
+
+---
+
+## 免责声明
+
+本工具计算结果仅供工程概算参考。
+
+- 实际工程必须结合现场水质监测、批量试验数据、当地规范与专业工程师判断
+- 投资概算精度约 ±40%,实际造价以厂商报价和工程招标为准
+- 不替代正式的环境影响评价 / 安全评价 / 节能评价
+- 因使用本软件计算结果产生的工程决策后果,作者与公司不承担责任
+
+完整免责声明见技术手册附录 F。

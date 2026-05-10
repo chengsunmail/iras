@@ -1,0 +1,3709 @@
+<!DOCTYPE html>
+<!--
+  iRAS · 可研报告生成器 (v1.5)
+  按发改委编制规范输出 16 章扩展版可研报告 (.docx 格式)
+
+  数据源: localStorage['iRAS_reportExport'] (从主页面 "📄 生成可研报告" 按钮传入)
+  输出: 按发改委规范的 16 章 docx 文档 (结构化内容)
+
+  Copyright (C) 2026 海南登登科技咨询有限公司
+  Copyright (C) 2026 孙程 <6881509@qq.com>
+
+  本程序是自由软件: 你可以根据自由软件基金会发布的
+  GNU Affero 通用公共许可证 (AGPL v3) 的条款重新分发和/或修改它,
+  许可证版本为第 3 版, 或 (由你选择) 任何更高版本。
+
+  本程序的分发是希望它有用, 但不附带任何保证;
+  甚至没有对适销性或特定用途适用性的暗示保证。
+  详情请参阅 GNU Affero 通用公共许可证。
+
+  你应该已收到本程序附带的 GNU AGPL v3 许可证副本。
+  如果没有, 请访问 <https://www.gnu.org/licenses/agpl-3.0.html>。
+
+  联系: 6881509@qq.com
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="孙程 / 海南登登科技咨询有限公司">
+<meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
+<title>iRAS · 可研报告生成器 v1.5</title>
+<script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+<!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
+<script src="finance-core.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  header {
+    border-bottom: 2px solid #6366f1;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  h1 { color: #a5b4fc; font-size: 20px; font-weight: 600; margin: 0; }
+  h2 { color: #a5b4fc; font-size: 16px; margin: 24px 0 8px 0; padding-bottom: 4px; border-bottom: 1px solid #475569; }
+  h3 { color: #c7d2fe; font-size: 14px; margin: 16px 0 6px 0; }
+  .meta { color: #94a3b8; font-size: 12px; }
+
+  .btn {
+    background: #312e81; color: #c7d2fe; border: 1px solid #6366f1;
+    padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;
+  }
+  .btn:hover { background: #4338ca; color: #e0e7ff; }
+  .btn:disabled { background: #1e293b; color: #64748b; cursor: not-allowed; border-color: #475569; }
+  .btn-primary { background: #6366f1; color: white; border-color: #6366f1; padding: 8px 18px; font-size: 13px; }
+  .btn-primary:hover { background: #4f46e5; color: white; }
+  .btn-primary:disabled { background: #312e81; color: #94a3b8; }
+
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+  }
+  .empty .big { font-size: 48px; margin-bottom: 12px; }
+
+  /* 进度条 / 状态 */
+  .status-bar {
+    background: #1e293b;
+    border: 1px solid #6366f1;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    display: none;
+  }
+  .status-bar.visible { display: block; }
+  .status-bar.error { border-color: #ef4444; background: #2a1414; color: #fca5a5; }
+  .status-bar.success { border-color: #10b981; background: #14241a; color: #86efac; }
+
+  /* 表单分组 (折叠) */
+  .form-group {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .form-group-header {
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1e293b;
+    user-select: none;
+  }
+  .form-group-header:hover { background: #2a3f5f; }
+  .form-group-title {
+    color: #a5b4fc;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .form-group-status {
+    color: #64748b;
+    font-size: 11px;
+  }
+  .form-group-status.complete { color: #86efac; }
+  .form-group-toggle {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+  .form-group-body {
+    padding: 12px 14px;
+    border-top: 1px solid #334155;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px 16px;
+  }
+  .form-group.collapsed .form-group-body { display: none; }
+  .form-group.collapsed .form-group-toggle::after { content: '▼'; }
+  .form-group:not(.collapsed) .form-group-toggle::after { content: '▲'; }
+
+  .field { display: flex; flex-direction: column; }
+  .field-wide { grid-column: 1 / -1; }
+  .field label {
+    font-size: 11px;
+    color: #cbd5e1;
+    margin-bottom: 3px;
+  }
+  .field label .required { color: #ef4444; margin-left: 2px; }
+  .field label .hint { color: #64748b; font-size: 10px; margin-left: 4px; }
+  .field input, .field select, .field textarea {
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+    border-radius: 3px;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-family: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+  }
+  .field textarea { resize: vertical; min-height: 60px; }
+
+  /* 报告概要 */
+  .summary-box {
+    background: #1e293b;
+    border-left: 3px solid #6366f1;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: #cbd5e1;
+  }
+  .summary-box .label { color: #a5b4fc; font-weight: 600; }
+  .summary-box .row { margin: 3px 0; }
+
+  /* 章节预览 */
+  .chapter-list {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .chapter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+  }
+  .chapter-item:hover { background: #2a3f5f; }
+  .chapter-item .name { color: #cbd5e1; }
+  .chapter-item .auto-rate { color: #64748b; font-size: 11px; font-family: ui-monospace, monospace; }
+  .chapter-item.ready .auto-rate { color: #86efac; }
+  .chapter-item.placeholder .auto-rate { color: #fcd34d; }
+
+  /* 操作区 */
+  .action-bar {
+    background: #1e293b;
+    border: 1px solid #6366f1;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 24px;
+    text-align: center;
+  }
+  .action-bar .hint { font-size: 11px; color: #94a3b8; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>📄 iRAS 可研报告生成器</h1>
+      <div class="meta" id="metaLine">等待主页面数据加载…</div>
+    </div>
+    <div class="no-print" style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn" id="btnReloadData" title="从主页面重新载入方案数据">🔄 重新载入</button>
+      <button class="btn" id="btnClearForm" title="清空表单">🗑️ 清空表单</button>
+    </div>
+  </header>
+
+  <div class="status-bar" id="statusBar"></div>
+
+  <!-- 主体内容: 仅在数据加载后显示 -->
+  <div id="mainContent">
+    <div class="empty">
+      <div class="big">⏳</div>
+      <div>从主页面点击 <strong>📄 生成可研报告</strong> 加载方案数据</div>
+      <div style="margin-top: 8px; font-size: 11px; color: #64748b;">
+        如果本页面是直接打开的, 请到主页面填好方案后再点击按钮过来
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 模板内嵌区 (script type="text/njk" 内嵌, nunjucks 读取) -->
+<!-- 注: 后续会在这里加 16 章模板, 当前只先放第 13 章 vertical slice -->
+
+<script type="text/njk-template" id="tpl-ch13">
+@@H1@@第 13 章 财务评价
+
+@@H2@@13.1 财务评价依据
+
+本项目财务评价依据《建设项目经济评价方法与参数(第三版)》(国家发展改革委、住房和城乡建设部, 2006)、《政府投资项目可行性研究报告编制深度规定》(住建部, 2017 年发改投资规〔2017〕1638 号)以及现行国家相关财税政策, 对项目进行财务可行性评价。
+
+财务评价采用现金流量分析法, 计算项目全投资和自有资金两个层次的财务指标, 包括内部收益率(IRR)、净现值(NPV)、投资回收期、盈亏平衡点等关键指标, 并对主要不确定性因素进行敏感性分析。
+
+@@H2@@13.2 基础数据与参数
+
+本评价采用的基础数据与计算参数如下:
+
+@@TABLE@@
+项目|参数值
+评价期|{{ finance.params.years }} 年(其中建设期 {{ finance.params.buildYears }} 年, 运营期 {{ finance.params.years }} 年)
+产品销售单价|{{ finance.params.price }} 元/kg
+设计年产量|{{ farm.yieldTons }} 吨/年
+投产爬坡|第 1 年 {{ (finance.params.ramp1*100)|round(0) }}%, 第 2 年 {{ (finance.params.ramp2*100)|round(0) }}%, 第 3 年起 {{ (finance.params.ramp3*100)|round(0) }}% 满产
+自有资金比例|{{ (finance.params.ownPct*100)|round(0) }}%
+银行贷款利率|{{ (finance.params.loanRate*100)|round(1) }}% 年(还款期 {{ finance.params.loanYears }} 年)
+基准折现率|{{ (finance.params.discount*100)|round(1) }}%
+所得税率|{{ (finance.params.taxRate*100)|round(0) }}%
+@@END_TABLE@@
+
+@@H2@@13.3 销售收入和销售税金估算
+
+项目按设计产能 {{ farm.yieldTons }} 吨/年, 单价 {{ finance.params.price }} 元/kg, 满产年销售收入约 {{ (farm.yieldTons * 1000 * finance.params.price / 10000)|round(0) }} 万元。各年销售收入按达产率逐年增长, 详见下表:
+
+@@TABLE@@
+年份|达产率|产量(t)|销售收入(万元)
+{% for y in finance.tables.revenue %}第 {{ y.year }} 年|{{ (y.ramp*100)|round(0) }}%|{{ y.tons|round(1) }}|{{ y.revenue|wan }}
+{% endfor %}@@END_TABLE@@
+
+{% if finance.params.salesTax > 0 %}
+本项目按 {{ (finance.params.salesTax*100)|round(1) }}% 计征销售税金附加。
+{% else %}
+本项目作为农业初级产品, 按现行税法规定免征增值税, 故销售税金附加为零。
+{% endif %}
+
+@@H2@@13.4 总成本费用估算
+
+满产年总成本费用构成如下表所示:
+
+@@TABLE@@
+项目|金额(万元)|占总成本比例
+经营成本(饲料/电/液氧/化学品 等)|{{ finance.tables.totalCost.operatingCost|wan }}|{{ finance.tables.totalCost.operatingPct }}%
+修理费({{ (finance.params.repairRate*100)|round(1) }}% × 设备购置费)|{{ finance.tables.totalCost.repairCost|wan }}|{{ finance.tables.totalCost.repairPct }}%
+管理费({{ (finance.params.adminRate*100)|round(1) }}% × 销售收入)|{{ finance.tables.totalCost.adminCost|wan }}|{{ finance.tables.totalCost.adminPct }}%
+人工成本|{{ finance.tables.totalCost.laborCost|wan }}|{{ finance.tables.totalCost.laborPct }}%
+折旧费(设备 {{ capex.depYearsEquip }} 年 + 土建 {{ capex.depYearsCivil }} 年)|{{ finance.tables.totalCost.dep|wan }}|{{ finance.tables.totalCost.depPct }}%
+财务费用(贷款利息)|{{ finance.tables.totalCost.interest|wan }}|{{ finance.tables.totalCost.interestPct }}%
+@@SUBTOTAL@@总成本费用|{{ finance.tables.totalCost.total|wan }}|100.0%
+@@END_TABLE@@
+
+@@H2@@13.5 损益分析
+
+项目损益分析按 {{ finance.params.years }} 年评价期编制, 关键年份(第 1 年、第 2 年、满产年、末年)主要财务指标如下:
+
+@@TABLE@@
+项目(万元)|第 1 年|第 2 年|满产年(第 3 年)|末年(第 {{ finance.params.years }} 年)
+销售收入|{{ finance.tables.profitLoss.y1.revenue|wan }}|{{ finance.tables.profitLoss.y2.revenue|wan }}|{{ finance.tables.profitLoss.y3.revenue|wan }}|{{ finance.tables.profitLoss.yN.revenue|wan }}
+经营成本|{{ finance.tables.profitLoss.y1.opCost|wan }}|{{ finance.tables.profitLoss.y2.opCost|wan }}|{{ finance.tables.profitLoss.y3.opCost|wan }}|{{ finance.tables.profitLoss.yN.opCost|wan }}
+折旧|{{ finance.tables.profitLoss.y1.dep|wan }}|{{ finance.tables.profitLoss.y2.dep|wan }}|{{ finance.tables.profitLoss.y3.dep|wan }}|{{ finance.tables.profitLoss.yN.dep|wan }}
+利息|{{ finance.tables.profitLoss.y1.interest|wan }}|{{ finance.tables.profitLoss.y2.interest|wan }}|{{ finance.tables.profitLoss.y3.interest|wan }}|{{ finance.tables.profitLoss.yN.interest|wan }}
+利润总额|{{ finance.tables.profitLoss.y1.profitBefore|wan }}|{{ finance.tables.profitLoss.y2.profitBefore|wan }}|{{ finance.tables.profitLoss.y3.profitBefore|wan }}|{{ finance.tables.profitLoss.yN.profitBefore|wan }}
+所得税|{{ finance.tables.profitLoss.y1.tax|wan }}|{{ finance.tables.profitLoss.y2.tax|wan }}|{{ finance.tables.profitLoss.y3.tax|wan }}|{{ finance.tables.profitLoss.yN.tax|wan }}
+@@SUBTOTAL@@净利润|{{ finance.tables.profitLoss.y1.profitNet|wan }}|{{ finance.tables.profitLoss.y2.profitNet|wan }}|{{ finance.tables.profitLoss.y3.profitNet|wan }}|{{ finance.tables.profitLoss.yN.profitNet|wan }}
+@@END_TABLE@@
+
+@@H2@@13.6 现金流量分析
+
+@@H3@@13.6.1 全投资现金流量
+
+全投资现金流量从项目本身的角度评价投资回报, 不考虑融资因素。计算结果显示:
+
+@@P@@项目全投资 IRR(税后)= {{ (finance.indicators.irrTotal*100)|round(2) }}%
+@@P@@项目全投资 NPV @ {{ (finance.params.discount*100)|round(1) }}% = {{ finance.indicators.npvTotal|wan }} 万元
+
+{% if finance.indicators.irrTotal > finance.params.discount %}
+全投资 IRR 高于行业基准折现率 {{ (finance.params.discount*100)|round(1) }}%, NPV 为正值, 表明项目从投资角度具有财务可行性。
+{% else %}
+全投资 IRR 低于基准折现率 {{ (finance.params.discount*100)|round(1) }}%, NPV 为负值, 表明项目从投资角度财务可行性不足, 建议优化售价、成本或投资规模。
+{% endif %}
+
+@@IMG@@id=cashflow|caption=图 13-1 累计净现金流量曲线(实线: 全投资; 虚线: 自有资金)|w=560|h=290@@
+
+@@H3@@13.6.2 自有资金现金流量
+
+自有资金现金流量从股东角度评价, 考虑贷款杠杆效应。计算结果:
+
+@@P@@自有资金 IRR = {{ (finance.indicators.irrEquity*100)|round(2) }}%
+@@P@@自有资金 NPV @ {{ (finance.params.discount*100)|round(1) }}% = {{ finance.indicators.npvEquity|wan }} 万元
+
+{% if finance.params.ownPct < 1.0 %}
+自有资金 IRR 比全投资 IRR 高 {{ ((finance.indicators.irrEquity - finance.indicators.irrTotal)*100)|round(2) }} 个百分点, 体现了贷款杠杆的放大效应。{% if finance.indicators.irrEquity > finance.params.discount %}股东收益率良好。{% endif %}
+{% else %}
+本项目采用全自有资金筹资, 无贷款杠杆, 自有资金 IRR 与全投资 IRR 一致。
+{% endif %}
+
+@@H2@@13.7 静态评价指标
+
+项目静态评价指标如下:
+
+@@TABLE@@
+指标|数值|评价基准|结论
+全投资静态投资回收期|{{ finance.indicators.paybackTotal|round(2) }} 年|≤ 行业基准回收期(8 年)|{{ '满足' if finance.indicators.paybackTotal <= 8 else '需关注' }}
+自有资金静态投资回收期|{{ finance.indicators.paybackEquity|round(2) }} 年|—|—
+总投资收益率(满产年)|{{ finance.tables.totalCost.roi|round(2) }}%|—|—
+@@END_TABLE@@
+
+@@H2@@13.8 动态评价指标
+
+@@TABLE@@
+指标|数值|评价基准|结论
+全投资税后 IRR|{{ (finance.indicators.irrTotal*100)|round(2) }}%|≥ {{ (finance.params.discount*100)|round(1) }}%|{{ '满足' if finance.indicators.irrTotal >= finance.params.discount else '不满足' }}
+自有资金 IRR|{{ (finance.indicators.irrEquity*100)|round(2) }}%|—|—
+全投资 NPV|{{ finance.indicators.npvTotal|wan }} 万元|≥ 0|{{ '满足' if finance.indicators.npvTotal >= 0 else '不满足' }}
+全投资动态回收期|{{ finance.indicators.paybackTotalDisc|round(2) }} 年|—|—
+@@END_TABLE@@
+
+@@H2@@13.9 盈亏平衡分析
+
+项目盈亏平衡点(BEP)= {{ finance.indicators.bepPct|round(1) }}% 满产产量。
+
+{% if finance.indicators.bepPct < 60 %}
+该值显著低于设计满产产能(BEP < 60%), 表明项目具有较大的安全裕度, 即使实际产量明显低于设计值仍能保本经营, 抗风险能力强。
+{% elif finance.indicators.bepPct < 75 %}
+该值处于 60-75% 区间, 项目具有一定的安全裕度, 在合理产量波动范围内能保本经营。
+{% elif finance.indicators.bepPct < 90 %}
+该值偏高(75-90%), 项目对产量达标的依赖性较强, 实际产量需接近设计值才能保本, 建议加强生产管理与销售保障。
+{% else %}
+该值过高(≥ 90%), 项目几乎无安全裕度, 任何产量未达标都会导致亏损, 风险较大, 建议重新评估项目可行性。
+{% endif %}
+
+@@H2@@13.10 财务评价结论
+
+综合上述分析, 本项目主要财务指标如下:
+
+@@TABLE@@
+财务指标|数值|结论
+全投资 IRR(税后)|{{ (finance.indicators.irrTotal*100)|round(2) }}%|{{ '可行' if finance.indicators.irrTotal >= finance.params.discount else '不可行' }}
+自有资金 IRR|{{ (finance.indicators.irrEquity*100)|round(2) }}%|—
+全投资 NPV|{{ finance.indicators.npvTotal|wan }} 万元|{{ '可行' if finance.indicators.npvTotal >= 0 else '不可行' }}
+静态投资回收期|{{ finance.indicators.paybackTotal|round(2) }} 年|{{ '满足' if finance.indicators.paybackTotal <= 8 else '需关注' }}
+盈亏平衡点|{{ finance.indicators.bepPct|round(1) }}% 满产|{{ '安全裕度大' if finance.indicators.bepPct < 75 else '需关注' }}
+@@END_TABLE@@
+
+{% if finance.indicators.irrTotal >= finance.params.discount and finance.indicators.npvTotal >= 0 %}
+@@P@@评价结论: 本项目财务评价指标整体良好, 全投资 IRR 高于基准折现率, NPV 为正值, 投资回收期合理, 盈亏平衡点{% if finance.indicators.bepPct < 75 %}安全裕度较大{% else %}处于可控范围{% endif %}。从财务可行性角度, 本项目可以投资建设。
+{% else %}
+@@P@@评价结论: 本项目财务评价指标偏低, 不能满足基准收益率要求。建议优化以下方面后重新评估:
+@@LIST@@
+{% if finance.params.price < 50 %}- 提升产品定价或拓展高附加值产品线{% endif %}
+- 优化设备投资(目前 CAPEX {{ capex.fixedAsset|wan }} 万元)
+- 降低运行成本(目前年 OPEX {{ opex.totalExclDep|wan }} 万元)
+- 调整规模(当前 {{ farm.yieldTons }} 吨/年)
+@@END_LIST@@
+{% endif %}
+
+{# 注: 敏感性分析单独成节, 内容较长, 拆到 13.11 #}
+
+@@H2@@13.11 敏感性分析
+
+为评估项目对主要不确定性因素的承受能力, 本评价对以下关键因子进行 ±20% 的单因子敏感性分析:
+
+@@TABLE@@
+敏感因子|低值 IRR|基准 IRR|高值 IRR|IRR 摆动
+{% for f in finance.tables.sensitivity %}{{ f.label }}|{{ (f.irrLow*100)|round(1) }}%|{{ (finance.indicators.irrTotal*100)|round(1) }}%|{{ (f.irrHigh*100)|round(1) }}%|{{ (f.irrSwing*100)|round(1) }}%
+{% endfor %}@@END_TABLE@@
+
+@@IMG@@id=tornado|caption=图 13-2 敏感性 Tornado 图(各因子按 IRR 摆动从大到小排序)|w=560|h=200@@
+
+{% set top1 = finance.tables.sensitivity[0] %}
+@@P@@敏感性分析结果显示, 项目 IRR 对 {{ top1.label }} 最为敏感(摆动 {{ (top1.irrSwing*100)|round(1) }}%), 是项目执行阶段需要重点管控的因子。{% if '售价' in top1.label %}建议项目实施前与下游客户签订长期供货协议, 锁定销售价格和销量, 以规避市场价格波动风险。{% elif 'CAPEX' in top1.label %}建议项目实施阶段加强投资管控, 通过设备公开招标、限额设计等方式控制建设投资。{% endif %}
+</script>
+
+<!-- 占位章节(15 章未实现, 后续阶段补全) -->
+<script type="text/njk-template" id="tpl-ch01">@@H1@@第 1 章 总论
+
+@@H2@@1.1 项目概况
+
+@@TABLE@@
+项目|内容
+项目名称|{{ project.name }}
+{% if project.code %}项目代号|{{ project.code }}
+{% endif %}建设性质|{{ project.nature }}
+建设地点|{{ project.location.full or '(待填)' }}
+项目业主|{{ project.owner }}
+{% if project.ownerCreditCode %}统一社会信用代码|{{ project.ownerCreditCode }}
+{% endif %}建设规模|年产 {{ farm.speciesName }} {{ farm.yieldTons }} 吨
+项目总投资|{{ capex.totalInvestment|wan }} 万元
+其中工程总投资|{{ capex.fixedAsset|wan }} 万元
+流动资金|{{ capex.workingCapital|wan }} 万元
+建设期|{{ finance.params.buildYears|round(1) }} 年
+评价期|{{ finance.params.years }} 年(含建设期)
+编制单位|{{ project.editor }}
+{% if project.editorQualification %}编制单位资质|{{ project.editorQualification }}
+{% endif %}编制日期|{{ project.editDate }}
+@@END_TABLE@@
+
+@@H2@@1.2 项目编制依据
+
+{% if project.editorBasis %}本可行性研究报告主要编制依据如下:
+
+{{ project.editorBasis }}
+
+此外, 编制本报告还参考以下规范文件:{% else %}本可行性研究报告主要编制依据如下:
+{% endif %}
+
+@@LIST@@
+- 《建设项目经济评价方法与参数(第三版)》(国家发展改革委、住房和城乡建设部, 2006)
+- 《政府投资项目可行性研究报告编制深度规定》(住建部, 2017 年发改投资规〔2017〕1638 号)
+- 《建设项目投资估算编审规程》(中价协 [2015] 35 号)
+- 国家及地方关于推进现代渔业、水产养殖业、设施农业的相关政策文件
+- 现行国家及地方设备价格信息和取费标准
+- 国内外类似 RAS(循环水养殖)项目工程数据与工业实测案例
+@@END_LIST@@
+
+@@H2@@1.3 项目编制原则
+
+本报告编制遵循以下原则:
+
+@@LIST@@
+- <strong>科学性</strong>: 工艺方案基于循环水养殖国际成熟技术框架, 关键工程参数(物料平衡、设备选型、热平衡)严格按照公开文献和工业实测数据校准
+- <strong>先进性</strong>: 工艺采用主流串联+旁路并联混合架构, 多模块并联布置 + N+1 备用配置, 兼顾技术先进性和工程可靠性
+- <strong>经济性</strong>: 投资估算综合考虑设备国产化优先、规模缩放系数、地区因子, 力求工程概算合理
+- <strong>可操作性</strong>: 设备选型考虑国内供应链成熟度, 项目实施进度按照行业惯例编排, 确保项目可顺利落地
+- <strong>合规性</strong>: 按照国家发改委可研编制规范, 章节齐全, 重点突出技术方案、投资估算、财务评价、风险分析等核心内容
+@@END_LIST@@
+
+@@H2@@1.4 项目编制范围
+
+本报告对 {{ project.name }} 进行可行性研究, 涵盖以下内容:
+
+@@LIST@@
+- 项目背景与建设必要性分析
+- 市场分析与建设规模论证
+- 建设场址与建设条件
+- 工艺技术方案(含工艺流程、各处理单元设计、关键水质指标控制)
+- 主要设备方案(设备清单、规格、采购策略)
+- 土建/总图/公用工程方案
+- 节能节水分析
+- 环境影响初步分析
+- 劳动安全、卫生与消防设计
+- 项目实施进度与组织机构
+- 投资估算与资金筹措
+- 财务评价(含 NPV/IRR/敏感性分析)
+- 国民经济与社会效益评价
+- 风险分析与应对
+- 综合结论与建议
+@@END_LIST@@
+
+@@P@@本报告不替代正式的环境影响评价、安全评价、节能评价等专项评价, 上述专项评价应由相应有资质机构出具独立报告。本报告投资估算精度约 ±40%, 详细投资以工程招标合同为准。
+
+@@H2@@1.5 主要技术经济指标
+
+本项目主要技术经济指标汇总如下:
+
+@@TABLE@@
+类别|指标|数值
+@@SUBTOTAL@@基本规模|—|—
+基本规模|养殖品种|{{ farm.speciesName }}
+基本规模|年产量|{{ farm.yieldTons }} 吨
+基本规模|养殖阶段数|{{ farm.stages|length }} 阶段
+基本规模|独立循环模块|{{ farm.totalSubSystems }} 套
+基本规模|鱼池总数|{{ farm.totalPools }} 个
+基本规模|系统总水体|{{ farm.totalSystemVolume|round(0) }} m³
+基本规模|稳态总存塘|{{ farm.totalBiomass|round(1) }} 吨
+{% if farm.land %}基本规模|总建筑面积|约 {{ farm.land.totalBuildingArea|round(0) }} m²
+基本规模|总占地面积|约 {{ farm.land.totalLandArea|round(0) }} m² ({{ farm.land.totalLandMu|round(1) }} 亩)
+{% endif %}@@SUBTOTAL@@消耗与排放|—|—
+消耗与排放|日饲料用量|{{ farm.totalFeedDaily|round(0) }} kg/d
+消耗与排放|日液氧用量|{{ farm.totalLOXKgD|round(0) }} kg/d
+消耗与排放|设计阶段峰值流量|{{ farm.peakFlowM3H|round(0) }} m³/h
+@@SUBTOTAL@@投资|—|—
+投资|工程总投资|{{ capex.fixedAsset|wan }} 万元
+投资|其中设备购置|{{ capex.equipDirect|wan }} 万元
+投资|其中土建/安装/电气等|{{ capex.civilEtc|wan }} 万元
+投资|流动资金|{{ capex.workingCapital|wan }} 万元
+投资|项目总投资|{{ capex.totalInvestment|wan }} 万元
+投资|自有资金 (固资 {{ (finance.params.ownPct*100)|round(0) }}% + 流动资金 100%)|{{ (capex.ownEquity/10000)|round(1) }} 万元
+投资|银行贷款 (固资 {{ ((1-finance.params.ownPct)*100)|round(0) }}%)|{{ (capex.loan/10000)|round(1) }} 万元
+@@SUBTOTAL@@运营|—|—
+运营|年销售收入(满产)|{{ ((farm.yieldTons * 1000 * finance.params.price)/10000)|round(0) }} 万元
+运营|年总成本费用(满产)|{{ finance.tables.totalCost.total|wan }} 万元
+运营|年净利润(满产)|{{ finance.tables.profitLoss.y3.profitNet|wan }} 万元
+运营|综合成本|{{ opex.costPerKg|round(2) }} 元/kg
+@@SUBTOTAL@@财务评价指标|—|—
+财务评价指标|全投资 IRR(税后)|{{ (finance.indicators.irrTotal*100)|round(2) }}%
+财务评价指标|自有资金 IRR|{{ (finance.indicators.irrEquity*100)|round(2) }}%
+财务评价指标|全投资 NPV @ {{ (finance.params.discount*100)|round(1) }}%|{{ finance.indicators.npvTotal|wan }} 万元
+财务评价指标|静态投资回收期|{{ finance.indicators.paybackTotal|round(2) }} 年
+财务评价指标|动态投资回收期|{{ finance.indicators.paybackTotalDisc|round(2) }} 年
+财务评价指标|盈亏平衡点|{{ finance.indicators.bepPct|round(1) }}% 满产
+@@END_TABLE@@
+
+@@H2@@1.6 主要结论与建议
+
+@@H3@@1.6.1 工艺技术方面
+
+@@P@@本项目采用国际成熟的循环水养殖工艺(RAS), 主流采用"鱼池 → 微滤机 → 蛋白分离器(旁路) → 生物滤池 → UV → CO₂ 脱气 → 增氧 → 鱼池"路径, 并配置反硝化和 AOP 旁路。各处理单元设计参数符合国际工业实测数据, 工艺技术方案<strong>成熟可靠</strong>。
+
+@@H3@@1.6.2 经济财务方面
+
+{% if finance.indicators.irrTotal >= finance.params.discount and finance.indicators.npvTotal >= 0 %}
+@@P@@本项目财务评价指标良好。全投资 IRR 为 <strong>{{ (finance.indicators.irrTotal*100)|round(2) }}%</strong>, 高于基准折现率 {{ (finance.params.discount*100)|round(1) }}%; 自有资金 IRR 为 {{ (finance.indicators.irrEquity*100)|round(2) }}%; NPV 为正值 {{ finance.indicators.npvTotal|wan }} 万元; 静态投资回收期 {{ finance.indicators.paybackTotal|round(2) }} 年, 动态回收期 {{ finance.indicators.paybackTotalDisc|round(2) }} 年; 盈亏平衡点 {{ finance.indicators.bepPct|round(1) }}% 满产。从财务角度<strong>具有可行性</strong>。
+{% else %}
+@@P@@本项目财务评价指标偏低。全投资 IRR 为 {{ (finance.indicators.irrTotal*100)|round(2) }}%, {% if finance.indicators.irrTotal < finance.params.discount %}低于基准折现率 {{ (finance.params.discount*100)|round(1) }}%; {% endif %}{% if finance.indicators.npvTotal < 0 %}NPV 为负值 {{ finance.indicators.npvTotal|wan }} 万元; {% endif %}从财务角度<strong>不能满足基准要求</strong>, 建议优化售价、降低投资规模或调整运营成本后重新评估。
+{% endif %}
+
+@@H3@@1.6.3 综合结论
+
+{% if finance.indicators.irrTotal >= finance.params.discount and finance.indicators.npvTotal >= 0 %}
+@@P@@综合工艺技术、设备选型、投资估算、财务评价、风险分析等各方面分析, 本项目工艺成熟、设备可靠、投资合理、财务可行、风险可控, <strong>建议本项目可以投资建设</strong>。
+{% else %}
+@@P@@综合各方面分析, 本项目工艺技术上可行, 但财务指标不足以支持投资决策。<strong>建议先优化项目方案后再立项</strong>, 重点考虑提升产品定价、降低投资规模、降低运营成本等措施。
+{% endif %}
+
+@@P@@详细论证见后续章节。
+</script>
+<script type="text/njk-template" id="tpl-ch02">@@H1@@第 2 章 项目背景与建设必要性
+
+@@H2@@2.1 行业发展现状
+
+{% if farm.species == "salmon" %}
+@@P@@大西洋三文鱼(Salmo salar)是全球高端水产消费品的代表, 国际养殖产量约 280 万吨/年, 其中挪威约占 50%, 苏格兰、智利、加拿大、法罗群岛是主要传统产区。受海上网箱养殖空间饱和、海水温度上升、海虱寄生等问题影响, 国际三文鱼产业在 2015 年后转向<strong>陆基循环水养殖(Land-based RAS)</strong>方向。
+
+@@P@@典型国际项目: 美国 Atlantic Sapphire 在迈阿密的 Bluehouse 工厂(规划年产 10 万吨)、丹麦 Salmon Evolution、波兰 Ocean Fish Farms 等均是 RAS 三文鱼大型工业化项目代表。挪威本土 AKVA Group、Billund Aquaculture 等是 RAS 工程总包商。
+
+@@P@@中国是世界最大的三文鱼消费国之一, 但本土产量微薄(主要依赖进口)。近年来青岛、烟台、湛江等沿海地区已有 RAS 三文鱼试点项目落地, 国内市场对本土养殖的高品质三文鱼需求强烈, 价格稳定在 60-90 元/kg。
+
+{% elif farm.species == "turbot" %}
+@@P@@大菱鲆(Scophthalmus maximus, 多宝鱼)是我国 1992 年从英国引进的高端海水鱼品种, 经过 30 多年发展, 已成为山东、辽宁、河北等北方海域的支柱海水养殖品种, 全国年产量约 5-6 万吨。
+
+@@P@@传统流水式养殖能耗高(地下水恒温泵抽)、水质波动大、用水量大。2010 年后, 山东莱州东方海洋、烟台中集来福士等企业开始向<strong>循环水养殖</strong>转型, 实现节水、节地、稳产。国家海水鱼产业技术体系连续多年开展循环水养殖技术研究和成本调查, 工业实测密度可达 50-70 kg/m³(底面积), 综合成本约 46-50 元/kg。
+
+@@P@@国内大菱鲆市场需求稳定, 价格 60-90 元/kg, 出口日韩市场需求持续增长。
+
+{% elif farm.species == "grouper" %}
+@@P@@石斑鱼是我国华南地区高端海水养殖品种, 主要品种有珍珠龙趸、龙胆石斑、东星斑等, 海南、广东、福建是主产区, 全国年产量约 15-20 万吨。
+
+@@P@@传统网箱养殖受台风、海水污染、病害等影响, 损失率高。RAS 工厂化养殖能精确控制水温、盐度、溶氧, 显著降低损失率, 提高商品质量。海南、广东已有多个 RAS 石斑鱼项目投产, 综合成本可控制在 60-100 元/kg, 售价 100-200 元/kg, 利润空间较大。
+
+{% elif farm.species == "perch" %}
+@@P@@加州鲈(Micropterus salmoides)是我国近年快速发展的淡水肉食性鱼品种, 广东、湖北、江苏、浙江是主产区, 全国年产量约 70 万吨, 已成为继四大家鱼之后的国内淡水鱼第五大品种。
+
+@@P@@池塘养殖密度受限于水质和疾病, 目前广东中山、佛山等地企业已开始尝试<strong>设施化/工厂化</strong>加州鲈养殖, RAS 是重要方向之一。市场售价稳定在 30-50 元/kg, 工厂化养殖综合成本约 25-35 元/kg, 有一定利润空间。
+
+{% elif farm.species == "mandarin" %}
+@@P@@鳜鱼(Siniperca chuatsi, 桂花鱼)是我国传统名贵淡水鱼, 售价高(80-150 元/kg), 主要市场在华南、华东高端消费。传统养殖依赖活饵投喂, 限制了产业规模化。
+
+@@P@@近年来鳜鱼配合饲料技术取得突破, 配合循环水养殖工艺, 鳜鱼工厂化养殖成为高端淡水鱼产业的代表方向。广东、福建、湖北已有多个 RAS 鳜鱼项目落地。
+
+{% elif farm.species == "tilapia" %}
+@@P@@罗非鱼是世界第二大养殖鱼品种, 全球年产量约 600 万吨, 我国年产量约 170 万吨, 主要出口欧美东南亚, 国内消费稳定。罗非鱼养殖以广东、海南、广西等南方省份为主。
+
+@@P@@罗非鱼传统池塘养殖成本极低(20-25 元/kg), 但 RAS 养殖在节水、节地、防病、出口品控等场景下仍有独特优势。
+
+{% elif farm.species == "eel" %}
+@@P@@鳗鲡(日本鳗或欧洲鳗)是高经济价值的洄游鱼类, 苗种依赖野外捕获, 受国际公约限制日益严格。我国福建、广东是主要养殖产区, 主要出口日本市场。
+
+@@P@@RAS 工厂化养殖能精确控制水温(26-28°C)、水质和粉料投喂, 是鳗鲡集约化养殖的成熟工艺, 综合成本约 60-100 元/kg, 售价稳定在 100-200 元/kg。
+
+{% elif farm.species == "shrimp" %}
+@@P@@南美白对虾(Litopenaeus vannamei)是我国第一大养殖虾品种, 全国年产量约 200 万吨, 沿海各省均有大规模养殖。
+
+@@P@@近年来"白便病"、"早死病"等病害问题严重, 传统土塘养殖损失率高。RAS 清水养殖(区别于 Biofloc 浊水养殖)通过封闭防病、精确控温、稳定水质, 成为高品质对虾养殖的发展方向之一。
+
+{% else %}
+@@P@@{{ farm.speciesName }}是我国重要水产养殖品种, 在传统养殖模式存在水资源消耗大、病害风险高、产品品质不稳定等问题的背景下, 循环水养殖(RAS)作为现代渔业代表性技术正在快速发展。
+{% endif %}
+
+@@H2@@2.2 项目所在地经济社会概况
+
+@@P@@{{ project.location.full or '本项目所在地' }}{% if project.upperPlanName %}属于<strong>{{ project.upperPlanName }}</strong>规划范围,{% endif %} 具有较好的区位优势、产业基础和政策支持环境。
+
+@@P@@(关于项目所在地的人口、经济、产业、交通、市政基础设施等具体描述, 请业主或编制单位根据实际情况补充。)
+
+@@H2@@2.3 项目建设必要性
+
+本项目建设必要性体现在以下几个方面:
+
+@@H3@@2.3.1 满足国内市场对高品质 {{ farm.speciesName }} 的强劲需求
+
+{% if farm.species == "salmon" %}
+@@P@@中国是世界最大的三文鱼消费国之一, 年消费量超过 30 万吨, 但本土产量不足 1 万吨, 95% 以上依赖进口(主要来自挪威、智利、法罗群岛)。受国际供应链波动、汇率波动、国际海运成本等因素影响, 进口价格不稳定, 严重依赖进口的格局对国内产业链和消费者权益保障不利。
+
+@@P@@本项目年产 1000 吨陆基 RAS 三文鱼, 是国内三文鱼自主供应能力的重要补充, 有助于减少进口依赖、稳定国内市场价格、保障食品供应安全。
+
+{% elif farm.species == "turbot" %}
+@@P@@大菱鲆是国内中高端海水鱼消费的重要品种, 市场需求稳定增长。本项目采用 RAS 工艺, 突破了传统大菱鲆养殖对北方地下水恒温泵抽的依赖, 实现高密度、节水、稳产, 为产业升级提供示范。
+
+{% elif farm.species == "shrimp" %}
+@@P@@南美白对虾是国内消费量最大的虾类, 但传统土塘养殖近年来病害严重、品质波动。本项目采用 RAS 清水工艺, 实现"全程可追溯、零抗生素、品质稳定"的高端虾产品, 满足消费升级需求。
+
+{% else %}
+@@P@@本项目年产 {{ farm.yieldTons }} 吨 {{ farm.speciesName }}, 通过工厂化养殖提供品质稳定、可追溯的高端水产产品, 满足国内消费升级和出口市场需求。
+{% endif %}
+
+@@H3@@2.3.2 推动水产养殖业转型升级
+
+@@P@@RAS 工厂化养殖是世界水产养殖技术发展的重要方向, 代表了"节水、节地、节能、可控、生态"的现代渔业理念。本项目采用国际先进的 RAS 工艺, 配置 {{ farm.totalSubSystems }} 套独立模块和 N+1 备用设备, 是地区水产养殖业从传统粗放型向集约化、设施化、生态化转型升级的代表性项目。
+
+@@H3@@2.3.3 节约水资源, 保护生态环境
+
+@@P@@本项目水循环利用率达 85-95%, 每生产 1 公斤鱼仅需 0.5-1 m³ 新水, 仅为传统流水养殖的 5-10%。废水集中处理后达标排放, 几乎无面源污染。{% if farm.totalSystemVolume > 0 %}本项目系统总水体 {{ farm.totalSystemVolume|round(0) }} m³, 按日换水率 5-10% 计算, 日补水量约 {{ (farm.totalSystemVolume * 0.075)|round(0) }} m³, 年补水量约 {{ (farm.totalSystemVolume * 0.075 * 365 / 10000)|round(1) }} 万 m³, 远低于同等产能的传统养殖。{% endif %}
+
+@@H3@@2.3.4 提供高质量就业, 带动产业链
+
+@@P@@本项目正常运营后预计提供直接就业岗位约 {{ ((finance.params.laborCost / 50000)|round(0)) if finance.params.laborCost else 20 }} 人(按人均年工资 5 万元估算), 同时带动饲料、设备、物流、销售等上下游产业, 间接创造 3-5 倍的相关就业。
+
+@@H2@@2.4 项目建设的有利条件
+
+@@LIST@@
+- <strong>市场条件好</strong>: {{ farm.speciesName }} 市场需求稳定, 售价坚挺, 销售渠道成熟
+- <strong>技术成熟</strong>: RAS 工艺在国际国内均有大量成熟项目, 工艺路线、设备选型、运行管理已有大量可参考案例
+- <strong>设备国产化</strong>: 国内 RAS 装备产业链已基本成熟, 主要设备国产化率高, 投资可控
+- <strong>政策支持</strong>: 国家"十四五"规划明确支持现代设施农业、循环水养殖、绿色低碳产业, 多地有专项补贴和税收优惠
+{% if project.upperPlanName %}- <strong>规划支持</strong>: 本项目符合<strong>{{ project.upperPlanName }}</strong>的产业定位{% endif %}
+@@END_LIST@@
+
+@@H2@@2.5 政策依据
+
+@@LIST@@
+- 《"十四五"全国渔业发展规划》(农业农村部, 2021)
+- 《关于加快推进水产养殖业绿色发展的若干意见》(农业农村部、生态环境部等, 2019)
+- 《现代设施农业建设规划(2023-2030 年)》(农业农村部、国家发展改革委, 2023)
+- 《关于推动现代农业产业园高质量发展的指导意见》(农业农村部, 2022)
+{% if project.upperPlanName %}- {{ project.upperPlanName }}{% endif %}
+- (其他地方性政策文件由业主补充)
+@@END_LIST@@
+</script>
+<script type="text/njk-template" id="tpl-ch03">@@H1@@第 3 章 市场分析与建设规模
+
+@@H2@@3.1 国内外市场分析
+
+{% if farm.species == "salmon" %}
+@@P@@<strong>国际市场</strong>: 大西洋三文鱼全球年产量约 280 万吨, 市场总规模超过 200 亿美元。挪威约占 50% 产量, 苏格兰、智利、加拿大、法罗群岛是其他主要传统产区。受海上养殖空间、海水温度上升、海虱等因素限制, 全球三文鱼供给增长趋缓, 价格长期向上。
+
+@@P@@<strong>国内市场</strong>: 中国是世界最大三文鱼消费国之一, 年消费量约 30 万吨, 进口依赖度超过 95%。主要进口来源:挪威、法罗群岛、智利、加拿大。国内一线城市(北京、上海、广州、深圳)和高端餐饮、商超、生鲜电商是主要消费市场, 价格 60-90 元/kg(出厂价), 终端售价 100-200 元/kg。
+
+{% elif farm.species == "turbot" %}
+@@P@@<strong>国内市场</strong>: 我国大菱鲆年产量约 5-6 万吨, 主要市场在北方城市、出口日韩市场。售价稳定在 60-90 元/kg, 高端餐饮、商超、活鲜配送是主要销售渠道。受北方地下水资源紧张、传统养殖能耗高等因素影响, 行业开始向 RAS 转型。
+
+{% elif farm.species == "grouper" %}
+@@P@@<strong>国内市场</strong>: 我国石斑鱼年产量约 15-20 万吨, 主要市场在华南、华东高端餐饮和活鲜配送, 售价 80-200 元/kg(根据品种不同差异较大)。出口香港、东南亚市场需求稳定。
+
+{% elif farm.species == "perch" %}
+@@P@@<strong>国内市场</strong>: 加州鲈年产量约 70 万吨, 主要消费区在华南、华中、华东。售价稳定在 30-50 元/kg, 商超、活鲜电商、餐饮是主要销售渠道。受池塘养殖水质和疾病限制, 高品质工厂化养殖产品有溢价空间(50-70 元/kg)。
+
+{% elif farm.species == "shrimp" %}
+@@P@@<strong>国内市场</strong>: 南美白对虾年产量约 200 万吨, 我国是世界最大消费国和生产国, 商超、电商、餐饮、出口是主要渠道。受白便病等病害影响, 高品质 RAS 对虾产品有 30-50% 溢价空间, 售价 50-80 元/kg。
+
+{% elif farm.species == "tilapia" %}
+@@P@@<strong>国内市场</strong>: 罗非鱼是我国出口型品种, 年产量约 170 万吨, 主要出口欧美、东南亚。国内消费稳定, 售价 18-25 元/kg。
+
+{% elif farm.species == "eel" %}
+@@P@@<strong>国内市场</strong>: 鳗鲡(白鳗)是我国对日本、韩国出口的传统品种, 国内消费市场稳定。售价 100-200 元/kg(根据品质差异大), 主要销售渠道是出口加工厂、高端餐饮、活鲜电商。
+
+{% else %}
+@@P@@{{ farm.speciesName }} 是我国重要的水产养殖品种, 国内市场需求稳定, 销售渠道包括商超、餐饮、活鲜配送、出口等。
+{% endif %}
+
+@@H2@@3.2 目标市场分析
+
+@@P@@(本节关于目标市场具体分析, 包括目标客户群、销售半径、销售渠道、销售合同意向等内容, 由业主或编制单位根据项目实际情况补充。)
+
+@@P@@基于本项目年产量 {{ farm.yieldTons }} 吨, 按主要销售渠道初步估算:
+
+@@LIST@@
+- 高端商超与生鲜电商: 通常占 30-50% 销售份额, 价格相对稳定
+- 高端餐饮(连锁酒店、日料店等): 通常占 20-40% 份额, 对品质要求高
+- 活鲜配送批发: 通常占 20-30% 份额, 价格略低但走货稳定
+- 出口或品牌定制: 通常占 0-20% 份额, 单价较高但订单波动大
+@@END_LIST@@
+
+@@P@@<strong>建议</strong>: 项目实施前与至少 2-3 家核心下游客户签订 3-5 年长期供货协议, 锁定基础销量和最低保护价。
+
+@@H2@@3.3 价格趋势分析
+
+{% if farm.species == "salmon" %}
+@@P@@大西洋三文鱼国际价格(NASDAQ Salmon Index)长期波动区间 5-10 美元/kg, 国内进口到岸价 40-60 元/kg, 国内零售价 100-200 元/kg。本项目按 {{ finance.params.price }} 元/kg 出厂价测算, 处于合理区间。
+
+{% else %}
+@@P@@{{ farm.speciesName }} 近 5 年市场价格相对稳定, 本项目按 {{ finance.params.price }} 元/kg 出厂价测算, 处于行业合理区间。
+{% endif %}
+
+@@P@@<strong>价格波动是项目最大风险因子</strong>。敏感性分析显示, 售价 ±20% 对项目 IRR 的摆动达 11.1%, 远高于其他敏感因子。建议项目实施前通过签订长期供货协议、品牌建设、出口认证等手段锁定价格。
+
+@@H2@@3.4 销售渠道与销售方案
+
+@@P@@(本节关于具体销售渠道、合同意向、品牌建设等内容, 由业主补充。建议涵盖: 主要客户名单、合同金额、付款条件、品牌策略、营销投入等。)
+
+@@H2@@3.5 建设规模
+
+@@H3@@3.5.1 规模确定依据
+
+@@P@@本项目设计建设规模为<strong>年产 {{ farm.yieldTons }} 吨 {{ farm.speciesName }}</strong>。规模确定依据:
+
+@@LIST@@
+- <strong>市场需求</strong>: 基于上述市场分析, 本规模与目标市场容量匹配, 预期销售可消化
+- <strong>投资合理性</strong>: 总投资 {{ capex.totalInvestment|wan }} 万元, 处于业主可承受范围
+- <strong>运营管理</strong>: 本规模配 {{ farm.totalSubSystems }} 套独立模块, 既能实现规模效益, 又便于管理控制
+- <strong>规模效益</strong>: RAS 项目存在显著的规模效应, 本规模是 RAS 行业典型经济规模区间(500-3000 吨)
+- <strong>用地匹配</strong>: 本规模需要的车间面积、用地面积、公用工程接入等均在项目用地条件可承受范围
+@@END_LIST@@
+
+@@H3@@3.5.2 阶段配置
+
+本项目分 {{ farm.stages|length }} 个养殖阶段错峰养殖, 实现连续出鱼:
+
+@@TABLE@@
+阶段|养殖鱼规格|阶段时长|稳态存塘(t)|水温(°C)|养殖密度(kg/m³)|模块数|池数
+{% for s in farm.stages %}{{ s.name }}|{{ s.weightStart|round(0) }}-{{ s.weightEnd|round(0) }} g|{{ s.months }} 个月|{{ s.biomass|round(1) }}|{{ s.tempOpt|round(1) }}|{{ s.density|round(0) }}|{{ s.subSystemCount }}|{{ s.subSystemCount * s.poolsPerSet }}
+{% endfor %}@@END_TABLE@@
+
+@@P@@全场稳态总存塘约 {{ farm.totalBiomass|round(1) }} 吨, 总养殖周期约 {{ farm.totalMonths }} 个月。各阶段间错峰投苗, 稳态条件下每月有部分鱼出塘, 实现年产 {{ farm.yieldTons }} 吨。
+
+@@H2@@3.6 产品方案
+
+@@P@@主要产品为<strong>{{ farm.speciesName }}活鱼/鲜鱼</strong>, 商品鱼规格 {{ farm.stages[farm.stages|length-1].weightEnd|round(0) }} g 左右(根据实际成鱼出塘体重)。
+
+@@P@@产品形态: 视市场需求调整, 主要包括:
+
+@@LIST@@
+- 鲜活鱼: 配活鲜运输车直送商超、餐饮、活鲜配送
+- 冰鲜鱼: 屠宰后冰镇冷链配送
+- 切片/分割品: 加工后真空包装, 适合零售和电商
+- 鱼苗或中间规格鱼: 视市场情况外售
+@@END_LIST@@
+
+@@P@@产品按食品安全国家标准 GB 18406《农产品安全质量》和有关水产品质量标准生产。建议申请有机认证、绿色食品认证、或地理标志认证以提升品牌溢价。
+</script>
+<script type="text/njk-template" id="tpl-ch04">@@H1@@第 4 章 建设场址与建设条件
+
+@@H2@@4.1 建设场址
+
+@@H3@@4.1.1 场址位置
+
+@@P@@本项目建设场址位于<strong>{{ project.location.full or '(待业主补充)' }}</strong>{% if project.upperPlanName %}, 属于<strong>{{ project.upperPlanName }}</strong>规划范围内{% endif %}。
+
+@@P@@(关于场址的具体地理坐标、四至边界、用地红线、与周边的位置关系等内容, 请业主或编制单位补充提供, 包括:
+
+@@LIST@@
+- 场址中心地理坐标(经纬度)
+- 用地红线四至边界
+- 与城镇、主干道、机场、铁路、港口的距离
+- 场址周边土地利用现状
+- 与水源地、自然保护区、生态敏感区的距离关系
+@@END_LIST@@
+
+{% if farm.land %}@@H3@@4.1.2 项目用地面积估算
+
+@@P@@基于本项目工艺方案(系统总水体 {{ farm.totalSystemVolume|round(0) }} m³, 平均池深 {{ farm.land.avgPoolDepth|round(1) }} m), 项目用地估算如下:
+
+@@TABLE@@
+项目|面积|说明
+养殖主车间|{{ farm.land.mainHallArea|round(0) }} m²|V_total / 平均池深 × 1.6 (含池间通道、操作平台、设备走线)
+水处理机房|{{ farm.land.utilityArea|round(0) }} m²|主车间 × 0.4 (含主泵、风机、UV、CO₂ 脱气、电气控制)
+公用配套|{{ farm.land.auxArea|round(0) }} m²|液氧站 + 配电房 + 应急发电 + 办公楼 + 宿舍 + 仓库 + 门卫
+@@SUBTOTAL@@总建筑面积|{{ farm.land.totalBuildingArea|round(0) }} m²|建筑物地面投影合计
+总占地面积|{{ farm.land.totalLandArea|round(0) }} m² (约 {{ farm.land.totalLandMu|round(1) }} 亩)|按容积率 {{ farm.land.FAR|round(2) }} 估算 (含道路、绿化、消防通道)
+单位产量占地|{{ farm.land.landPerTon|round(1) }} m²/吨|相比传统流水养殖(50-200 m²/吨)节地显著
+@@END_TABLE@@
+
+@@P@@<strong>说明</strong>: 上述用地为前期申报阶段估算, 精度 ±20%。建议预留 20-30% 弹性空间以适应详细设计阶段的功能调整。<strong>本项目用地估算<strong>不含未来扩建预留</strong>; 如业主有二期/三期扩建需求, 应在申报用地时另增 50-100% 预留。</strong>详细总图布置见第 7 章土建方案。
+
+{% endif %}@@H3@@4.1.{% if farm.land %}3{% else %}2{% endif %} RAS 项目典型选址条件
+
+@@P@@RAS 项目对场址的核心要求(供本项目场址条件评估对照参考):
+
+@@TABLE@@
+条件类型|RAS 项目要求|说明
+水源|水量充足、水质稳定、水温接近养殖温度|可降低水处理和温控成本
+电力|电网容量充足, 双回路供电|满产电力负荷约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000)|round(0) }} kW (估算)
+排水|有污水排放出路或处理回用条件|排放标准 GB 18596-2001
+交通|交通便利, 适合活鲜配送|建议 1-2 小时车程内有主要消费市场
+气候|温带或亚热带为佳, 极端气候少|减少暖通和保温能耗
+土地|建设用地, 地势平坦, 地基条件好|RAS 设备重, 地基要求较高
+配套|有医疗、商业、宿舍配套|为人员生活提供便利
+环保|远离重污染源, 周边无饲料厂、化工厂等|防止空气、水体污染影响养殖
+@@END_TABLE@@
+
+@@H2@@4.2 自然条件
+
+@@H3@@4.2.1 气象条件
+
+@@P@@(项目所在地具体气象数据请业主补充, 包括:
+
+@@LIST@@
+- 年平均气温、极端最高/最低气温
+- 多年平均降水量、最大日降水量
+- 最大冻土深度
+- 主导风向、最大风速、台风影响
+- 抗震设防烈度、地震基本加速度
+@@END_LIST@@
+
+@@P@@iRAS 工艺设计基于以下气候参数:
+
+@@TABLE@@
+参数|本项目设计值|说明
+设计气温|{{ farm.stages[farm.stages|length-1].tempOpt|round(1) }} °C|养殖水温
+源水温度|—|从 iRAS 全局热配置读取
+相对湿度|—|从 iRAS 全局热配置读取
+@@END_TABLE@@
+
+@@H3@@4.2.2 水文与地质
+
+@@P@@(本节由业主或勘察单位根据现场勘察资料补充, 包括:
+
+@@LIST@@
+- 区域地质构造、地震情况
+- 地下水位、地下水水质
+- 地基承载力、地基处理建议
+- 地表水系、防洪标准
+@@END_LIST@@
+
+@@H2@@4.3 建设条件
+
+@@H3@@4.3.1 给水
+
+@@P@@本项目水源需求:
+
+@@TABLE@@
+用水类型|日用量(m³/d)|年用量(万 m³/年)|备注
+养殖补水|{{ (farm.totalSystemVolume * 0.075)|round(0) }}|{{ (farm.totalSystemVolume * 0.075 * 365 / 10000)|round(2) }}|按系统总水体 7.5%/d 换水率
+RDF 反冲水|{{ (farm.peakFlowM3H * 24 * 0.02)|round(0) }}|{{ (farm.peakFlowM3H * 24 * 0.02 * 365 / 10000)|round(2) }}|可使用循环过滤水, 不消耗新水
+车间冲洗|约 5-10|约 0.2-0.4|—
+办公生活|约 5-10|约 0.2-0.4|按人员配置估算
+@@SUBTOTAL@@总新水需求|约 {{ (farm.totalSystemVolume * 0.075 + 15)|round(0) }}|约 {{ ((farm.totalSystemVolume * 0.075 + 15) * 365 / 10000)|round(2) }}|—
+@@END_TABLE@@
+
+@@P@@<strong>水源建议</strong>:
+
+@@LIST@@
+{% if farm.stages[farm.stages|length-1].salinity > 5 %}- 海水养殖项目: 优先选择沿海地区, 取海水或地下咸水。海水需经预处理(沉淀 + 过滤 + 消毒)
+- 海水盐度需满足养殖需求(本项目设计盐度 {{ farm.stages[farm.stages|length-1].salinity }} ‰)
+{% else %}- 淡水养殖项目: 可选择市政自来水、地下水、地表水
+- 水质需达到《渔业水质标准》(GB 11607-89), pH 6.5-9.0, 总硬度适中
+{% endif %}
+- 水量需满足设计补水需求, 并预留 20-30% 富余
+- 建议双水源备份(主水源 + 备用水源), 防止水源中断
+@@END_LIST@@
+
+@@H3@@4.3.2 排水
+
+@@P@@本项目主要排水(详见第 9 章环境影响评价):
+
+@@LIST@@
+- 鱼池排污 + RDF 反冲废水 + 车间冲洗废水: 集中至污水处理设施处理后达标排放
+- 雨水: 屋面 + 场地雨水, 经雨水管网排放
+- 排放出路: 业主补充(市政污水管网 / 自建污水处理站后排入受纳水体)
+@@END_LIST@@
+
+@@H3@@4.3.3 供电
+
+@@P@@本项目电力需求:
+
+@@TABLE@@
+项目|数值|说明
+满产年总电耗|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 10000)|round(0) }} 万 kWh|从 iRAS 估算
+满产平均功率|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000)|round(0) }} kW|按年运行 8000 小时
+峰值功率|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 1.3)|round(0) }} kW|按平均 × 1.3 系数
+变压器装机容量|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 1.5)|round(0) }} kVA|按峰值 × 1.2 系数, 留余量
+@@END_TABLE@@
+
+@@P@@<strong>供电要求</strong>:
+
+@@LIST@@
+- 接入电压等级: 10 kV 专线(项目规模决定, 建议双回路)
+- 应急电源: 配备柴油发电机, 全场 100% 满负荷, 30 秒自动启动
+- UPS: 控制系统、关键仪表配备 UPS, 至少 30 分钟续航
+- 电费协议: 与供电公司签订长期协议, 锁定电价
+@@END_LIST@@
+
+@@H3@@4.3.4 交通
+
+@@P@@(本节请业主补充项目交通条件, 包括:
+
+@@LIST@@
+- 与最近高速公路出口距离
+- 与最近港口/机场/铁路距离
+- 厂区进出道路条件(载重、宽度)
+- 活鲜运输到主要消费市场的最佳路线和时间
+@@END_LIST@@
+
+@@H3@@4.3.5 通讯与信息
+
+@@LIST@@
+- 项目区光纤覆盖, 4G/5G 信号良好
+- 厂区配备网络中心, 支持 PLC/SCADA 数据上云
+- 视频监控与远程监测系统全覆盖
+@@END_LIST@@
+
+@@H2@@4.4 公用工程接入
+
+@@TABLE@@
+公用工程|本项目需求量|接入方式
+给水|约 {{ (farm.totalSystemVolume * 0.075 + 15)|round(0) }} m³/d|市政管网 / 自备水井
+排水|约 {{ (farm.totalSystemVolume * 0.075 + 15)|round(0) }} m³/d|经处理后排入市政管网或受纳水体
+供电|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 1.5)|round(0) }} kVA 容量|10 kV 专线接入
+液氧|约 {{ farm.totalLOXKgD|round(0) }} kg/d|外购液氧, 厂内 3 t 储罐 + 汽化器
+燃气(选用)|—|视暖通方式, 如用燃气热泵
+通讯|光纤接入|市政或电信运营商
+@@END_TABLE@@
+
+@@P@@详细公用工程方案见第 7 章(土建/总图/公用工程方案)。
+</script>
+<script type="text/njk-template" id="tpl-ch05">@@H1@@第 5 章 工艺技术方案
+
+@@H2@@5.1 工艺路线选择
+
+{% if farm.species == "salmon" %}
+@@P@@大西洋三文鱼是冷水洄游鱼类, 养殖水温要求严格控制在 12-15°C 之间。我国年均气温普遍高于此温度区间, 沿海地区夏季水温更高达 25-30°C, 不能直接进行三文鱼养殖。采用循环水养殖系统(RAS)精确控温是三文鱼陆基工厂化养殖的<strong>唯一可行工艺</strong>。
+@@P@@RAS 系统通过物理过滤、生物过滤、消毒、增氧、脱气、温控等一体化处理, 实现 85-95% 的水循环利用, 在闭环条件下创造稳定可控的养殖环境。本项目参考挪威 Atlantic Sapphire(迈阿密 RAS 三文鱼厂, 设计年产 10 万吨)、苏格兰 Loch Duart 等国际成熟案例的工艺思路。
+{% elif farm.species == "turbot" %}
+@@P@@大菱鲆(Scophthalmus maximus)为冷温性底栖海水鱼, 养殖水温 14-18°C, 盐度 25-32‰, 对水质透明度和溶氧要求高。我国山东、辽宁等北方海域冬季水温过低, 夏季又过高, 传统流水式养殖能耗大、水质波动大。RAS 工艺通过精确温控和水质净化, 显著提高大菱鲆的生长速度和成活率, 工业实测密度可达 50-70 kg/m³(底面积), 是目前国内大菱鲆工厂化养殖的主流工艺。
+{% elif farm.species == "grouper" %}
+@@P@@石斑鱼是我国华南地区重要海水养殖品种, 适养水温 24-30°C, 对水质和溶氧要求高, 尤其稚鱼期对环境波动敏感。本项目采用 RAS 工艺, 通过精确控温、稳定水质和封闭防病, 解决传统网箱/池塘养殖中水温波动大、病害易发、苗种成活率低等核心问题。
+{% elif farm.species == "perch" %}
+@@P@@加州鲈是淡水肉食性鱼, 适养水温 22-28°C, 对水质要求较高。RAS 工艺相比池塘养殖具有节水节地、病害可控、产品稳定等优势, 是华南地区加州鲈"陆基工厂化"养殖的主流方向。
+{% elif farm.species == "mandarin" %}
+@@P@@鳜鱼是淡水珍贵肉食性鱼类, 售价高、市场稳定。其养殖适温 22-28°C, 对水质和饵料要求严格(传统活饵投喂)。RAS 工艺配合配合饲料技术, 能实现鳜鱼的工厂化稳产, 是高端淡水鱼养殖的代表方向。
+{% elif farm.species == "tilapia" %}
+@@P@@罗非鱼适应性强, 耐受温度 25-32°C, 是世界第二大养殖鱼类。本项目采用 RAS 主要为节水节地、控制疾病传播, 并实现一年多茬养殖。
+{% elif farm.species == "eel" %}
+@@P@@鳗鲡(日本鳗或欧洲鳗)是高经济价值的洄游鱼类, 苗种依赖野外捕获, 养殖周期长(2-3 年)。RAS 工艺能精确控制水温(养殖温度 26-28°C)、水质和粉料投喂, 是鳗鲡集约化养殖的成熟工艺, 日本和我国福建已有大量工业化案例。
+{% elif farm.species == "shrimp" %}
+@@P@@南美白对虾耐高温(28-32°C), 能耐受较低盐度(5-35‰), 是世界最重要的养殖对虾品种。本项目采用清水 RAS 工艺(区别于 Biofloc 浊水养殖), 配合高密度养殖, 实现节水节地、防病和稳产。
+{% else %}
+@@P@@本项目采用循环水养殖工艺(RAS), 通过物理过滤、生物过滤、消毒、增氧、脱气一体化处理, 实现高密度、节水节地、可控环境的工厂化养殖。
+{% endif %}
+
+@@P@@RAS 工艺的关键优势:
+@@LIST@@
+- <strong>节水</strong>: 水循环利用率 85-95%, 每公斤鱼肉用水 0.5-1 m³, 仅为传统流水养殖的 5-10%
+- <strong>节地</strong>: 高密度养殖(30-100 kg/m³), 单位产能占地仅为传统土塘的 1/10-1/50
+- <strong>可控</strong>: 温度、溶氧、pH、TAN 全程精确控制, 不受季节和天气影响, 全年生产
+- <strong>环保</strong>: 废水集中处理, 固体废物可作有机肥, 几乎零外排, 无面源污染
+- <strong>生物安全</strong>: 封闭系统隔绝外部病原, 减少药物使用, 食品安全有保障
+- <strong>选址灵活</strong>: 不依赖天然水源, 可建在城市近郊、内陆、沙漠等非传统养殖地区
+@@END_LIST@@
+
+@@H2@@5.2 工艺流程
+
+本项目工艺流程采用"主流串联 + 旁路并联"混合架构, 工艺主流方向为:
+
+@@P@@<strong>鱼池 → 转鼓微滤机 → 蛋白分离器(旁路) → 生物滤池 → UV 消毒 → CO₂ 脱气塔 → 增氧 → 鱼池</strong>
+
+@@P@@同时配置 3 条旁路支路:
+@@LIST@@
+- <strong>蛋白分离支路</strong>: 分流约 {{ (workflow.skimmer.flowPct*100)|round(0) if workflow.skimmer.enabled else 0 }}% 循环流量, 去除 DOM(溶解有机物)和细颗粒 TSS{% if workflow.skimmer.enabled and workflow.skimmer.mode == 'ozone' %}, 配臭氧增强{% endif %}
+- <strong>反硝化支路</strong>: {% if workflow.denitri.enabled %}分流约 {{ (workflow.denitri.flowPct*100)|round(0) }}% 流量, 在缺氧条件下用甲醇还原 NO₃ 为 N₂ 排出, 减少换水{% else %}本项目暂不设反硝化支路, 通过日常 5-10% 换水控制 NO₃ 累积{% endif %}
+- <strong>AOP 高级氧化支路</strong>: {% if workflow.aop.enabled %}分流约 {{ (workflow.aop.flowPct*100)|round(0) }}% 流量, 用臭氧+UV 协同氧化去除 Geosmin/2-MIB(土腥味物质)和深度 DOM{% else %}本项目暂不设 AOP 支路{% endif %}
+@@END_LIST@@
+
+@@P@@详细工艺流程图(P&ID)见附图(由 iRAS 自动生成)。
+
+@@IMG@@id=processFlow|caption=图 5-1 工艺流程示意图(由 iRAS 自动生成,详细 P&ID 见 iRAS 平台 pid.html 输出)|w=600|h=250@@
+
+@@H2@@5.3 各处理单元设计
+
+@@H3@@5.3.1 鱼池
+
+本项目分 {{ farm.stages|length }} 个养殖阶段, 各阶段独立循环, 共 {{ farm.totalSubSystems }} 套独立模块、{{ farm.totalPools }} 个鱼池。各阶段池配置如下:
+
+@@TABLE@@
+阶段|养殖鱼规格|存塘量(t)|水体(m³)|密度(kg/m³)|温度(°C)|盐度(‰)|模块数|每套池数|池深(m)|池径(m)
+{% for s in farm.stages %}{{ s.name }}|{{ s.weightStart|round(0) }}-{{ s.weightEnd|round(0) }} g|{{ s.biomass|round(1) }}|{{ s.volume|round(0) }}|{{ s.density|round(0) }}|{{ s.tempOpt|round(1) }}|{{ s.salinity|round(0) }}|{{ s.subSystemCount }}|{{ s.poolsPerSet }}|{{ s.poolDepth_m|round(1) }}|{{ s.poolDiameter|round(1) }}
+{% endfor %}@@END_TABLE@@
+
+@@P@@鱼池采用 HDPE 复合材料或玻璃钢(FRP)结构, 圆形深水池设计, 中心排污 + 侧出水双排水系统, 自清洗能力强。各模块独立循环, 模块间设备故障互不影响, 显著提高生物安全。
+
+@@H3@@5.3.2 转鼓微滤机(RDF)
+
+转鼓微滤机是 RAS 系统的第一道处理单元, 用 60 μm 不锈钢筛网物理拦截水中悬浮固体(残饵、粪便、生物膜碎片)。设计参数:
+
+@@TABLE@@
+参数|数值
+设计流量|{{ workflow.rdf.flow|round(0) }} m³/h(峰值)
+筛网孔径|60 μm
+TSS 去除率|{{ (workflow.rdf.tssEff*100)|round(0) }}%
+反冲排污率|{{ (workflow.rdf.backwashPct*100)|round(1) }}%(循环流量)
+反冲水源|清洁过滤水
+@@END_TABLE@@
+
+@@H3@@5.3.3 MBBR 生物滤池
+
+生物滤池(MBBR, Moving Bed Biofilm Reactor)是 RAS 系统的核心单元, 通过悬浮填料表面附着的硝化菌群将 TAN(NH₄)氧化为 NO₃, 是去除氨氮的关键。设计参数:
+
+@@TABLE@@
+参数|数值
+填料体积|{{ workflow.bf.volume|round(0) }} m³
+填料填充率|{{ (workflow.bf.fillRatio*100)|round(0) }}%
+填料类型|HDPE K1/K3, 比表面积 500 m²/m³
+设计 TAN 负荷|{{ workflow.bf.designTAN|round(2) }} kg/d
+TAN 去除率|{{ (workflow.bf.tanEff*100)|round(0) }}%
+温度修正后 VTR|{{ workflow.bf.vtrAtT|round(3) }} kg/(m³·d)
+{% if workflow.bf.vdrAtT %}盐度修正后 VTR|含盐度修正系数{% endif %}
+@@END_TABLE@@
+
+@@P@@MBBR 设有粗孔曝气提供菌膜代谢所需溶氧 + 推动填料悬浮, 采用罗茨风机供气。曝气供氧不与鱼池主增氧重叠, 避免溶氧重复计算。
+
+@@H3@@5.3.4 UV 紫外线消毒
+
+UV 消毒采用 254 nm 中压紫外灯, 通过破坏细菌/病毒/寄生虫的 DNA 实现物理消毒。设计参数:
+
+@@TABLE@@
+参数|数值
+设计流量|{{ workflow.uv.flow|round(0) }} m³/h
+UV 剂量|{{ workflow.uv.dose|round(0) }} mJ/cm²
+灯管功率|{{ workflow.uv.powerKw|round(1) }} kW
+反应器结构|流通式不锈钢, 304/316L
+灯管寿命|8000-12000 小时
+@@END_TABLE@@
+
+@@P@@UV 剂量 {{ workflow.uv.dose|round(0) }} mJ/cm² 可对常见鱼类病原(细菌 99.7%、鱼类病毒 86-98%、原虫 99.7-99.99%)达到有效灭活。
+
+@@H3@@5.3.5 CO₂ 脱气塔
+
+CO₂ 脱气塔采用逆流空气吹脱原理, 在塔顶布水、塔底鼓风, 气液逆流接触, 将水中溶解 CO₂ 吹脱排出。设计参数:
+
+@@TABLE@@
+参数|数值
+脱气方式|逆流空气吹脱
+G:L 气液比|{{ workflow.co2.gToL|round(1) if workflow.co2.gToL else 3 }}
+单次脱气率|{{ (workflow.co2.eff*100)|round(0) if workflow.co2.eff else 65 }}%
+风机|罗茨风机, 风压 2.5 kPa, 效率 60%
+填料|结构填料, 高度 1.0 m
+@@END_TABLE@@
+
+{% if workflow.skimmer.enabled %}
+@@H3@@5.3.6 蛋白分离器
+
+蛋白分离器(Protein Skimmer)利用泡沫分离原理去除 DOM 和细颗粒悬浮物。采用{% if workflow.skimmer.mode == "ozone" %}<strong>臭氧增强模式</strong>(臭氧 + 泡沫协同){% else %}<strong>空气模式</strong>(微细气泡发泡){% endif %}。
+
+@@TABLE@@
+参数|数值
+旁路流量比|{{ (workflow.skimmer.flowPct*100)|round(0) }}%
+工作模式|{% if workflow.skimmer.mode == "ozone" %}臭氧 + 泡沫{% else %}空气泡沫{% endif %}
+DOM 单次去除率|{{ (workflow.skimmer.domEff*100)|round(0) }}%
+TSS 单次去除率|{{ (workflow.skimmer.tssEff*100)|round(0) }}%
+塔体水容积|{{ workflow.skimmer.volume|round(1) }} m³
+{% if workflow.skimmer.mode == "ozone" %}臭氧投加|{{ workflow.skimmer.ozoneKgD|round(2) }} kg O₃/d{% endif %}
+@@END_TABLE@@
+{% endif %}
+
+{% if workflow.denitri.enabled %}
+@@H3@@5.3.7 反硝化反应器
+
+反硝化反应器在缺氧条件下(DO < 0.5 mg/L), 由异养菌利用甲醇将 NO₃ 还原为 N₂ 气体排出, 是 RAS 中唯一能真正"去除"氮素的处理单元。
+
+@@TABLE@@
+参数|数值
+反应器容积|{{ workflow.denitri.volume|round(0) }} m³
+旁路流量比|{{ (workflow.denitri.flowPct*100)|round(0) }}%
+NO₃ 单次去除率|{{ (workflow.denitri.no3Eff*100)|round(0) }}%
+NO₃ 处理量|{{ workflow.denitri.no3RemovedKgD|round(2) }} kg/d
+甲醇投加量|{{ workflow.denitri.methanolKgD|round(2) }} kg/d(化学计量 2.47 g/g NO₃-N)
+@@END_TABLE@@
+{% endif %}
+
+{% if workflow.aop.enabled %}
+@@H3@@5.3.8 高级氧化(AOP)
+
+AOP(Advanced Oxidation Process)采用臭氧 + UV 协同产生羟基自由基(·OH), 用于去除 Geosmin、2-MIB 等土腥味物质和深度 DOM。
+
+@@TABLE@@
+参数|数值
+反应器类型|{{ workflow.aop.type }}
+反应器容积|{{ workflow.aop.volume|round(1) }} m³
+旁路流量比|{{ (workflow.aop.flowPct*100)|round(0) }}%
+Geosmin 去除率|{{ (workflow.aop.geosminEff*100)|round(0) }}%
+DOM 去除率|{{ (workflow.aop.domEff*100)|round(0) }}%
+臭氧投加|{{ workflow.aop.ozoneKgD|round(2) }} kg O₃/d
+@@END_TABLE@@
+{% endif %}
+
+@@H3@@5.3.{% if workflow.aop.enabled %}9{% elif workflow.denitri.enabled %}8{% elif workflow.skimmer.enabled %}7{% else %}6{% endif %} 增氧系统
+
+{% if workflow.aerator.enabled %}
+本项目采用<strong>液氧 + 低水头增氧锥(LHO)</strong>方式增氧, 适合高密度养殖场景。系统设计参数:
+
+@@TABLE@@
+参数|数值
+增氧方式|液氧 + 锥形塔吸收(Low Head Oxygenator)
+DO 目标饱和度|{{ (workflow.aerator.satTarget*100)|round(0) }}%
+锥形塔吸收效率|{{ (workflow.aerator.absorptionEff*100)|round(0) }}%
+峰值供氧能力|{{ workflow.aerator.peakSupplyKgH|round(1) }} kg O₂/h
+全场日液氧用量|{{ farm.totalLOXKgD|round(0) }} kg/d
+液氧站|3 t 真空保温立式储罐 + 汽化器 + 减压控制
+@@END_TABLE@@
+{% else %}
+本项目采用<strong>空气曝气</strong>增氧, 通过罗茨风机 + 微孔盘管曝气将空气溶解到水中, DO 通常达到 95% 左右饱和度, 适合中低密度场景。
+{% endif %}
+
+@@H2@@5.4 关键水质参数控制
+
+本项目核心水质指标控制范围:
+
+@@TABLE@@
+参数|目标范围|工艺保障措施
+TAN(总氨氮)|< 1.0 mg/L|MBBR 生物滤池硝化
+NO₂-N(亚硝酸盐)|< 0.3 mg/L|硝化菌群成熟稳定
+NO₃-N(硝酸盐)|< {% if workflow.denitri.enabled %}80{% else %}100{% endif %} mg/L|{% if workflow.denitri.enabled %}反硝化 + 换水{% else %}日 5-10% 换水稀释{% endif %}
+DO(溶解氧)|> 6 mg/L(鱼池)|液氧 + 锥形塔, 110-165% 饱和度
+CO₂|< 15 mg/L|CO₂ 脱气塔, G:L=3, 单次脱气 65%
+TSS(悬浮固体)|< 10 mg/L|RDF 60 μm + {% if workflow.skimmer.enabled %}蛋分{% endif %} + BF 二次拦截
+DOM|< 30 mg/L|{% if workflow.skimmer.enabled %}蛋分(70% 单次){% else %}主要靠换水{% endif %}{% if workflow.aop.enabled %} + AOP 深度氧化{% endif %}
+pH|7.0-7.5|碳酸氢钠投加补碱
+Geosmin/2-MIB|< 5 ng/L|{% if workflow.aop.enabled %}AOP 80-95% 去除{% else %}主要靠日换水稀释{% endif %}
+@@END_TABLE@@
+
+@@H2@@5.5 工艺设计参数总览
+
+各阶段关键工艺参数汇总:
+
+@@TABLE@@
+阶段|存塘(t)|水体(m³)|流量(m³/h)|换水率(次/d)|日饲料(kg/d)|TAN(kg/d)|液氧(kg/d)
+{% for s in farm.stages %}{{ s.name }}|{{ s.biomass|round(1) }}|{{ s.volumeTotal|round(0) }}|{{ s.flowM3h|round(0) }}|{{ s.turnover|round(1) }}|{{ s.feedDailyMax|round(0) }}|{{ s.tanDaily|round(2) }}|{{ s.o2DailyTotal|round(0) }}
+{% endfor %}@@END_TABLE@@
+
+@@P@@设计阶段(成鱼期)峰值流量 {{ farm.peakFlowM3H|round(0) }} m³/h, 系统总水体 {{ farm.totalSystemVolume|round(0) }} m³, 全场日饲料约 {{ farm.totalFeedDaily|round(0) }} kg/d, 全场日液氧需求约 {{ farm.totalLOXKgD|round(0) }} kg/d。
+</script>
+<script type="text/njk-template" id="tpl-ch06">@@H1@@第 6 章 主要设备方案
+
+@@H2@@6.1 设备选型原则
+
+本项目设备选型遵循以下原则:
+
+@@LIST@@
+- <strong>先进性与成熟性兼顾</strong>: 工艺核心设备(微滤机、生物滤池、增氧系统等)采用国际先进的成熟技术, 避免选用未经长期工业验证的技术
+- <strong>关键设备 N+1 备用</strong>: 主泵、风机、微滤机、UV 等关键设备配置 N+1 备用, 任一设备故障可在 30 秒内自动切换, 不中断生产
+- <strong>模块化布置</strong>: 全场分 {{ farm.totalSubSystems }} 套独立循环模块, 模块间独立, 故障互不影响, 显著提高生物安全和生产连续性
+- <strong>设备国产化优先</strong>: 工艺水处理设备(微滤机、风机、水泵、UV)优先选用国内成熟品牌; 高端核心设备(液氧增氧锥、自控阀门、高精度仪表)可选用进口品牌
+- <strong>能效优化</strong>: 主循环泵采用变频驱动, BF 风机采用罗茨高效风机, 增氧系统优先纯氧+锥形塔(吸收效率 80-90%)
+- <strong>耐腐蚀</strong>: {% if (farm.stages|length > 0) and (farm.stages[farm.stages|length-1].salinity > 5) %}本项目含海水/半咸水阶段, 设备过流部件全部采用 316L 不锈钢、HDPE 或 FRP 玻璃钢, 防腐处理标准较淡水项目提升一个等级{% else %}本项目为淡水系统, 设备过流部件采用 304 不锈钢、HDPE 或 FRP 玻璃钢即可满足防腐要求{% endif %}
+@@END_LIST@@
+
+@@H2@@6.2 主要设备清单
+
+下表列出本项目主要工艺设备清单(含 N+1 备用):
+
+@@TABLE@@
+序号|设备名称|规格说明|总数量|备注
+{% for eq in workflow.equipmentSummary %}{{ loop.index }}|{{ eq.name }}|{{ eq.perStage[0].spec }}{% if eq.perStage|length > 1 %}(各阶段规格不同){% endif %}|{{ eq.totalQty }} 套|分 {{ farm.totalSubSystems }} 套独立模块
+{% endfor %}@@END_TABLE@@
+
+@@H2@@6.3 各阶段设备配置
+
+@@TABLE@@
+阶段|微滤机(套)|生物滤池(套)|UV 消毒(套)|主循环泵(套)|增氧锥(套)
+{% for ps in workflow.perStage %}{{ ps.stageName }}|含 N+1|含 N+1|含 N+1|含 N+1|含 N+1
+{% endfor %}@@END_TABLE@@
+
+@@P@@详细设备规格表(含每台的设计参数、单价、合计金额)由 iRAS 平台自动生成, 见附件《设备清单》(equipment.html 导出)。
+
+@@H2@@6.4 设备来源与采购策略
+
+@@LIST@@
+- <strong>水处理核心设备</strong>(微滤机、生物滤池、UV、CO₂ 脱气塔): 国内主流品牌, 国产化率 100%, 价格合理, 售后便利。建议厂家如 AKVA Group(挪威)、青岛科海、上海雪浪等
+- <strong>水泵风机</strong>: 国产主流品牌, 大流量主泵建议变频驱动以节能, 关键泵需 N+1 备用
+- <strong>增氧系统</strong>: 液氧锥形塔进口品牌(如 Oxyzone 等), 液氧储罐及汽化器为国内成熟产品
+- <strong>仪表与自控</strong>: 在线水质监测仪(DO/pH/温度等)优先进口品牌(WTW、Hach 等), 控制系统可用国内成熟 PLC + SCADA
+- <strong>采购策略</strong>: 主设备公开招标采购, 仪表和管阀件竞争性谈判采购, 总采购周期约 4-6 个月
+@@END_LIST@@
+
+@@H2@@6.5 设备投资构成
+
+本项目设备直购费用合计 {{ capex.equipDirect|wan }} 万元(占工程总投资 {{ ((capex.equipDirect/capex.fixedAsset)*100)|round(1) }}%), 详细投资估算见第 12 章。
+
+@@P@@设备分类大致占比(估算):
+@@LIST@@
+- 工艺水处理设备(微滤机、生物滤池、UV、脱气塔)约 35-40%
+- 增氧系统(液氧站 + 锥形塔)约 15-20%
+- 水泵风机系统约 15-20%
+- 鱼池(玻璃钢/HDPE)约 10-15%
+- 仪表自控系统约 8-12%
+- 其他(管路、阀件、配件)约 5-10%
+@@END_LIST@@
+</script>
+<script type="text/njk-template" id="tpl-ch07">@@H1@@第 7 章 土建/总图/公用工程方案
+
+@@H2@@7.1 总图布置
+
+@@P@@(本节具体总图布置由业主或建筑设计单位根据场地实际情况设计, 包括功能分区、建筑物朝向、道路布置、绿化等。)
+
+@@P@@RAS 项目总图布置基本原则与建议:
+
+@@LIST@@
+- <strong>功能分区清晰</strong>: 生产区、办公生活区、配套区(物流、仓储、设备机房)分开
+- <strong>朝向</strong>: 主要养殖车间宜南北向布置, 减少阳光直射对水温的影响, 便于通风
+- <strong>洁污分流</strong>: 进水管、循环水管、排污管、补水管路径互不交叉
+- <strong>物流流线</strong>: 苗种入场 → 各阶段养殖 → 成鱼出场单向流动, 避免疫病传播
+- <strong>消防通道</strong>: 主要建筑物周围设环形消防通道, 不少于 4 m 宽
+- <strong>绿地率</strong>: ≥ 20%(具体以当地规划要求为准)
+- <strong>预留扩建空间</strong>: 二期/三期扩建预留场地
+@@END_LIST@@
+
+@@H2@@7.2 主要建筑物
+
+@@H3@@7.2.1 主要建筑物表
+
+@@TABLE@@
+建筑物|建筑面积估算|层高|结构|主要功能
+养殖主车间|约 {% if farm.land %}{{ farm.land.mainHallArea|round(0) }}{% else %}{{ ((farm.totalVolumeTank or farm.totalSystemVolume * 0.5) * 1.6 / (farm.stages[farm.stages|length-1].poolDepth_m or 5) * 1.0)|round(0) }}{% endif %} m²|6.0 m|钢结构 + 混凝土|{{ farm.totalSubSystems }} 套独立循环模块, {{ farm.totalPools }} 个鱼池
+水处理机房|约 {% if farm.land %}{{ farm.land.utilityArea|round(0) }}{% else %}{{ ((farm.totalVolumeTank or farm.totalSystemVolume * 0.5) * 0.5)|round(0) }}{% endif %} m²|6.0 m|钢结构|主泵、风机、UV、CO₂ 脱气设备
+液氧站|约 100-200 m²|—|钢筋混凝土|3 t 立式真空储罐 + 汽化器 + 控制
+配电房|约 100 m²|3.5 m|框架结构|高低压配电、变压器
+应急柴油发电机房|约 80-150 m²|4.5 m|框架结构|应急发电机 + 储油罐
+办公楼|约 200-500 m²|3.5 m × 2 层|框架结构|办公、会议、化验室
+宿舍楼|约 200-400 m²|3.5 m × 2-3 层|框架结构|员工宿舍 + 食堂
+仓库与配套|约 200-300 m²|6.0 m|钢结构|饲料仓库、化学品库、备件库
+门卫与生物消毒站|约 30-50 m²|3.0 m|混凝土|进出消毒、人车控制
+@@END_TABLE@@
+
+@@P@@<strong>说明</strong>: 上述面积为初步估算, 详细建筑设计应根据具体功能需求由建筑设计单位完成。
+
+@@H3@@7.2.2 主车间设计要求
+
+@@LIST@@
+- <strong>层高</strong>: 主车间层高 6 m, 满足设备(增氧锥、UV 反应器、生物滤池)安装高度要求
+- <strong>柱网</strong>: 大跨度钢结构, 柱距 9 m × 9 m 或 12 m × 9 m 灵活组合
+- <strong>地坪</strong>: 抗腐蚀环氧树脂地坪, 找坡 0.5-1%, 设排水沟
+- <strong>墙面</strong>: 内墙抗腐蚀涂料 + 卫生级防霉, 外墙保温(节能要求)
+- <strong>屋面</strong>: 钢结构屋面板 + 保温层 + 防水层, 设采光窗(白天可借自然光)
+- <strong>通风</strong>: 屋顶通风器或机械通风, 换气次数 6-10 次/h, 防止氨气和湿气积聚
+- <strong>保温</strong>: 围护保温符合《公共建筑节能设计标准》(GB 50189)
+- <strong>防水</strong>: 地坪 + 1 m 高墙裙做防水处理
+@@END_LIST@@
+
+@@H2@@7.3 给水排水
+
+@@H3@@7.3.1 给水
+
+@@LIST@@
+- 主水源: {% if farm.stages[farm.stages|length-1].salinity > 5 %}海水(预处理后) + 市政自来水(辅助){% else %}市政自来水 + 自备深井(备用){% endif %}
+- 日总用水: 约 {{ (farm.totalSystemVolume * 0.075 + 15)|round(0) }} m³/d
+- 储水池: 高位水箱 / 地下蓄水池, 储存 2-3 天用水量, 应对短期供水中断
+- 给水管网: PE 或 PVC 主管, 不锈钢支管(防腐), 双管路冗余
+@@END_LIST@@
+
+@@H3@@7.3.2 排水
+
+@@LIST@@
+- 雨污分流: 雨水管直排, 污水管经处理后排
+- 污水处理: 自建污水处理站 (沉淀 + 过滤 + 生物处理 + 消毒), 出水达 GB 18596-2001
+- 污泥处置: 浓缩 + 脱水, 委外资源化利用
+@@END_LIST@@
+
+@@H2@@7.4 供电系统
+
+@@H3@@7.4.1 电力负荷
+
+@@TABLE@@
+负荷类别|装机容量|说明
+水泵动力|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 0.40)|round(0) }} kW|主泵 + 旁路泵 + 反冲泵
+风机|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 0.15)|round(0) }} kW|BF 风机 + CO₂ 脱气风机
+UV / 增氧 / 控制|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 0.10)|round(0) }} kW|—
+热泵 / 制冷|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 0.20)|round(0) }} kW|视气候差异
+照明 + 办公 + 其他|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 0.15)|round(0) }} kW|—
+@@SUBTOTAL@@总装机|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 1.5)|round(0) }} kVA|按平均功率 × 1.5 取变压器容量
+@@END_TABLE@@
+
+@@H3@@7.4.2 供电方案
+
+@@LIST@@
+- <strong>主供电</strong>: 10 kV 专线接入, 双回路供电
+- <strong>变配电</strong>: 设独立配电房, 变压器 N+1 配置
+- <strong>应急电源</strong>: 柴油发电机 100% 全场负荷, 30 秒自动启动 (ATS 自动切换)
+- <strong>UPS</strong>: 控制系统、关键仪表 UPS 30 分钟续航
+- <strong>无功补偿</strong>: 配电房安装电容补偿装置, 功率因数 ≥ 0.95
+@@END_LIST@@
+
+@@H2@@7.5 暖通空调
+
+@@H3@@7.5.1 暖通负荷
+
+@@LIST@@
+- 养殖车间: 维持设计水温(详见第 5 章工艺参数)
+- 办公区: 夏季制冷 26°C, 冬季制热 18-20°C
+- 化验室: 全年恒温恒湿, 22°C ± 2°C, 50% RH
+@@END_LIST@@
+
+@@H3@@7.5.2 空调系统选型
+
+@@LIST@@
+- <strong>养殖车间温控</strong>: 工业热泵(空气源 / 水源 / 地源, 视水源条件), 冷热兼用
+- <strong>板式换热器</strong>: 排水与进水板换, 回收热量 ≥ 75%
+- <strong>办公区</strong>: 多联机空调或分体机
+- <strong>新风系统</strong>: 养殖车间设新风系统, 换气 6-10 次/h, 防止氨气积聚
+@@END_LIST@@
+
+@@P@@详细暖通设计应根据当地气候、水源条件、能源价格等综合优化, 选择最经济方案。
+
+@@H2@@7.6 自动控制系统
+
+@@LIST@@
+- <strong>控制平台</strong>: 工业级 PLC + SCADA + 工业以太网
+- <strong>在线监测</strong>: DO、pH、温度、TAN、NO₂、流量等关键参数 24×7 监测
+- <strong>报警系统</strong>: 三级报警(本地声光 + 中控屏 + 短信/微信推送)
+- <strong>数据存档</strong>: 历史数据 1 年以上, 支持远程查询和分析
+- <strong>视频监控</strong>: 主车间、机房、出入口全覆盖, 30 天存档
+@@END_LIST@@
+</script>
+<script type="text/njk-template" id="tpl-ch08">@@H1@@第 8 章 节能节水
+
+@@H2@@8.1 节能分析
+
+@@H3@@8.1.1 项目能耗概况
+
+本项目主要能耗为电力, 满产年总电耗估算如下:
+
+@@TABLE@@
+用电类别|占总电耗比例|说明
+水泵(主循环 + 支路)|30-40%|最大单一用电, 变频驱动节能
+BF 罗茨风机|10-15%|连续 24 小时运行
+UV 紫外消毒|3-5%|在线消毒, 灯管 8000-12000h 寿命
+CO₂ 脱气风机|3-5%|连续运行
+热泵(温控)|5-25%|按地区/工况差异极大
+照明 + 控制 + 其他|5-10%|车间照明、PLC、应急
+液氧站|低|液氧外购消耗
+@@END_TABLE@@
+
+@@P@@总耗电量: 满产年约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 10000)|round(0) }} 万 kWh(估算, 按电费占 OPEX 约 20% 折算)。万元产值能耗显著低于传统流水式养殖。
+
+@@H3@@8.1.2 节能措施
+
+本项目采取的主要节能措施:
+
+@@LIST@@
+- <strong>主循环泵变频驱动</strong>: 主循环泵采用变频驱动, 根据流量需求自动调整转速, 节能 15-25%
+- <strong>BF 风机选型优化</strong>: 选用高效罗茨风机, 风机效率 60% 以上, 配合 PID 风量控制
+- <strong>液氧 + 锥形塔增氧</strong>: 锥形塔吸收效率 80-90%, 比传统空气曝气节能 50% 以上
+- <strong>板式换热回收</strong>: 进水通过板式换热器与排水换热, 回收热量 75% 左右, 显著降低热泵负荷
+- <strong>密闭车间 + 池盖</strong>: 车间保温围护 + 鱼池池盖减少散热和蒸发, 降低暖通负荷
+- <strong>共用车间布局</strong>: 多阶段共享外墙, 散热系数 0.75, 比独立车间节能 25%
+- <strong>余热利用</strong>: 鱼代谢热(每千克饲料约产 4000-5000 kJ)在冬季可显著降低暖通负荷
+- <strong>LED 照明 + 智能控制</strong>: 全部 LED 灯具, 配合人体感应和定时控制
+@@END_LIST@@
+
+@@H3@@8.1.3 能效对标
+
+@@P@@本项目综合电耗约 {{ ((opex.totalExclDep * 0.20) / 0.7 / (farm.yieldTons * 1000))|round(2) }} kWh/kg鱼, 处于国际 RAS 项目典型水平(2-5 kWh/kg)。挪威 Atlantic Sapphire 公开数据约 4-5 kWh/kg, 主要差异在于挪威冬季暖通负荷高。
+
+@@H2@@8.2 节水分析
+
+@@H3@@8.2.1 用水量
+
+@@TABLE@@
+用水项|日用量(m³/d)|年用量(万 m³/年)|说明
+新水补充(平衡蒸发+排污)|约 {{ (farm.totalSystemVolume * 0.075)|round(0) }}|约 {{ (farm.totalSystemVolume * 0.075 * 365 / 10000)|round(2) }}|按系统总水体 7.5%/d 换水率估算
+RDF 反冲|约 {{ (farm.peakFlowM3H * 24 * 0.02)|round(0) }}|约 {{ (farm.peakFlowM3H * 24 * 0.02 * 365 / 10000)|round(2) }}|反冲率 2%
+循环水|{{ (farm.peakFlowM3H * 24)|round(0) }}|—|不消耗,仅循环
+@@END_TABLE@@
+
+@@P@@本项目年新水补充量约 {{ (farm.totalSystemVolume * 0.075 * 365 / 10000)|round(2) }} 万 m³, 单位产量耗水约 {{ ((farm.totalSystemVolume * 0.075 * 365) / (farm.yieldTons * 1000))|round(2) }} m³/kg 鱼, 仅为传统流水养殖(5-20 m³/kg)的 5-10%, <strong>节水效果显著</strong>。
+
+@@H3@@8.2.2 节水措施
+
+@@LIST@@
+- <strong>循环水利用率 85-95%</strong>: 系统设计的天然节水属性, 95% 水循环重复使用
+- <strong>板换补水预热</strong>: 进水通过板式换热器与排水换热, 减少新水加热能耗(同时也是节水措施)
+- <strong>分级使用</strong>: RDF 反冲水可视情况用于车间地面冲洗, 实现"清污分流, 重复利用"
+- <strong>雨水收集</strong>: 屋面雨水可用于车间地面冲洗、设备外洗, 减少自来水消耗
+- <strong>污水深度处理</strong>: 排放水经污水处理后可考虑用于绿化, 实现近零排放
+@@END_LIST@@
+
+@@H2@@8.3 节能节水效益
+
+@@P@@相比同等产能的传统流水式养殖:
+
+@@TABLE@@
+对比项|传统流水式|RAS(本项目)|节约比例
+单位用水量(m³/kg)|5-20|约 {{ ((farm.totalSystemVolume * 0.075 * 365) / (farm.yieldTons * 1000))|round(2) }}|约 90%
+单位电耗(kWh/kg)|0.5-2|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / (farm.yieldTons * 1000))|round(2) }}|相对增加 (RAS 高电耗)
+单位占地(m²/吨)|500-2000|约 50-100|约 90-95%
+@@END_TABLE@@
+
+@@P@@注: RAS 单位电耗高于传统流水, 但单位用水和占地的节约显著, 综合"水-能-地"三资源的节约价值, RAS 是更可持续的养殖模式。
+</script>
+<script type="text/njk-template" id="tpl-ch09">@@H1@@第 9 章 环境影响评价
+
+@@P@@<strong>说明</strong>: 本章为可研报告中的环境影响初步分析, 不能替代正式的环境影响评价(环评)。建议项目立项后委托具有相应资质的环评机构开展专项环境影响评价, 出具独立的环评报告。
+
+@@H2@@9.1 项目所在地环境现状
+
+@@P@@(本节关于项目所在地环境质量现状, 包括大气、水体、土壤、声环境、生态等内容, 由业主或编制单位根据当地环评数据补充。)
+
+@@H2@@9.2 主要污染源识别
+
+本项目主要污染源识别如下:
+
+@@H3@@9.2.1 废水
+
+@@TABLE@@
+废水类型|来源|主要污染物|日产生量
+RDF 反冲废水|微滤机反冲|TSS, 残饵粪便|约 {{ (farm.peakFlowM3H * 24 * 0.02)|round(0) }} m³/d
+鱼池排污|底排+换水|TSS, TAN, NO₃|约 {{ (farm.totalSystemVolume * 0.075)|round(0) }} m³/d
+{% if workflow.skimmer.enabled %}蛋分排泡|蛋白分离器排泡|DOM, TSS|约 0.5-1 m³/d
+{% endif %}{% if workflow.denitri.enabled %}反硝化排泥|反硝化反应器|生物污泥|约 0.1-0.3 m³/d
+{% endif %}车间冲洗|地面、设备外洗|低浓度 TSS|约 5-10 m³/d
+@@END_TABLE@@
+
+@@H3@@9.2.2 固废
+
+@@LIST@@
+- 残饵粪便(过滤后浓缩液):每天约 {{ (farm.totalFeedDaily * 0.30)|round(0) }} kg(估算, 按饲料 30% 转化为固废, 含水率高)
+- 死鱼:正常运营死亡率 1-3%, 按 1% 估算约 {{ (farm.yieldTons * 0.01 * 1000 / 365)|round(1) }} kg/d
+- 用药包装、办公生活垃圾:小量
+@@END_LIST@@
+
+@@H3@@9.2.3 废气
+
+@@LIST@@
+- CO₂ 脱气塔尾气: 主要为 CO₂、水汽, 浓度低, 直接排放
+- BF 风机尾气: 含少量氨气, 经车间通风稀释
+- 臭氧设备尾气{% if workflow.skimmer.mode == "ozone" or workflow.aop.enabled %}: 残余臭氧需破坏(臭氧破坏器), 排放浓度 < 0.1 mg/m³{% endif %}
+@@END_LIST@@
+
+@@H3@@9.2.4 噪声
+
+@@LIST@@
+- 主循环泵房:约 80-85 dB(A)
+- 风机房:约 80-90 dB(A)
+- 制氧机/液氧汽化器:约 70-80 dB(A)
+@@END_LIST@@
+
+@@H2@@9.3 主要污染物排放标准
+
+本项目排放遵循以下标准:
+
+@@TABLE@@
+污染物类别|执行标准|主要指标限值
+水产养殖排水|GB 18596-2001 《海水养殖水排放要求》或地方标准|TSS ≤ 10 mg/L, COD ≤ 30 mg/L, NH₃-N ≤ 4 mg/L
+工业固废|GB 18599-2020 《一般工业固体废物贮存和填埋污染控制标准》|—
+噪声|GB 12348-2008 《工业企业厂界环境噪声排放标准》|2 类区昼间 60 dB(A), 夜间 50 dB(A)
+@@END_TABLE@@
+
+@@H2@@9.4 环境保护措施
+
+@@H3@@9.4.1 废水处理
+
+@@LIST@@
+- <strong>污水处理设施</strong>: 设置废水沉淀池 + 过滤 + 生物处理(MBR 或 SBR), 出水达 GB 18596-2001 排放标准
+- <strong>废水重复利用</strong>: 处理后达标的水可用于车间冲洗、绿化, 减少外排
+- <strong>污水雨水分流</strong>: 雨污分流, 雨水可直接排放, 污水经处理后再排
+- <strong>排放监测</strong>: 安装水质在线监测仪, 在线监测 COD、氨氮、TSS、流量
+@@END_LIST@@
+
+@@H3@@9.4.2 固废处理
+
+@@LIST@@
+- <strong>残饵粪便资源化</strong>: 浓缩后委外作有机肥原料, 实现资源化利用
+- <strong>死鱼无害化</strong>: 设置死鱼处理设施(深埋、焚烧或委外处理), 防止疾病传播
+- <strong>污泥脱水</strong>: 反硝化排泥经脱水后委外处理
+- <strong>办公生活垃圾</strong>: 分类收集, 委托环卫部门清运
+@@END_LIST@@
+
+@@H3@@9.4.3 噪声控制
+
+@@LIST@@
+- 泵房和风机房采用隔音墙、消音器, 厂界噪声控制在标准范围内
+- 设备底座加装减振垫, 降低固体传声
+- 噪声大的设备布置在车间内部, 避免靠近厂界
+@@END_LIST@@
+
+@@H3@@9.4.4 大气控制
+
+@@LIST@@
+- 臭氧设备配臭氧破坏器, 排放浓度 < 0.1 mg/m³
+- BF 风机尾气经车间通风稀释, 不会造成厂区氨气浓度超标
+- 应急发电机配尾气净化装置(如使用)
+@@END_LIST@@
+
+@@H2@@9.5 环境影响初步分析
+
+@@P@@基于上述污染源识别和环保措施, 本项目对环境的总体影响:
+
+@@LIST@@
+- <strong>水环境</strong>: 排放水量小, 经处理后达标排放, 对受纳水体影响微小
+- <strong>大气环境</strong>: 主要排放为低浓度 CO₂ 和水汽, 无 SO₂、NOₓ 等空气污染物排放
+- <strong>声环境</strong>: 经噪声控制措施后, 厂界噪声达标
+- <strong>生态环境</strong>: 项目封闭运行, 不直接接触自然水体生态系统; 节水节地, 对周边生态系统影响小
+- <strong>固废</strong>: 通过资源化和无害化处理, 不会造成二次污染
+@@END_LIST@@
+
+{% if farm.yieldTons > 2000 %}
+@@P@@<strong>注意</strong>: 本项目规模较大(年产 {{ farm.yieldTons }} 吨, 总投资 {{ capex.totalInvestment|wan }} 万元), 可能需要编制完整的环境影响评价报告书(而非环境影响报告表)。请业主与当地环保主管部门确认。
+{% else %}
+@@P@@<strong>初步结论</strong>: 本项目规模适中, 通过完善的环保设施和管理, 环境影响可控。建议下一步委托有资质机构开展正式环评, 出具环评报告或环评登记表。
+{% endif %}
+</script>
+<script type="text/njk-template" id="tpl-ch10">@@H1@@第 10 章 劳动安全卫生与消防
+
+@@H2@@10.1 危险源识别
+
+本项目主要危险源识别如下:
+
+@@H3@@10.1.1 化学品危险
+
+@@TABLE@@
+化学品|危险性|存储方式|应急措施
+液氧|强氧化剂, 助燃, 低温|3 t 立式真空保温储罐, 室外通风|防火、防油、防有机物接触
+{% if workflow.skimmer.mode == "ozone" or workflow.aop.enabled %}臭氧|强氧化剂, 有毒(8 ppm 致命)|现场制氧, 不储存; 配臭氧检测仪 + 破坏器|泄漏时撤离 + 通风
+{% endif %}{% if workflow.denitri.enabled %}甲醇|易燃, 有毒|防爆桶装, 通风库房|防火、防泄漏、防误饮
+{% endif %}NaHCO₃|腐蚀性中等(粉尘吸入有刺激)|干燥库房|戴口罩、护目镜
+有机酸 / 消毒剂|腐蚀性, 部分有毒|防腐蚀库房|戴防护手套
+@@END_TABLE@@
+
+@@H3@@10.1.2 电气危险
+
+@@LIST@@
+- 高压配电: 10 kV 进线 + 变压器, 电气作业须持证
+- 水泵风机: 接地保护、漏电保护
+- 潮湿环境: 养殖车间湿度大, 电气设备 IP 等级 ≥ IP54
+- 应急照明: 应急通道、配电房、控制室设应急照明
+@@END_LIST@@
+
+@@H3@@10.1.3 设备机械危险
+
+@@LIST@@
+- 转鼓微滤机: 转动部件, 防夹手
+- 鱼池: 高水位, 防溺水, 设防护栏
+- 水泵风机: 高速转动, 防卷入
+- 维修区域: 设安全标识、护栏、警示灯
+@@END_LIST@@
+
+@@H3@@10.1.4 生物危险
+
+@@LIST@@
+- 鱼类病原: 进出消毒, 防交叉污染
+- 死鱼处理: 戴手套, 防止刺伤
+- 操作人员: 持健康证, 定期体检, 防疾病传播
+@@END_LIST@@
+
+@@H2@@10.2 劳动安全措施
+
+@@H3@@10.2.1 安全管理体系
+
+@@LIST@@
+- 设立安全生产委员会, 总经理任主任
+- 配专职安全员(规模 > 100 人则专职 1 人, < 100 人可兼职)
+- 制订《安全生产责任制》《作业安全 SOP》《应急预案》
+- 班前安全教育、月度安全会议、季度应急演练
+- 持证上岗: 电工、压力容器(液氧)、特种作业人员持证
+@@END_LIST@@
+
+@@H3@@10.2.2 个人防护
+
+@@LIST@@
+- 工作服 + 防滑工作鞋(全员)
+- 安全帽(进入机房、维修区)
+- 护目镜 + 防腐蚀手套(化学品操作)
+- 防尘口罩(粉尘作业)
+- 救生衣 + 安全带(高位作业)
+@@END_LIST@@
+
+@@H3@@10.2.3 安全设施
+
+@@LIST@@
+- 警示标识、安全标语全覆盖
+- 紧急停机按钮(主要设备旁)
+- 紧急洗眼器、淋浴器(化学品操作区)
+- 救生圈、防护栏(鱼池周边)
+- 安全通道、紧急疏散标识
+@@END_LIST@@
+
+@@H2@@10.3 卫生措施
+
+@@H3@@10.3.1 工作环境卫生
+
+@@LIST@@
+- 车间通风换气 6-10 次/h, 控制氨气 < 5 ppm
+- 噪声控制: 操作区 < 85 dB(A), 办公区 < 60 dB(A)
+- 照明: 操作区 ≥ 200 lux, 办公区 ≥ 300 lux, 化验区 ≥ 500 lux
+- 温湿度: 办公区 18-26°C/40-70%RH, 化验区 22°C/50%RH
+@@END_LIST@@
+
+@@H3@@10.3.2 食品安全卫生
+
+@@LIST@@
+- 操作人员持健康证, 每年体检, 患传染病者不得上岗
+- 操作前消毒洗手, 进入车间换工作服 + 消毒鞋
+- 设置消毒池(进出车间)
+- 防虫鼠害: 出入口设防虫帘、防鼠板
+- 化验室: GMP 标准, 取样、分析全程记录
+@@END_LIST@@
+
+@@H3@@10.3.3 员工生活卫生
+
+@@LIST@@
+- 食堂: 满足《食品安全法》要求, 食材采购索证、留样
+- 宿舍: 通风、采光、热水、洗浴等基本设施
+- 医务室: 配急救药品、AED 体外除颤仪
+- 健康档案: 每位员工建立健康档案
+@@END_LIST@@
+
+@@H2@@10.4 消防设计
+
+@@H3@@10.4.1 消防设计依据
+
+@@LIST@@
+- 《建筑设计防火规范》(GB 50016-2014, 2018 年版)
+- 《建筑灭火器配置设计规范》(GB 50140-2005)
+- 《自动喷水灭火系统设计规范》(GB 50084-2017)
+- 《火灾自动报警系统设计规范》(GB 50116-2013)
+- 当地消防主管部门具体要求
+@@END_LIST@@
+
+@@H3@@10.4.2 火灾危险性分类
+
+@@TABLE@@
+建筑物|火灾危险性|耐火等级
+养殖主车间|戊类|二级
+水处理机房|戊类|二级
+液氧站|甲类(强氧化剂)|二级
+柴油发电机房|丁类|二级
+办公楼|民用|二级
+仓库(化学品)|丙类|二级
+@@END_TABLE@@
+
+@@H3@@10.4.3 消防设施
+
+@@LIST@@
+- <strong>消防水源</strong>: 室外消防栓 + 自建消防水池(储水量符合 GB 50016 要求)
+- <strong>室内消火栓</strong>: 主要建筑物按规范设置
+- <strong>自动喷水灭火</strong>: 配电房、化验室、办公楼设置
+- <strong>气体灭火</strong>: 配电房、PLC 室设置七氟丙烷或 IG541 气体灭火系统
+- <strong>灭火器</strong>: 各场所按规范配置(干粉、CO₂、ABC 类等)
+- <strong>火灾报警</strong>: 全厂火灾自动报警系统(感烟、感温、手报)
+- <strong>应急照明 + 疏散标识</strong>: 主要通道、安全出口
+@@END_LIST@@
+
+@@H3@@10.4.4 液氧站消防特殊要求
+
+@@LIST@@
+- 液氧储罐周围 5 m 内不得有可燃物、油脂、有机物
+- 设独立防火堤, 隔离非氧气区
+- 配警示标识"严禁烟火"、"防油防有机物"
+- 操作平台、阀门防腐防油处理
+- 储罐设安全阀、压力表、温度计、爆破片
+- 雷电保护: 储罐接地、避雷针保护
+@@END_LIST@@
+
+@@H2@@10.5 应急预案
+
+@@H3@@10.5.1 应急组织机构
+
+@@LIST@@
+- 设应急指挥小组: 总经理任组长, 各部门负责人为成员
+- 应急救援队伍: 包括灭火队、抢险队、医疗队、警戒队
+- 24×7 值班制度: 安全员、技术员轮流值班
+@@END_LIST@@
+
+@@H3@@10.5.2 主要应急预案
+
+@@TABLE@@
+事故类型|主要应急措施
+火灾|疏散人员 → 报警(119)→ 启动消防设施 → 切断电源/气源 → 灭火
+液氧泄漏|停止作业 → 疏散人员 → 通风 → 关闭阀门 → 报警(若大量泄漏)
+{% if workflow.skimmer.mode == "ozone" or workflow.aop.enabled %}臭氧泄漏|戴防毒面具 → 疏散 → 通风 → 关闭臭氧设备 → 启用臭氧破坏器
+{% endif %}停电|启动柴油发电机 → 检查关键设备运行 → 联系供电公司
+设备故障(主泵/风机)|切换备用机 → 维修 → 报警(若涉及生物安全)
+水质失控(DO 暴跌, TAN 暴涨)|加大液氧供给/换水 → 报警 → 排查原因
+火灾事故|按消防应急预案处置
+人员伤害|急救 → 送医 → 上报
+@@END_TABLE@@
+
+@@H3@@10.5.3 演练与培训
+
+@@LIST@@
+- 全员安全培训: 每年 ≥ 24 小时(含新员工 ≥ 72 小时)
+- 应急演练: 每季度 ≥ 1 次, 包括火灾、液氧泄漏、停电、生物安全等
+- 持证作业: 电工、特种作业人员持证, 年度复审
+- 安全检查: 每月安全检查, 发现隐患及时整改
+@@END_LIST@@
+
+@@P@@<strong>注意</strong>: 本章为可研阶段的初步安全设计, 不能替代正式的安全评价(安评)和职业卫生评价。建议项目立项后委托具有相应资质的机构开展专项安评和职业卫生评价。
+</script>
+<script type="text/njk-template" id="tpl-ch11">@@H1@@第 11 章 项目实施与组织机构
+
+@@H2@@11.1 项目实施进度
+
+@@H3@@11.1.1 总体进度安排
+
+本项目建设期 {{ finance.params.buildYears|round(1) }} 年, 投产爬坡期 2 年, 第 3 年起达到设计满产。总体进度安排:
+
+@@TABLE@@
+阶段|起止时间|主要工作内容|工期(月)
+T1: 前期准备|开工前 6 个月|可研立项、土地审批、环评、规划许可|6
+T2: 设计与采购|建设第 1-3 个月|施工图设计、设备公开招标、合同签约|3
+T3: 土建施工|建设第 3-9 个月|车间主体、机房、办公区土建|6
+T4: 设备安装|建设第 6-10 个月|设备到货、安装、管路连接|4
+T5: 联调与调试|建设第 10-12 个月|系统联调、培菌、试运行|3
+T6: 投产爬坡|投产第 1-2 年|逐步加负荷, 第 1 年达 {{ (finance.params.ramp1*100)|round(0) }}%, 第 2 年达 {{ (finance.params.ramp2*100)|round(0) }}%|24
+T7: 满产运营|投产第 3 年起|满产稳产 {{ (finance.params.ramp3*100)|round(0) }}%|—
+@@END_TABLE@@
+
+@@H3@@11.1.2 关键里程碑
+
+@@LIST@@
+- <strong>立项批复</strong>: 完成可研、立项、土地审批等前期手续, 取得开工许可
+- <strong>开工动员</strong>: 设计图纸完成、设备主合同签约、土建动工
+- <strong>设备到场</strong>: 主要工艺设备完成 80% 到货
+- <strong>主体工程完工</strong>: 土建主体 + 设备安装基本完成
+- <strong>系统联调</strong>: 水路、电路、自控全联通, 单机调试和联动测试通过
+- <strong>BF 培菌成功</strong>: 硝化菌群成熟, 可以投鱼
+- <strong>首批投鱼</strong>: 苗种期模块开始投鱼
+- <strong>项目验收</strong>: 试运行 6 个月, 各项指标稳定达标后正式验收
+@@END_LIST@@
+
+@@H2@@11.2 实施步骤
+
+@@H3@@11.2.1 项目管理团队组建
+
+@@P@@项目应在开工前 3-6 个月组建项目部, 配备项目经理、技术负责人、施工负责人、采购负责人、质量监控负责人等岗位。建议聘请有 RAS 项目实施经验的咨询/总包方提供专业支持。
+
+@@H3@@11.2.2 招标采购
+
+@@LIST@@
+- <strong>主设备公开招标</strong>: 微滤机、UV、增氧、生物滤池等主要工艺设备, 公开招标采购
+- <strong>仪表自控竞争性谈判</strong>: 在线水质仪、PLC、SCADA 系统
+- <strong>土建施工总包</strong>: 公开招标 EPC 或 PC 总包, 不分项分包
+- <strong>液氧供应签长期供货协议</strong>: 锁定价格和供应稳定性
+@@END_LIST@@
+
+@@H3@@11.2.3 建设期质量管控
+
+@@LIST@@
+- 监理单位全程驻场, 关键工序旁站监督
+- 隐蔽工程(地下管路、防水)分段验收, 严格留档
+- 设备到货验收(开箱、铭牌核对、附件清点、性能测试)
+- 单机调试 → 联动调试 → 满负荷试运行三阶段验收
+@@END_LIST@@
+
+@@H2@@11.3 组织机构与人员配置
+
+@@H3@@11.3.1 组织机构
+
+{% if farm.yieldTons < 500 %}
+@@P@@本项目规模较小, 拟采用简化组织架构:
+@@LIST@@
+- 总经理(1 人)
+- 生产部(养殖技术员 + 操作工 5-8 人)
+- 技术与设备部(2-3 人)
+- 销售与办公(2-3 人)
+@@END_LIST@@
+{% elif farm.yieldTons < 2000 %}
+@@P@@本项目规模适中, 拟采用标准 RAS 工厂组织架构:
+@@LIST@@
+- 总经理(1 人)
+- 副总经理 / 厂长(1-2 人)
+- 生产部:养殖技术主管 + 各阶段技术员 + 操作工(共 10-20 人)
+- 技术装备部:工艺工程师 + 自控/水处理工程师 + 维修工(共 4-6 人)
+- 质量与生物安全部(2-3 人)
+- 销售与市场部(3-5 人)
+- 财务与行政部(3-5 人)
+@@END_LIST@@
+{% else %}
+@@P@@本项目规模较大, 采用完整工厂组织架构:
+@@LIST@@
+- 总经理 + 副总经理(2-3 人)
+- 生产部(技术主管 + 班组长 + 操作工, 共 30-50 人)
+- 技术装备部(工艺、自控、水处理工程师 + 维修工, 共 8-12 人)
+- 质量与生物安全部(4-6 人)
+- 采购部(2-3 人)
+- 销售与市场部(5-8 人)
+- 财务与行政部(5-8 人)
+@@END_LIST@@
+{% endif %}
+
+@@H3@@11.3.2 人员配置数量
+
+@@P@@本项目预计总用工人数约 {{ ((finance.params.laborCost / 50000)|round(0)) if finance.params.laborCost else '—' }} 人(按人均年工资 5 万元估算, 总人工成本 {{ (finance.params.laborCost/10000)|round(0) if finance.params.laborCost else '—' }} 万元/年)。其中:
+
+@@LIST@@
+- 一线生产岗位:占 60-70%
+- 技术与设备岗位:占 15-20%
+- 管理与支持岗位:占 15-20%
+@@END_LIST@@
+
+@@H2@@11.4 培训计划
+
+@@H3@@11.4.1 入职培训
+
+@@LIST@@
+- 公司制度、安全规范、生物安全 SOP(2-3 天)
+- RAS 工艺基础原理与设备认知(3-5 天)
+- 操作 SOP(分岗位培训, 1-2 周)
+- 应急预案演练(每月 1 次)
+@@END_LIST@@
+
+@@H3@@11.4.2 关键岗位培训
+
+@@LIST@@
+- 养殖技术员:鱼类生物学、水质管理、疾病防治(2-3 个月)
+- 工艺工程师:RAS 工艺原理、关键设备维护、故障诊断(2-3 个月)
+- 自控工程师:PLC 编程、SCADA 操作、传感器校准(2-3 个月)
+- 维修工:水泵风机维修、管阀维护、电气维修(1-2 个月)
+@@END_LIST@@
+
+@@P@@<strong>建议</strong>: 关键技术岗位优先从国内成熟 RAS 企业(挪威 AKVA 中国、莱州东方海洋等)引进 1-2 名经验骨干, 带领团队建立操作 SOP 和应急预案。
+
+@@H2@@11.5 招标方案
+
+@@TABLE@@
+招标包|内容|招标方式|预计金额(万元)
+1. 工艺主设备|微滤机、UV、CO₂ 脱气、增氧、生物滤池|公开招标|约 {{ (capex.equipDirect * 0.6 / 10000)|round(0) }}
+2. 水泵风机|主泵、旁路泵、罗茨风机|公开招标|约 {{ (capex.equipDirect * 0.2 / 10000)|round(0) }}
+3. 鱼池|玻璃钢/HDPE 鱼池|公开招标|约 {{ (capex.equipDirect * 0.1 / 10000)|round(0) }}
+4. 仪表自控|在线水质仪、PLC、SCADA|竞争性谈判|约 {{ (capex.equipDirect * 0.1 / 10000)|round(0) }}
+5. 土建总包|车间、机房、办公区|公开招标|约 {{ (capex.civilEtc * 0.5 / 10000)|round(0) }}
+6. 安装工程|管路、电气、设备安装|公开招标|约 {{ (capex.civilEtc * 0.3 / 10000)|round(0) }}
+7. 监理|建设期监理|公开招标|约 {{ (capex.civilEtc * 0.05 / 10000)|round(0) }}
+@@END_TABLE@@
+
+@@P@@总招标预计金额约 {{ ((capex.equipDirect + capex.civilEtc) / 10000)|round(0) }} 万元, 占总投资 {{ ((capex.equipDirect + capex.civilEtc) / capex.totalInvestment * 100)|round(0) }}%。
+</script>
+<script type="text/njk-template" id="tpl-ch12">@@H1@@第 12 章 投资估算与资金筹措
+
+@@H2@@12.1 投资估算编制依据
+
+本项目投资估算编制依据:
+
+@@LIST@@
+- 《建设项目经济评价方法与参数(第三版)》(国家发展改革委、住房和城乡建设部, 2006)
+- 《建设项目投资估算编审规程》(中价协 [2015] 35 号)
+- 现行国家及地方设备价格信息和取费标准
+- 类似 RAS 项目造价数据(国内莱州、舟山、福建等地工厂化养殖项目)
+- 设备厂家询价资料(2026 年价格水平)
+@@END_LIST@@
+
+@@H2@@12.2 投资估算
+
+本项目总投资估算 <strong>{{ capex.totalInvestment|wan }} 万元</strong>, 其中工程总投资(固定资产)<strong>{{ capex.fixedAsset|wan }} 万元</strong>, 流动资金 <strong>{{ capex.workingCapital|wan }} 万元</strong>。
+
+@@H3@@12.2.1 投资估算总表
+
+@@TABLE@@
+项目|金额(万元)|占总投资比例
+1. 设备购置费|{{ capex.equipDirect|wan }}|{{ ((capex.equipDirect/capex.totalInvestment)*100)|round(1) }}%
+2. 土建/安装/电气/自控/设计|{{ capex.civilEtc|wan }}|{{ ((capex.civilEtc/capex.totalInvestment)*100)|round(1) }}%
+@@SUBTOTAL@@3. 工程总投资(固定资产)|{{ capex.fixedAsset|wan }}|{{ ((capex.fixedAsset/capex.totalInvestment)*100)|round(1) }}%
+4. 流动资金({{ (finance.params.workingCap*100)|round(0) }}% × 年 OPEX)|{{ capex.workingCapital|wan }}|{{ ((capex.workingCapital/capex.totalInvestment)*100)|round(1) }}%
+@@SUBTOTAL@@5. 项目总投资|{{ capex.totalInvestment|wan }}|100.0%
+@@END_TABLE@@
+
+@@H3@@12.2.2 投资估算说明
+
+@@P@@本项目设备直购成本 {{ capex.equipDirect|wan }} 万元为 iRAS 平台基于工艺方案自动估算, 综合参考国内 RAS 项目历史造价、主流厂家询价、规模缩放系数等多重因素。
+
+@@P@@土建/安装/电气/自控/设计费用 {{ capex.civilEtc|wan }} 万元, 按设备直购费用的约 {{ ((capex.civilEtc/capex.equipDirect)|round(2)) }} 倍倍数计算, 涵盖以下内容:
+
+@@LIST@@
+- 管道阀件(占设备直购的 15-20%)
+- 电气系统(配电柜、电缆、照明等, 占 10-15%)
+- 自动化控制系统(PLC、SCADA、传感器等, 占 5-10%)
+- 安装调试(占 10-15%)
+- 土建厂房(车间、机房、办公室等, 占 30-40%)
+- 设计监理咨询(占 5-8%)
+@@END_LIST@@
+
+@@P@@流动资金按满产年 OPEX 的 {{ (finance.params.workingCap*100)|round(0) }}% 计列, 用于运营期初期的饲料、苗种、人工、能源等周转。流动资金在项目末年(第 {{ finance.params.years }} 年)回收。
+
+@@P@@<strong>投资估算精度</strong>: 本估算基于工程概算阶段, 精度约 ±40%。最终投资以正式工程招标合同为准。
+
+@@H2@@12.3 资金筹措
+
+本项目总投资 {{ capex.totalInvestment|wan }} 万元, 拟采用以下资金来源:
+
+@@TABLE@@
+资金来源|金额(万元)|占比
+自有资金 (固资 + 全部流动资金)|{{ (capex.ownEquity/10000)|round(1) }}|{{ ((capex.ownEquity/capex.totalInvestment)*100)|round(1) }}%
+银行贷款 (固资 {{ ((1-finance.params.ownPct)*100)|round(0) }}%)|{{ (capex.loan/10000)|round(1) }}|{{ ((capex.loan/capex.totalInvestment)*100)|round(1) }}%
+@@SUBTOTAL@@合计|{{ capex.totalInvestment|wan }}|100%
+@@END_TABLE@@
+
+@@P@@<strong>自有资金</strong>: 来自业主自筹, 主要用于建设期初期投入, 满足项目启动所需。
+
+{% if finance.params.ownPct < 1.0 %}
+@@P@@<strong>银行贷款</strong>: 拟向商业银行申请固定资产投资贷款, 贷款金额约 {{ (capex.loan/10000)|round(1) }} 万元 (覆盖固定资产的 {{ ((1-finance.params.ownPct)*100)|round(0) }}%, 流动资金 {{ (capex.workingCapital/10000)|round(1) }} 万元由项目主体自筹), 贷款利率 {{ (finance.params.loanRate*100)|round(1) }}%(年化), 贷款期 {{ finance.params.loanYears }} 年, 还款方式为{% if finance.params.loanMethod == 'equal_payment' %}等额本息{% else %}等额本金{% endif %}, 自项目投产年(第 1 年)开始还款。
+{% else %}
+@@P@@本项目采用 100% 自有资金筹建, 无银行贷款, 因此无利息支出和还款压力, 财务风险最低。
+{% endif %}
+
+@@H2@@12.4 还款计划
+
+{% if finance.params.ownPct < 1.0 %}
+按上述贷款条件, 还款计划如下(各年利息和本金):
+
+@@TABLE@@
+年份|偿还利息(万元)|偿还本金(万元)|当年还款合计|剩余本金
+{% for s in finance.tables.cashflowTotal %}{% if s.year >= 1 and s.year <= finance.params.loanYears and s.interest > 0 %}第 {{ s.year }} 年|{{ s.interest|wan }}|{{ s.loanPrincipalRepay|wan }}|{{ (s.interest + s.loanPrincipalRepay)|wan }}|—
+{% endif %}{% endfor %}@@END_TABLE@@
+
+@@P@@贷款总利息约 {{ ((capex.loan * finance.params.loanRate * finance.params.loanYears / 2)/10000)|round(0) }} 万元(估算), 占贷款本金的 {{ ((finance.params.loanRate * finance.params.loanYears / 2)*100)|round(0) }}% 左右(随还款方式略有不同)。
+{% else %}
+@@P@@本项目无银行贷款, 不涉及还款计划。
+{% endif %}
+
+@@H2@@12.5 投资使用计划
+
+本项目按建设期 {{ finance.params.buildYears }} 年安排投资使用:
+
+@@TABLE@@
+阶段|时间|资金需求|主要用途
+建设期前期|开工前 3 个月|约 30%|设计、监理、设备订货首付、土建启动
+建设期中期|建设第 4-9 个月|约 50%|设备到货、安装调试、土建主体
+建设期后期|建设第 10-12 个月|约 20%|联动调试、培菌、试运行
+投产第 1 年|投产首年|流动资金 {{ capex.workingCapital|wan }} 万元|苗种、饲料、人工、能源等周转
+@@END_TABLE@@
+
+@@P@@项目采用<strong>分批支付</strong>模式, 与设备厂家签订合同时按"30% 预付 + 50% 到货 + 15% 调试 + 5% 质保期"分期付款, 降低资金压力风险。
+
+@@P@@项目建成投产后, 第 1 年达产 {{ (finance.params.ramp1*100)|round(0) }}%, 第 2 年达产 {{ (finance.params.ramp2*100)|round(0) }}%, 第 3 年起达产 {{ (finance.params.ramp3*100)|round(0) }}%。详细财务评价见第 13 章。
+</script>
+<script type="text/njk-template" id="tpl-ch14">@@H1@@第 14 章 国民经济评价 / 社会效益评价
+
+@@H2@@14.1 评价方法说明
+
+@@P@@国民经济评价(Economic Analysis)是从国家(社会)整体角度评估项目的资源配置效率, 区别于第 13 章的财务评价(从企业角度)。完整的国民经济评价需要采用<strong>影子价格</strong>(社会机会成本)对项目投入产出重新计价, 计算经济内部收益率(EIRR)和经济净现值(ENPV)。
+
+@@P@@考虑到本项目为一般工商业项目, 不涉及大型公益基础设施, 本章采用<strong>社会效益定性评价</strong>方法, 重点分析项目对国家、地方、社会的综合贡献, 包括就业、税收、产业带动、食品安全等。
+
+@@H2@@14.2 项目带动就业
+
+@@P@@项目正常运营后, 直接就业岗位约 {{ ((finance.params.laborCost / 50000)|round(0)) if finance.params.laborCost else 20 }} 人(按人均年工资 5 万元估算)。
+
+@@P@@同时, 项目通过上下游产业链拉动间接就业, 估算如下:
+
+@@TABLE@@
+带动方向|估算人数|说明
+直接就业|{{ ((finance.params.laborCost / 50000)|round(0)) if finance.params.laborCost else 20 }} 人|本场养殖、技术、管理人员
+饲料供应链|约 5-10 人|本场年饲料需求约 {{ (farm.totalFeedDaily * 365 / 1000)|round(0) }} 吨/年
+设备维护与配件|约 3-5 人|设备年维修保养
+物流与配送|约 5-10 人|活鲜配送、原料运输
+销售与下游加工|约 10-15 人|商超对接、批发、电商等
+其他相关服务|约 5-10 人|包装、生物安全、咨询等
+@@SUBTOTAL@@合计带动就业|约 {{ (((finance.params.laborCost / 50000) + 30)|round(0)) if finance.params.laborCost else 50 }} 人|直接 + 间接合计
+@@END_TABLE@@
+
+@@H2@@14.3 项目税收贡献
+
+@@P@@项目正常运营后, 主要税收贡献:
+
+@@TABLE@@
+税种|年贡献金额(估算)|说明
+企业所得税|约 {{ (finance.tables.profitLoss.y3.tax / 10000)|round(0) }} 万元/年|按满产年净利润 {{ finance.tables.profitLoss.y3.profitNet|wan }} 万元 × 25% 估算{% if finance.tables.profitLoss.y3.tax == 0 %}(本项目可申请农业初级生产免税){% endif %}
+增值税及附加|0(农业初级产品免征)|按现行税法, 农业初级生产免征
+土地使用税|项目投资规模相关|按地方标准
+个人所得税|约 {{ ((finance.params.laborCost * 0.05)/10000)|round(1) if finance.params.laborCost else '—' }} 万元/年|员工个税(按人均 5% 估算)
+社保公积金|约 {{ ((finance.params.laborCost * 0.30)/10000)|round(1) if finance.params.laborCost else '—' }} 万元/年|按人工成本 30% 估算
+@@END_TABLE@@
+
+@@P@@<strong>注意</strong>: 农业初级生产可享受多项税收优惠, 包括农产品免征增值税、初创农业企业可享受所得税三免三减半等。具体税收减免请咨询当地税务部门。
+
+@@H2@@14.4 项目对地方经济的拉动
+
+@@P@@本项目年销售收入约 {{ ((farm.yieldTons * 1000 * finance.params.price)/10000)|round(0) }} 万元(满产年), 对地方经济的拉动主要体现在:
+
+@@LIST@@
+- <strong>GDP 贡献</strong>: 满产年贡献增加值约 {{ (finance.tables.profitLoss.y3.profitNet/10000 + (finance.params.laborCost or 0)/10000 + finance.tables.totalCost.dep/10000)|round(0) }} 万元
+- <strong>规模农业示范</strong>: 作为本地区现代渔业代表项目, 起到示范带动作用
+- <strong>带动相关产业</strong>: 饲料厂、物流、设备厂、加工厂等本地化布局
+- <strong>财政税收</strong>: 直接和间接税收贡献增强地方财政
+- <strong>区域品牌</strong>: 提升本地区"现代渔业"产业品牌, 吸引更多产业链企业入驻
+@@END_LIST@@
+
+@@H2@@14.5 项目带动产业链发展
+
+{% if farm.species == "salmon" %}
+@@P@@三文鱼产业链涵盖鱼苗繁育、配合饲料、增氧/水处理设备、活鲜物流、深加工、终端销售等多个环节。本项目作为国内 RAS 三文鱼项目, 有助于:
+
+@@LIST@@
+- 推动国内三文鱼苗种繁育技术发展(目前国内仍依赖进口苗或本地小规模孵化)
+- 带动国内 RAS 装备产业升级(国产化替代进口)
+- 减少进口依赖, 优化国家食品供应结构
+- 形成可复制的产业模板, 推动国内 RAS 三文鱼产业整体发展
+@@END_LIST@@
+
+{% elif farm.species in ["turbot", "grouper", "perch", "mandarin", "shrimp"] %}
+@@P@@本项目作为 {{ farm.speciesName }} 工厂化养殖代表项目, 推动本品种养殖业从传统粗放型向现代设施化转型, 带动:
+
+@@LIST@@
+- 苗种繁育技术升级
+- 配合饲料工艺改进
+- 国产 RAS 装备应用
+- 工厂化养殖技术标准化
+- 高品质水产品消费市场培育
+@@END_LIST@@
+
+{% else %}
+@@P@@本项目带动相关产业链发展, 包括苗种、饲料、装备、物流、销售等环节, 形成集约化产业集群效应。
+{% endif %}
+
+@@H2@@14.6 项目对食品安全保障的贡献
+
+@@P@@本项目采用 RAS 工厂化养殖, 在食品安全保障方面的优势:
+
+@@LIST@@
+- <strong>全程可追溯</strong>: 每批次鱼苗、饲料、用药、出鱼信息完整记录, 出现问题可快速回溯
+- <strong>抗生素低使用</strong>: RAS 封闭防病, 抗生素使用量比传统养殖低 80% 以上
+- <strong>无重金属和环境污染</strong>: 不接触自然水体, 重金属、有机污染物风险极低
+- <strong>无寄生虫</strong>: 海水养殖无海虱, 淡水无锚头蚤等
+- <strong>新鲜度优势</strong>: 本地化生产, 大幅缩短运输距离, 鱼货更新鲜
+@@END_LIST@@
+
+@@H2@@14.7 评价结论
+
+{% if finance.indicators.irrTotal >= finance.params.discount %}
+@@P@@本项目从社会效益角度具有显著正面价值: <strong>就业带动良好、税收贡献稳定、产业链拉动明显、食品安全保障提升</strong>。综合财务可行性(IRR {{ (finance.indicators.irrTotal*100)|round(2) }}%, 高于基准折现率 {{ (finance.params.discount*100)|round(1) }}%) 和社会效益, 本项目<strong>具有综合可行性</strong>, 值得推进实施。
+{% else %}
+@@P@@本项目从社会效益角度具有正面价值, 但财务指标不足。建议结合社会效益和当地产业政策, 申请政府专项补贴或低息贷款, 提升项目综合财务可行性后再推进。
+{% endif %}
+</script>
+<script type="text/njk-template" id="tpl-ch15">@@H1@@第 15 章 风险分析
+
+@@H2@@15.1 风险识别
+
+本项目主要风险识别如下, 按风险类别分为市场、技术、财务、政策四大类:
+
+@@H3@@15.1.1 市场风险
+
+@@LIST@@
+- <strong>售价波动风险</strong>: {{ farm.speciesName }} 市场价格受供需、进口、汇率等多因素影响, 可能出现 ±20-30% 的年度波动。售价是本项目最敏感因子, 直接影响财务可行性
+- <strong>需求变化风险</strong>: 消费偏好变化、替代品冲击(如其他鱼种、植物蛋白)可能影响销量
+- <strong>销售渠道风险</strong>: 没有锁定下游核心客户, 可能出现产品销售不畅、积压损失
+- <strong>竞争风险</strong>: 同类 RAS 项目可能在 2-3 年内陆续投产, 区域市场竞争加剧
+@@END_LIST@@
+
+@@H3@@15.1.2 技术风险
+
+@@LIST@@
+- <strong>BF 启动失败风险</strong>: 生物滤池培菌期 4-8 周, 急于满负荷投鱼会导致 TAN 暴涨, 大量死鱼
+- <strong>生物安全风险</strong>: 病原体一旦进入循环水, 传播极快, 可能导致整个模块或全场损失
+- <strong>设备故障风险</strong>: 主泵、风机、液氧供应等关键系统故障可能导致 DO 跌至致死阈值
+- <strong>水质失控风险</strong>: 操作不当(过量投喂、忽视换水)可能导致 NO₃ 累积、pH 下降、亚硝酸盐升高
+- <strong>停电风险</strong>: 突然停电 30 分钟以内即可能造成大量死亡, 应急电源至关重要
+@@END_LIST@@
+
+@@H3@@15.1.3 财务风险
+
+@@LIST@@
+- <strong>投资超支风险</strong>: 工程建设期实际投资可能比估算高 ±40%, 需预留 10-15% 不可预见费
+- <strong>建设期延误风险</strong>: 设备到货延迟、土建延期等可能延长建设期, 增加财务成本
+- <strong>利率波动风险</strong>: 贷款利率上调可能增加财务费用
+- <strong>汇率风险</strong>: {% if farm.species == "salmon" %}进口苗种和部分进口设备可能受汇率波动影响{% else %}部分进口设备可能受汇率波动影响{% endif %}
+- <strong>资金链断裂风险</strong>: 自有资金不足、贷款不到位可能导致建设停工
+@@END_LIST@@
+
+@@H3@@15.1.4 政策风险
+
+@@LIST@@
+- <strong>环保政策收紧风险</strong>: 排放标准提升可能要求新增污水处理投资
+- <strong>土地政策风险</strong>: 用地性质、规划变更可能影响项目持续运营
+- <strong>食品安全监管风险</strong>: 抗生素、用药管理日益严格, 不达标可能影响销售
+- <strong>贸易政策风险</strong>: 出口型项目受国际贸易政策影响(如关税、配额)
+@@END_LIST@@
+
+@@H2@@15.2 敏感性分析
+
+第 13 章已对项目主要不确定性因子进行了 ±20% 的敏感性分析, 结果如下(按 IRR 摆动从大到小排序):
+
+@@TABLE@@
+敏感因子|低值 IRR|基准 IRR|高值 IRR|IRR 摆动
+{% for f in finance.tables.sensitivity %}{{ f.label }}|{{ (f.irrLow*100)|round(1) }}%|{{ (finance.indicators.irrTotal*100)|round(1) }}%|{{ (f.irrHigh*100)|round(1) }}%|{{ (f.irrSwing*100)|round(1) }}%
+{% endfor %}@@END_TABLE@@
+
+{% set top1 = finance.tables.sensitivity[0] %}
+@@P@@<strong>关键发现</strong>: 项目对 {{ top1.label }} 最敏感(IRR 摆动 {{ (top1.irrSwing*100)|round(1) }}%){% if '售价' in top1.label %}, 这意味着市场销售保障是项目成败关键{% elif 'CAPEX' in top1.label %}, 这意味着建设期投资管控是项目执行关键{% endif %}。
+
+@@H2@@15.3 风险应对措施
+
+@@H3@@15.3.1 市场风险应对
+
+@@LIST@@
+- 项目实施前与下游核心客户(超市连锁、餐饮集团、出口商)签订 3-5 年长期供货协议, 锁定 60-70% 满产产能
+- 探索品牌建设、有机认证、地理标志, 提升产品溢价
+- 考虑产品多元化(鲜活 + 冰鲜 + 切片 + 即食)分散单一渠道风险
+- 留意国内外市场动向, 必要时调整销售策略
+@@END_LIST@@
+
+@@H3@@15.3.2 技术风险应对
+
+@@LIST@@
+- 严守 BF 启动节奏(4-8 周培菌 + 12 周渐进加负荷), 不急于满负荷
+- 建立完整生物安全 SOP(进水消毒、人员消毒、工具不混用、新苗隔离)
+- 关键设备 N+1 备用 + 自动切换 + 人工巡检 + 远程监控
+- 配应急发电机(全场 100% 负荷 + 30 秒自启动)
+- 建立 24×7 监测系统(DO、TAN、温度、pH、流量在线监测 + 报警)
+- 引进 1-2 名 RAS 经验技术骨干 + 系统化培训新员工
+@@END_LIST@@
+
+@@H3@@15.3.3 财务风险应对
+
+@@LIST@@
+- 投资估算预留 10-15% 不可预见费
+- 设备分批到货, 与厂家签订严格的违约责任条款
+- 主合同采用固定价格(不漂浮), 锁定建设期成本
+- 考虑利率掉期或固定利率贷款规避利率风险
+- 流动资金充足(建议 6-12 个月运营资金), 不应零库存运营
+@@END_LIST@@
+
+@@H3@@15.3.4 政策风险应对
+
+@@LIST@@
+- 项目设计预留环保升级空间(场地、管路接口预留)
+- 严格按照食品安全国家标准生产, 主动通过 ISO 22000、HACCP 等认证
+- 用地手续合法合规, 避免政策变更风险
+- 关注行业政策动向, 及时申请国家和地方专项补贴
+@@END_LIST@@
+
+@@H2@@15.4 风险等级综合评估
+
+@@TABLE@@
+风险类别|风险等级|主要风险点|应对措施
+市场风险|<strong>高</strong>|售价波动|长期合同 + 品牌建设
+技术风险|<strong>中</strong>|BF 启动 + 生物安全|SOP + N+1 备用 + 应急
+财务风险|<strong>中</strong>|投资超支 + 建设延期|预留不可预见费 + 严格管控
+政策风险|<strong>低</strong>|环保收紧|预留升级空间
+@@END_TABLE@@
+
+{% if finance.indicators.irrTotal >= finance.params.discount + 0.04 %}
+@@P@@<strong>综合评估</strong>: 本项目 IRR {{ (finance.indicators.irrTotal*100)|round(2) }}% 显著高于基准折现率 {{ (finance.params.discount*100)|round(1) }}% (差 {{ ((finance.indicators.irrTotal - finance.params.discount)*100)|round(2) }}%), 抗风险能力较强, 项目即使遇到中等不利情况仍能维持财务可行性。
+{% elif finance.indicators.irrTotal >= finance.params.discount %}
+@@P@@<strong>综合评估</strong>: 本项目 IRR {{ (finance.indicators.irrTotal*100)|round(2) }}% 略高于基准折现率 {{ (finance.params.discount*100)|round(1) }}% (差 {{ ((finance.indicators.irrTotal - finance.params.discount)*100)|round(2) }}%), 抗风险能力一般, 应严格落实风险应对措施, 否则项目可能因不利因素跌破基准。
+{% else %}
+@@P@@<strong>综合评估</strong>: 本项目 IRR {{ (finance.indicators.irrTotal*100)|round(2) }}% 低于基准折现率 {{ (finance.params.discount*100)|round(1) }}%, 已不满足财务基准要求。建议优化方案后再考虑实施。
+{% endif %}
+
+@@P@@关键风险管控建议见第 16 章结论与建议。
+</script>
+<script type="text/njk-template" id="tpl-ch16">@@H1@@第 16 章 结论与建议
+
+@@H2@@16.1 项目可行性结论
+
+@@H3@@16.1.1 工艺技术上可行性
+
+@@P@@本项目采用循环水养殖(RAS)工艺, 该工艺在挪威、丹麦、苏格兰等国家已有 20+ 年的工业应用历史, 国内莱州、舟山、福建等地也已有大量成熟项目实施。本项目工艺路线为主流串联+旁路并联混合架构, 配置 {{ farm.totalSubSystems }} 套独立循环模块和 N+1 备用设备, 关键工艺参数(物料平衡、设备选型、热平衡)严格按照国际公开文献和工业实测数据校准。
+
+@@P@@<strong>结论: 工艺技术上完全可行</strong>。
+
+@@H3@@16.1.2 经济财务上可行性
+
+@@P@@本项目财务评价主要指标:
+
+@@TABLE@@
+指标|数值|基准|结论
+全投资 IRR(税后)|{{ (finance.indicators.irrTotal*100)|round(2) }}%|≥ {{ (finance.params.discount*100)|round(1) }}%|{{ '满足' if finance.indicators.irrTotal >= finance.params.discount else '不满足' }}
+自有资金 IRR|{{ (finance.indicators.irrEquity*100)|round(2) }}%|—|—
+全投资 NPV|{{ finance.indicators.npvTotal|wan }} 万元|≥ 0|{{ '满足' if finance.indicators.npvTotal >= 0 else '不满足' }}
+静态投资回收期|{{ finance.indicators.paybackTotal|round(2) }} 年|≤ 8 年|{{ '满足' if finance.indicators.paybackTotal <= 8 else '需关注' }}
+盈亏平衡点|{{ finance.indicators.bepPct|round(1) }}% 满产|≤ 75%|{{ '安全裕度大' if finance.indicators.bepPct < 75 else '需关注' }}
+@@END_TABLE@@
+
+{% if finance.indicators.irrTotal >= finance.params.discount and finance.indicators.npvTotal >= 0 %}
+@@P@@<strong>结论: 经济财务上可行</strong>。本项目盈利能力较好, 投资回收期合理, 抗风险能力强, 满足基准收益率要求。
+{% else %}
+@@P@@<strong>结论: 经济财务上财务可行性不足</strong>。建议优化售价、投资规模或运营成本后重新评估。
+{% endif %}
+
+@@H3@@16.1.3 社会环境上可行性
+
+@@P@@本项目通过封闭循环水养殖, 实现 85-95% 水循环利用, 用水量仅为传统流水养殖的 5-10%, 显著减少对天然水资源的消耗。废水集中处理后达标排放, 几乎无面源污染, 符合"绿色发展、高质量发展"的国家战略导向。项目正常运营后可带动直接就业、间接拉动饲料/物流/销售等上下游产业, 为地方经济和食品安全保障作出贡献。
+
+@@P@@<strong>结论: 社会环境上可行</strong>, 符合现代渔业和绿色农业发展方向。
+
+@@H2@@16.2 关键问题与建议
+
+@@H3@@16.2.1 售价波动是项目最大风险
+
+{% set top1 = finance.tables.sensitivity[0] %}
+@@P@@敏感性分析显示, 项目对 <strong>{{ top1.label }}</strong> 最为敏感, IRR 摆动达 {{ (top1.irrSwing*100)|round(1) }}%。{% if '售价' in top1.label %}这意味着如果实际售价比预期低 20%, 项目 IRR 将从 {{ (finance.indicators.irrTotal*100)|round(1) }}% 跌至 {{ (top1.irrLow*100)|round(1) }}%, 可能跌破基准折现率, 项目变得勉强可行。
+
+@@P@@<strong>建议</strong>: 项目实施前, 业主应优先与下游核心客户(超市、餐饮连锁、出口商)签订<strong>3-5 年长期供货协议</strong>, 锁定基础销量和最低保护价, 规避市场价格波动对项目财务的冲击。同时探索中高端品牌建设, 通过有机认证、地理标志、生态养殖标签等溢价手段提升单价。{% endif %}
+
+@@H3@@16.2.2 BF 启动期是项目实施关键
+
+@@P@@RAS 系统的生物滤池(MBBR)启动需要 4-8 周培菌期, 这段时间硝化菌群从无到有逐步建立, TAN 处理能力从 0 逐步提升到设计值。如果急于满负荷投鱼, 会导致 TAN 暴涨, 大量死鱼。
+
+@@P@@<strong>建议</strong>: 严格按照"先培菌 → 低负荷投鱼 → 逐步加负荷"的启动节奏:
+
+@@LIST@@
+- 第 1-4 周: 空池培菌, 投加菌剂 + NH₄Cl
+- 第 4-6 周: TAN < 0.5、NO₂ < 0.3 持续 3 天后视为成熟
+- 第 6-8 周: 放容量 20-30% 的鱼苗
+- 第 8-12 周: 每周加负荷 15-20%
+- 第 12 周后: 满负荷生产
+@@END_LIST@@
+
+@@P@@这个 12 周的启动期已包含在投产爬坡假设(第 1 年达产 {{ (finance.params.ramp1*100)|round(0) }}%)中, 但实际项目操作中容易急于求成, 应严守启动节奏。
+
+@@H3@@16.2.3 关键设备 N+1 备用必须落实
+
+@@P@@RAS 系统对设备可靠性要求极高: 主泵故障 30 分钟可能导致 DO 降至致死阈值; BF 风机故障 2 小时可能导致硝化菌群崩溃; 液氧供应中断 1 小时可能直接死鱼。本项目工艺方案已配置 N+1 备用 + 自动切换, 但实际工程招标采购时务必落实, 不应为节省投资而取消备用机。
+
+@@P@@<strong>建议</strong>: 关键备用设备清单:
+
+@@LIST@@
+- 主循环泵: N+1 配置, 自动切换 ≤ 30 秒
+- BF 罗茨风机: N+1 配置, 切换 ≤ 60 秒
+- 转鼓微滤机: N+1 配置(本项目已含)
+- 液氧站: 双气瓶 + 备用气源
+- 应急发电机: 全场 100% 负荷, 30 秒自动启动
+- UV 灯: 100% 备灯库存
+@@END_LIST@@
+
+@@H3@@16.2.4 重视生物安全
+
+@@P@@RAS 封闭系统天然有较高生物安全, 但一旦病原体进入, 在循环水中传播极快。本项目应建立完整的生物安全 SOP:
+
+@@LIST@@
+- 进水必须 UV 60 mJ/cm² 或臭氧 0.5 mg/L 残留 5 分钟消毒
+- 工人换工作服+靴子, 经消毒脚池
+- 不同模块工具不混用, 颜色编码
+- 新购鱼苗隔离观察 2-4 周
+- 病鱼立即隔离, 病死鱼深埋或焚烧
+@@END_LIST@@
+
+@@H3@@16.2.5 加强人才培养
+
+@@P@@RAS 是技术密集型行业, 操作人员需要兼具水产养殖和水处理工程双重知识。本项目建议人员配置中, 至少配 1-2 名有 RAS 实操经验的技术骨干(可从国内成熟 RAS 企业引进或定向培养), 其他操作工岗前接受系统培训(建议 2-3 个月)。
+
+@@H2@@16.3 编制单位综合建议
+
+@@P@@基于以上分析, 编制单位({{ project.editor }})对本项目的综合建议如下:
+
+{% if finance.indicators.irrTotal >= finance.params.discount and finance.indicators.npvTotal >= 0 %}
+@@P@@<strong>1. 推荐立项建设</strong>。本项目工艺成熟、设备可靠、投资合理、财务可行、社会环境效益良好, 符合现代渔业发展方向, 建议尽快推进立项审批流程。
+
+@@P@@<strong>2. 落实关键风险管控措施</strong>:
+
+@@LIST@@
+- 销售: 项目实施前与核心客户签订长期供货协议, 锁定 60-70% 满产产能
+- 工程: 严格按 N+1 备用配置, 不简化关键设备
+- 启动: 严守 12 周启动节奏, 避免急于满负荷
+- 生物安全: 建立完整 SOP, 防病重于治病
+- 人才: 引进 1-2 名 RAS 技术骨干 + 系统化培训
+@@END_LIST@@
+
+@@P@@<strong>3. 后续工作</strong>:
+
+@@LIST@@
+- 委托有资质机构开展正式环境影响评价
+- 委托勘察设计单位开展工程详细设计(本可研为概算阶段, 精度 ±40%)
+- 与设备厂家进行公开询价/招标, 锁定主设备合同价
+- 推进土地审批、环评批复、规划许可等前期手续
+- 建立项目实施组织和管控机制
+@@END_LIST@@
+
+{% else %}
+@@P@@<strong>1. 暂缓立项, 优先优化方案</strong>。本项目工艺技术上可行, 但财务指标不足以支撑投资决策。建议从以下方向优化:
+
+@@LIST@@
+- 提升产品定价: 通过品牌化、品质化、差异化提升单价 (当前售价 {{ finance.params.price }} 元/kg)
+- 降低投资规模: 简化非必要工艺单元, 优化设备选型 (当前工程总投资 {{ capex.fixedAsset|wan }} 万元)
+- 提升投产效率: 加快爬坡到满产的速度, 减少建设期资金占用
+- 寻求政府补贴: 现代渔业园区、农业产业化等专项资金
+- 优化融资结构: 提高自有资金比例 / 争取低利率贷款
+@@END_LIST@@
+
+@@P@@<strong>2. 重新评估</strong>: 优化方案后用 iRAS 平台重新计算财务指标, 若 IRR 高于折现率且 NPV 为正再立项。
+{% endif %}
+
+@@P@@—— 报告完 ——
+</script>
+
+<script>
+// =============================================================================
+//   iRAS Report Generator — v1.5
+//   职责:
+//   1. 加载 iRAS 主页面方案数据 (从 localStorage)
+//   2. 用户填写 20 字段项目元数据 (本地存储)
+//   3. 用 nunjucks 渲染 16 章模板 (当前只第 13 章是 vertical slice)
+//   4. 用 docx.js 生成 .docx 文件下载
+// =============================================================================
+
+const SHARE_KEY = 'iRAS_reportExport';
+const FORM_KEY = 'iRAS_reportForm';
+
+const STATE = {
+  data: null,        // iRAS 方案数据 (来自 buildPIDExport)
+  form: null,        // 用户填写的项目元数据
+  context: null      // 渲染用的完整 context (data + form 整合)
+};
+
+// 16 章定义 (元数据)
+const CHAPTERS = [
+  { id: 'ch01', num: 1,  title: '总论',                       autoRate: 0.85, ready: true  },  // ⭐ v1.5 阶段 2
+  { id: 'ch02', num: 2,  title: '项目背景与建设必要性',         autoRate: 0.50, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch03', num: 3,  title: '市场分析与建设规模',           autoRate: 0.60, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch04', num: 4,  title: '建设场址与建设条件',           autoRate: 0.30, ready: true  },  // ⭐ v1.5 阶段 4
+  { id: 'ch05', num: 5,  title: '工艺技术方案',                 autoRate: 0.95, ready: true  },  // ⭐ v1.5 阶段 1
+  { id: 'ch06', num: 6,  title: '主要设备方案',                 autoRate: 1.00, ready: true  },  // ⭐ v1.5 阶段 1
+  { id: 'ch07', num: 7,  title: '土建/总图/公用工程方案',       autoRate: 0.50, ready: true  },  // ⭐ v1.5 阶段 4
+  { id: 'ch08', num: 8,  title: '节能节水',                     autoRate: 0.70, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch09', num: 9,  title: '环境影响评价',                 autoRate: 0.60, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch10', num: 10, title: '劳动安全卫生与消防',           autoRate: 0.40, ready: true  },  // ⭐ v1.5 阶段 4
+  { id: 'ch11', num: 11, title: '项目实施与组织机构',           autoRate: 0.65, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch12', num: 12, title: '投资估算与资金筹措',           autoRate: 0.95, ready: true  },  // ⭐ v1.5 阶段 1
+  { id: 'ch13', num: 13, title: '财务评价',                     autoRate: 1.00, ready: true  },  // ⭐ vertical slice
+  { id: 'ch14', num: 14, title: '国民经济评价 / 社会效益评价',   autoRate: 0.50, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch15', num: 15, title: '风险分析',                     autoRate: 0.70, ready: true  },  // ⭐ v1.5 阶段 3
+  { id: 'ch16', num: 16, title: '结论与建议',                   autoRate: 0.80, ready: true  }   // ⭐ v1.5 阶段 2
+];
+
+// 20 字段定义 (用于生成表单)
+const FORM_FIELDS = [
+  { group: 'identity', title: '📋 项目身份', collapsed: false, fields: [
+    { key: 'projectName',     label: '项目名称', required: true, placeholder: '如: 海南三文鱼陆基循环水养殖示范项目', wide: true },
+    { key: 'projectCode',     label: '项目代号', placeholder: '如: HN-RAS-2026-001' },
+    { key: 'ownerName',       label: '业主单位名称', required: true, placeholder: '如: 海南某某水产科技有限公司', wide: true },
+    { key: 'ownerCreditCode', label: '统一社会信用代码', placeholder: '18 位社会信用代码' },
+    { key: 'locProvince',     label: '建设地点 - 省/直辖市', required: true, placeholder: '如: 海南省' },
+    { key: 'locCity',         label: '建设地点 - 市', required: true, placeholder: '如: 海口市' },
+    { key: 'locDistrict',     label: '建设地点 - 区/县', placeholder: '如: 江东新区' },
+    { key: 'locAddress',      label: '建设地点 - 详细地址', placeholder: '具体街道/产业园', wide: true },
+    { key: 'projectNature',   label: '建设性质', type: 'select', options: ['新建', '改扩建', '搬迁'], required: true },
+    { key: 'editorName',      label: '编制单位', required: true, placeholder: '如: XX 设计研究院' },
+    { key: 'editDate',        label: '报告编制日期', type: 'date', required: true }
+  ]},
+  { group: 'owner', title: '👤 业主信息', collapsed: true, fields: [
+    { key: 'ownerLegalRep',         label: '法定代表人', placeholder: '业主公司负责人姓名' },
+    { key: 'ownerContact',          label: '联系人', placeholder: '项目对接联系人' },
+    { key: 'ownerPhone',            label: '联系电话', placeholder: '13xxxxxxxxx' },
+    { key: 'ownerEstablishedDate',  label: '业主成立日期', type: 'date' },
+    { key: 'ownerCapital',          label: '注册资本(万元)', type: 'number', placeholder: '如: 5000' },
+    { key: 'ownerBusiness',         label: '主营业务简介', type: 'textarea', placeholder: '简述业主主营业务、行业地位、核心能力(可作可研附件)', wide: true }
+  ]},
+  { group: 'land', title: '🏞️ 用地与规划', collapsed: true, fields: [
+    { key: 'landArea',         label: '用地面积(亩)', type: 'number', placeholder: '如: 50' },
+    { key: 'landNature',       label: '用地性质', type: 'select', options: ['建设用地', '农业用地', '工业用地', '其他'] },
+    { key: 'landAcquisition',  label: '用地取得方式', type: 'select', options: ['出让', '租赁', '划拨', '集体土地流转', '自有'] },
+    { key: 'upperPlanName',    label: '上级规划名称', placeholder: '如: 江东新区起步区控规', wide: true }
+  ]},
+  { group: 'editor', title: '✍️ 编制信息', collapsed: true, fields: [
+    { key: 'editorQualification', label: '编制单位资质等级', placeholder: '如: 工程咨询甲级' },
+    { key: 'editorBasis',         label: '编制依据文件清单', type: 'textarea', placeholder: '逐条列出, 如:\n1. 业主委托书\n2. XX 政府立项批复\n3. 当地产业规划', wide: true }
+  ]}
+];
+
+// =============================================================================
+//   数据加载
+// =============================================================================
+
+function tryLoadData() {
+  try {
+    const stashed = localStorage.getItem(SHARE_KEY) || sessionStorage.getItem(SHARE_KEY);
+    if (stashed) {
+      STATE.data = JSON.parse(stashed);
+      // 用完即清, 防陈旧数据
+      try { localStorage.removeItem(SHARE_KEY); } catch(e) {}
+      try { sessionStorage.removeItem(SHARE_KEY); } catch(e) {}
+      return true;
+    }
+  } catch(e) { console.warn('数据加载失败:', e); }
+  return false;
+}
+
+function loadFormFromStorage() {
+  try {
+    const saved = localStorage.getItem(FORM_KEY);
+    if (saved) STATE.form = JSON.parse(saved);
+  } catch(e) {}
+  if (!STATE.form) STATE.form = {};
+}
+
+function saveFormToStorage() {
+  try { localStorage.setItem(FORM_KEY, JSON.stringify(STATE.form || {})); } catch(e) {}
+}
+
+// =============================================================================
+//   UI 渲染
+// =============================================================================
+
+function bootstrap() {
+  loadFormFromStorage();
+
+  if (!STATE.data) {
+    document.getElementById('mainContent').innerHTML =
+      '<div class="empty"><div class="big">⚠️</div>' +
+      '<div>未能加载方案数据</div>' +
+      '<div style="margin-top: 8px; font-size: 11px; color: #64748b;">请到 iRAS 主页面填好方案后点击 <strong>📄 生成可研报告</strong></div>' +
+      // v1.5 Bug 37: 加 JSON 文件加载入口
+      '<div style="margin-top: 18px; font-size: 13px; color: #94a3b8;">或将主页面下载的 <code>iRAS_可研报告数据_*.json</code> 拖入此区域 / 点击下方按钮选择文件</div>' +
+      '<div style="margin-top: 12px;">' +
+      '  <label style="display: inline-block; padding: 8px 16px; background: #0ea5e9; color: white; border-radius: 6px; cursor: pointer;">' +
+      '    📂 选择 JSON 文件' +
+      '    <input type="file" id="inpLoadJson" accept=".json,application/json" style="display: none;">' +
+      '  </label>' +
+      '</div>' +
+      '</div>';
+    // 绑定 JSON 加载
+    setTimeout(() => {
+      const fi = document.getElementById('inpLoadJson');
+      if (fi) {
+        fi.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            try {
+              const parsed = JSON.parse(ev.target.result);
+              // Bug 46: schema 验证
+              if (!parsed.pidSchema && !(parsed.results && parsed.results.summary && parsed.results.summary.finance)) {
+                alert('JSON 格式不识别. 请确认这是从主页面下载的「可研报告数据」备份, 不是「保存方案」原始 JSON.');
+                return;
+              }
+              STATE.data = parsed;
+              bootstrap();
+            } catch (err) { alert('JSON 解析失败: ' + err.message); }
+          };
+          reader.readAsText(file);
+        });
+      }
+    }, 0);
+    return;  // 没数据就停, 不渲染主体
+  }
+
+  // 元信息行
+  document.getElementById('metaLine').textContent =
+    `${STATE.data.speciesName || STATE.data.species} · 年产 ${STATE.data.yieldTons} t · ` +
+    `保存时间 ${new Date(STATE.data.savedAt).toLocaleString('zh-CN')}`;
+
+  // 渲染主内容
+  renderMain();
+}
+
+function renderMain() {
+  const main = document.getElementById('mainContent');
+  let html = '';
+
+  // 方案概要
+  html += renderSummaryBox();
+
+  // 章节列表预览
+  html += renderChapterList();
+
+  // 20 字段表单
+  html += renderForm();
+
+  // 操作区
+  html += renderActionBar();
+
+  main.innerHTML = html;
+
+  // 绑定事件
+  bindFormEvents();
+  bindGroupToggle();
+  bindActionButtons();
+}
+
+function renderSummaryBox() {
+  const d = STATE.data;
+  const fin = d.results.summary.finance;
+  return `<div class="summary-box">
+    <div class="row"><span class="label">📊 方案概要</span></div>
+    <div class="row">鱼种: <strong>${d.speciesName || d.species}</strong> · 产量 <strong>${d.yieldTons} t/年</strong> · ${d.stages.length} 阶段</div>
+    <div class="row">CAPEX 工程总投资: <strong>${fmt.wan(fin.totalCapexProject)} 万元</strong> · 年 OPEX <strong>${fmt.wan(fin.annualOpex)} 万元</strong> · 年折旧 <strong>${fmt.wan(fin.annualDep)} 万元</strong></div>
+    <div class="row">综合成本: <strong>${fin.costPerKg.toFixed(2)} 元/kg</strong>(其中折旧 ${fin.depPerKg.toFixed(2)} 元/kg)</div>
+  </div>`;
+}
+
+function renderChapterList() {
+  let html = '<div class="chapter-list"><div style="font-size:13px; color:#a5b4fc; font-weight:600; margin-bottom:8px;">📖 报告章节(16 章扩展版,发改委可研规范)</div>';
+  CHAPTERS.forEach(ch => {
+    const cls = ch.ready ? 'ready' : 'placeholder';
+    const status = ch.ready ? '✓ 自动生成' : '⏳ 占位章节';
+    html += `<div class="chapter-item ${cls}">
+      <span class="name">第 ${ch.num} 章 ${ch.title}</span>
+      <span class="auto-rate">${status} · 自动化率 ${(ch.autoRate*100).toFixed(0)}%</span>
+    </div>`;
+  });
+  html += `<div style="font-size:11px; color:#64748b; margin-top:8px; padding-top:8px; border-top:1px dashed #475569;">
+    <strong>v1.5 第一阶段</strong>: 仅第 13 章财务评价完整生成,其他 15 章为占位章节(标题 + 提示),后续 v1.5.x 版本逐章扩充。
+  </div></div>`;
+  return html;
+}
+
+function renderForm() {
+  let html = '<h2 style="margin-top: 24px;">📋 项目元数据(20 字段)</h2>';
+  html += '<div style="font-size:11px; color:#94a3b8; margin-bottom:12px;">填写项目相关信息. 标 <span style="color:#ef4444;">*</span> 为必填.  本表单自动保存到本地,下次打开自动恢复.</div>';
+  FORM_FIELDS.forEach(group => {
+    const collapsed = group.collapsed ? 'collapsed' : '';
+    html += `<div class="form-group ${collapsed}" data-group="${group.group}">
+      <div class="form-group-header">
+        <span class="form-group-title">${group.title}</span>
+        <span><span class="form-group-status" data-group-status="${group.group}"></span><span class="form-group-toggle"></span></span>
+      </div>
+      <div class="form-group-body">`;
+    group.fields.forEach(f => {
+      const wide = f.wide ? 'field-wide' : '';
+      const required = f.required ? '<span class="required">*</span>' : '';
+      const hint = f.hint ? `<span class="hint">${f.hint}</span>` : '';
+      const value = STATE.form[f.key] !== undefined ? String(STATE.form[f.key]).replace(/"/g,'&quot;') : '';
+      let input;
+      if (f.type === 'select') {
+        const opts = (f.options || []).map(o => `<option value="${o}" ${o === value ? 'selected' : ''}>${o}</option>`).join('');
+        input = `<select id="f_${f.key}" data-key="${f.key}"><option value="">--请选择--</option>${opts}</select>`;
+      } else if (f.type === 'textarea') {
+        input = `<textarea id="f_${f.key}" data-key="${f.key}" placeholder="${f.placeholder || ''}">${value}</textarea>`;
+      } else {
+        const type = f.type || 'text';
+        input = `<input id="f_${f.key}" data-key="${f.key}" type="${type}" value="${value}" placeholder="${f.placeholder || ''}">`;
+      }
+      html += `<div class="field ${wide}">
+        <label for="f_${f.key}">${f.label}${required}${hint}</label>
+        ${input}
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  return html;
+}
+
+function renderActionBar() {
+  return `<div class="action-bar">
+    <button class="btn-primary" id="btnGenerate">📄 生成可研报告 (.docx)</button>
+    <div class="hint">报告将以结构化内容形式生成, 用户拿到后可复制粘贴到自己的 Word 模板中. 第一阶段仅完整输出第 13 章, 其余章节为占位.</div>
+  </div>`;
+}
+
+// =============================================================================
+//   表单事件
+// =============================================================================
+
+function bindFormEvents() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    el.addEventListener('input', (ev) => {
+      const k = ev.target.dataset.key;
+      let v = ev.target.value;
+      if (ev.target.type === 'number') v = parseFloat(v) || null;
+      STATE.form[k] = v;
+      saveFormToStorage();
+      updateGroupStatus();
+    });
+  });
+  updateGroupStatus();
+}
+
+function updateGroupStatus() {
+  FORM_FIELDS.forEach(group => {
+    const total = group.fields.length;
+    const filled = group.fields.filter(f => {
+      const v = STATE.form[f.key];
+      return v !== undefined && v !== null && v !== '';
+    }).length;
+    const el = document.querySelector(`[data-group-status="${group.group}"]`);
+    if (el) {
+      el.textContent = `${filled}/${total}`;
+      el.className = 'form-group-status' + (filled === total ? ' complete' : '');
+    }
+  });
+}
+
+function bindGroupToggle() {
+  document.querySelectorAll('.form-group-header').forEach(h => {
+    h.addEventListener('click', () => {
+      h.parentElement.classList.toggle('collapsed');
+    });
+  });
+}
+
+function bindActionButtons() {
+  document.getElementById('btnGenerate').addEventListener('click', generateReport);
+}
+
+// =============================================================================
+//   状态条
+// =============================================================================
+
+function setStatus(msg, kind) {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg;
+  bar.className = 'status-bar visible' + (kind ? ' ' + kind : '');
+}
+function clearStatus() {
+  document.getElementById('statusBar').className = 'status-bar';
+}
+
+// =============================================================================
+//   数字格式化
+// =============================================================================
+
+const fmt = {
+  wan:  v => isFinite(v) ? (v / 10000).toLocaleString('zh-CN', { maximumFractionDigits: 1 }) : '—',
+  num:  (v, d) => isFinite(v) ? v.toLocaleString('zh-CN', { maximumFractionDigits: d || 0 }) : '—'
+};
+
+// =============================================================================
+//   SVG 图表生成
+// =============================================================================
+
+// 转义 XML 特殊字符
+function xmlEscape(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+
+// 工艺流程示意图(简化版 P&ID, 800×500 视图)
+function buildProcessFlowSvg(ctx) {
+  const wf = ctx.workflow || {};
+  const f = ctx.farm || {};
+  const W = 1200, H = 500;
+  const boxW = 140, boxH = 60, gap = 30;
+
+  // 主流程节点
+  const main = [
+    { tag: 'T-101', name: '鱼池',     fill: '#dbeafe' },
+    { tag: 'F-201', name: '微滤机',   fill: '#fef3c7' },
+    { tag: 'B-301', name: '生物滤池', fill: '#d1fae5' },
+    { tag: 'D-401', name: 'UV 消毒',  fill: '#e0e7ff' },
+    { tag: 'C-501', name: 'CO₂ 脱气', fill: '#f3e8ff' },
+    { tag: 'A-601', name: '增氧锥',   fill: '#fce7f3' }
+  ];
+
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="SimHei, Microsoft YaHei, sans-serif">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M2 1 L8 5 L2 9" fill="none" stroke="#475569" stroke-width="1.5"/>
+  </marker>
+</defs>
+<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>
+<text x="${W/2}" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b">${xmlEscape((f.speciesName || '') + ' ' + (f.yieldTons || 0) + ' t/年 工艺流程示意图')}</text>
+<text x="${W/2}" y="52" text-anchor="middle" font-size="13" fill="#64748b">设计阶段: ${xmlEscape(wf.designStageName || '成鱼期')} | 峰值流量 ${(f.peakFlowM3H || 0).toFixed(0)} m³/h | 系统总水体 ${(f.totalSystemVolume || 0).toFixed(0)} m³</text>`;
+
+  // 主流程方框 + 连线 (居中布置)
+  const mainY = 130;
+  const totalMainW = main.length * boxW + (main.length - 1) * gap;
+  const mainX0 = (W - totalMainW) / 2;
+  main.forEach((node, i) => {
+    const x = mainX0 + i * (boxW + gap);
+    svg += `
+<rect x="${x}" y="${mainY}" width="${boxW}" height="${boxH}" rx="4" fill="${node.fill}" stroke="#334155" stroke-width="1.5"/>
+<text x="${x + boxW/2}" y="${mainY + 25}" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${xmlEscape(node.tag)}</text>
+<text x="${x + boxW/2}" y="${mainY + 45}" text-anchor="middle" font-size="13" fill="#334155">${xmlEscape(node.name)}</text>`;
+    // 连线 (除最后一个)
+    if (i < main.length - 1) {
+      svg += `<line x1="${x + boxW}" y1="${mainY + boxH/2}" x2="${x + boxW + gap}" y2="${mainY + boxH/2}" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>`;
+    }
+  });
+
+  // 主流程到鱼池循环回流
+  const lastBox = mainX0 + (main.length - 1) * (boxW + gap) + boxW;
+  const firstBox = mainX0;
+  svg += `
+<line x1="${lastBox}" y1="${mainY + boxH + 5}" x2="${lastBox}" y2="${mainY + boxH + 30}" stroke="#475569" stroke-width="2"/>
+<line x1="${lastBox}" y1="${mainY + boxH + 30}" x2="${firstBox - 15}" y2="${mainY + boxH + 30}" stroke="#475569" stroke-width="2"/>
+<line x1="${firstBox - 15}" y1="${mainY + boxH + 30}" x2="${firstBox - 15}" y2="${mainY + boxH/2}" stroke="#475569" stroke-width="2"/>
+<line x1="${firstBox - 15}" y1="${mainY + boxH/2}" x2="${firstBox}" y2="${mainY + boxH/2}" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+<text x="${(lastBox + firstBox)/2}" y="${mainY + boxH + 50}" text-anchor="middle" font-size="11" fill="#64748b">主循环 ${(f.peakFlowM3H || 0).toFixed(0)} m³/h</text>`;
+
+  // 旁路单元 (启用的)
+  const branches = [];
+  if (wf.skimmer && wf.skimmer.enabled) branches.push({ tag: 'S-701', name: '蛋白分离', pct: ((wf.skimmer.flowPct||0)*100).toFixed(0) + '%' });
+  if (wf.denitri && wf.denitri.enabled) branches.push({ tag: 'R-801', name: '反硝化',   pct: ((wf.denitri.flowPct||0)*100).toFixed(0) + '%' });
+  if (wf.aop     && wf.aop.enabled)     branches.push({ tag: 'X-901', name: 'AOP',      pct: ((wf.aop.flowPct||0)*100).toFixed(0) + '%' });
+
+  const branchY = mainY + boxH + 90;
+  if (branches.length > 0) {
+    svg += `<text x="${W/2}" y="${branchY - 10}" text-anchor="middle" font-size="13" fill="#64748b" font-weight="bold">旁路单元(分流处理)</text>`;
+    const bTotalW = branches.length * boxW + (branches.length - 1) * gap;
+    const bX0 = (W - bTotalW) / 2;
+    branches.forEach((b, i) => {
+      const x = bX0 + i * (boxW + gap);
+      svg += `
+<rect x="${x}" y="${branchY}" width="${boxW}" height="${boxH}" rx="4" fill="#fce7f3" stroke="#be185d" stroke-width="1.5" stroke-dasharray="4 2"/>
+<text x="${x + boxW/2}" y="${branchY + 22}" text-anchor="middle" font-size="13" font-weight="bold" fill="#831843">${xmlEscape(b.tag)}</text>
+<text x="${x + boxW/2}" y="${branchY + 40}" text-anchor="middle" font-size="13" fill="#831843">${xmlEscape(b.name)}</text>
+<text x="${x + boxW/2}" y="${branchY + 55}" text-anchor="middle" font-size="11" fill="#831843">旁路 ${xmlEscape(b.pct)}</text>`;
+    });
+  }
+
+  // 关键参数表 (右下角)
+  const tblY = H - 120;
+  const tblX = 30;
+  svg += `
+<rect x="${tblX}" y="${tblY}" width="350" height="105" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+<text x="${tblX + 10}" y="${tblY + 18}" font-size="12" font-weight="bold" fill="#1e293b">关键工艺参数</text>
+<text x="${tblX + 10}" y="${tblY + 38}" font-size="11" fill="#475569">RDF: ${(wf.rdf && wf.rdf.tssEff*100 || 0).toFixed(0)}% TSS, 60 μm 筛网</text>
+<text x="${tblX + 10}" y="${tblY + 54}" font-size="11" fill="#475569">BF: ${(wf.bf && wf.bf.volume || 0).toFixed(0)} m³ 填料, ${(wf.bf && wf.bf.tanEff*100 || 0).toFixed(0)}% TAN 去除</text>
+<text x="${tblX + 10}" y="${tblY + 70}" font-size="11" fill="#475569">UV: ${(wf.uv && wf.uv.dose || 0).toFixed(0)} mJ/cm², ${(wf.uv && wf.uv.powerKw || 0).toFixed(1)} kW</text>
+<text x="${tblX + 10}" y="${tblY + 86}" font-size="11" fill="#475569">增氧: ${wf.aerator && wf.aerator.enabled ? '液氧 + 锥形塔' : '空气曝气'}, 峰值 ${(wf.aerator && wf.aerator.peakSupplyKgH || 0).toFixed(1)} kg O₂/h</text>`;
+
+  svg += `\n</svg>`;
+  return svg;
+}
+
+// 敏感性 Tornado 图 (基于 finance.tables.sensitivity)
+function buildTornadoSvg(ctx) {
+  const sens = (ctx.finance && ctx.finance.tables && ctx.finance.tables.sensitivity) || [];
+  const baseIRR = (ctx.finance && ctx.finance.indicators && ctx.finance.indicators.irrTotal) || 0;
+  const W = 800, H = 60 + sens.length * 50 + 60;
+  const margin = { left: 130, right: 60, top: 70, bottom: 40 };
+  const chartW = W - margin.left - margin.right;
+  const barH = 28;
+  const rowH = 50;
+
+  // 横轴范围
+  let minIRR = baseIRR, maxIRR = baseIRR;
+  sens.forEach(f => {
+    minIRR = Math.min(minIRR, f.irrLow, f.irrHigh);
+    maxIRR = Math.max(maxIRR, f.irrLow, f.irrHigh);
+  });
+  const range = maxIRR - minIRR || 0.01;
+  minIRR -= range * 0.1; maxIRR += range * 0.1;
+  const xScale = irr => margin.left + ((irr - minIRR) / (maxIRR - minIRR)) * chartW;
+
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="SimHei, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>
+<text x="${W/2}" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">敏感性分析 — 全投资 IRR Tornado 图</text>
+<text x="${W/2}" y="50" text-anchor="middle" font-size="13" fill="#64748b">基准 IRR ${(baseIRR*100).toFixed(2)}% (虚线), 各因子 ±20% 摆动</text>`;
+
+  // 基准线
+  const x0 = xScale(baseIRR);
+  svg += `<line x1="${x0}" y1="${margin.top - 10}" x2="${x0}" y2="${H - margin.bottom + 5}" stroke="#374151" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  svg += `<text x="${x0}" y="${H - margin.bottom + 22}" text-anchor="middle" font-size="11" fill="#374151">基准 ${(baseIRR*100).toFixed(1)}%</text>`;
+
+  // 横轴刻度
+  for (let i = 0; i <= 5; i++) {
+    const v = minIRR + (maxIRR - minIRR) * i / 5;
+    const x = xScale(v);
+    svg += `<line x1="${x}" y1="${H - margin.bottom}" x2="${x}" y2="${H - margin.bottom + 4}" stroke="#94a3b8"/>`;
+    svg += `<text x="${x}" y="${H - margin.bottom + 18}" text-anchor="middle" font-size="10" fill="#64748b">${(v*100).toFixed(1)}%</text>`;
+  }
+  // 横轴线
+  svg += `<line x1="${margin.left}" y1="${H - margin.bottom}" x2="${margin.left + chartW}" y2="${H - margin.bottom}" stroke="#94a3b8"/>`;
+
+  // 各因子条
+  sens.forEach((f, i) => {
+    const y = margin.top + i * rowH + (rowH - barH) / 2;
+    const xLow = xScale(f.irrLow);
+    const xHigh = xScale(f.irrHigh);
+    const xLeft = Math.min(xLow, xHigh);
+    const xRight = Math.max(xLow, xHigh);
+
+    svg += `<rect x="${xLeft}" y="${y}" width="${xRight - xLeft}" height="${barH}" fill="#6366f1" opacity="0.85" stroke="#312e81" stroke-width="1"/>`;
+    svg += `<text x="${margin.left - 10}" y="${y + barH/2 + 4}" text-anchor="end" font-size="12" fill="#1e293b" font-weight="bold">${xmlEscape(f.label)}</text>`;
+    // 端点数值
+    svg += `<text x="${xLeft - 4}" y="${y + barH/2 + 4}" text-anchor="end" font-size="10" fill="#475569">${(f.irrLow*100).toFixed(1)}%</text>`;
+    svg += `<text x="${xRight + 4}" y="${y + barH/2 + 4}" text-anchor="start" font-size="10" fill="#475569">${(f.irrHigh*100).toFixed(1)}%</text>`;
+    // 摆动值在条中央
+    svg += `<text x="${(xLeft+xRight)/2}" y="${y + barH/2 + 4}" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">摆动 ${(f.irrSwing*100).toFixed(1)}%</text>`;
+  });
+
+  svg += `\n</svg>`;
+  return svg;
+}
+
+// 累计现金流曲线图(全投资 + 自有资金双线)
+function buildCashflowSvg(ctx) {
+  const cf = (ctx.finance && ctx.finance.tables && ctx.finance.tables.cashflowTotal) || [];
+  if (cf.length === 0) return '';
+  const W = 800, H = 420;
+  const margin = { left: 80, right: 60, top: 70, bottom: 60 };
+  const chartW = W - margin.left - margin.right;
+  const chartH = H - margin.top - margin.bottom;
+
+  // 数据范围(用 cumTotal 和 cumEquity)
+  let yMin = 0, yMax = 0;
+  cf.forEach(p => {
+    if (p.cumTotal != null) { yMin = Math.min(yMin, p.cumTotal); yMax = Math.max(yMax, p.cumTotal); }
+    if (p.cumEquity != null) { yMin = Math.min(yMin, p.cumEquity); yMax = Math.max(yMax, p.cumEquity); }
+  });
+  const yRange = yMax - yMin || 1;
+  yMin -= yRange * 0.1; yMax += yRange * 0.1;
+  const xMax = cf[cf.length - 1].year;
+
+  const xScale = t => margin.left + (t / xMax) * chartW;
+  const yScale = v => margin.top + chartH - ((v - yMin) / (yMax - yMin)) * chartH;
+
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="SimHei, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>
+<text x="${W/2}" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">累计净现金流量曲线</text>
+<text x="${W/2}" y="50" text-anchor="middle" font-size="13" fill="#64748b">${ctx.farm.speciesName} ${ctx.farm.yieldTons} t/年, 项目年限 ${cf.length - 1} 年</text>`;
+
+  // 横轴
+  for (let t = 0; t <= xMax; t += Math.max(1, Math.floor(xMax/8))) {
+    const x = xScale(t);
+    svg += `<line x1="${x}" y1="${margin.top}" x2="${x}" y2="${margin.top + chartH}" stroke="#e2e8f0"/>`;
+    svg += `<text x="${x}" y="${margin.top + chartH + 18}" text-anchor="middle" font-size="10" fill="#64748b">第${t}年</text>`;
+  }
+  // 纵轴 (5 等分)
+  for (let i = 0; i <= 5; i++) {
+    const v = yMin + (yMax - yMin) * i / 5;
+    const y = yScale(v);
+    svg += `<line x1="${margin.left}" y1="${y}" x2="${margin.left + chartW}" y2="${y}" stroke="#e2e8f0"/>`;
+    svg += `<text x="${margin.left - 8}" y="${y + 4}" text-anchor="end" font-size="10" fill="#64748b">${(v/10000).toFixed(0)}</text>`;
+  }
+  svg += `<text x="${margin.left - 60}" y="${margin.top + chartH/2}" text-anchor="middle" font-size="11" fill="#64748b" transform="rotate(-90 ${margin.left - 60} ${margin.top + chartH/2})">累计净现金流(万元)</text>`;
+
+  // 0 轴线
+  if (yMin < 0 && yMax > 0) {
+    const y0 = yScale(0);
+    svg += `<line x1="${margin.left}" y1="${y0}" x2="${margin.left + chartW}" y2="${y0}" stroke="#374151" stroke-width="1.5"/>`;
+  }
+
+  // 全投资曲线
+  const totalPath = cf.map((p, i) => {
+    const x = xScale(p.year);
+    const y = yScale(p.cumTotal || 0);
+    return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }).join(' ');
+  svg += `<path d="${totalPath}" fill="none" stroke="#dc2626" stroke-width="2.5"/>`;
+
+  // 自有资金曲线
+  const equityPath = cf.map((p, i) => {
+    const x = xScale(p.year);
+    const y = yScale(p.cumEquity || 0);
+    return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }).join(' ');
+  svg += `<path d="${equityPath}" fill="none" stroke="#059669" stroke-width="2.5" stroke-dasharray="6 3"/>`;
+
+  // 数据点
+  cf.forEach(p => {
+    if (p.year % 2 === 0 || p.year === xMax) {
+      svg += `<circle cx="${xScale(p.year)}" cy="${yScale(p.cumTotal || 0)}" r="3" fill="#dc2626"/>`;
+      svg += `<circle cx="${xScale(p.year)}" cy="${yScale(p.cumEquity || 0)}" r="3" fill="#059669"/>`;
+    }
+  });
+
+  // 图例
+  const legendX = margin.left + 20;
+  const legendY = margin.top + 15;
+  svg += `<line x1="${legendX}" y1="${legendY}" x2="${legendX + 28}" y2="${legendY}" stroke="#dc2626" stroke-width="2.5"/>`;
+  svg += `<text x="${legendX + 35}" y="${legendY + 4}" font-size="12" fill="#1e293b">全投资</text>`;
+  svg += `<line x1="${legendX + 90}" y1="${legendY}" x2="${legendX + 118}" y2="${legendY}" stroke="#059669" stroke-width="2.5" stroke-dasharray="6 3"/>`;
+  svg += `<text x="${legendX + 125}" y="${legendY + 4}" font-size="12" fill="#1e293b">自有资金</text>`;
+
+  svg += `\n</svg>`;
+  return svg;
+}
+
+// =============================================================================
+//   SVG → PNG → Uint8Array (浏览器侧)
+// =============================================================================
+
+async function svgToPngBytes(svgString, width, height) {
+  return new Promise((resolve, reject) => {
+    try {
+      const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = () => {
+        const dpr = 2; // 高清渲染
+        const canvas = document.createElement('canvas');
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(b => {
+          if (!b) return reject(new Error('canvas.toBlob 失败'));
+          b.arrayBuffer().then(ab => resolve(new Uint8Array(ab)));
+        }, 'image/png');
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('SVG 加载失败'));
+      };
+      img.src = url;
+    } catch(e) { reject(e); }
+  });
+}
+
+// =============================================================================
+//   Context 拼装 — 把 iRAS 数据 + 表单数据整合成模板渲染所需的对象
+// =============================================================================
+
+function buildContext() {
+  const d = STATE.data;
+  const f = STATE.form || {};
+  const fin = d.results.summary.finance;
+
+  // ------- project 命名空间 -------
+  const project = {
+    name:                 f.projectName || '(未填项目名)',
+    code:                 f.projectCode || '',
+    owner:                f.ownerName || '(未填业主)',
+    ownerCreditCode:      f.ownerCreditCode || '',
+    location: {
+      province: f.locProvince || '',
+      city:     f.locCity || '',
+      district: f.locDistrict || '',
+      address:  f.locAddress || '',
+      full:     [f.locProvince, f.locCity, f.locDistrict, f.locAddress].filter(x => x).join(' ')
+    },
+    nature:               f.projectNature || '新建',
+    editor:               f.editorName || '(未填编制单位)',
+    editDate:             f.editDate || new Date().toISOString().slice(0,10),
+    ownerLegalRep:        f.ownerLegalRep || '',
+    ownerContact:         f.ownerContact || '',
+    ownerPhone:           f.ownerPhone || '',
+    ownerEstablishedDate: f.ownerEstablishedDate || '',
+    ownerCapital:         f.ownerCapital || 0,
+    ownerBusiness:        f.ownerBusiness || '',
+    landArea:             f.landArea || 0,
+    landNature:           f.landNature || '',
+    landAcquisition:      f.landAcquisition || '',
+    upperPlanName:        f.upperPlanName || '',
+    editorQualification:  f.editorQualification || '',
+    editorBasis:          f.editorBasis || ''
+  };
+
+  // ------- farm 命名空间 -------
+  const farm = {
+    species:        d.species,
+    speciesName:    d.speciesName,
+    yieldTons:      d.yieldTons,
+    stages:         (d.stages || []).map((s, i) => {
+      const ps = (d.results.perStage || [])[i] || {};
+      const psFlow = ps.flow || {};
+      const psLoad = ps.load || {};
+      const psFarm = ps.farm || {};
+      // 反推单池直径: D = sqrt(4V / (π × H × 池数))
+      const poolCount = (s.subSystemCount || 1) * (s.poolsPerSet || 1);
+      const poolDepth = s.poolDepth_m || s.recDepth_m || 1.5;
+      const totalVol  = psFarm.volume || 0;
+      const D = (totalVol > 0 && poolDepth > 0 && poolCount > 0) ?
+                Math.sqrt(4 * totalVol / poolCount / Math.PI / poolDepth) : 0;
+      return {
+        name:           s.name,
+        weightStart:    s.weightStart,
+        weightEnd:      s.weightEnd,
+        months:         s.months,
+        density:        s.density,
+        tempOpt:        s.tempOpt,
+        salinity:       s.salinity || 0,
+        subSystemCount: s.subSystemCount || 1,
+        poolsPerSet:    s.poolsPerSet || 1,
+        poolCount:      poolCount,
+        poolDepth_m:    poolDepth,
+        poolDiameter:   Math.round(D * 10) / 10,
+        biomass:        psFarm.biomass || 0,
+        volume:         psFarm.volume || 0,
+        volumeTotal:    psFlow.volumeTotal || psFarm.volume || 0,
+        flowM3h:        psFlow.flowMain || 0,
+        turnover:       psFlow.turnover || 0,
+        feedDailyMax:   psLoad.feedMax || 0,
+        feedDailyAvg:   psLoad.feedAvg || 0,
+        tanDaily:       psLoad.tanDaily || 0,
+        tssDaily:       psLoad.tssDaily || 0,
+        domDaily:       psLoad.domDaily || 0,
+        co2Daily:       psLoad.co2Daily || 0,
+        o2DailyTotal:   psLoad.o2DailyTotal || 0,
+        FCR:            s.FCR || 0,    // v1.5 Bug 30 修复: 字段名是 FCR (大写), 不是 fcr
+        protein:        s.protein || 0,
+        feedRate:       s.feedRate || 0,
+        mortality:      s.mortality || 0
+      };
+    }),
+    designStage:        d.results.summary.designStage || '',
+    peakFlowM3H:        d.results.summary.peakFlowM3H || 0,
+    totalSystemVolume:  d.results.summary.totalSystemVolume || 0,
+    totalLOXKgD:        d.results.summary.totalLOXKgD || 0
+  };
+
+  // 累加全场总值
+  farm.totalBiomass    = farm.stages.reduce((s, x) => s + (x.biomass || 0), 0);
+  farm.totalVolumeTank = farm.stages.reduce((s, x) => s + (x.volume || 0), 0);
+  farm.totalFeedDaily  = farm.stages.reduce((s, x) => s + (x.feedDailyMax || 0), 0);
+  farm.totalMonths     = farm.stages.reduce((s, x) => s + (x.months || 0), 0);
+  farm.totalSubSystems = farm.stages.reduce((s, x) => s + (x.subSystemCount || 0), 0);
+  farm.totalPools      = farm.stages.reduce((s, x) => s + (x.poolCount || 0), 0);
+
+  // v1.5: 项目用地估算 (从 buildPIDExport 直接传入)
+  farm.land = (d.results.summary && d.results.summary.land) || null;
+
+  // ------- workflow 命名空间 -------
+  // 工艺方案 — 使用设计阶段(通常成鱼期)的工艺参数作为代表
+  const designIdx = d.results.summary.designStageIdx || (d.results.perStage || []).length - 1;
+  const designStage = (d.results.perStage || [])[designIdx] || {};
+  const designEq = designStage.equipment || {};
+  const sample = (d.stages || [])[designIdx] || {};
+  const sproc = sample.proc || {};
+  const workflow = {
+    designStageName: designStage.stageName || '',
+    // 主流串联单元
+    rdf: designEq.rdf || {},
+    bf:  designEq.bf || {},
+    uv:  designEq.uv || {},
+    co2: designEq.co2 || {},
+    aerator: designEq.o2cone || {},
+    // 旁路单元
+    skimmer: designEq.skimmer || {},
+    aop:     designEq.aop || {},
+    denitri: designEq.denitri || {},
+    sump:    designEq.sump || {},
+    // 投饵参数(用户填的,所有阶段共享的部分)
+    peakFactor: sproc.peakFactor || 1.5,
+    // 各阶段工艺数据(供详细表格)
+    perStage: (d.results.perStage || []).map(ps => ({
+      stageName: ps.stageName,
+      flow: ps.flow || {},
+      load: ps.load || {},
+      bfVolume: (ps.equipment && ps.equipment.bf && ps.equipment.bf.volume) || 0,
+      uvPowerKw: (ps.equipment && ps.equipment.uv && ps.equipment.uv.powerKw) || 0,
+      totalPumpKw: (ps.pumps && ps.pumps.totalKw) || 0,
+      o2DailyKgD: (ps.load && ps.load.o2DailyTotal) || 0,
+      co2DailyKgD: (ps.load && ps.load.co2Daily) || 0
+    })),
+    // 全场关键设备汇总(供第 6 章设备方案)
+    equipmentSummary: buildEquipmentSummary(d)
+  };
+
+  // ------- capex 命名空间 -------
+  // v1.5 审计回合 3: Bug 2 修复后, 自有/贷款拆分不再是 totalInvestment × ownPct
+  //   贷款只覆盖固定资产, 流动资金 100% 自筹. 这里也要拆开避免报告模板写错.
+  const _wc = (fin.annualOpex || 0) * 0.15;
+  const _fa = fin.totalCapexProject || 0;
+  const _ownPct = 0.3;  // 与 finParams.ownPct 保持一致, 必要时下面 finParams 重新覆盖
+  const capex = {
+    equipDirect:      fin.totalCapexEquip || 0,
+    civilEtc:         (fin.totalCapexProject || 0) - (fin.totalCapexEquip || 0),
+    fixedAsset:       _fa,
+    workingCapital:   _wc,
+    totalInvestment:  _fa + _wc,
+    // v1.5 审计回合 3: 暴露 finance-core 同口径字段, 模板用这些字段代替 totalInvestment × ownPct
+    ownEquityFixed:   _fa * _ownPct,             // 固定资产中自有部分
+    loan:             _fa * (1 - _ownPct),       // 贷款 (只覆盖固资)
+    ownEquity:        _fa * _ownPct + _wc,        // 自有合计 (含流动资金)
+    depYearsEquip:    d.depYearsEquip || 8,
+    depYearsCivil:    d.depYearsCivil || 20,
+    depAnnual:        fin.annualDep || 0
+  };
+
+  // ------- opex 命名空间 -------
+  const opex = {
+    totalAnnual:    fin.annualCost || 0,
+    totalExclDep:   fin.annualOpex || 0,
+    costPerKg:      fin.costPerKg || 0,
+    depPerKg:       fin.depPerKg || 0,
+    opexPerKg:      fin.opexPerKg || 0
+  };
+
+  // ------- finance 命名空间 -------
+  // 从默认参数 + 数据计算 (实际 v1.5 后续可让用户在 report.html 内调财务参数)
+  // v1.5 一阶段简化: 用默认财务参数 (与 finance.html 默认一致)
+  const finParams = {
+    price:       guessDefaultPrice(d.species),
+    years:       15,
+    ramp1:       0.3,
+    ramp2:       0.7,
+    ramp3:       1.0,
+    buildYears:  1,
+    workingCap:  0.15,
+    ownPct:      0.3,
+    loanRate:    0.05,
+    loanMethod:  'equal_payment',
+    loanYears:   8,
+    discount:    0.08,
+    taxRate:     0.25,
+    salesTax:    0,
+    repairRate:  0.02,
+    adminRate:   0.03,
+    laborCost:   estimateLaborCost(d.yieldTons) * 10000
+  };
+  const finCalc = calculateFinance(d, finParams);
+
+  const finance = {
+    params:     finParams,
+    indicators: finCalc.indicators,
+    tables:     finCalc.tables
+  };
+
+  // ------- meta 命名空间 -------
+  const meta = {
+    generatedAt:     new Date().toISOString(),
+    irasVersion:     d.irasVersion || '1.5',
+    templateVersion: 'v1.5-alpha-1',
+    reportNumber:    `iRAS-${d.species}-${d.yieldTons}t-${new Date().toISOString().slice(0,10).replace(/-/g,'')}`
+  };
+
+  return { project, farm, capex, opex, finance, meta };
+}
+
+function guessDefaultPrice(species) {
+  const map = {
+    salmon: 60, turbot: 80, grouper: 130, perch: 50,
+    mandarin: 90, tilapia: 22, eel: 110, shrimp: 55
+  };
+  return map[species] || 50;
+}
+function estimateLaborCost(yieldTons) {
+  if (yieldTons < 100) return 30;
+  if (yieldTons < 300) return 60;
+  if (yieldTons < 1000) return 120;
+  if (yieldTons < 3000) return 240;
+  return 360;
+}
+
+// 全场设备汇总(供第 6 章设备方案使用)
+// 返回数组: [{ category, tag, name, spec, qty, perStage: [{stage, qty, spec}] }]
+function buildEquipmentSummary(d) {
+  const stages = d.results.perStage || [];
+  if (stages.length === 0) return [];
+
+  // 设备分类聚合规则:每类设备一行,数量 = 各阶段 subSystemCount × 该阶段是否启用
+  const list = [];
+  const stageNames = stages.map(s => s.stageName);
+
+  // 工具函数: 把多阶段同一设备汇总成一行
+  function aggregate(category, getter, defaultName, specFmt) {
+    const perStage = stages.map((ps, i) => {
+      const item = getter(ps);
+      const subSys = (d.stages[i] && d.stages[i].subSystemCount) || 1;
+      const enabled = item && item.enabled !== false;
+      return {
+        stage: ps.stageName,
+        qty: enabled ? subSys : 0,
+        spec: enabled ? specFmt(item, ps) : '—',
+        item: enabled ? item : null
+      };
+    });
+    const totalQty = perStage.reduce((s, x) => s + x.qty, 0);
+    if (totalQty > 0) {
+      list.push({ category, tag: perStage.find(x => x.item)?.item?.tag || '', name: defaultName, perStage, totalQty });
+    }
+  }
+
+  aggregate('鱼池', ps => ({ enabled: true, tag: 'T-101' }), '鱼池(含 N+1 备用)',
+    (it, ps) => `${ps.farm.volume.toFixed(0)} m³ × ${ps.farm.density} kg/m³`);
+
+  aggregate('微滤机', ps => ({ ...ps.equipment.rdf, enabled: true }), '转鼓微滤机 RDF',
+    (it, ps) => `${(it.flow || ps.flow.flowMain).toFixed(0)} m³/h, 60 μm 筛网, TSS ${(it.tssEff*100).toFixed(0)}%`);
+
+  aggregate('生物滤池', ps => ({ ...ps.equipment.bf, enabled: true }), 'MBBR 生物滤池',
+    (it, ps) => `${(it.volume || 0).toFixed(0)} m³ 填料, K1/K3, 比表面积 500 m²/m³`);
+
+  aggregate('UV 消毒器', ps => ({ ...ps.equipment.uv, enabled: true }), 'UV 紫外消毒器',
+    (it, ps) => `${(it.flow || ps.flow.flowMain).toFixed(0)} m³/h, ${it.dose || 30} mJ/cm², 中压灯`);
+
+  aggregate('CO2 脱气塔', ps => ps.equipment.co2 || {}, 'CO₂ 脱气塔',
+    (it, ps) => `逆流式, G:L=${it.gToL || 3}, 单次脱气 ${((it.eff || 0.65)*100).toFixed(0)}%`);
+
+  aggregate('增氧锥', ps => ps.equipment.o2cone || {}, '低水头增氧锥(LHO)+ 液氧站',
+    (it, ps) => `供氧 ${(it.peakSupplyKgH || 0).toFixed(1)} kg/h, ${((it.satTarget || 1.4)*100).toFixed(0)}% 饱和度`);
+
+  aggregate('蛋白分离器', ps => ps.equipment.skimmer || {}, '蛋白分离器',
+    (it, ps) => `${(it.volume || 0).toFixed(1)} m³, 旁路 ${((it.flowPct || 0)*100).toFixed(0)}%, ${it.mode === 'ozone' ? '臭氧+泡沫' : '空气泡沫'}`);
+
+  aggregate('反硝化反应器', ps => ps.equipment.denitri || {}, '反硝化反应器',
+    (it, ps) => `${(it.volume || 0).toFixed(0)} m³, NO₃ 去除 ${(it.no3RemovedKgD || 0).toFixed(1)} kg/d`);
+
+  aggregate('AOP 反应器', ps => ps.equipment.aop || {}, '高级氧化 AOP 反应器',
+    (it, ps) => `${it.type || '—'}, 旁路 ${((it.flowPct || 0)*100).toFixed(0)}%, Geosmin ${((it.geosminEff || 0)*100).toFixed(0)}%`);
+
+  aggregate('臭氧发生器', ps => {
+    const og = ps.equipment.ozoneGen || {};
+    return { ...og, enabled: og.totalKgD > 0 };
+  }, '臭氧发生器',
+    (it, ps) => `${(it.totalKgD || 0).toFixed(2)} kg/d, ${(it.powerKw || 0).toFixed(1)} kW`);
+
+  aggregate('BF 风机', ps => ({ enabled: true, ...ps.equipment.bfBlower, tag: 'K-302' }), 'BF 罗茨风机',
+    (it, ps) => {
+      const sp = it.spec || {};
+      return `风量 ${(sp.flowM3h || 0).toFixed(0)} m³/h, ${(sp.powerKw || 0).toFixed(1)} kW`;
+    });
+
+  aggregate('主循环泵', ps => ({ enabled: true, ...ps.pumps.main }), '主循环泵(含变频)',
+    (it, ps) => `${(it.flow || 0).toFixed(0)} m³/h, ${(it.kw || 0).toFixed(1)} kW, 扬程 ${it.headM || 12} m`);
+
+  aggregate('集水池', ps => ps.equipment.sump || {}, '集水池 / 缓冲池',
+    (it, ps) => `${(it.volume || 0).toFixed(0)} m³, HRT ${(it.hrt_min || 0).toFixed(1)} min`);
+
+  return list;
+}
+
+
+// =============================================================================
+//   财务计算 (v1.5: 全部代理到 finance-core.js, Bug 6 修复)
+//   提供 calculateFinance(data, p) 接口, 内部生成 tables 和 indicators
+// =============================================================================
+function calculateFinance(data, p) {
+  if (!window.iRASFinance) {
+    console.error('finance-core.js 未加载, 财务表无法生成');
+    return { indicators: {}, tables: {} };
+  }
+  const fin = data.results.summary.finance;
+  if (!fin) return { indicators: {}, tables: {} };
+
+  const core = window.iRASFinance.calculate(data, p);
+  if (!core) return { indicators: {}, tables: {} };
+
+  // 适配旧的 tables 输出结构
+  const yearly = core.yearly;
+  const Y = p.years;
+  const yieldKg = data.yieldTons * 1000;
+  const sat = yearly[Math.min(3, Y)] || yearly[yearly.length - 1];
+  const total = sat.opCostTotal + sat.dep + sat.interest;
+  const pct = v => total > 0 ? (v / total * 100).toFixed(1) : '—';
+
+  return {
+    indicators: core.indicators,
+    tables: {
+      revenue: yearly.filter(y => y.year > 0).map(y => ({
+        year: y.year, ramp: y.ramp,
+        tons: yieldKg * y.ramp / 1000,
+        revenue: y.revenue, salesTax: y.salesTax, netRevenue: y.netRevenue
+      })),
+      totalCost: {
+        operatingCost: sat.operatingCost, operatingPct: pct(sat.operatingCost),
+        repairCost:    sat.repairCost,    repairPct:    pct(sat.repairCost),
+        adminCost:     sat.adminCost,     adminPct:     pct(sat.adminCost),
+        laborCost:     sat.laborCost,     laborPct:     pct(sat.laborCost),
+        dep:           sat.dep,           depPct:       pct(sat.dep),
+        interest:      sat.interest,      interestPct:  pct(sat.interest),
+        total,
+        roi: total > 0 ? (sat.profitNet / (fin.totalCapexProject || 1) * 100) : 0
+      },
+      profitLoss: {
+        y1: yearly[1] || {}, y2: yearly[2] || {}, y3: yearly[3] || {}, yN: yearly[Y] || {}
+      },
+      cashflowTotal: yearly,
+      cashflowEquity: yearly,
+      sensitivity: core.sensitivity ? core.sensitivity.factors : []
+    }
+  };
+}
+
+
+// =============================================================================
+//   nunjucks 模板渲染
+// =============================================================================
+
+let nunjucksEnv = null;
+
+function setupNunjucks() {
+  if (nunjucksEnv) return nunjucksEnv;
+  nunjucksEnv = new nunjucks.Environment(null, { autoescape: false });
+  // 自定义过滤器
+  nunjucksEnv.addFilter('wan', v => isFinite(v) ? (v / 10000).toFixed(1) : '—');
+  nunjucksEnv.addFilter('pct', v => isFinite(v) ? (v * 100).toFixed(2) + '%' : '—');
+  nunjucksEnv.addFilter('thousand', v => isFinite(v) ? v.toLocaleString('zh-CN') : '—');
+  nunjucksEnv.addFilter('round', (v, d) => isFinite(v) ? Number(v).toFixed(d != null ? d : 0) : '—');
+  return nunjucksEnv;
+}
+
+function getTemplate(id) {
+  const el = document.getElementById('tpl-' + id);
+  return el ? el.textContent : '';
+}
+
+function renderChapter(chapterId, ctx) {
+  const tpl = getTemplate(chapterId);
+  if (!tpl) return '@@H1@@(章节模板缺失: ' + chapterId + ')\n';
+  try {
+    return nunjucksEnv.renderString(tpl, ctx);
+  } catch(e) {
+    console.error('章节渲染失败 ' + chapterId + ':', e);
+    return '@@H1@@(章节渲染失败: ' + chapterId + ')\n@@P@@错误: ' + e.message + '\n';
+  }
+}
+
+// =============================================================================
+//   生成可研报告 (主入口)
+// =============================================================================
+
+async function generateReport() {
+  const btn = document.getElementById('btnGenerate');
+  btn.disabled = true;
+  setStatus('① 正在拼装数据上下文…');
+
+  try {
+    // 1. 拼 context
+    setupNunjucks();
+    STATE.context = buildContext();
+
+    // 2. 渲染所有章节
+    setStatus('② 渲染 16 章模板…');
+    const chapters = [];
+    for (const ch of CHAPTERS) {
+      const text = renderChapter(ch.id, STATE.context);
+      chapters.push({ ...ch, text });
+    }
+
+    // 3. 加载 docx.js (懒加载)
+    setStatus('③ 加载 docx 库…');
+    await loadDocxLibrary();
+
+    // 4. 生成 docx (含图片预渲染)
+    setStatus('④ 渲染图表 + 拼装 docx 文档…');
+    const blob = await buildDocxBlob(chapters, STATE.context);
+
+    // 5. 下载
+    setStatus('⑤ 下载文件…');
+    const fname = `iRAS_可研报告_${STATE.data.species}_${STATE.data.yieldTons}t_${new Date().toISOString().slice(0,10)}.docx`;
+    triggerDownload(blob, fname);
+
+    setStatus(`✅ 报告已生成: ${fname}`, 'success');
+  } catch(e) {
+    console.error('生成报告失败:', e);
+    setStatus('❌ 生成失败: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// 懒加载 docx.js
+let _docxLib = null;
+async function loadDocxLibrary() {
+  if (_docxLib) return _docxLib;
+  await new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
+    s.onload = resolve;
+    s.onerror = () => reject(new Error('docx.js 加载失败 (网络问题或 CDN 不通)'));
+    document.head.appendChild(s);
+  });
+  if (typeof docx === 'undefined') throw new Error('docx 全局变量未注入');
+  _docxLib = docx;
+  return _docxLib;
+}
+
+// 把渲染后的 text 解析成 docx 的 children 数组
+function parseTextToDocxChildren(text, dx, images) {
+  const { Paragraph, HeadingLevel, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, ImageRun } = dx;
+  images = images || {};
+
+  // 把含 <strong>...</strong> 的文本拆成 TextRun 数组(粗体片段 + 普通片段)
+  function inlineRuns(s, baseOpts) {
+    baseOpts = baseOpts || { size: 21, font: 'SimSun' };
+    const runs = [];
+    const re = /<strong>(.*?)<\/strong>/g;
+    let last = 0, m;
+    while ((m = re.exec(s)) !== null) {
+      if (m.index > last) {
+        runs.push(new TextRun({ ...baseOpts, text: s.slice(last, m.index) }));
+      }
+      runs.push(new TextRun({ ...baseOpts, text: m[1], bold: true }));
+      last = m.index + m[0].length;
+    }
+    if (last < s.length) {
+      runs.push(new TextRun({ ...baseOpts, text: s.slice(last) }));
+    }
+    return runs.length > 0 ? runs : [new TextRun({ ...baseOpts, text: s })];
+  }
+  const lines = text.split('\n');
+  const children = [];
+  let i = 0;
+  while (i < lines.length) {
+    let line = lines[i];
+    if (!line.trim()) { i++; continue; }
+
+    // 表格
+    if (line.includes('@@TABLE@@')) {
+      const rows = [];
+      i++;
+      while (i < lines.length && !lines[i].includes('@@END_TABLE@@')) {
+        const row = lines[i].trim();
+        if (row && !row.startsWith('@@SUBTOTAL@@')) {
+          rows.push({ cells: row.split('|'), subtotal: false });
+        } else if (row.startsWith('@@SUBTOTAL@@')) {
+          rows.push({ cells: row.replace('@@SUBTOTAL@@','').split('|'), subtotal: true });
+        }
+        i++;
+      }
+      i++; // 跳过 END_TABLE
+      if (rows.length > 0) {
+        const tableRows = rows.map((r, idx) => new TableRow({
+          children: r.cells.map(c => new TableCell({
+            children: [new Paragraph({
+              children: inlineRuns(c.trim(), { size: 18, font: 'SimSun', bold: idx === 0 || r.subtotal }),
+              alignment: idx === 0 ? AlignmentType.CENTER : AlignmentType.LEFT
+            })],
+            shading: idx === 0 ? { fill: 'E0E7FF' } : (r.subtotal ? { fill: 'F1F5F9' } : undefined)
+          }))
+        }));
+        children.push(new Table({
+          rows: tableRows,
+          width: { size: 100, type: WidthType.PERCENTAGE }
+        }));
+        children.push(new Paragraph({ children: [new TextRun(' ')] })); // 表格后空行
+      }
+      continue;
+    }
+
+    // 列表
+    if (line.includes('@@LIST@@')) {
+      i++;
+      while (i < lines.length && !lines[i].includes('@@END_LIST@@')) {
+        const t = lines[i].trim();
+        if (t && t.startsWith('-')) {
+          children.push(new Paragraph({
+            children: inlineRuns(t.replace(/^-\s*/, ''), { size: 21, font: 'SimSun' }),
+            bullet: { level: 0 }
+          }));
+        }
+        i++;
+      }
+      i++;
+      continue;
+    }
+
+    // 图片 @@IMG@@id=xxx|caption=xxx|w=800|h=400@@
+    const imgMatch = line.match(/@@IMG@@([^@]*)@@/);
+    if (imgMatch) {
+      const params = {};
+      imgMatch[1].split('|').forEach(kv => {
+        const [k, v] = kv.split('=');
+        if (k && v != null) params[k.trim()] = v.trim();
+      });
+      const id = params.id;
+      const caption = params.caption || '';
+      const dispW = parseInt(params.w) || 600;
+      const dispH = parseInt(params.h) || 300;
+      const png = images[id];
+      if (png && png.length > 0 && ImageRun) {
+        try {
+          children.push(new Paragraph({
+            children: [new ImageRun({
+              data: png,
+              transformation: { width: dispW, height: dispH },
+              type: 'png'
+            })],
+            alignment: AlignmentType.CENTER,
+            spacing: { before: 200, after: 100 }
+          }));
+          if (caption) {
+            children.push(new Paragraph({
+              children: [new TextRun({ text: caption, size: 18, italics: true, color: '6B7280', font: 'SimSun' })],
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 200 }
+            }));
+          }
+        } catch(e) {
+          // 渲染失败时退化为文本提示
+          children.push(new Paragraph({
+            children: [new TextRun({ text: '[图片渲染失败: ' + id + ']', size: 21, color: 'DC2626' })],
+            alignment: AlignmentType.CENTER
+          }));
+        }
+      } else {
+        // 图片不可用时退化为文本占位
+        children.push(new Paragraph({
+          children: [new TextRun({ text: '[' + (caption || '图片: ' + id) + ' — 未生成]', size: 21, italics: true, color: '94A3B8' })],
+          alignment: AlignmentType.CENTER
+        }));
+      }
+      i++; continue;
+    }
+
+    // 标题 H1
+    const h1Match = line.match(/@@H1@@(.*)/);
+    if (h1Match) {
+      children.push(new Paragraph({
+        children: [new TextRun({ text: h1Match[1].trim(), bold: true, size: 32, font: 'SimHei' })],
+        heading: HeadingLevel.HEADING_1,
+        spacing: { before: 400, after: 200 }
+      }));
+      i++; continue;
+    }
+    // H2
+    const h2Match = line.match(/@@H2@@(.*)/);
+    if (h2Match) {
+      children.push(new Paragraph({
+        children: [new TextRun({ text: h2Match[1].trim(), bold: true, size: 26, font: 'SimHei' })],
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 300, after: 150 }
+      }));
+      i++; continue;
+    }
+    // H3
+    const h3Match = line.match(/@@H3@@(.*)/);
+    if (h3Match) {
+      children.push(new Paragraph({
+        children: [new TextRun({ text: h3Match[1].trim(), bold: true, size: 22, font: 'SimHei' })],
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 250, after: 120 }
+      }));
+      i++; continue;
+    }
+    // 段落 P (显式或隐式)
+    let paraText = line;
+    const pMatch = line.match(/@@P@@(.*)/);
+    if (pMatch) paraText = pMatch[1];
+    // 默认正文
+    children.push(new Paragraph({
+      children: inlineRuns(paraText.trim(), { size: 21, font: 'SimSun' }),
+      spacing: { line: 360, after: 100 },
+      indent: { firstLine: 420 }  // 首行缩进 2 字符
+    }));
+    i++;
+  }
+  return children;
+}
+
+// 预渲染所有 SVG 图为 PNG (异步, 浏览器侧)
+// 返回 { processFlow, tornado, cashflow } 三张图的 PNG Uint8Array
+async function preRenderImages(ctx) {
+  const images = {};
+  // 1. 工艺流程示意图
+  try {
+    const svg1 = buildProcessFlowSvg(ctx);
+    images.processFlow = await svgToPngBytes(svg1, 1200, 500);
+  } catch(e) {
+    console.warn('processFlow 渲染失败:', e); images.processFlow = null;
+  }
+  // 2. Tornado
+  try {
+    const sens = (ctx.finance && ctx.finance.tables && ctx.finance.tables.sensitivity) || [];
+    if (sens.length > 0) {
+      const svg2 = buildTornadoSvg(ctx);
+      const tornadoH = 60 + sens.length * 50 + 60;
+      images.tornado = await svgToPngBytes(svg2, 800, tornadoH);
+    }
+  } catch(e) {
+    console.warn('tornado 渲染失败:', e); images.tornado = null;
+  }
+  // 3. 累计现金流
+  try {
+    const cf = (ctx.finance && ctx.finance.tables && ctx.finance.tables.cashflowTotal) || [];
+    if (cf.length > 0) {
+      const svg3 = buildCashflowSvg(ctx);
+      images.cashflow = await svgToPngBytes(svg3, 800, 420);
+    }
+  } catch(e) {
+    console.warn('cashflow 渲染失败:', e); images.cashflow = null;
+  }
+  return images;
+}
+
+// 拼装 docx Blob
+async function buildDocxBlob(chapters, ctx) {
+  const dx = await loadDocxLibrary();
+  const { Document, Packer, Paragraph, TextRun, AlignmentType, PageBreak } = dx;
+
+  // 预渲染所有图片为 PNG
+  const images = await preRenderImages(ctx);
+
+  const allChildren = [];
+
+  // 封面
+  allChildren.push(new Paragraph({
+    children: [new TextRun({ text: ctx.project.name, bold: true, size: 56, font: 'SimHei' })],
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 4000, after: 800 }
+  }));
+  allChildren.push(new Paragraph({
+    children: [new TextRun({ text: '可行性研究报告', bold: true, size: 40, font: 'SimHei' })],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 400 }
+  }));
+  allChildren.push(new Paragraph({
+    children: [new TextRun({ text: ctx.project.owner, size: 28, font: 'SimSun' })],
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 800, after: 200 }
+  }));
+  allChildren.push(new Paragraph({
+    children: [new TextRun({ text: ctx.project.editor + ' · ' + ctx.project.editDate, size: 24, font: 'SimSun' })],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 200 }
+  }));
+  allChildren.push(new Paragraph({
+    children: [new TextRun({ text: '由 iRAS v' + ctx.meta.irasVersion + ' 自动生成', size: 18, italics: true, color: '6B7280' })],
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 4000 },
+    pageBreakBefore: false
+  }));
+  allChildren.push(new Paragraph({ children: [new PageBreak()] }));
+
+  // 各章
+  chapters.forEach((ch, idx) => {
+    const childrenOfChapter = parseTextToDocxChildren(ch.text, dx, images);
+    childrenOfChapter.forEach(c => allChildren.push(c));
+    if (idx < chapters.length - 1) {
+      allChildren.push(new Paragraph({ children: [new PageBreak()] }));
+    }
+  });
+
+  const doc = new Document({
+    creator: 'iRAS v' + ctx.meta.irasVersion,
+    title: ctx.project.name + ' - 可行性研究报告',
+    description: 'iRAS 自动生成的可行性研究报告',
+    styles: {
+      default: {
+        document: {
+          run: { font: 'SimSun', size: 21 }
+        }
+      }
+    },
+    sections: [{
+      properties: {
+        page: {
+          margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }  // 1 英寸 = 1440 twip
+        }
+      },
+      children: allChildren
+    }]
+  });
+
+  return await Packer.toBlob(doc);
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// =============================================================================
+//   事件绑定
+// =============================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (tryLoadData()) {
+    bootstrap();
+  } else {
+    // 没数据, bootstrap 会显示 empty state
+    loadFormFromStorage();
+    bootstrap();
+  }
+
+  // v1.5 Bug 37: 全局拖拽 JSON 加载
+  document.body.addEventListener('dragover', (e) => { e.preventDefault(); });
+  document.body.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const parsed = JSON.parse(ev.target.result);
+        if (!parsed.pidSchema && !(parsed.results && parsed.results.summary && parsed.results.summary.finance)) {
+          alert('JSON 格式不识别. 请确认这是从主页面下载的「可研报告数据」备份, 不是「保存方案」原始 JSON.');
+          return;
+        }
+        STATE.data = parsed;
+        bootstrap();
+      } catch (err) { alert('JSON 解析失败: ' + err.message); }
+    };
+    reader.readAsText(file);
+  });
+
+  // 顶栏按钮
+  document.getElementById('btnReloadData').addEventListener('click', () => {
+    if (tryLoadData()) {
+      bootstrap();
+      setStatus('数据已重新载入', 'success');
+    } else {
+      setStatus('未找到方案数据,请到主页面重新点击 📄 生成可研报告', 'error');
+    }
+  });
+
+  document.getElementById('btnClearForm').addEventListener('click', () => {
+    if (confirm('确认清空所有表单字段?')) {
+      STATE.form = {};
+      saveFormToStorage();
+      bootstrap();  // 重新渲染
+    }
+  });
+
+  // postMessage 监听 (主页面再次点 → 通知刷新)
+  window.addEventListener('message', (ev) => {
+    if (ev && ev.data && ev.data.type === 'iRAS_REPORT_RELOAD') {
+      tryLoadData();
+      bootstrap();
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<!--
+  iRAS 设备清单 (Equipment List) — v1.3 配套独立页面
+
+  数据源: sessionStorage['iRAS_pidExport'] (从 iRAS 主页面 "导出设备清单" 按钮传入)
+         或用户手动加载 JSON 文件
+
+  Copyright (C) 2026 海南登登科技咨询有限公司
+  AGPL v3
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iRAS 设备清单 v1.3</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  header h1 { font-size: 18px; color: #67e8f9; }
+  header .meta { color: #94a3b8; font-size: 12px; margin-top: 4px; }
+  header .actions { display: flex; gap: 8px; }
+  header button, header label {
+    background: #334155;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  header button:hover, header label:hover { background: #475569; }
+  header .print-btn { background: #065f46; border-color: #047857; color: #d1fae5; }
+  main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #1e293b;
+    border-radius: 12px;
+    border: 1px dashed #475569;
+  }
+  .empty-state h2 { font-size: 18px; margin-bottom: 12px; color: #cbd5e1; }
+  .empty-state p { color: #94a3b8; margin-bottom: 20px; line-height: 1.7; }
+
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px; margin-bottom: 24px;
+  }
+  .summary-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;
+  }
+  .summary-card .label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+  .summary-card .value { font-size: 22px; font-weight: bold; color: #67e8f9; font-family: monospace; margin-top: 4px; }
+  .summary-card .sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  .stage-block {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .stage-header {
+    background: linear-gradient(90deg, #164e63 0%, #1e293b 100%);
+    padding: 14px 20px;
+    border-bottom: 1px solid #334155;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .stage-header h2 { font-size: 16px; color: #67e8f9; }
+  .stage-header .stage-meta { color: #cbd5e1; font-size: 12px; }
+  .stage-body { padding: 16px 20px; }
+
+  table.equip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+  table.equip-table th {
+    text-align: left;
+    padding: 8px 10px;
+    background: #0f172a;
+    border-bottom: 1px solid #475569;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  table.equip-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #334155;
+    vertical-align: top;
+  }
+  table.equip-table tr:hover { background: #0f172a; }
+  table.equip-table .tag {
+    font-family: monospace; color: #fbbf24; font-weight: bold;
+  }
+  table.equip-table .qty { font-family: monospace; color: #67e8f9; }
+  table.equip-table .spec { color: #cbd5e1; }
+  table.equip-table .note { color: #94a3b8; font-size: 11px; }
+  table.equip-table .badge-spare { display: inline-block; background: #92400e; color: #fef3c7; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 6px; }
+  table.equip-table .badge-mod { display: inline-block; background: #1e3a8a; color: #dbeafe; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 6px; }
+
+  .section-label {
+    margin-top: 16px;
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+
+  .modular-banner {
+    background: #1e3a8a40;
+    border: 1px solid #1e40af;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+  }
+  .modular-banner .title { color: #93c5fd; font-size: 12px; font-weight: bold; }
+  .modular-banner .desc { color: #cbd5e1; font-size: 11px; margin-top: 2px; }
+
+  @media print {
+    body { background: white; color: #111; font-size: 11px; }
+    header { position: static; background: white; border-bottom: 2px solid #444; }
+    header h1 { color: #111; }
+    header .actions { display: none; }
+    .stage-block, .summary-card { background: white; border: 1px solid #888; }
+    .stage-header { background: #eee; color: #111; border-bottom: 1px solid #444; }
+    .stage-header h2 { color: #111; }
+    table.equip-table th { background: #ddd; color: #111; }
+    table.equip-table .tag { color: #92400e; }
+    table.equip-table .qty { color: #1e40af; }
+    .modular-banner { background: #f0f9ff; border-color: #1e40af; }
+  }
+</style>
+</head>
+<body>
+<header class="no-print">
+  <div>
+    <h1>📋 iRAS 设备清单</h1>
+    <div class="meta" id="metaLine">未加载方案</div>
+  </div>
+  <div class="actions">
+    <input type="file" id="fileLoad" accept=".json" style="display:none">
+    <button id="btnLoad">📂 加载 JSON</button>
+    <button id="btnPrint" class="print-btn">🖨️ 打印 / 导出 PDF</button>
+  </div>
+</header>
+<main id="mainContent">
+  <div class="empty-state">
+    <h2>等待加载方案数据</h2>
+    <p>请从 iRAS 主页面点击 <strong>📋 导出设备清单</strong> 按钮 (会自动跳转到本页), 或在此页面点击 <strong>📂 加载 JSON</strong> 选择已保存的方案文件。</p>
+  </div>
+</main>
+
+<script>
+"use strict";
+
+const STATE = { data: null };
+
+function fmtNum(v, digits) {
+  if (v == null || !Number.isFinite(v)) return '—';
+  return Number(v).toFixed(digits == null ? 1 : digits);
+}
+function fmtKw(v) { return v != null && Number.isFinite(v) ? v.toFixed(1) + ' kW' : '—'; }
+function fmtM3h(v) { return v != null && Number.isFinite(v) ? v.toFixed(0) + ' m³/h' : '—'; }
+function fmtM3(v) { return v != null && Number.isFinite(v) ? v.toFixed(1) + ' m³' : '—'; }
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+function renderEmpty() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="empty-state">
+      <h2>等待加载方案数据</h2>
+      <p>三种方式加载方案:</p>
+      <p style="text-align: left; max-width: 600px; margin: 0 auto;">
+        <strong style="color: #67e8f9;">推荐:</strong> 在 iRAS 主页面 (<code style="background:#0f172a; padding:2px 6px; border-radius:3px;">index.html</code>) 点击 <strong>📋 导出设备清单</strong> 按钮 — 会自动跳转到本页并加载数据。<br><br>
+        <strong style="color: #67e8f9;">手动:</strong> 在主页面点 <strong>💾 保存方案</strong> 下载 JSON 文件后, 再点击右上角 <strong>📂 加载 JSON</strong> 选择该文件。<br><br>
+        <strong style="color: #fbbf24;">⚠️ 提示:</strong> 加载方案前, 请确保主页面已完成计算 (综合成本不为 "—")。
+      </p>
+    </div>`;
+  document.getElementById('metaLine').textContent = '未加载方案';
+}
+
+function renderAll(data) {
+  if (!data || !data.results || !data.results.perStage) {
+    renderEmpty();
+    return;
+  }
+  document.getElementById('metaLine').textContent =
+    `${data.speciesName || data.species} · 年产 ${data.yieldTons} t · 保存时间 ${new Date(data.savedAt).toLocaleString('zh-CN')}`;
+
+  let html = renderSummary(data);
+  data.results.perStage.forEach((stage, idx) => {
+    html += renderStage(stage, idx, data);
+  });
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function renderSummary(data) {
+  const s = data.results.summary || {};
+  return `
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="label">鱼种</div>
+        <div class="value" style="font-size:16px">${escapeHtml(data.speciesName || data.species)}</div>
+        <div class="sub">tan 系数 ${data.tanCoef}</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">年产量</div>
+        <div class="value">${data.yieldTons || 0}<span style="font-size:13px"> t</span></div>
+        <div class="sub">阶段数 ${data.results.perStage.length}</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">设计阶段</div>
+        <div class="value" style="font-size:16px">${escapeHtml(s.designStage || '—')}</div>
+        <div class="sub">峰值流量 ${s.peakFlowM3H || 0} m³/h</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">系统总水体</div>
+        <div class="value">${s.totalSystemVolume || 0}<span style="font-size:13px"> m³</span></div>
+        <div class="sub">液氧 ${s.totalLOXKgD || 0} kg/d</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderStage(stage, idx, data) {
+  const e = stage.equipment || {};
+  const p = stage.pumps || {};
+  const f = stage.farm || {};
+  const fl = stage.flow || {};
+  const lo = stage.load || {};
+  const t = stage.thermal || null;
+  const mod = stage.modular || null;
+
+  // v1.3.x: 取阶段并联套数 (来自 stages[idx].subSystemCount)
+  const stageInputData = (data.stages && data.stages[idx]) || {};
+  const subSets = stageInputData.subSystemCount || 1;
+  const setSuffix = subSets > 1 ? ` · 用户设定 ${subSets} 套并联` : '';
+
+  let modBanner = '';
+  if (mod && mod.numModules > 1) {
+    modBanner = `
+      <div class="modular-banner">
+        <div class="title">🏗️ 多模块并联设计 — 该阶段共 ${mod.numModules} 个模块${setSuffix}</div>
+        <div class="desc">每模块独立循环系统, 模块内 N+1 备用 (主泵/风机/RDF/热泵), UV 2×75% 并联. 全场共用: 液氧站 + 应急柴油机 + 双套变压器</div>
+      </div>`;
+  }
+
+  // v1.3.x: 鱼池配置 (布置设计起点)
+  let poolBanner = '';
+  if (mod && mod.pools) {
+    const p = mod.pools;
+    const poolDesignNote = ` (用户设定每套 ${p.poolsPerSet} 池 × ${p.depth_m}m深, 反推 Φ${p.diameter_m}m)`;
+    poolBanner = `
+      <div class="modular-banner" style="background: #0c4a6e40; border-color: #0369a1;">
+        <div class="title" style="color: #7dd3fc;">🐟 鱼池配置 — ${p.count} 个池 × Φ${p.diameter_m}m × ${p.depth_m}m × ${p.volume_m3} m³/池</div>
+        <div class="desc">${mod.numModules > 1 ? `每套 ${p.countPerModule} 池, ` : ''}单池池面积 ${p.surfaceArea_m2} m²${poolDesignNote}${p.advisory ? `<br><span style="color: #fbbf24;">⚠️ ${p.advisory}</span>` : ''}</div>
+      </div>`;
+  }
+
+  // 处理设备表
+  const equipRows = [];
+  // v1.3.x: 鱼池作为首要设备
+  if (mod && mod.pools) {
+    const p = mod.pools;
+    equipRows.push({
+      label: '🐟 鱼池',
+      tag: 'T-101',
+      qty: `${p.count} 个${mod.numModules > 1 ? ` <span class="badge-mod">×${mod.numModules}套</span>` : ''}<br><span style="font-size:10px;color:#94a3b8">每套 ${p.countPerModule} 池</span>`,
+      spec: `Φ${p.diameter_m}m × ${p.depth_m}m, ${p.volume_m3} m³/池`,
+      note: `圆形池 (自清洁) · 池面积 ${p.surfaceArea_m2} m²/池`
+    });
+  }
+  if (e.rdf) equipRows.push(rowFromMod('RDF 微滤机', 'F-201', mod && mod.modulePerSpec.rdf, fmtM3h(e.rdf.flow), `${e.rdf.tssEff}% TSS 去除`));
+  if (e.bf) equipRows.push(rowFromVol('生物滤池 (MBBR)', 'B-301', e.bf.volume, `填料 K1/K3 · ${e.bf.fillRatio || 50}% 填充`, `VTR ${(e.bf.vtrAtT || 0).toFixed(0)} g/m³·d · 设计 TAN ${(e.bf.designTAN || 0).toFixed(1)} kg/d`));
+  if (e.uv) equipRows.push(rowFromMod('UV 反应器', 'D-401', mod && mod.modulePerSpec.uv, fmtKw(e.uv.powerKw), `剂量 ${e.uv.dose} mJ/cm² · 流量 ${(e.uv.flow||0).toFixed(0)} m³/h`));
+  if (e.co2 && e.co2.enabled) {
+    const sp = e.co2.spec || {};
+    equipRows.push(rowFromVol('CO₂ 脱气塔', 'C-501', sp.area, `截面积 ${sp.area ? sp.area.toFixed(1) : '—'} m²`, `脱气率 ${e.co2.eff}% · G:L=${e.co2.gToL} · 风机 ${sp.blowerKw ? sp.blowerKw.toFixed(1) : '—'} kW`));
+  }
+  if (e.o2cone && e.o2cone.enabled) {
+    const sp = e.o2cone.spec || {};
+    equipRows.push({
+      label: '液氧增氧塔', tag: 'A-601', qty: '1 套',
+      spec: `${sp.param2Value || '—'} · 峰值供氧 ${e.o2cone.peakSupplyKgH ? e.o2cone.peakSupplyKgH.toFixed(2) : '—'} kg/h`,
+      note: `DO 目标 ${e.o2cone.satTarget}% · 吸收 ${e.o2cone.absorptionEff}%`
+    });
+  }
+  if (e.skimmer && e.skimmer.enabled) {
+    equipRows.push(rowFromVol('蛋白分离器', 'S-701', e.skimmer.volume, `${e.skimmer.mode === 'ozone' ? '臭氧增效' : '空气'}模式 · ${e.skimmer.flowPct}% 旁路`, `DOM 去除 ${e.skimmer.domEff}% · 臭氧 ${(e.skimmer.ozoneKgD||0).toFixed(2)} kg/d`));
+  }
+  if (e.aop && e.aop.enabled) {
+    equipRows.push(rowFromVol('AOP 反应器', 'X-901', e.aop.volume, `${e.aop.type === 'integrated' ? '集成型 UV+O₃' : '分体式 UV+O₃'} · ${e.aop.flowPct}% 旁路`, `geosmin 去除 ${e.aop.geosminEff}% · DOM ${e.aop.domEff}% · 臭氧 ${(e.aop.ozoneKgD||0).toFixed(2)} kg/d`));
+  }
+  if (e.denitri && e.denitri.enabled) {
+    equipRows.push(rowFromVol('反硝化反应器', 'R-801', e.denitri.volume, `MBBR · ${e.denitri.flowPct}% 旁路 · ${e.denitri.no3Eff}% NO₃ 去除`, `脱氮 ${(e.denitri.no3RemovedKgD||0).toFixed(1)} kg/d · 甲醇 ${(e.denitri.methanolKgD||0).toFixed(1)} kg/d`));
+  }
+  if (e.ozoneGen && e.ozoneGen.totalKgD > 0) {
+    const ozMod = mod && mod.modulePerSpec.ozoneGenerator;
+    equipRows.push(rowFromMod('臭氧发生器', 'G-901', ozMod, fmtKw(e.ozoneGen.powerKw), `产量 ${(e.ozoneGen.totalKgD||0).toFixed(2)} kg/d`));
+  }
+  if (e.bfBlower && e.bfBlower.spec) {
+    const sp = e.bfBlower.spec;
+    const bfMod = mod && mod.modulePerSpec.bfBlower;
+    equipRows.push(rowFromMod('BF 曝气风机', 'K-302', bfMod, fmtKw(sp.power), `风量 ${(sp.airFlow||0).toFixed(1)} m³/min · 峰值供氧 ${(sp.o2PeakKgH||0).toFixed(1)} kg/h`));
+  }
+
+  // 泵清单 (v1.3.x: 支路泵和反冲泵都已纳入模块化规格, 支持 1+1 备)
+  const pumpRows = [];
+  if (p.main && p.main.kw > 0) {
+    const mainMod = mod && mod.modulePerSpec.mainPump;
+    pumpRows.push(rowFromMod('主循环泵', 'P-101', mainMod, fmtKw(p.main.kw), `${(p.main.flow||0).toFixed(0)} m³/h · H=${p.main.headM}m · η=${p.main.eta}% · ${p.main.vfd ? 'VFD' : '定速'}`));
+  }
+  if (p.uvBranch && p.uvBranch.needed && p.uvBranch.kw > 0) {
+    const uvMod = mod && mod.modulePerSpec.uvBranchPump;
+    pumpRows.push(rowFromMod('UV 支路泵', 'P-401', uvMod, fmtKw(p.uvBranch.kw), 'UV 支路循环'));
+  }
+  if (p.denitriBranch && p.denitriBranch.needed && p.denitriBranch.kw > 0) {
+    const denitriMod = mod && mod.modulePerSpec.denitriBranchPump;
+    pumpRows.push(rowFromMod('反硝化支路泵', 'P-601', denitriMod, fmtKw(p.denitriBranch.kw), '反硝化反应器进水'));
+  }
+  if (p.aopBranch && p.aopBranch.needed && p.aopBranch.kw > 0) {
+    const aopMod = mod && mod.modulePerSpec.aopBranchPump;
+    pumpRows.push(rowFromMod('AOP 支路泵', 'P-701', aopMod, fmtKw(p.aopBranch.kw), 'AOP 反应器进水'));
+  }
+  if (p.skimmerBranch && p.skimmerBranch.needed && p.skimmerBranch.kw > 0) {
+    const skMod = mod && mod.modulePerSpec.skimmerBranchPump;
+    pumpRows.push(rowFromMod('蛋分支路泵', 'P-501', skMod, fmtKw(p.skimmerBranch.kw), '蛋白分离器进水'));
+  }
+  if (p.backwash && p.backwash.kw > 0) {
+    const bwMod = mod && mod.modulePerSpec.backwashPump;
+    pumpRows.push(rowFromMod('RDF 反冲泵', 'P-202', bwMod, fmtKw(p.backwash.kw), p.backwash.duty || 'RDF 反冲'));
+  }
+  // v1.3.x: 加药泵 1+1 备
+  if (mod && mod.modulePerSpec.methanolDosing) {
+    const dm = mod.modulePerSpec.methanolDosing;
+    pumpRows.push(rowFromMod('甲醇加药泵', 'P-801', dm, '小型计量泵', '反硝化碳源加药'));
+  }
+  if (mod && mod.modulePerSpec.naHCO3Dosing) {
+    const dm = mod.modulePerSpec.naHCO3Dosing;
+    pumpRows.push(rowFromMod('NaHCO₃ 加药泵', 'P-802', dm, '小型计量泵', 'pH/碱度维持'));
+  }
+
+  // 热泵
+  const thermalRows = [];
+  if (t && t.needsThermal && t.heatPumpKWhPerDay > 0) {
+    const hpKw = t.heatPumpKWhPerDay / 16;
+    const hpMod = mod && mod.modulePerSpec.heatPump;
+    thermalRows.push(rowFromMod('热泵机组', 'H-801', hpMod, fmtKw(hpKw),
+      `${t.mode === 'cool' ? '🥶 制冷' : '🔥 制热'} · COP=${t.cop ? t.cop.toFixed(2) : '—'} · 日耗 ${t.heatPumpKWhPerDay.toFixed(0)} kWh`));
+  }
+
+  return `
+    <div class="stage-block">
+      <div class="stage-header">
+        <div>
+          <h2>阶段 ${idx+1} · ${escapeHtml(stage.stageName)}</h2>
+          <div class="stage-meta">${(f.biomass/1000).toFixed(1)} t 存塘 · ${(fl.volumeTank||0).toFixed(0)} m³ 鱼池 · ${(fl.flowMain||0).toFixed(0)} m³/h 循环 · ${fl.tempOpt}°C · 密度 ${f.density} kg/m³${fl.salinity > 0 ? ' · 盐度 ' + fl.salinity + '‰' : ''}</div>
+        </div>
+        <div style="text-align: right; color: #94a3b8; font-size: 11px;">
+          投喂 ${(lo.feedAvg||0).toFixed(0)} kg/d (avg) · ${(lo.feedMax||0).toFixed(0)} kg/d (max)<br>
+          TAN ${(lo.tanDaily||0).toFixed(1)} kg/d · 耗氧 ${(lo.o2DailyTotal||0).toFixed(0)} kg/d
+        </div>
+      </div>
+      <div class="stage-body">
+        ${modBanner}
+        ${poolBanner}
+
+        <div class="section-label">⚙️ 处理工艺设备</div>
+        <table class="equip-table">
+          <thead><tr><th style="width:18%">设备</th><th style="width:10%">位号</th><th style="width:14%">数量/规格</th><th style="width:18%">主要参数</th><th>备注</th></tr></thead>
+          <tbody>
+            ${equipRows.map(r => `
+              <tr>
+                <td>${escapeHtml(r.label)}</td>
+                <td class="tag">${escapeHtml(r.tag)}</td>
+                <td class="qty">${r.qty || '—'}</td>
+                <td class="spec">${escapeHtml(r.spec || '')}</td>
+                <td class="note">${escapeHtml(r.note || '')}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+
+        <div class="section-label">💧 泵清单</div>
+        <table class="equip-table">
+          <thead><tr><th style="width:18%">泵</th><th style="width:10%">位号</th><th style="width:14%">数量</th><th style="width:18%">轴功率</th><th>规格</th></tr></thead>
+          <tbody>
+            ${pumpRows.map(r => `
+              <tr>
+                <td>${escapeHtml(r.label)}</td>
+                <td class="tag">${escapeHtml(r.tag)}</td>
+                <td class="qty">${r.qty || '—'}</td>
+                <td class="spec">${escapeHtml(r.spec || '')}</td>
+                <td class="note">${escapeHtml(r.note || '')}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+
+        ${thermalRows.length > 0 ? `
+          <div class="section-label">♨️ 热泵 / 温控</div>
+          <table class="equip-table">
+            <thead><tr><th style="width:18%">设备</th><th style="width:10%">位号</th><th style="width:14%">数量</th><th style="width:18%">单机规格</th><th>主要参数</th></tr></thead>
+            <tbody>
+              ${thermalRows.map(r => `
+                <tr>
+                  <td>${escapeHtml(r.label)}</td>
+                  <td class="tag">${escapeHtml(r.tag)}</td>
+                  <td class="qty">${r.qty || '—'}</td>
+                  <td class="spec">${escapeHtml(r.spec || '')}</td>
+                  <td class="note">${escapeHtml(r.note || '')}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>` : ''}
+      </div>
+    </div>`;
+}
+
+// 辅助函数: 根据模块化数据生成"数量"列
+function rowFromMod(label, tag, modSpec, perUnitSpec, note) {
+  if (modSpec) {
+    const totalUnits = modSpec.totalCount * (modSpec.modules || 1);
+    const sparing = modSpec.sparing || (modSpec.sparesCount > 0 ? 'N+1' : '');
+    const qtyHtml = `${modSpec.N}台${modSpec.sparesCount > 0 ? '+' + modSpec.sparesCount + '备' : ''} <span class="badge-mod">×${modSpec.modules || 1}模块</span>`;
+    return {
+      label, tag,
+      qty: qtyHtml + `<br><span style="font-size:10px; color:#94a3b8">全场共 ${totalUnits} 台</span>`,
+      spec: `单台 ${perUnitSpec}` + (sparing ? ` (${sparing})` : ''),
+      note: note || ''
+    };
+  }
+  return { label, tag, qty: '1 套', spec: perUnitSpec, note: note || '' };
+}
+function rowFromVol(label, tag, volume, sizing, note) {
+  // 单列静设备: 标记"单列 + 旁路"以体现工程设计意图
+  const qtyHtml = `1 套<br><span style="font-size:10px; color:#94a3b8">单列 + 旁路阀</span>`;
+  return { label, tag, qty: qtyHtml, spec: fmtM3(volume) + (sizing ? ` · ${sizing}` : ''), note: note || '' };
+}
+
+// ─── 数据加载 ───
+// v1.3.x: 改用独立 key iRAS_equipmentExport (与 pid.html 用的 iRAS_pidExport 分开),
+// 让 P&ID 窗口和设备清单窗口可以同时显示最新数据, 互不干扰.
+// 改用 localStorage (同源跨 tab 共享), 解决某些浏览器 window.open 时 sessionStorage 不继承的问题.
+const SHARE_KEY = 'iRAS_equipmentExport';
+function tryLoadFromSession() {
+  try {
+    // 优先 localStorage, 退回 sessionStorage; 兼容老版数据 pidExport
+    let stashed =
+      localStorage.getItem(SHARE_KEY) ||
+      sessionStorage.getItem(SHARE_KEY) ||
+      localStorage.getItem('iRAS_pidExport') ||
+      sessionStorage.getItem('iRAS_pidExport');
+    if (stashed) {
+      STATE.data = JSON.parse(stashed);
+      renderAll(STATE.data);
+      // 用完即清所有可能的副本
+      try { localStorage.removeItem(SHARE_KEY); } catch(e) {}
+      try { sessionStorage.removeItem(SHARE_KEY); } catch(e) {}
+      try { localStorage.removeItem('iRAS_pidExport'); } catch(e) {}
+      try { sessionStorage.removeItem('iRAS_pidExport'); } catch(e) {}
+      return true;
+    }
+  } catch(e) { console.warn('storage 读取失败:', e); }
+  return false;
+}
+
+function loadFromFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    let data;
+    try {
+      data = JSON.parse(e.target.result);
+    } catch(err) {
+      alert('JSON 解析失败: ' + err.message);
+      return;
+    }
+    // 校验 schema
+    if (!data || typeof data !== 'object') {
+      alert('文件格式不正确: 不是有效的 JSON 对象');
+      return;
+    }
+    if (!data.results || !data.results.perStage || !Array.isArray(data.results.perStage)) {
+      // 旧版 v1.2 保存的方案 (没有 results 字段) — 给清晰的指引
+      const isOldScheme = data.stages && Array.isArray(data.stages);
+      if (isOldScheme) {
+        alert(
+          '该方案是早期版本保存的, 不含设备清单数据 (results 字段缺失)。\n\n' +
+          '解决方法:\n' +
+          '1. 在 iRAS 主页面 (index.html) 加载该方案\n' +
+          '2. 等待计算完成 (右上角综合成本显示数字)\n' +
+          '3. 重新点击 "💾 保存方案" 重新下载\n' +
+          '4. 用新的 JSON 文件加载到本页面\n\n' +
+          '或者: 直接从 iRAS 主页面点 "📋 导出设备清单" 按钮跳转过来 (推荐)'
+        );
+      } else {
+        alert('文件 schema 不兼容: 缺少 results.perStage 字段');
+      }
+      return;
+    }
+    STATE.data = data;
+    renderAll(STATE.data);
+  };
+  reader.readAsText(file);
+}
+
+// ─── 事件 ───
+document.getElementById('btnLoad').addEventListener('click', () => {
+  document.getElementById('fileLoad').click();
+});
+document.getElementById('fileLoad').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (f) loadFromFile(f);
+  e.target.value = '';
+});
+document.getElementById('btnPrint').addEventListener('click', () => window.print());
+
+// ─── 启动 ───
+document.addEventListener('DOMContentLoaded', () => {
+  if (!tryLoadFromSession()) {
+    renderEmpty();
+  }
+
+  // v1.3.x: 复用窗口场景 — 主页面再次点 "导出设备清单" 时, 通过 postMessage 通知本页重新加载
+  // (注: 监听器放 DOMContentLoaded 内, 确保 DOM 已就绪, renderAll 不会因找不到节点失败)
+  window.addEventListener('message', (ev) => {
+    if (ev && ev.data && ev.data.type === 'iRAS_EQUIPMENT_RELOAD') {
+      tryLoadFromSession();
+    }
+  });
+});
+</script>
+</body>
+</html>
