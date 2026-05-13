@@ -252,182 +252,492 @@
   .stage-num-input::-webkit-outer-spin-button,
   .stage-num-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  /* ====== 打印样式: 白底 + 展开所有折叠 + 隐藏操作元素 ====== */
-  @media print {
-    /* 白底黑字 */
-    body, html { background: #fff !important; color: #111 !important; }
-    * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+  /* v1.6: 阶段卡片整体可折叠 (details + summary 模式) */
+  .stage-card > summary.stage-summary,
+  .top-card > summary.top-summary {
+    /* 去掉默认三角标识 */
+    list-style: none;
+  }
+  .stage-card > summary.stage-summary::-webkit-details-marker,
+  .stage-card > summary.stage-summary::marker,
+  .top-card > summary.top-summary::-webkit-details-marker,
+  .top-card > summary.top-summary::marker {
+    display: none;
+  }
+  /* 自己的展开/折叠标识 (▸ 折叠 / ▾ 展开) */
+  .stage-card > summary.stage-summary > .section-title::before,
+  .top-card > summary.top-summary > .section-title::before {
+    content: "▾ ";
+    color: rgb(34 211 238 / 0.7);  /* cyan-400/70 */
+    font-size: 0.9em;
+    margin-right: 4px;
+    display: inline-block;
+    transition: transform 0.15s;
+  }
+  .stage-card:not([open]) > summary.stage-summary > .section-title::before,
+  .top-card:not([open]) > summary.top-summary > .section-title::before {
+    content: "▸ ";
+  }
+  /* 折叠时 hover 加效果, 提示可点击 */
+  .stage-card:not([open]) > summary.stage-summary:hover,
+  .top-card:not([open]) > summary.top-summary:hover {
+    background: rgba(34, 211, 238, 0.05);
+  }
+  .stage-card:not([open]) > summary.stage-summary,
+  .top-card:not([open]) > summary.top-summary {
+    /* 折叠时, summary 也是整个卡片的全部内容, mb 多余 */
+    margin-bottom: 0 !important;
+  }
 
-    /* 隐藏不需要打印的元素 */
+  /* ====== 打印样式: 纯黑白 + 简洁布局 + A4 友好 + v1.5.1 重写 ====== */
+  @media print {
+    /* ---- A4 页面 + 边距 ---- */
+    @page {
+      size: A4;
+      margin: 1.5cm 1.2cm 1.5cm 1.2cm;
+    }
+
+    /* ---- 全局: 白底黑字 + 通用字体 ---- */
+    html, body {
+      background: #fff !important;
+      color: #000 !important;
+      font-family: "宋体", "SimSun", serif !important;
+      font-size: 10pt !important;
+      line-height: 1.4 !important;
+    }
+    * {
+      color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      /* 强制所有颜色变黑 */
+      color: #000 !important;
+      text-shadow: none !important;
+      background-image: none !important;
+    }
+
+    /* ---- 隐藏所有交互/装饰元素 ---- */
     .no-print,
     header,
+    footer,
     #speciesSelector,
     #stageNav,
     #btnAddStage,
+    #btnHelp,
     [data-delete-stage],
     [data-proc-reset],
-    [data-stage-reset] { display: none !important; }
+    [data-stage-reset],
+    /* 隐藏可编辑控件 (单价配置) */
+    #equipPriceGrid,
+    /* 隐藏阶段卡片头部右上角的"套数/鱼池配置/删除"chip */
+    .bg-cyan-950\/40,
+    /* 隐藏按钮 */
+    button,
+    /* 隐藏 tab 切换 (用不上, 反正打印时全部展开) */
+    .proc-tab-btn,
+    /* 隐藏 input 的 spinner */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      display: none !important;
+    }
 
-    /* 卡片样式调白底 */
+    /* ---- canvas 图表: 保留显示, 控制尺寸 ---- */
+    canvas {
+      max-width: 100% !important;
+      max-height: 200px !important;
+      width: 100% !important;
+      page-break-inside: avoid;
+      /* 打印时提升对比度让浅色线条更醒目 */
+      filter: contrast(1.3) saturate(0) brightness(0.85) !important;
+    }
+    /* 图表容器外的 div (Chart.js 用 position:relative 包了一层) */
+    div[style*="position:relative"] {
+      height: 200px !important;
+      max-height: 200px !important;
+      width: 100% !important;
+    }
+
+    /* ---- 卡片/段落: 去掉装饰, 保留细边框 ---- */
     .card, section, details {
       background: #fff !important;
-      border: 1px solid #ccc !important;
-      color: #111 !important;
+      border: 1px solid #888 !important;
       box-shadow: none !important;
+      border-radius: 0 !important;
+      padding: 8px !important;
+      margin-bottom: 8px !important;
     }
 
-    /* 所有折叠区强制展开 (JS 负责加 open 属性, CSS 确保内容可见) */
-    details[open] > summary { color: #333 !important; font-weight: bold; }
-    details > div, details > section { display: block !important; }
-
-    /* 文字颜色适配白底 */
-    .text-slate-300, .text-slate-400, .text-slate-500, .text-cyan-300,
-    .text-cyan-400, .text-amber-300, .text-amber-200, .text-emerald-300,
-    .text-rose-200, .text-rose-400, .text-blue-300 { color: #222 !important; }
-    .glow-text { text-shadow: none !important; color: #111 !important; }
-
-    /* badge 颜色 */
-    .badge-ok, .badge-info, .badge-warn, .badge-danger {
-      background: #fff !important; color: #111 !important; border: 1px solid #aaa !important;
+    /* ---- 折叠区: 全部展开 + 标题改成普通 H3 风格 ---- */
+    details {
+      border: 1px solid #aaa !important;
+    }
+    details > summary {
+      list-style: none !important;
+      cursor: default !important;
+      font-weight: bold !important;
+      font-size: 11pt !important;
+      padding: 4px 6px !important;
+      border-bottom: 1px solid #ccc !important;
+      margin-bottom: 4px !important;
+      background: #f5f5f5 !important;
+    }
+    details > summary::-webkit-details-marker,
+    details > summary::marker { display: none !important; }
+    details > div, details > section {
+      display: block !important;
+      padding: 4px !important;
     }
 
-    /* 表格 */
-    table { border-collapse: collapse; }
-    th, td { border: 1px solid #ccc !important; color: #111 !important; }
-    thead tr { background: #f0f0f0 !important; }
-    tbody tr:hover { background: transparent !important; }
+    /* ---- 表格 ---- */
+    table {
+      border-collapse: collapse !important;
+      width: 100% !important;
+      font-size: 9pt !important;
+      margin: 4px 0 !important;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #888 !important;
+      padding: 3px 6px !important;
+      text-align: left !important;
+    }
+    thead tr, thead th {
+      background: #e5e5e5 !important;
+      font-weight: bold !important;
+    }
+    tbody tr:nth-child(even) td { background: #f8f8f8 !important; }
 
-    /* 告警条 */
+    /* ---- 标题 ---- */
+    h1, h2, h3, h4, .section-title {
+      font-weight: bold !important;
+      page-break-after: avoid;
+      margin: 6px 0 4px 0 !important;
+    }
+    h1 { font-size: 14pt !important; }
+    h2 { font-size: 12pt !important; }
+    h3 { font-size: 11pt !important; }
+
+    /* ---- 输入框: 显示为纯文本 ---- */
+    input, select, textarea {
+      border: none !important;
+      background: transparent !important;
+      color: #000 !important;
+      padding: 0 !important;
+      font-family: inherit !important;
+      font-size: 9pt !important;
+      box-shadow: none !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+    input[type="checkbox"] {
+      display: inline-block !important;
+      width: 10px !important;
+      height: 10px !important;
+    }
+    /* 防止 grid item 因 input 的内置 min-width 而溢出网格 */
+    .proc-grid > div,
+    [data-eqlimit-grid] > div,
+    .grid > div {
+      min-width: 0 !important;
+      overflow: hidden !important;
+    }
+    /* label: 小字, 单行省略 */
+    .proc-grid label,
+    [data-eqlimit-grid] label,
+    .grid label {
+      font-size: 8pt !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      display: block !important;
+    }
+
+    /* ---- Badges / chip 风格 ---- */
+    .badge-ok, .badge-info, .badge-warn, .badge-danger,
+    .metric-chip {
+      background: #fff !important;
+      color: #000 !important;
+      border: 1px solid #888 !important;
+      border-radius: 0 !important;
+      padding: 1px 4px !important;
+      font-family: "Consolas", "Courier New", monospace !important;
+    }
+
+    /* ---- 告警条: 简化成虚框 ---- */
     [data-warn] div {
-      border-color: #999 !important; background: #fef9e7 !important; color: #333 !important;
+      background: #fff !important;
+      color: #000 !important;
+      border: 1.5px dashed #555 !important;
+      padding: 4px 8px !important;
+      margin: 4px 0 !important;
+      page-break-inside: avoid;
     }
 
-    /* 输入框: 打印时显示为纯文本 */
-    input, select {
-      border: none !important; background: transparent !important;
-      box-shadow: none !important; color: #111 !important;
-      -webkit-appearance: none; appearance: none;
-    }
-
-    /* v1.1: 基准对照表强制显示"来源"列 (覆盖 hidden md:table-cell) */
+    /* ---- 基准对照表: 强制显示来源列 ---- */
     [data-card^="bench-"] table th.hidden,
     [data-card^="bench-"] table td.hidden { display: table-cell !important; }
-    [data-card^="bench-"] table { font-size: 10px !important; width: 100% !important; }
-    [data-card^="bench-"] table td:last-child { font-size: 9px !important; max-width: 240px; }
+    [data-card^="bench-"] table { font-size: 9pt !important; }
+    [data-card^="bench-"] table td:last-child { font-size: 8pt !important; max-width: 200px; }
 
-    /* 分页控制 */
-    .card { page-break-inside: avoid; }
-    #stagesContainer > section { page-break-before: auto; page-break-inside: avoid; }
+    /* ---- 分页 ---- */
+    /* 每个阶段单独成页 (避免半截) */
+    #stagesContainer > section {
+      page-break-before: always !important;
+      page-break-inside: auto !important;
+    }
+    #stagesContainer > section:first-child {
+      page-break-before: auto !important;
+    }
+    /* 内部模块尽量不切断 */
+    details, table, .card {
+      page-break-inside: avoid;
+    }
 
-    /* 页脚 */
-    footer { color: #666 !important; }
-    footer a { color: #333 !important; text-decoration: none !important; }
+    /* ---- 主容器: 全宽 ---- */
+    body, main, #mainContent {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
 
-    /* 隐藏设备单价配置折叠区的可编辑提示 */
-    #equipPriceGrid input { width: 60px; text-align: right; font-size: 10px; }
+    /* ---- 链接 ---- */
+    a {
+      color: #000 !important;
+      text-decoration: none !important;
+    }
 
-    /* 宽度 */
-    body, main { max-width: 100% !important; padding: 0 10px !important; }
+    /* ---- 打印页眉 (屏幕隐藏, 打印显示) ---- */
+    #printHeader {
+      display: block !important;
+      margin-bottom: 12px !important;
+      padding-bottom: 8px !important;
+      border-bottom: 2px solid #000 !important;
+    }
+    #printHeader h1 {
+      font-size: 16pt !important;
+      margin: 0 !important;
+    }
+    #printHeader .text-xs,
+    #printSubtitle {
+      font-size: 9pt !important;
+      color: #444 !important;
+      margin-top: 4px !important;
+    }
 
-    /* 图表容器高度固定 (防止 canvas 被压扁) */
-    canvas { max-height: 250px !important; }
+    /* ---- emoji: 字体降级到不渲染彩色 ---- */
+    .emoji, [class*="text-"] {
+      font-family: inherit !important;
+    }
+    /* ---- 折叠区里的"自动"小字 ---- */
+    [data-eqlimit-modflow] {
+      font-size: 8pt !important;
+      font-style: italic !important;
+    }
 
-    /* 打印专用标题 (屏幕隐藏, 打印显示) */
-    #printHeader { display: block !important; }
+    /* ---- 折线图/标识 (▸) 去掉 ---- */
+    details > summary {
+      /* ▸ 在打印中无意义, 但折叠区已全展开, 标题前不需要前缀 */
+    }
+
+    /* ---- 强制白色背景: Tailwind 内置类覆盖 ---- */
+    [class*="bg-slate-"],
+    [class*="bg-cyan-"],
+    [class*="bg-amber-"],
+    [class*="bg-emerald-"],
+    [class*="bg-rose-"],
+    [class*="bg-blue-"],
+    [class*="bg-gradient"] {
+      background: #fff !important;
+      background-image: none !important;
+    }
+    /* 标题栏小标记 (▶ 阶段 N) */
+    .section-title {
+      font-size: 13pt !important;
+      border-bottom: 2px solid #000 !important;
+      padding-bottom: 4px !important;
+      margin-bottom: 8px !important;
+    }
+
+    /* ---- 旁路开关按钮和复选框文字: 全部黑色 ---- */
+    label, span, div, p, li {
+      color: #000 !important;
+    }
+
+    /* ---- 打印时 proc-grid 强制显示所有字段 (含常用/全部 tab 区别) ---- */
+    .proc-grid > div:not([data-common]) {
+      display: block !important;
+    }
+    .proc-grid > .proc-section-divider {
+      display: block !important;
+      grid-column: 1 / -1 !important;
+      font-weight: bold !important;
+      border-top: 1px solid #aaa !important;
+      padding-top: 4px !important;
+      margin-top: 6px !important;
+    }
+    /* 工艺参数 proc-grid: 4 列 (打印 A4 宽度下 4 列让 label 有足够空间) */
+    .proc-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+    }
+
+    /* ---- Tailwind 响应式 grid 在打印介质下被压缩成单列, 按具体场景强制多列 ---- */
+    /* 全局气候详细参数 (id=globalThermalSection 内的 grid) */
+    #globalThermalSection details .grid {
+      display: grid !important;
+      grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+    }
+    /* 全局气候第一行的 4 选下拉 (地区/工况/围护/热泵) 用 4 列 */
+    #globalThermalSection > .grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+    }
+    /* 阶段养殖参数 12 字段 (原 grid-cols-2 md:6 lg:12) 强制 6 列 */
+    /* 直接匹配类名: 这是 .grid.grid-cols-2.md\:grid-cols-6.lg\:grid-cols-12 */
+    .grid.grid-cols-2.md\:grid-cols-6 {
+      display: grid !important;
+      grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+    }
+    /* 设备选型上限 7 字段 grid 用 7 列 */
+    [data-eqlimit-grid] {
+      grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+    }
+    /* 单价配置 grid 用 4 列 */
+    #priceSection .grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+    }
+    /* 图表容器: 强制 2 列 (Tailwind grid-cols-1 lg:grid-cols-2 在打印介质塌缩到 1 列, 强制 2) */
+    [data-print-row="charts"] {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 8px !important;
+    }
+    /* 图表内部容器(bg-slate-900/50 卡片) — 宽度撑满 */
+    [data-print-row="charts"] > div {
+      width: 100% !important;
+      min-width: 0 !important;   /* 防止 grid item 因内容 min-width 而溢出 */
+    }
   }
 </style>
 </head>
 
-<!-- 顶部导航条 (含阶段跳转) -->
+<!-- 顶部导航条 (v1.6: 改成 2 行 sticky — 第 1 行 标题/导航/手册/帮助, 第 2 行 操作工具栏) -->
 <header class="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
-  <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-2">
-    <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-lg">🌊</div>
-      <div>
-        <h1 class="text-base md:text-lg font-bold glow-text cursor-pointer" id="titleLink" title="回到顶部">iRAS · 循环水养殖工程设计平台</h1>
-        <div id="summaryBadge" class="text-[11px] text-slate-400 mt-0.5"></div>
+  <div class="max-w-[1600px] mx-auto px-4">
+    <!-- 第 1 行: 标题 + 项目级操作 (保存/加载/导出/P&ID/财务/可研/打印) + 手册 + 帮助 -->
+    <div class="py-2 flex items-center justify-between flex-wrap gap-2">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-lg">🌊</div>
+        <div>
+          <h1 class="text-base md:text-lg font-bold glow-text cursor-pointer" id="titleLink" title="回到顶部">iRAS · 循环水养殖工程设计平台</h1>
+          <div id="summaryBadge" class="text-[11px] text-slate-400 mt-0.5"></div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- 主操作: cyan (高频写入) -->
+        <button type="button" id="btnSaveJSON" class="no-print text-[10px] px-2 py-1 rounded border border-cyan-600 text-cyan-300 hover:bg-cyan-900/30 shrink-0">💾 保存方案</button>
+        <button type="button" id="btnLoadJSON" class="no-print text-[10px] px-2 py-1 rounded border border-cyan-600 text-cyan-300 hover:bg-cyan-900/30 shrink-0">📂 加载方案</button>
+        <input type="file" id="fileLoadJSON" accept=".json" style="display:none">
+        <!-- 次操作: slate (导出 / 帮助类) -->
+        <button type="button" id="btnExportEquipment" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="将当前方案导出为独立设备清单页面 (含模块化、N+1 备用、单价)">📋 导出设备清单</button>
+        <button type="button" id="btnOpenPID" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开 P&ID 工艺图查看器 (基于当前方案)">📐 输出 P&ID</button>
+        <button type="button" id="btnOpenFinance" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开投资财务评价页面 (NPV/IRR/敏感性 + Excel 导出)">💰 投资财务评价</button>
+        <button type="button" id="btnOpenReport" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开可研报告生成器 (按发改委 16 章规范输出 docx)">📄 生成可研报告</button>
+        <button type="button" id="btnPrint" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="打印 / 在打印对话框中选「另存为 PDF」可导出 PDF">🖨️ 打印</button>
+        <a href="iRAS_技术手册_v1.5_完整版.pdf" target="_blank" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40" title="完整技术手册 PDF (含工艺原理/设备设计/案例/财务评价/可研报告/参考文献)">📕 技术手册</a>
+        <button type="button" id="btnHelp" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40">? 帮助</button>
       </div>
     </div>
-    <div class="flex items-center gap-2 flex-wrap">
+    <!-- 第 2 行: 阶段级操作 (stageNav + 添加阶段 + 恢复鱼种默认), 全部右对齐 -->
+    <div class="pb-2 flex items-center gap-2 flex-wrap justify-end no-print">
       <nav id="stageNav" class="flex items-center gap-1 text-xs flex-wrap"></nav>
-      <button type="button" id="btnAddStage" class="no-print text-[10px] px-2 py-1 rounded border border-emerald-600 text-emerald-300 hover:bg-emerald-900/30">+ 添加阶段</button>
-      <a href="iRAS_技术手册_v1.5_完整版.pdf" target="_blank" class="no-print text-[10px] px-2 py-1 rounded border border-amber-500 text-amber-300 hover:bg-amber-900/30" title="完整技术手册 PDF (含工艺原理/设备设计/案例/财务评价/可研报告/参考文献)">📕 技术手册</a>
-      <button type="button" id="btnHelp" class="no-print text-[10px] px-2 py-1 rounded border border-slate-500 text-slate-300 hover:bg-slate-700/50">? 帮助</button>
+      <!-- 主操作: cyan -->
+      <button type="button" id="btnAddStage" class="text-[10px] px-2 py-1 rounded border border-cyan-600 text-cyan-300 hover:bg-cyan-900/30">+ 添加阶段</button>
+      <!-- 危险: rose (会覆盖所有用户编辑) -->
+      <button type="button" id="btnResetSpeciesStages" class="text-[10px] px-2 py-1 rounded border border-rose-700/60 text-rose-400 hover:bg-rose-900/30 shrink-0">↺ 恢复鱼种默认</button>
     </div>
   </div>
 </header>
 
 <main id="mainContent" class="max-w-[1600px] mx-auto px-4 py-6 space-y-6">
 
-  <!-- 打印专用标题 (屏幕不显示) -->
-  <div id="printHeader" class="hidden print-only" style="display:none;">
-    <h1 style="font-size:20px; font-weight:bold; margin-bottom:4px;">iRAS · 循环水养殖工程设计报告</h1>
-    <div id="printSubtitle" style="font-size:12px; color:#666;"></div>
-    <hr style="margin:8px 0; border-color:#ccc;">
+  <!-- 打印专用标题 (屏幕不显示, 打印时由 @media print 显示) -->
+  <div id="printHeader" style="display:none;">
+    <h1>iRAS · 循环水养殖工程设计报告</h1>
+    <div id="printSubtitle"></div>
   </div>
 
   <!-- 项目全局输入 -->
-  <section class="card p-5" id="globalSection">
-    <h2 class="section-title text-lg font-bold mb-4">① 项目规模 & 鱼种选择</h2>
+  <details class="card p-5 top-card" id="globalSection" open>
+    <summary class="top-summary cursor-pointer list-none mb-4">
+      <h2 class="section-title text-lg font-bold inline">① 鱼种选择 & 项目规模</h2>
+    </summary>
 
-    <!-- 鱼种选择 -->
-    <div class="mb-5">
-      <label class="text-sm text-slate-300 mb-2 block">养殖鱼种</label>
-      <div class="grid grid-cols-3 gap-3" id="speciesSelector"></div>
-      <div class="flex flex-wrap items-center justify-between gap-2 mt-2">
-        <div class="text-[10px] text-slate-500">编辑阶段参数后，可用右侧按钮恢复为当前鱼种数据库默认值（含各阶段工艺默认）。自动保存仅限本机本浏览器。</div>
-        <div class="flex gap-2 flex-wrap">
-          <button type="button" id="btnSaveJSON" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-blue-600 text-blue-300 hover:bg-blue-950/30 shrink-0">💾 保存方案</button>
-          <button type="button" id="btnLoadJSON" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-blue-600 text-blue-300 hover:bg-blue-950/30 shrink-0">📂 加载方案</button>
-          <input type="file" id="fileLoadJSON" accept=".json" style="display:none">
-          <button type="button" id="btnExportEquipment" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-purple-600 text-purple-300 hover:border-purple-400 hover:bg-purple-950/30 shrink-0" title="将当前方案导出为独立设备清单页面 (含模块化、N+1 备用、单价)">📋 导出设备清单</button>
-          <button type="button" id="btnOpenPID" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-amber-600 text-amber-300 hover:border-amber-400 hover:bg-amber-950/30 shrink-0" title="在新窗口打开 P&ID 工艺图查看器 (基于当前方案)">📐 输出 P&ID</button>
-          <button type="button" id="btnOpenFinance" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-rose-600 text-rose-300 hover:border-rose-400 hover:bg-rose-950/30 shrink-0" title="在新窗口打开投资财务评价页面 (NPV/IRR/敏感性 + Excel 导出)">💰 投资财务评价</button>
-          <button type="button" id="btnOpenReport" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-indigo-600 text-indigo-300 hover:border-indigo-400 hover:bg-indigo-950/30 shrink-0" title="在新窗口打开可研报告生成器 (按发改委 16 章规范输出 docx)">📄 生成可研报告</button>
-          <button type="button" id="btnPrint" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-emerald-600 text-emerald-300 hover:border-emerald-400 hover:bg-emerald-950/30 shrink-0">🖨️ 打印 / 导出PDF</button>
-          <button type="button" id="btnResetSpeciesStages" class="no-print text-[10px] px-2.5 py-1.5 rounded border border-slate-600 text-slate-300 hover:border-cyan-500 hover:text-cyan-200 hover:bg-cyan-950/30 shrink-0">↺ 恢复鱼种默认</button>
-        </div>
+    <!-- 鱼种选择 (v1.6: 可折叠, 默认展开) -->
+    <details class="mb-3 bg-slate-900/40 rounded-lg border border-slate-700/40" open>
+      <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40 list-none">
+        ▸ 养殖鱼种 (点击展开)<span class="text-[10px] text-slate-500 font-normal ml-2" data-species-summary></span>
+      </summary>
+      <div class="p-4 pt-2">
+        <div class="grid grid-cols-3 gap-3" id="speciesSelector"></div>
+        <div class="text-[10px] text-slate-500 mt-2">编辑阶段参数后, 可用顶部「↺ 恢复鱼种默认」按钮恢复为当前鱼种数据库默认值（含各阶段工艺默认）。自动保存仅限本机本浏览器。</div>
       </div>
-    </div>
+    </details>
 
-    <!-- 全局参数 -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="text-xs text-slate-400 mb-1 block">成鱼年目标产量 (吨/年)</label>
-        <input id="inpYield" type="number" value="500" class="input-ind">
-        <div class="text-[10px] text-slate-500 mt-1">最终出塘量,系统反推上游各阶段规模 · 饲料单价在各阶段「养殖参数」内填写</div>
+    <!-- v1.6: 操作按钮区已挪到顶部 sticky header (第 2 行), 高频操作随时可达 -->
 
-        <!-- v1.3.x: 单模块产能 UI 已删除 (固定用 500 t/yr 默认值, 见 calculateAll 内常量) -->
-
-        <div class="mt-4 p-3 rounded-lg border border-emerald-800/50 bg-emerald-950/20">
-          <div class="text-[10px] text-slate-400 mb-1">综合养殖成本（每公斤成鱼，卖鱼口径）</div>
-          <div id="harvestCostPerKgDisplay" class="text-2xl font-bold text-emerald-300 font-mono">—</div>
-          <div class="text-[10px] text-slate-500 mt-1">综合成本 (含 CAPEX 折旧): 全厂日均运行费 × 365 ÷ 成鱼年产量。可在顶部「单价配置」调整折旧年限。</div>
+    <!-- 全局参数: 4 卡片 2x2 网格 (v1.6 紧凑布局) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <!-- v1.6: 成鱼年目标产量改成强调卡片 (项目核心输入, 视觉地位提升) -->
+      <div class="p-4 rounded-lg border-2 border-cyan-500/50 bg-cyan-950/20">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl">🎯</span>
+          <label class="text-sm font-bold text-cyan-300">成鱼年目标产量</label>
         </div>
-        <div class="mt-3 p-3 rounded-lg border border-amber-800/50 bg-amber-950/15">
-          <div class="text-[10px] text-amber-400 mb-1">💰 全场投资概算 (设备直购 · 工程总投资)</div>
-          <div id="capexSummaryDisplay" class="text-base font-bold text-amber-200 font-mono">—</div>
-          <div class="text-[10px] text-slate-500 mt-1">⚠️ 概算精度 ±40%, 仅供参考。详见下方各阶段「投资概算」卡片。设备单价可在「单价配置」中调整。</div>
+        <div class="flex items-baseline gap-3">
+          <input id="inpYield" type="number" value="500" class="bg-slate-900/60 border border-cyan-700/50 rounded px-3 py-2 text-2xl font-mono font-bold text-cyan-200 w-40 focus:outline-none focus:border-cyan-400 focus:bg-slate-900">
+          <span class="text-base text-cyan-300/80 font-medium">吨/年</span>
         </div>
-        <!-- v1.5: 项目用地估算 -->
-        <div class="mt-3 p-3 rounded-lg border border-teal-800/50 bg-teal-950/15">
-          <div class="text-[10px] text-teal-400 mb-1 flex items-center gap-3 flex-wrap">
-            <span>📍 项目用地估算 (主车间 · 配套 · 总占地)</span>
-            <!-- v1.5 Bug 47: 容积率 FAR 开放为参数. 默认 0.5 (国内 RAS 实测主流), UI 可调 -->
-            <!-- 审计回合 7 修正: 默认从 0.7 改回 0.5. 0.7 来自 GB 50187 工业用地下限, 适用化工/电厂,
-                 不适用水产养殖 (按农业/乡镇企业用地, FAR 实测 0.4-0.55).
-                 实测对照: Atlantic Sapphire FAR≈0.26 (挪威 8000t), 国内 500-1500t 项目 FAR 0.4-0.5. -->
-            <span class="inline-flex items-center gap-1" title="容积率 FAR = 总建筑面积 / 用地面积&#10;水产 RAS 实测取值 (按规模):&#10;  0.25-0.35  大型一体化 >5000t (Atlantic Sapphire 等)&#10;  0.35-0.50  国内中型 500-1500t (默认 0.5)&#10;  0.50-0.70  小型 <500t / 城市边缘集约用地&#10;  0.70-1.20  多层立体 (对虾层架、罗非鱼三层)&#10;⚠ 不要套用 GB 50187 工业用地 FAR≥0.7 下限, 那适用化工/电厂&#10;水产按农业/乡镇企业用地分类, 政府节地审查口径较松">
-              <label class="text-[10px] text-teal-300 cursor-help">FAR</label>
-              <input id="inpFarRatio" type="number" value="0.5" step="0.05" min="0.15" max="2.0" class="bg-slate-800 border border-teal-700/50 rounded px-2 py-0.5 text-[11px] text-teal-200 font-mono w-16 focus:outline-none focus:border-teal-400">
-            </span>
-          </div>
-          <div id="landAreaSummaryDisplay" class="text-base font-bold text-teal-200 font-mono">—</div>
-          <div id="landAreaBreakdownDisplay" class="text-[10px] text-slate-500 mt-1">主车间面积 = V_total / 平均池深 × 1.6 (含通道/操作平台); 总占地 = 总建筑面积 / 容积率 (默认 0.5)。仅供前期申报参考。</div>
-        </div>
+        <div class="text-[10px] text-slate-500 mt-2">最终出塘量, 系统反推上游各阶段规模 · 饲料单价在各阶段「养殖参数」内填写</div>
       </div>
-      <div class="text-[11px] text-slate-400 self-end pb-1">
-        💡 每个阶段的 RAS 系统独立设计。工艺参数、饲料单价在各阶段卡片内单独设置；下方「单价配置」为电、氧等全场共用单价。
+
+      <!-- 综合养殖成本 -->
+      <div class="p-3 rounded-lg border border-emerald-800/50 bg-emerald-950/20">
+        <div class="text-[10px] text-slate-400 mb-1">综合养殖成本（每公斤成鱼,卖鱼口径）</div>
+        <div id="harvestCostPerKgDisplay" class="text-2xl font-bold text-emerald-300 font-mono">—</div>
+        <div class="text-[10px] text-slate-500 mt-1">综合成本 (含 CAPEX 折旧): 全厂日均运行费 × 365 ÷ 成鱼年产量。可在「② 财务数据和单价配置」调整折旧年限。</div>
+      </div>
+
+      <!-- 全场投资概算 -->
+      <div class="p-3 rounded-lg border border-amber-800/50 bg-amber-950/15">
+        <div class="text-[10px] text-amber-400 mb-1">💰 全场投资概算 (设备直购 · 工程总投资)</div>
+        <div id="capexSummaryDisplay" class="text-base font-bold text-amber-200 font-mono">—</div>
+        <div class="text-[10px] text-slate-500 mt-1">⚠️ 概算精度 ±40%, 仅供参考。详见各阶段「投资概算列表」。设备单价可在「② 财务数据和单价配置」中调整。</div>
+      </div>
+
+      <!-- v1.5: 项目用地估算 -->
+      <div class="p-3 rounded-lg border border-teal-800/50 bg-teal-950/15">
+        <div class="text-[10px] text-teal-400 mb-1 flex items-center gap-3 flex-wrap">
+          <span>📍 项目用地估算 (主车间 · 配套 · 总占地)</span>
+          <!-- v1.5 Bug 47: 容积率 FAR 开放为参数. 默认 0.5 (国内 RAS 实测主流), UI 可调 -->
+          <!-- 审计回合 7 修正: 默认从 0.7 改回 0.5. 0.7 来自 GB 50187 工业用地下限, 适用化工/电厂,
+               不适用水产养殖 (按农业/乡镇企业用地, FAR 实测 0.4-0.55).
+               实测对照: Atlantic Sapphire FAR≈0.26 (挪威 8000t), 国内 500-1500t 项目 FAR 0.4-0.5. -->
+          <span class="inline-flex items-center gap-1" title="容积率 FAR = 总建筑面积 / 用地面积&#10;水产 RAS 实测取值 (按规模):&#10;  0.25-0.35  大型一体化 >5000t (Atlantic Sapphire 等)&#10;  0.35-0.50  国内中型 500-1500t (默认 0.5)&#10;  0.50-0.70  小型 <500t / 城市边缘集约用地&#10;  0.70-1.20  多层立体 (对虾层架、罗非鱼三层)&#10;⚠ 不要套用 GB 50187 工业用地 FAR≥0.7 下限, 那适用化工/电厂&#10;水产按农业/乡镇企业用地分类, 政府节地审查口径较松">
+            <label class="text-[10px] text-teal-300 cursor-help">FAR</label>
+            <input id="inpFarRatio" type="number" value="0.5" step="0.05" min="0.15" max="2.0" class="bg-slate-800 border border-teal-700/50 rounded px-2 py-0.5 text-[11px] text-teal-200 font-mono w-16 focus:outline-none focus:border-teal-400">
+          </span>
+        </div>
+        <div id="landAreaSummaryDisplay" class="text-base font-bold text-teal-200 font-mono">—</div>
+        <div id="landAreaBreakdownDisplay" class="text-[10px] text-slate-500 mt-1">主车间面积 = V_total / 平均池深 × 1.6 (含通道/操作平台); 总占地 = 总建筑面积 / 容积率 (默认 0.5)。仅供前期申报参考。</div>
       </div>
     </div>
 
@@ -493,11 +803,58 @@
         </div>
       </details>
     </div>
-  </section>
+  </details>
 
   <!-- 单价配置 -->
-  <section class="card p-5" id="priceSection">
-    <h2 class="section-title text-lg font-bold mb-3">② 单价配置</h2>
+  <details class="card p-5 top-card" id="priceSection" open>
+    <summary class="top-summary cursor-pointer list-none mb-3">
+      <h2 class="section-title text-lg font-bold inline">② 财务参数 & 单价配置</h2>
+    </summary>
+
+    <!-- v1.6: 财务计算参数 (直接显示, 不折叠) — 工程放大系数 / 地区 / 规模 / 折旧年限 -->
+    <div class="mb-4 p-3 rounded-lg border border-slate-700/40 bg-slate-900/30">
+      <div class="text-[11px] text-slate-300 font-bold mb-2">💼 财务计算参数</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div>
+          <label class="text-[10px] text-amber-300" title="工程总投资放大系数 (1.5-3.5). 设备直购 × 该系数 = 工程总投资估算 (含管道、电气、自控、安装调试、土建). 简单 1.8, 中等 2.0-2.2, 高标准 2.3-2.5.">工程总投资放大系数</label>
+          <input id="capexFactor" type="number" value="2.2" step="0.1" min="1.5" max="3.5" class="input-ind !py-1.5">
+        </div>
+        <div>
+          <label class="text-[10px] text-purple-300" title="CAPEX 地区系数 (基于实测项目反推):&#10;挪威 10000t 三文鱼 RAS 项目 15 亿元 (15万/吨产能)&#10;中国 同规模约 8-10 亿 (10-12万/吨)&#10;实测系数约 1.4-2.0x, 不是 5x&#10;只影响 CAPEX (设备+工程+折旧), OPEX 不变">CAPEX 地区</label>
+          <select id="regionPreset" class="input-ind !py-1.5">
+            <option value="1.0" selected>🇨🇳 中国 (1.0×)</option>
+            <option value="1.1">🇻🇳 东南亚 (1.1×)</option>
+            <option value="1.5">🇨🇱 智利/南美 (1.5×)</option>
+            <option value="1.7">🇺🇸 北美 (1.7×)</option>
+            <option value="2.0">🇳🇴 北欧/挪威 (2.0×)</option>
+            <option value="custom">⚙️ 自定义</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] text-purple-300" title="自定义地区系数 (1.0-3.0). 改这个值会自动切换上方为 自定义">地区系数值</label>
+          <input id="regionFactor" type="number" value="1.0" step="0.1" min="0.5" max="3" class="input-ind !py-1.5">
+        </div>
+        <div>
+          <label class="text-[10px] text-rose-300" title="CAPEX 规模效应指数 (Lang factor)&#10;0.00: 关闭, 线性 CAPEX&#10;0.10: iRAS 默认 (基于挪威 10000t 实测反推)&#10;0.20: 中等规模效应&#10;0.30: 强规模效应 (Lang factor 标准)&#10;&#10;基准固定为 1000 t/yr (iRAS 设备单价的校准规模)&#10;实际产量 = 基准 → factor=1.0 不变&#10;实际产量 > 基准 → factor < 1 (大项目省钱)&#10;实际产量 < 基准 → factor > 1 (小项目偏贵)">规模指数</label>
+          <input id="scaleExponent" type="number" value="0.10" step="0.05" min="0" max="0.7" class="input-ind !py-1.5">
+          <input id="scaleRefSize" type="hidden" value="1000">
+        </div>
+        <div>
+          <label class="text-[10px] text-cyan-300" title="设备 (微滤机/泵/风机/UV/臭氧等) 折旧年限. 中国税法 10 年, 工程经验 7-10 年. RAS 高负荷设备建议 8 年">设备折旧年限 (年)</label>
+          <input id="depYearsEquip" type="number" value="8" step="1" min="5" max="20" class="input-ind !py-1.5">
+        </div>
+        <div>
+          <label class="text-[10px] text-cyan-300" title="土建/池体/管道/安装/调试/设计 折旧年限. 行业惯例 15-25 年. RAS 项目土建寿命较长">土建折旧年限 (年)</label>
+          <input id="depYearsCivil" type="number" value="20" step="1" min="10" max="30" class="input-ind !py-1.5">
+        </div>
+      </div>
+      <div class="text-[10px] text-slate-500 leading-relaxed mt-2">
+        💡 工程放大系数 / 地区 / 规模 → 决定 <b>CAPEX 总额</b>;
+        折旧年限 → 决定 <b>年折旧 → 摊到 ¥/kg 综合成本</b>。
+        改任一参数 → ① 区"全场投资概算"和"综合成本"实时更新。
+      </div>
+    </div>
+
     <details open>
       <summary class="text-sm text-cyan-300 cursor-pointer mb-2">运行成本单价</summary>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -510,75 +867,14 @@
     <details class="mt-3">
       <summary class="text-sm text-cyan-300 cursor-pointer mb-2">设备直购单价 (投资概算用, 可按当地行情调整)</summary>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-2" id="equipPriceGrid"></div>
-      <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
-        <div>
-          <label class="text-[10px] text-amber-300">工程总投资放大系数</label>
-          <input id="capexFactor" type="number" value="2.2" step="0.1" min="1.5" max="3.5" class="input-ind !py-1.5 !w-24">
-        </div>
-        <div class="text-[10px] text-slate-500 leading-relaxed">
-          设备直购 × 该系数 = 工程总投资估算 (含管道、电气、自控、安装调试、土建)。
-          简单项目 1.8, 中等 2.0-2.2, 高标准 2.3-2.5。
-        </div>
-      </div>
-      <!-- v1.1: CAPEX 地区系数 -->
-      <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
-        <div>
-          <label class="text-[10px] text-purple-300" title="CAPEX 地区系数 (基于实测项目反推):&#10;挪威 10000t 三文鱼 RAS 项目 15 亿元 (15万/吨产能)&#10;中国 同规模约 8-10 亿 (10-12万/吨)&#10;实测系数约 1.4-2.0x, 不是 5x&#10;只影响 CAPEX (设备+工程+折旧), OPEX 不变">CAPEX 地区</label>
-          <select id="regionPreset" class="input-ind !py-1.5 !w-32">
-            <option value="1.0" selected>🇨🇳 中国 (1.0×)</option>
-            <option value="1.1">🇻🇳 东南亚 (1.1×)</option>
-            <option value="1.5">🇨🇱 智利/南美 (1.5×)</option>
-            <option value="1.7">🇺🇸 北美 (1.7×)</option>
-            <option value="2.0">🇳🇴 北欧/挪威 (2.0×)</option>
-            <option value="custom">⚙️ 自定义</option>
-          </select>
-        </div>
-        <div>
-          <label class="text-[10px] text-purple-300" title="自定义地区系数 (1.0-3.0). 改这个值会自动切换上方为 自定义">系数值</label>
-          <input id="regionFactor" type="number" value="1.0" step="0.1" min="0.5" max="3" class="input-ind !py-1.5 !w-20">
-        </div>
-        <div class="text-[10px] text-slate-500 leading-relaxed flex-1">
-          地区差异 (基于挪威 10000t 三文鱼 RAS 项目 15 亿元实测反推): 挪威 ≈ 中国 2.0x。
-          只乘 CAPEX (含折旧), OPEX 不变 (饲料/液氧/化学品是全球商品差异小)。电费由用户单价单独控制。
-        </div>
-      </div>
-      <!-- v1.1: CAPEX 规模效应 (Lang factor) -->
-      <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
-        <div>
-          <label class="text-[10px] text-rose-300" title="CAPEX 规模效应指数 (Lang factor)&#10;0.00: 关闭, 线性 CAPEX&#10;0.10: iRAS 默认 (基于挪威 10000t 实测反推)&#10;0.20: 中等规模效应&#10;0.30: 强规模效应 (Lang factor 标准)&#10;&#10;基准固定为 1000 t/yr (iRAS 设备单价的校准规模)&#10;实际产量 = 基准 → factor=1.0 不变&#10;实际产量 > 基准 → factor < 1 (大项目省钱)&#10;实际产量 < 基准 → factor > 1 (小项目偏贵)">规模指数</label>
-          <input id="scaleExponent" type="number" value="0.10" step="0.05" min="0" max="0.7" class="input-ind !py-1.5 !w-20">
-          <input id="scaleRefSize" type="hidden" value="1000">
-        </div>
-        <div class="text-[10px] text-slate-500 leading-relaxed flex-1">
-          <b class="text-rose-300">CAPEX 规模效应</b>: 大项目摊销自控/设计/管理后单位 CAPEX 降低。
-          公式 <span class="text-rose-300">scaleFactor = (1000 / 产量)^指数</span>。
-          指数 0.10 时: 1000t 项目 ×1.00 (基准, 不变), 5000t ×0.85, 10000t ×0.79, 20000t ×0.74。
-          基准固定 1000 t/年 (iRAS 默认设备单价的校准规模)。设指数=0 关闭, 回到线性 CAPEX。
-        </div>
-      </div>
-      <!-- v1.1: CAPEX 折旧年限 -->
-      <div class="mt-3 flex items-center gap-4 flex-wrap border-t border-slate-700/40 pt-3">
-        <div>
-          <label class="text-[10px] text-cyan-300" title="设备 (微滤机/泵/风机/UV/臭氧等) 折旧年限. 中国税法 10 年, 工程经验 7-10 年. RAS 高负荷设备建议 8 年">设备折旧年限</label>
-          <input id="depYearsEquip" type="number" value="8" step="1" min="5" max="20" class="input-ind !py-1.5 !w-20">
-          <span class="text-[10px] text-slate-500">年</span>
-        </div>
-        <div>
-          <label class="text-[10px] text-cyan-300" title="土建/池体/管道/安装/调试/设计 折旧年限. 行业惯例 15-25 年. RAS 项目土建寿命较长">土建折旧年限</label>
-          <input id="depYearsCivil" type="number" value="20" step="1" min="10" max="30" class="input-ind !py-1.5 !w-20">
-          <span class="text-[10px] text-slate-500">年</span>
-        </div>
-        <div class="text-[10px] text-slate-500 leading-relaxed flex-1">
-          设备部分 (capex.total) 按设备年限折旧, 土建/安装 (放大部分) 按土建年限折旧。
-          年折旧合计 = 设备/年限<sub>设备</sub> + 土建/年限<sub>土建</sub>, 摊到每 kg 鱼。
-        </div>
-      </div>
     </details>
-  </section>
+  </details>
 
   <!-- 全场汇总表 -->
-  <section class="card p-5" id="farmSection">
-    <h2 class="section-title text-lg font-bold mb-3">🏭 全场各阶段规模汇总</h2>
+  <details class="card p-5 top-card" id="farmSection" open>
+    <summary class="top-summary cursor-pointer list-none mb-3">
+      <h2 class="section-title text-lg font-bold inline">③ 全场各阶段规模汇总</h2>
+    </summary>
     <div class="overflow-x-auto">
       <table class="w-full text-xs">
         <thead>
@@ -603,7 +899,7 @@
         <tbody id="farmTableBody"></tbody>
       </table>
     </div>
-  </section>
+  </details>
 
   <!-- 阶段详细区 (JS 动态生成) -->
   <div id="stagesContainer" class="space-y-6"></div>
@@ -2868,6 +3164,41 @@ const WATER_LIMITS = {
   tankCO2_max_marine: 15        // 海水鱼 CO2 上限 (mg/L, 海水 CO2 缓冲弱、鱼更敏感)
 };
 
+// ---------- v1.6: 设备单机上限分档 (按阶段单模块循环流量 modFlow 自适应) ----------
+// 物理:同一项目不同阶段 modFlow 差异可能 5-10 倍 (苗种 600 m³/h vs 成鱼 10000 m³/h)
+// 用全场统一档位会让小阶段过度 / 大阶段堆积. 按各阶段 modFlow 独立选档.
+// 各阶段卡片可勾选"自动"(按下表自适应), 或手动指定具体上限值.
+// 档位边界: modFlow (m³/h) → { pump (kW), rdf (m³/h), uv (kW), blower (kW), hp (kW), branchPump (kW), ozone (kW) }
+const EQUIPMENT_LIMIT_BANDS = [
+  // 微型: 苗种期 / 小试 / 室内研究规模
+  { maxModFlow:  500, label: '微型',  pump:  22, rdf:  600, uv:  5, blower:  15, hp:  80, branchPump:  11, ozone:  30 },
+  // 小型: 国内中小项目主流
+  { maxModFlow: 1500, label: '小型',  pump:  55, rdf:  800, uv: 10, blower:  30, hp: 150, branchPump:  22, ozone:  50 },
+  // 中型: 国内主流 (500-2000t 单模块)
+  { maxModFlow: 3500, label: '中型',  pump:  90, rdf: 1500, uv: 20, blower:  55, hp: 350, branchPump:  45, ozone:  80 },
+  // 中大型: 大项目单模块
+  { maxModFlow: 7000, label: '中大型', pump: 150, rdf: 2500, uv: 30, blower:  90, hp: 500, branchPump:  75, ozone: 100 },
+  // 大型: 超大项目 (>7000 m³/h 单模块, 进口或定制设备)
+  { maxModFlow: Infinity, label: '大型', pump: 250, rdf: 3500, uv: 50, blower: 132, hp: 800, branchPump: 110, ozone: 150 }
+];
+// 根据 modFlow 选档. 返回 { label, pump, rdf, uv, blower, hp, branchPump, ozone }
+function pickEquipmentLimitsByModFlow(modFlow) {
+  for (const band of EQUIPMENT_LIMIT_BANDS) {
+    if (modFlow < band.maxModFlow) return band;
+  }
+  return EQUIPMENT_LIMIT_BANDS[EQUIPMENT_LIMIT_BANDS.length - 1];
+}
+// 设备名 → 显示用 (中文 + 单位)
+const EQUIPMENT_LIMIT_LABELS = {
+  pump:       { label: '主泵',    unit: 'kW',    min: 5,   max: 500   },
+  rdf:        { label: 'RDF',     unit: 'm³/h',  min: 100, max: 5000  },
+  uv:         { label: 'UV',      unit: 'kW',    min: 1,   max: 100   },
+  blower:     { label: 'BF 风机', unit: 'kW',    min: 3,   max: 200   },
+  hp:         { label: '热泵',    unit: 'kW',    min: 10,  max: 1500  },
+  branchPump: { label: '支路泵',  unit: 'kW',    min: 2,   max: 200   },
+  ozone:      { label: '臭氧',    unit: 'kW',    min: 5,   max: 200   }
+};
+
 // ---------- 设备直购单价 (默认值, UI 可编辑) ----------
 // 每项含简称 label、计价基准 unit、默认单价 price、推荐范围 [lo,hi]
 // 价格基准: 2024-2025 年中国国内市场中等品牌
@@ -3761,12 +4092,15 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   // CO2 稳态: 严格质量守恒 (v1.1: 脱气塔可关闭)
   // 脱气开启: 主流通过脱气塔, 单循环移除 co2StripperEff 的 CO2
   // 脱气关闭: 仍有"附带解吸" (增氧锥/PPC 在液氧吸收时同步释放 CO₂, 5-15%)
-  // + 换水稀释 (已在 dilutionPerCycle 处理, 不重复)
   const co2StripperOn = proc.co2StripperEnabled !== false;
   const eta_co2 = co2StripperOn
     ? (proc.co2StripperEff || 75) / 100
     : ((proc.co2FallbackEff || 5) / 100);  // 附带解吸 (增氧塔气液交换), 默认 5%
   // 稳态浓度: C_tank = Δ_per_day / (Q × 24 × η_co2)  → mg/L
+  // ⚠ 简化: 公式略去换水稀释项. 严格质量守恒应为
+  //     C_tank = Δ_per_day / (Q × 24 × η_co2 + V_replace)
+  //   工程上 V_replace (几百 m³/d) ≪ Q×24×η_co2 (几十万 m³/d × 0.75), 偏差 < 1%, 可忽略.
+  //   与 TAN/TSS/DOM/NO3 (用 dilutionPerCycle 的递归公式) 口径不严格一致, 但数值差异在精度范围内.
   const co2_tank = load.co2Daily * 1e6 / Math.max(flowData.flowM3h * 24 * 1000 * eta_co2, 1);
 
   // ---- 精确循环方程 ----
@@ -4377,12 +4711,30 @@ function applyModularization(eq, stage, stageFarm, proc) {
   //   模块数 = stage.subSystemCount, 默认 1 (单模块) — 用户根据工程经验在 UI 调整
   const numModules = Math.max(1, (stage && stage.subSystemCount) || (proc && proc.subSystemCount) || 1);
 
-  // 单机容量上限 (基于行业惯例, 大型机组规格)
-  const PUMP_UNIT_KW    = 75;   // 主循环泵单台 (Q≈600 m³/h, H=15 m)
-  const BLOWER_UNIT_KW  = 30;   // 罗茨风机单台 (Q≈30 m³/min)
-  const RDF_UNIT_M3H    = 600;  // 微滤机单台流量上限
-  const UV_UNIT_KW      = 8;    // UV 反应器单台
-  const HP_UNIT_KW      = 200;  // 热泵单机组 (大型水冷)
+  // v1.6: 设备单机上限按"该阶段单模块循环流量 modFlow"自适应
+  //   modFlow = 模块循环流量 = flowM3h / numModules
+  //   档位边界 (微型 < 500 < 小型 < 1500 < 中型 < 3500 < 中大 < 7000 < 大型) 见 EQUIPMENT_LIMIT_BANDS
+  //   各阶段独立, 苗种期自动小机型 / 成鱼期自动大机型
+  //   用户可在阶段卡片"设备选型上限"区取消"自动", 手动指定具体值
+  const modFlowForBand = (eq.rdfFlow || 0) * (numModules > 0 ? 1 / numModules : 1);  // m³/h
+  const _autoBand = pickEquipmentLimitsByModFlow(modFlowForBand);
+  // 用户手动覆盖? stage.equipLimits / stage.equipLimitsAuto
+  const _useAuto = !stage || stage.equipLimitsAuto !== false;  // 默认 true
+  const _userOverride = stage && stage.equipLimits ? stage.equipLimits : {};
+  const _pickLimit = (key) => {
+    if (_useAuto) return _autoBand[key];
+    const v = parseFloat(_userOverride[key]);
+    return Number.isFinite(v) && v > 0 ? v : _autoBand[key];   // 手动模式下若无效值回退自动
+  };
+  const PUMP_UNIT_KW          = _pickLimit('pump');
+  const BLOWER_UNIT_KW        = _pickLimit('blower');
+  const RDF_UNIT_M3H          = _pickLimit('rdf');
+  const UV_UNIT_KW            = _pickLimit('uv');
+  const HP_UNIT_KW            = _pickLimit('hp');
+  // 暴露给后续:支路泵、臭氧、加药泵
+  const BRANCH_PUMP_UNIT_KW   = _pickLimit('branchPump');
+  const OZONE_GEN_UNIT_KW     = _pickLimit('ozone');
+  const DOSING_PUMP_UNIT_KW   = 1;  // 加药计量泵规模与流量无关, 保持固定
 
   // 计算单模块的设备需求 (总值平摊到模块)
   const modShare = numModules > 0 ? 1 / numModules : 1;
@@ -4400,10 +4752,7 @@ function applyModularization(eq, stage, stageFarm, proc) {
   const modBackwashPumpKw      = (eq.backwashPumpKw      || 0) * modShare;
   const modOzoneGenKw          = (eq.ozoneGeneratorPower || 0) * modShare;
 
-  // 单机容量上限补充: 支路泵和加药泵 (基于行业典型规格)
-  const BRANCH_PUMP_UNIT_KW = 30;     // 支路泵单台 (Q≈200-400 m³/h, H=10-15 m)
-  const DOSING_PUMP_UNIT_KW = 1;      // 加药计量泵单台 (Q≈1-50 L/h)
-  const OZONE_GEN_UNIT_KW   = 50;     // 臭氧发生器单台
+  // v1.6: 支路泵 / 臭氧 / 加药泵 单机上限已在上方按 modFlow 档位定义 (BRANCH_PUMP_UNIT_KW, OZONE_GEN_UNIT_KW, DOSING_PUMP_UNIT_KW)
 
   // 热泵装机: 取冬/夏极值的较大者 (装机定容), 不是当前工况
   // 由 calcThermalLoad 通过 sim.thermalScenarios 提供
@@ -5554,6 +5903,17 @@ function readStageProcFromInputs(idx, fallbackProc) {
     const val = parseFloat(el.value);
     return Number.isFinite(val) ? val : def;
   };
+  // v1.5.1 (B45): 钳制版本, 用于百分比/比例字段
+  //   防止用户输入 >100% 或负数导致 (1 - eta) 变负, 进而让循环方程 / 稳态浓度算出负值或 NaN
+  //   仅对"语义上必然在 [min, max] 范围"的字段使用 (% 字段、流量比、效率等)
+  //   工程参数 (温度、压力、pH、流量等) 不强制钳制, 保持物理灵活性
+  const getNumClamped = (field, def, min, max) => {
+    const el = document.querySelector(`[data-proc-stage="${idx}"][data-proc-field="${field}"]`);
+    if (!el) return def;
+    const val = parseFloat(el.value);
+    if (!Number.isFinite(val)) return def;
+    return Math.max(min, Math.min(max, val));
+  };
   const getStr = (field, def) => {
     const el = document.querySelector(`[data-proc-stage="${idx}"][data-proc-field="${field}"]`);
     return el ? (el.value || def) : def;
@@ -5568,22 +5928,27 @@ function readStageProcFromInputs(idx, fallbackProc) {
   const _aopHRT = getNum('aopHRT_min', fallbackProc.aopHRT_min || _aopHRTDefault);
 
   return {
-    rdfTSS: getNum('rdfTSS', fallbackProc.rdfTSS),
-    biofilterTAN: getNum('biofilterTAN', fallbackProc.biofilterTAN),
-    uvDose: getNum('uvDose', fallbackProc.uvDose),
-    uvFlowPct: getNum('uvFlowPct', fallbackProc.uvFlowPct),
-    denitriFlowPct: getNum('denitriFlowPct', fallbackProc.denitriFlowPct),
-    denitriEff: getNum('denitriEff', fallbackProc.denitriEff),
-    rdfBackwash: getNum('rdfBackwash', fallbackProc.rdfBackwash),
+    // v1.5.1 (B45): 百分比字段钳到 [0, 100]
+    rdfTSS: getNumClamped('rdfTSS', fallbackProc.rdfTSS, 0, 100),
+    biofilterTAN: getNumClamped('biofilterTAN', fallbackProc.biofilterTAN, 0, 100),
+    uvDose: getNum('uvDose', fallbackProc.uvDose),  // mJ/cm², 工程量
+    // v1.5.1 (B45): 旁路流量比钳到 [0, 50] (单个旁路超 50% 已不合理)
+    uvFlowPct: getNumClamped('uvFlowPct', fallbackProc.uvFlowPct, 0, 50),
+    denitriFlowPct: getNumClamped('denitriFlowPct', fallbackProc.denitriFlowPct, 0, 50),
+    denitriEff: getNumClamped('denitriEff', fallbackProc.denitriEff, 0, 100),
+    // v1.5.1 (B45): RDF 反冲水占比钳到 [0, 50]
+    rdfBackwash: getNumClamped('rdfBackwash', fallbackProc.rdfBackwash, 0, 50),
     aerationMode: getStr('aerationMode', fallbackProc.aerationMode),
-    o2SatTarget: getNum('o2SatTarget', fallbackProc.o2SatTarget),
-    o2AbsorptionEff: getNum('o2AbsorptionEff', fallbackProc.o2AbsorptionEff),
+    o2SatTarget: getNum('o2SatTarget', fallbackProc.o2SatTarget),  // 饱和度目标 %, 但可大于 100 (超饱和)
+    // v1.5.1 (B45): 液氧吸收率钳到 [0, 100]
+    o2AbsorptionEff: getNumClamped('o2AbsorptionEff', fallbackProc.o2AbsorptionEff, 0, 100),
     o2ConeTopology: getStr('o2ConeTopology', fallbackProc.o2ConeTopology || 'mainline'),
     alkTarget: getNum('alkTarget', fallbackProc.alkTarget),
     alkSource: getNum('alkSource', fallbackProc.alkSource),
     VTR20: getNum('VTR20', fallbackProc.VTR20),
     VDR20: getNum('VDR20', fallbackProc.VDR20),
-    bfFillRatio: getNum('bfFillRatio', fallbackProc.bfFillRatio || 50),
+    // v1.5.1 (B45): BF 填料率钳到 [20, 80] (物理:工业惯例 40-70, 极端 20-80)
+    bfFillRatio: getNumClamped('bfFillRatio', fallbackProc.bfFillRatio || 50, 20, 80),
     thetaNit: getNum('thetaNit', fallbackProc.thetaNit),
     thetaDen: getNum('thetaDen', fallbackProc.thetaDen),
     o2DOMfactor: getNum('o2DOMfactor', fallbackProc.o2DOMfactor != null ? fallbackProc.o2DOMfactor : 0.10),
@@ -5597,7 +5962,8 @@ function readStageProcFromInputs(idx, fallbackProc) {
     sourceSS: getNum('sourceSS', fallbackProc.sourceSS),
     sourcePH: getNum('sourcePH', fallbackProc.sourcePH),
     sourceTemp: getNum('sourceTemp', fallbackProc.sourceTemp),
-    hxEff: getNum('hxEff', fallbackProc.hxEff),
+    // v1.5.1 (B45): 板换效率钳到 [0, 100]
+    hxEff: getNumClamped('hxEff', fallbackProc.hxEff, 0, 100),
     // v1.1: 拆分制热/制冷 COP, 同时兼容老字段 heatPumpCOP
     heatPumpCOP_heat: getNum('heatPumpCOP_heat', fallbackProc.heatPumpCOP_heat || fallbackProc.heatPumpCOP || 4.0),
     heatPumpCOP_cool: getNum('heatPumpCOP_cool', fallbackProc.heatPumpCOP_cool || (fallbackProc.heatPumpCOP ? fallbackProc.heatPumpCOP * 0.75 : 3.0)),
@@ -5609,26 +5975,33 @@ function readStageProcFromInputs(idx, fallbackProc) {
     poolDepth: getNum('poolDepth', fallbackProc.poolDepth || 1.5),
     skimmerEnabled: getBool('skimmerEnabled', fallbackProc.skimmerEnabled),
     skimmerMode: getStr('skimmerMode', fallbackProc.skimmerMode),
-    skimmerFlowPct: getNum('skimmerFlowPct', fallbackProc.skimmerFlowPct),
-    skimmerDOMEffAir: getNum('skimmerDOMEffAir', fallbackProc.skimmerDOMEffAir),
-    skimmerDOMEffOzone: getNum('skimmerDOMEffOzone', fallbackProc.skimmerDOMEffOzone),
-    skimmerTSSEff: getNum('skimmerTSSEff', fallbackProc.skimmerTSSEff || 40),
+    // v1.5.1 (B45): 蛋分旁路流量比钳到 [0, 50]
+    skimmerFlowPct: getNumClamped('skimmerFlowPct', fallbackProc.skimmerFlowPct, 0, 50),
+    // v1.5.1 (B45): 蛋分 DOM/TSS 去除率钳到 [0, 100]
+    skimmerDOMEffAir: getNumClamped('skimmerDOMEffAir', fallbackProc.skimmerDOMEffAir, 0, 100),
+    skimmerDOMEffOzone: getNumClamped('skimmerDOMEffOzone', fallbackProc.skimmerDOMEffOzone, 0, 100),
+    skimmerTSSEff: getNumClamped('skimmerTSSEff', fallbackProc.skimmerTSSEff || 40, 0, 100),
     skimmerHRT_min: getNum('skimmerHRT_min', fallbackProc.skimmerHRT_min || 2),
     ozoneDose: getNum('ozoneDose', fallbackProc.ozoneDose),
     aopEnabled: getBool('aopEnabled', fallbackProc.aopEnabled),
-    aopFlowPct: getNum('aopFlowPct', fallbackProc.aopFlowPct),
-    aopGeosminEff: getNum('aopGeosminEff', fallbackProc.aopGeosminEff),
-    aopDOMRemoval: getNum('aopDOMRemoval', fallbackProc.aopDOMRemoval || 5),
+    // v1.5.1 (B45): AOP 旁路流量比钳到 [0, 50]
+    aopFlowPct: getNumClamped('aopFlowPct', fallbackProc.aopFlowPct, 0, 50),
+    // v1.5.1 (B45): AOP 去除率钳到 [0, 100]
+    aopGeosminEff: getNumClamped('aopGeosminEff', fallbackProc.aopGeosminEff, 0, 100),
+    aopDOMRemoval: getNumClamped('aopDOMRemoval', fallbackProc.aopDOMRemoval || 5, 0, 100),
     aopType: _aopType,
     aopHRT_min: _aopHRT,
     // v1.1.2: CO₂ 脱气塔 (默认值更新, 加风压/效率)
     co2StripperEnabled: getBool('co2StripperEnabled', fallbackProc.co2StripperEnabled !== false),
-    co2StripperEff: getNum('co2StripperEff', fallbackProc.co2StripperEff || 65),
+    // v1.5.1 (B45): CO2 脱气率钳到 [0, 100]
+    co2StripperEff: getNumClamped('co2StripperEff', fallbackProc.co2StripperEff || 65, 0, 100),
     co2StripperGtoL: getNum('co2StripperGtoL', fallbackProc.co2StripperGtoL || 3),
     co2StripperLoadingRate: getNum('co2StripperLoadingRate', fallbackProc.co2StripperLoadingRate || 80),
     co2BlowerPressure_kPa: getNum('co2BlowerPressure_kPa', fallbackProc.co2BlowerPressure_kPa || 2.5),
-    co2BlowerEfficiency: getNum('co2BlowerEfficiency', fallbackProc.co2BlowerEfficiency || 60),
-    co2FallbackEff: getNum('co2FallbackEff', fallbackProc.co2FallbackEff || 5),
+    // v1.5.1 (B45): CO2 风机效率钳到 [0, 100]
+    co2BlowerEfficiency: getNumClamped('co2BlowerEfficiency', fallbackProc.co2BlowerEfficiency || 60, 0, 100),
+    // v1.5.1 (B45): CO2 fallback 解吸效率钳到 [0, 100]
+    co2FallbackEff: getNumClamped('co2FallbackEff', fallbackProc.co2FallbackEff || 5, 0, 100),
     // v1.1 新增: 工程安全系数
     safetyBio: getNum('safetyBio', fallbackProc.safetyBio || 1.15),
     safetyAerator: getNum('safetyAerator', fallbackProc.safetyAerator || 1.10),
@@ -5664,34 +6037,23 @@ function readStageProcFromInputs(idx, fallbackProc) {
    ============================================================================ */
 function renderStageBlock(idx, stage) {
   return `
-<section class="card p-5 scroll-mt-20" id="stage-${idx}">
-  <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-    <h2 class="section-title text-lg font-bold">
+<details class="card p-5 scroll-mt-28 stage-card" id="stage-${idx}" open>
+  <summary class="stage-summary flex items-center justify-between mb-4 flex-wrap gap-2 cursor-pointer list-none">
+    <h2 class="section-title text-lg font-bold flex-1">
       ${['④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫'][idx] || '▶'} 阶段 ${idx+1}: <span class="text-cyan-300">${stage.name}</span>
       <span class="text-xs text-slate-400 ml-2">${stage.weightStart}→${stage.weightEnd}g · ${stage.months}月 · ${stage.tempOpt}°C · ${stage.density} kg/m³${(stage.salinity||0) > 0 ? ' · ' + stage.salinity + '‰' : ''}</span>
     </h2>
-    <div class="flex items-center gap-2 flex-wrap">
-      <!-- v1.3.x: 阶段级"并联套数" + "鱼池规格" 输入 (布置设计的核心决策) -->
-      <div class="flex items-center gap-1 bg-cyan-950/40 border border-cyan-700/40 rounded px-2 py-1" title="该阶段拆成几套独立循环 RAS 系统 (1-10), 每套都有自己的池/泵/RDF/UV/BF/...">
-        <span class="text-[10px] text-cyan-400">🔧 套数</span>
-        <input data-stage="${idx}" data-field="subSystemCount" type="number" min="1" max="10" step="1" value="${stage.subSystemCount || 1}" class="stg-input input-ind !w-12 !py-0.5 !text-xs !text-center">
-      </div>
-      <div class="flex items-center gap-1 bg-cyan-950/40 border border-cyan-700/40 rounded px-2 py-1" title="每套 RAS 系统的池数 (1-10) × 池深 (m). 池子直径由 iRAS 物理模型按总水体反推. 池深也用于热平衡计算 (估算池表面积/车间面积).">
-        <span class="text-[10px] text-cyan-400">🐟 每套</span>
-        <input data-stage="${idx}" data-field="poolsPerSet" type="number" min="1" max="10" step="1" value="${stage.poolsPerSet || 1}" class="stg-input input-ind !w-12 !py-0.5 !text-xs !text-center" title="每套 RAS 多少个鱼池 (1-10)">
-        <span class="text-[10px] text-slate-500">池 ×</span>
-        <input data-stage="${idx}" data-field="poolDepth_m" type="number" min="0.5" max="8" step="0.1" value="${stage.poolDepth_m || stage.recDepth_m || 2.0}" class="stg-input input-ind !w-12 !py-0.5 !text-xs !text-center" title="单池深度 (m), 鱼种推荐: ${stage.recDepth_m != null ? stage.recDepth_m + ' m' : '—'}. 同时用于反推池径 + 热平衡计算池表面积">
-        <span class="text-[10px] text-slate-500">m深</span>
-      </div>
+    <div class="flex items-center gap-2 flex-wrap" onclick="event.stopPropagation()">
+      <!-- v1.6: 套数/鱼池配置已挪到下方"套数鱼池配置"折叠区 -->
       <button type="button" data-delete-stage="${idx}" class="text-[10px] px-2 py-1 rounded border border-rose-700/60 text-rose-400 hover:bg-rose-900/30 hover:text-rose-200" title="删除此阶段">✕ 删除</button>
       <a href="#globalSection" class="text-[10px] text-slate-400 hover:text-cyan-300">↑ 回顶部</a>
     </div>
-  </div>
+  </summary>
 
   <!-- 参数自洽性告警 (动态填充, 无内容时不占空间) -->
   <div data-warn="${idx}" class="mb-3"></div>
 
-  <details class="bg-slate-900/40 rounded-lg border border-slate-700/40 mb-4">
+  <details class="bg-slate-900/40 rounded-lg border border-slate-700/40">
     <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 阶段养殖参数 (点击展开)</summary>
     <div class="p-3 pt-2 rounded-b-lg bg-slate-900/60 border-t border-slate-700/50">
       <div class="flex items-center justify-between mb-2 gap-2">
@@ -5716,14 +6078,14 @@ function renderStageBlock(idx, stage) {
     </div>
   </details>
 
-  <details class="bg-slate-900/40 rounded-lg border border-slate-700/40 mb-4">
+  <details class="mt-3 bg-slate-900/40 rounded-lg border border-slate-700/40">
     <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 阶段工艺参数 (点击展开)</summary>
     <div class="p-3 pt-2 rounded-b-lg bg-slate-900/60 border-t border-slate-700/50">
       <div class="flex items-center justify-between mb-2 gap-2 flex-wrap">
         <div class="flex items-center gap-1.5">
           <button type="button" data-proc-tab="${idx}" data-tab-mode="common" class="proc-tab-btn proc-tab-active text-[11px] px-3 py-1 rounded">常用 (12)</button>
           <button type="button" data-proc-tab="${idx}" data-tab-mode="all" class="proc-tab-btn text-[11px] px-3 py-1 rounded">全部 (60+)</button>
-          <a href="#help-paramref" class="text-[10px] text-amber-400 hover:text-amber-200 ml-1" title="参数手册: 完整定义 + 调整建议">📋 手册</a>
+          <button type="button" data-show-paramref class="text-[10px] text-amber-400 hover:text-amber-200 ml-1 bg-transparent border-0 cursor-pointer" title="参数手册: 完整定义 + 调整建议">📋 手册</button>
         </div>
         <button type="button" data-proc-reset="${idx}" class="text-[10px] px-2 py-1 rounded border border-cyan-700 text-cyan-300 hover:bg-cyan-900/40">↺ 本阶段默认</button>
       </div>
@@ -5849,7 +6211,7 @@ function renderStageBlock(idx, stage) {
   </div>
 
   <!-- 图表 (默认展开) -->
-  <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4" data-print-row="charts">
     <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/50">
       <div class="text-sm text-slate-300 mb-2">📉 污染物沿程变化 (TAN/TSS/DOM)</div>
       <div style="position:relative; height:220px;"><canvas data-chart="pollutant-${idx}"></canvas></div>
@@ -5873,9 +6235,70 @@ function renderStageBlock(idx, stage) {
   </div>
 
   <!-- 折叠区: 负荷推导 -->
-  <details class="mt-4 bg-slate-900/40 rounded-lg border border-slate-700/40">
+  <details class="mt-3 bg-slate-900/40 rounded-lg border border-slate-700/40">
     <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 负荷推导详情 (点击展开)</summary>
     <div class="p-4 pt-2"><div data-card="load-${idx}" class="space-y-1 text-sm"></div></div>
+  </details>
+
+  <!-- v1.6: 套数鱼池配置 (布置设计的核心决策) -->
+  <details class="mt-3 bg-slate-900/40 rounded-lg border border-slate-700/40">
+    <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 套数鱼池配置 (点击展开)<span class="text-[10px] text-slate-500 font-normal ml-2" data-poolconf-summary="${idx}"></span></summary>
+    <div class="p-4 pt-2 text-xs">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div>
+          <label class="text-[10px] text-cyan-400" title="该阶段拆成几套独立循环 RAS 系统 (1-10), 每套都有自己的池/泵/RDF/UV/BF/...&#10;套数越多: 分散故障 + 单机变小 + 总池数增多&#10;套数越少: 集中规模效应 + 单机变大 + 总池数减少">🔧 并联套数</label>
+          <input data-stage="${idx}" data-field="subSystemCount" type="number" min="1" max="10" step="1" value="${stage.subSystemCount || 1}" class="stg-input input-ind !py-1 !text-xs">
+        </div>
+        <div>
+          <label class="text-[10px] text-cyan-400" title="每套 RAS 多少个鱼池 (1-10)&#10;工程惯例 ≥ 2 池 (主+备/检修轮替)">🐟 每套池数</label>
+          <input data-stage="${idx}" data-field="poolsPerSet" type="number" min="1" max="10" step="1" value="${stage.poolsPerSet || 1}" class="stg-input input-ind !py-1 !text-xs">
+        </div>
+        <div>
+          <label class="text-[10px] text-cyan-400" title="单池深度 (m), 鱼种推荐: ${stage.recDepth_m != null ? stage.recDepth_m + ' m' : '—'}. 同时用于反推池径 + 热平衡计算池表面积">🌊 池深 (m)<span class="text-[9px] text-slate-500 ml-1">${stage.recDepth_m != null ? '推荐 ' + stage.recDepth_m + 'm' : ''}</span></label>
+          <input data-stage="${idx}" data-field="poolDepth_m" type="number" min="0.5" max="8" step="0.1" value="${stage.poolDepth_m || stage.recDepth_m || 2.0}" class="stg-input input-ind !py-1 !text-xs">
+        </div>
+      </div>
+      <!-- 池配置摘要 + 告警 (由 renderPoolConfigInfo 动态填充) -->
+      <div data-poolconf-info="${idx}" class="mt-3 text-[10px] text-slate-400 leading-relaxed"></div>
+      <div class="text-[10px] text-slate-500 mt-2 leading-relaxed">
+        套数 / 每套池数 / 池深 决定:
+        <b>总池数</b> = 套数 × 每套池数,
+        <b>单池水体</b> = V_total / 总池数,
+        <b>单池直径</b> = √(4V / π·H) (反推)。
+        modFlow = 主流量 / 套数 → 决定下方"设备选型上限"自动档位。
+      </div>
+    </div>
+  </details>
+
+  <!-- v1.6: 设备选型上限 (每阶段独立, 按 modFlow 自适应) -->
+  <details class="mt-3 bg-slate-900/40 rounded-lg border border-slate-700/40">
+    <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 设备选型上限 (点击展开)</summary>
+    <div class="p-4 pt-2 text-xs">
+      <div class="flex items-center gap-3 mb-2 flex-wrap">
+        <label class="inline-flex items-center gap-1.5 cursor-pointer">
+          <input type="checkbox" data-stage="${idx}" data-field="equipLimitsAuto" ${(stage.equipLimitsAuto === false) ? '' : 'checked'} class="stg-eqlimit-toggle accent-cyan-500">
+          <span class="text-slate-300">自动 (按本阶段模块流量自适应)</span>
+        </label>
+        <span class="text-[10px] text-slate-400" data-eqlimit-modflow="${idx}">modFlow = — m³/h</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2" data-eqlimit-grid="${idx}">
+        ${['pump','rdf','uv','blower','hp','branchPump','ozone'].map(key => `
+          <div>
+            <label class="text-[10px] text-slate-400">${EQUIPMENT_LIMIT_LABELS[key].label} ≤ (${EQUIPMENT_LIMIT_LABELS[key].unit})</label>
+            <input data-stage="${idx}" data-eqlimit-field="${key}" type="number"
+                   min="${EQUIPMENT_LIMIT_LABELS[key].min}" max="${EQUIPMENT_LIMIT_LABELS[key].max}"
+                   value="${(stage.equipLimits && stage.equipLimits[key]) || ''}"
+                   placeholder="自动"
+                   class="stg-eqlimit-input input-ind !py-1 !text-xs">
+          </div>
+        `).join('')}
+      </div>
+      <div class="text-[10px] text-slate-500 mt-2 leading-relaxed">
+        各阶段 modFlow 不同 (苗种期小、成鱼期大), 单机上限按 modFlow 自动选档:&nbsp;
+        微型 (&lt;500) / 小型 (500-1500) / 中型 (1500-3500) / 中大型 (3500-7000) / 大型 (≥7000)。
+        取消"自动"后可手动指定。空白字段沿用自动值。仅影响设备清单"几台×几套",不影响 CAPEX 总额或物理结果。
+      </div>
+    </div>
   </details>
 
   <!-- 折叠区: 设备规格 -->
@@ -5891,17 +6314,17 @@ function renderStageBlock(idx, stage) {
   </details>
 
   <!-- 折叠区: 投资概算 -->
-  <details class="mt-3 bg-slate-900/40 rounded-lg border border-amber-700/40">
-    <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-amber-300 hover:bg-amber-900/20">▸ 💰 投资概算 (点击展开)</summary>
+  <details class="mt-3 bg-slate-900/40 rounded-lg border border-slate-700/40">
+    <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 投资概算列表 (点击展开)</summary>
     <div class="p-4 pt-2"><div data-card="capex-${idx}" class="text-sm"></div></div>
   </details>
 
   <!-- 折叠区: 基准对照 (v1.1 新增) -->
-  <details class="mt-3 bg-slate-900/40 rounded-lg border border-emerald-700/40" open>
-    <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-emerald-300 hover:bg-emerald-900/20">▸ 📊 文献基准对照 (v1.1 验证可信度)</summary>
+  <details class="mt-3 bg-slate-900/40 rounded-lg border border-slate-700/40">
+    <summary class="px-4 py-2.5 cursor-pointer text-sm font-bold text-cyan-300 hover:bg-slate-800/40">▸ 文献基准对照 (点击展开)</summary>
     <div class="p-4 pt-2"><div data-card="bench-${idx}" class="text-sm"></div></div>
   </details>
-</section>
+</details>
 `;
 }
 
@@ -6431,6 +6854,41 @@ function renderStageWarnings(idx, load, stage, stageFarm, eq, sim) {
     }
   }
 
+  // v1.5.1: 旁路流量比总和检查 (B22)
+  //   各旁路独立从主管抽水, 物理上总和可超 100%, 但工程上 > 90% 已让主管流量分布失衡, 不合理
+  ensureStageProc(stage);
+  const _p = stage.proc;
+  const _branchTotalPct = (_p.uvFlowPct || 0)
+                       + (_p.denitriFlowPct || 0)
+                       + ((_p.skimmerEnabled && _p.skimmerFlowPct) || 0)
+                       + ((_p.aopEnabled && _p.aopFlowPct) || 0);
+  if (_branchTotalPct > 90) {
+    warns.push({
+      level: 'warn',
+      text: `🔀 旁路流量比之和 ${_branchTotalPct.toFixed(0)}% 偏高 (UV+反硝化+蛋分+AOP). 工程惯例 < 60%, 超过 90% 主管流量分配失衡, 建议降低各支路流量比。`
+    });
+  }
+
+  // v1.5.1: 反硝化器极端参数警告
+  //   稳态 NO3 浓度 = P_no3 / (Q_b × eta × 24 + V_replace)
+  //   denitriFlowPct 过低 或 denitriEff 过低 时, 反硝化承担太少, 必须靠换水, 否则 NO3 暴涨
+  //   尤其当用户启用换水率 < 2%/d 时, 反硝化几乎是唯一的 NO3 移除路径
+  if (_p.denitriFlowPct != null) {
+    const _dFlowPct = _p.denitriFlowPct || 0;
+    const _dEff = (_p.denitriEff || 0) / 100;
+    const _exchangePctDay = stage.exchangeDaily || 5;
+    // 等效日 NO3 移除能力 = 旁路占比 × 去除率 × 循环次数/天 (与换水 %/d 同量纲)
+    //   = 旁路占比 × 去除率 × turnover × 24
+    const _denitriDailyRemoval = _dFlowPct/100 * _dEff * (stage.turnover || 3) * 24;
+    // 与换水 %/d 比较 (旁路 NO3 移除能力 + 换水 ≥ NO3 产生 才能稳)
+    if (_denitriDailyRemoval < 0.5 && _exchangePctDay < 3) {
+      warns.push({
+        level: 'warn',
+        text: `♻️ 反硝化设计偏弱: 旁路流量比 ${_dFlowPct}% × 去除率 ${(_dEff*100).toFixed(0)}% (等效日处理能力 ${_denitriDailyRemoval.toFixed(2)}× V_tank/d), 同时换水率仅 ${_exchangePctDay}%/d. 稳态 NO₃ 浓度可能暴涨. 建议提高反硝化旁路流量比或换水率。`
+      });
+    }
+  }
+
   if (warns.length === 0) {
     box.innerHTML = '';
     return;
@@ -6538,34 +6996,7 @@ function renderEquipCard(idx, eq) {
     const setSuffix = setCount > 1 ? ` · 用户设定 ${setCount} 套并联` : '';
     html += sectionHeader(`🏗️ 多模块并联配置 (该阶段 ${m.numModules} 个模块${setSuffix})`);
 
-    // v1.3.x: 鱼池配置 (布置设计的起点)
-    if (m.pools) {
-      const p = m.pools;
-      html += `<div class="rounded-md border border-cyan-700/40 bg-cyan-950/20 p-2 mb-2">
-        <div class="flex justify-between items-center">
-          <span class="text-cyan-300 text-xs font-bold">🐟 鱼池配置</span>
-          <span class="text-[10px] text-slate-500">用户设定每套 ${p.poolsPerSet} 池 × ${p.depth_m}m深 → 反推 Φ${p.diameter_m}m</span>
-        </div>
-        <div class="grid grid-cols-3 gap-2 mt-1.5 text-[11px]">
-          <div>
-            <div class="text-[9px] text-slate-500 uppercase">总池数</div>
-            <div class="text-base font-mono font-bold text-cyan-200">${p.count}</div>
-            <div class="text-[10px] text-slate-400">每套 ${p.countPerModule} 池</div>
-          </div>
-          <div>
-            <div class="text-[9px] text-slate-500 uppercase">单池规格</div>
-            <div class="text-base font-mono text-cyan-200">Φ${p.diameter_m}m × ${p.depth_m}m</div>
-            <div class="text-[10px] text-slate-400">${p.volume_m3} m³/池</div>
-          </div>
-          <div>
-            <div class="text-[9px] text-slate-500 uppercase">布置参考</div>
-            <div class="text-base font-mono text-cyan-200">${p.surfaceArea_m2} m²</div>
-            <div class="text-[10px] text-slate-400">单池池面积</div>
-          </div>
-        </div>
-        ${p.advisory ? `<div class="mt-1.5 text-[10px] text-amber-400 italic">⚠️ ${p.advisory}</div>` : ''}
-      </div>`;
-    }
+    // v1.6: 鱼池配置已挪到上方"套数鱼池配置"折叠区显示 (含池径反推 + 告警)
 
     function renderModRow(label, spec, unit) {
       if (!spec) return '';
@@ -6761,6 +7192,59 @@ function renderCapexCard(idx, capex) {
       实际造价须以厂商报价和工程招标为准。设备单价可在顶部「设备直购单价」区调整。
     </div>`;
   box.innerHTML = html;
+}
+
+// v1.6: 更新阶段卡片的"设备选型上限"折叠区显示
+//   - summary 显示当前档位 + modFlow
+//   - 自动模式下输入框 disabled + placeholder = 当前自动值
+//   - 手动模式下输入框 enabled + 显示用户填的值
+function renderEquipLimitInfo(idx, flowData, stage, numModules) {
+  if (!stage) return;
+  const modFlow = numModules > 0 ? (flowData.flowM3h || 0) / numModules : (flowData.flowM3h || 0);
+  const band = pickEquipmentLimitsByModFlow(modFlow);
+  const auto = stage.equipLimitsAuto !== false;
+
+  const mfEl = document.querySelector(`[data-eqlimit-modflow="${idx}"]`);
+  if (mfEl) {
+    mfEl.textContent = `modFlow = ${modFlow.toFixed(0)} m³/h (主流量 ${(flowData.flowM3h||0).toFixed(0)} / ${numModules} 套)`;
+  }
+  ['pump','rdf','uv','blower','hp','branchPump','ozone'].forEach(key => {
+    const inp = document.querySelector(`[data-stage="${idx}"][data-eqlimit-field="${key}"]`);
+    if (!inp) return;
+    inp.disabled = auto;
+    if (auto) {
+      inp.placeholder = band[key].toString();
+      inp.style.opacity = '0.55';
+      inp.title = `自动: ${band[key]} ${EQUIPMENT_LIMIT_LABELS[key].unit} (${band.label}档). 取消"自动"勾选可手动指定`;
+    } else {
+      inp.placeholder = `自动 ${band[key]}`;
+      inp.style.opacity = '1';
+      inp.title = `手动指定. 留空则用自动值 ${band[key]} ${EQUIPMENT_LIMIT_LABELS[key].unit}`;
+    }
+  });
+}
+
+// v1.6: 更新阶段卡片的"套数鱼池配置"折叠区显示
+//   - summary 显示当前配置摘要 (套数 × 池数 · Φ 直径 × 深度)
+//   - 内部 info 区显示反推直径 + 总池数 + 单池水体 + 告警
+function renderPoolConfigInfo(idx, pools, stage) {
+  if (!pools) return;
+  // summary 摘要
+  const sumEl = document.querySelector(`[data-poolconf-summary="${idx}"]`);
+  if (sumEl) {
+    const sub = stage && stage.subSystemCount || 1;
+    sumEl.textContent = `· ${sub} 套 × ${pools.poolsPerSet} 池 · Φ${pools.diameter_m}m × ${pools.depth_m}m深`;
+  }
+  // info 区: 详细 + 告警
+  const infoEl = document.querySelector(`[data-poolconf-info="${idx}"]`);
+  if (infoEl) {
+    const sub = stage && stage.subSystemCount || 1;
+    let html = `<div class="text-[10px] text-slate-400">总池数: <b class="text-cyan-300">${pools.count}</b> 个 (${sub} 套 × ${pools.poolsPerSet} 池) · 反推单池: <b class="text-cyan-300">Φ${pools.diameter_m}m × ${pools.depth_m}m深</b> · 单池水体: <b class="text-cyan-300">${pools.volume_m3} m³</b> · 单池表面积: <b class="text-cyan-300">${pools.surfaceArea_m2} m²</b></div>`;
+    if (pools.advisory) {
+      html += `<div class="mt-1.5 text-[10px] text-amber-400 italic">⚠️ ${pools.advisory}</div>`;
+    }
+    infoEl.innerHTML = html;
+  }
 }
 
 /* ============================================================================
@@ -6975,11 +7459,17 @@ function renderSpeciesButtons() {
   const box = document.getElementById('speciesSelector');
   box.innerHTML = Object.entries(SPECIES_DB).map(([key, sp]) => `
     <button data-sp="${key}" class="species-btn ${key===currentSpecies?'active':''} rounded-lg p-3 text-left">
-      <div class="text-2xl mb-1">${sp.icon}</div>
+      <div class="text-lg mb-1">${sp.icon}</div>
       <div class="font-bold">${sp.name}</div>
       <div class="text-xs text-slate-400 mt-1">${sp.subtitle} · ${sp.stages.length}阶段</div>
     </button>
   `).join('');
+  // v1.6: 更新折叠区 summary, 显示当前选中鱼种 (即使折叠也能看到)
+  const sumEl = document.querySelector('[data-species-summary]');
+  if (sumEl) {
+    const sp = SPECIES_DB[currentSpecies];
+    sumEl.textContent = sp ? `· ${sp.icon} ${sp.name}` : '';
+  }
   box.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
       const newKey = btn.dataset.sp;
@@ -7014,6 +7504,7 @@ function rebuildStages() {
       ${i+1}. ${st.name}
     </a>
   `).join('');
+  // v1.6: 锚点点击展开目标阶段由全局事件委托处理 (见底部 document.addEventListener)
 
   // 绑定阶段输入事件
   container.querySelectorAll('.stg-input').forEach(inp => {
@@ -7050,6 +7541,34 @@ function rebuildStages() {
       }
       ensureStageProc(stagesState[idx]);
       stagesState[idx].proc = readStageProcFromInputs(idx, stagesState[idx].proc);
+      recomputeAll();
+    });
+  });
+  // v1.6: 设备选型上限 — "自动"勾选框
+  container.querySelectorAll('.stg-eqlimit-toggle').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      const idx = parseInt(e.target.dataset.stage);
+      if (Number.isNaN(idx)) return;
+      stagesState[idx].equipLimitsAuto = e.target.checked;
+      recomputeAll();
+    });
+  });
+  // v1.6: 设备选型上限 — 手动输入字段
+  container.querySelectorAll('.stg-eqlimit-input').forEach(inp => {
+    inp.addEventListener('input', (e) => {
+      const idx = parseInt(e.target.dataset.stage);
+      const field = e.target.dataset.eqlimitField;
+      if (Number.isNaN(idx) || !field) return;
+      if (!stagesState[idx].equipLimits) stagesState[idx].equipLimits = {};
+      const raw = e.target.value;
+      if (raw === '' || raw == null) {
+        delete stagesState[idx].equipLimits[field];   // 清空 → 回到自动值
+      } else {
+        const v = parseFloat(raw);
+        if (Number.isFinite(v) && v > 0) {
+          stagesState[idx].equipLimits[field] = v;
+        }
+      }
       recomputeAll();
     });
   });
@@ -7335,6 +7854,13 @@ function recomputeAll() {
     renderCostCard(idx, cost);
     renderCapexCard(idx, capex);
     renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage);
+    // v1.6: 更新设备选型上限折叠区显示
+    const numModulesForUI = Math.max(1, stage.subSystemCount || 1);
+    renderEquipLimitInfo(idx, flowData, stage, numModulesForUI);
+    // v1.6: 更新套数鱼池配置折叠区显示 (含池径反推 + 告警)
+    if (eq && eq.modular && eq.modular.pools) {
+      renderPoolConfigInfo(idx, eq.modular.pools, stage);
+    }
 
     // v1.1.1: 把当前生效的 o2FishFactor 显示到 UI 输入框
     // 仅当用户没有手动改过 (stage.proc.o2FishFactor == null) 时回写
@@ -7980,6 +8506,14 @@ function restoreState(state) {
   currentTanCoef = state.tanCoef || 0.092;
   // 阶段
   stagesState = state.stages.map(s => ({...s, proc: {...PROCESS_DEFAULTS, ...(s.proc || {})}}));
+  // v1.6 兼容: 老方案 JSON 没有 equipLimitsAuto / equipLimits 字段, 默认自动模式 (按 modFlow 自适应)
+  //   注意: 这意味着加载老 v1.5 方案后, 设备清单会按新档位重排 (一般小项目数量变化不大, 大项目设备数减少)
+  //   不影响 CAPEX 总额或物理结果, 只影响"几台×几套"的展示口径
+  //   如果用户希望严格保持 v1.5 老视觉, 可以手动改"自动"为关闭, 并填入 v1.5 的固定上限值 (75/30/600/8/200/30/50)
+  stagesState.forEach(s => {
+    if (s.equipLimitsAuto == null) s.equipLimitsAuto = true;   // 默认自动
+    if (s.equipLimits == null) s.equipLimits = {};              // 默认空
+  });
   // v1.3.x: 老方案兼容 — 老方案 JSON 没有 recDepth_m, 从 SPECIES_DB 按阶段名/index 补充
   //   防止池径反推/热平衡 fallback 到 1.5m 默认值, 导致和当前鱼种推荐池深不一致
   try {
@@ -8512,6 +9046,32 @@ document.getElementById('btnHelp').addEventListener('click', () => {
 document.getElementById('btnHelpClose').addEventListener('click', hideHelp);
 document.getElementById('btnHelpClose2').addEventListener('click', hideHelp);
 
+// v1.5.1: 阶段卡片"📋 手册"按钮 → 打开帮助页 + 滚动到参数手册
+// 用事件委托 (按钮是动态生成的, 不能直接 addEventListener)
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-show-paramref]');
+  if (!btn) return;
+  e.preventDefault();
+  showHelp();
+  // 显示帮助页后, 滚动到参数手册区
+  setTimeout(() => {
+    const target = document.getElementById('help-paramref');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+});
+
+// v1.6: 点击 #stage-N 锚点链接时, 自动展开对应阶段 details
+//   阶段卡片现在是可折叠的 (default open), 用户可手动收起.
+//   点击锚点跳转目标阶段 → 强制展开 (避免用户跳过去只看到一行标题)
+//   覆盖 stageNav 链接 + 全场指标表阶段名链接 + 任何指向 #stage-N 的链接
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#stage-"]');
+  if (!a) return;
+  const tgt = document.querySelector(a.getAttribute('href'));
+  if (tgt && tgt.tagName === 'DETAILS') tgt.open = true;
+  // 不 preventDefault, 让浏览器自身的锚点跳转继续
+});
+
 // 点击顶部标题: 回到顶部 (如果在帮助页则先返回主界面)
 document.getElementById('titleLink').addEventListener('click', () => {
   if (document.getElementById('helpPage').style.display === 'block') hideHelp();
@@ -8546,15 +9106,31 @@ document.getElementById('btnPrint').addEventListener('click', () => {
     wasOpen.set(d, d.open);
     d.open = true;
   });
-  // 2. 短延迟让浏览器渲染展开后的内容 (含 chart resize)
+  // 2. v1.5.1: 显式 resize 所有 chart, 防止图表在打印介质下尺寸错误而显示不出来
+  //    Chart.js responsive=true 依赖 ResizeObserver, 但 details 从 closed → open 切换时
+  //    容器从 0 高度变到正常高度, ResizeObserver 可能没触发, 必须显式调用 resize()
   setTimeout(() => {
-    window.print();
+    try {
+      Object.values(stageCharts).forEach(charts => {
+        if (charts.pollutant) charts.pollutant.resize();
+        if (charts.gas) charts.gas.resize();
+      });
+    } catch (e) { /* 静默 */ }
+    // 再等一帧让浏览器画完, 然后调 print
+    setTimeout(() => window.print(), 100);
   }, 300);
   // 3. 打印完成后恢复折叠状态
   const restore = () => {
     allDetails.forEach(d => {
       d.open = wasOpen.get(d);
     });
+    // resize 一次还原屏幕尺寸
+    try {
+      Object.values(stageCharts).forEach(charts => {
+        if (charts.pollutant) charts.pollutant.resize();
+        if (charts.gas) charts.gas.resize();
+      });
+    } catch (e) { /* 静默 */ }
     window.removeEventListener('afterprint', restore);
   };
   window.addEventListener('afterprint', restore);
