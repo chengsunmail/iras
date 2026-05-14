@@ -5894,7 +5894,7 @@ function calcSiteCapex(stages, eqPrices, allResults) {
     if (actualReserveDays < 3) note += ` ⚠️ 储备不足 (建议 ≥ 5 天)`;
     else if (actualReserveDays > 30) note += ` (储备较充裕)`;
 
-    add(`液氧储罐 (${actualSize} t)`, `${actualSize} t`, actualCount, '套', actualPrice, note);
+    add(`液氧储罐 (${actualSize} t)`, `${actualSize} t`, actualCount, '罐', actualPrice, note);
   }
 
   // 未来扩展: 应急柴油机 / 变压器 / 中央配电 / SCADA / 围墙安保
@@ -8139,7 +8139,7 @@ function renderSiteEquipTable(stages, eqPrices, allResults) {
           <input type="number" id="o2tankCount" value="${cfg.count}" min="1" max="20" step="1"
                  title="罐数 (含主+备). iRAS 建议: ${sug.count} 罐 (主 ${sug.count-1} + 备 1)"
                  class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-xs font-mono w-14 text-cyan-200 text-right focus:outline-none focus:border-cyan-400">
-          <span class="text-[10px] text-slate-400">套</span>
+          <span class="text-[10px] text-slate-400">罐</span>
         </div>
       </td>
       <td class="text-right py-2 px-2 align-middle">
@@ -8147,7 +8147,7 @@ function renderSiteEquipTable(stages, eqPrices, allResults) {
           <input type="number" id="o2tankPrice" value="${cfg.unitPrice}" min="0" step="5000"
                  title="单价 (元/罐). 自动建议按规格计算 (1t≈5万, 3t≈10万, 5t≈14万, 10t≈22万, 20t≈35万). 修改规格会自动更新建议价"
                  class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-xs font-mono w-24 text-cyan-200 text-right focus:outline-none focus:border-cyan-400">
-          <span class="text-[10px] text-slate-400">元/套</span>
+          <span class="text-[10px] text-slate-400">元/罐</span>
         </div>
       </td>
       <td class="text-right py-2 px-2 font-mono text-amber-300 align-middle">${fmtW(tankItem.cost)}</td>
