@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  iRAS · 可研报告生成器 (v1.5)
+  iRAS · 可研报告生成器 (v1.6)
   按发改委编制规范输出 16 章扩展版可研报告 (.docx 格式)
 
   数据源: localStorage['iRAS_reportExport'] (从主页面 "📄 生成可研报告" 按钮传入)
@@ -28,7 +28,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="孙程 / 海南登登科技咨询有限公司">
 <meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
-<title>iRAS · 可研报告生成器 v1.5</title>
+<title>iRAS · 可研报告生成器 v1.6</title>
 <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
 <!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
 <script src="finance-core.js"></script>
@@ -936,7 +936,7 @@ RDF 反冲水|{{ (farm.peakFlowM3H * 24 * 0.02)|round(0) }}|{{ (farm.peakFlowM3H
 给水|约 {{ (farm.totalSystemVolume * 0.075 + 15)|round(0) }} m³/d|市政管网 / 自备水井
 排水|约 {{ (farm.totalSystemVolume * 0.075 + 15)|round(0) }} m³/d|经处理后排入市政管网或受纳水体
 供电|约 {{ ((opex.totalExclDep * 0.20) / 0.7 / 8000 * 1.5)|round(0) }} kVA 容量|10 kV 专线接入
-液氧|约 {{ farm.totalLOXKgD|round(0) }} kg/d|外购液氧, 厂内 3 t 储罐 + 汽化器
+液氧|约 {{ farm.totalLOXKgD|round(0) }} kg/d|外购液氧, 厂内 {{ farm.oxygenTank.size_t }} t × {{ farm.oxygenTank.count }} 套储罐 + 汽化器
 燃气(选用)|—|视暖通方式, 如用燃气热泵
 通讯|光纤接入|市政或电信运营商
 @@END_TABLE@@
@@ -1125,7 +1125,7 @@ DO 目标饱和度|{{ (workflow.aerator.satTarget*100)|round(0) }}%
 锥形塔吸收效率|{{ (workflow.aerator.absorptionEff*100)|round(0) }}%
 峰值供氧能力|{{ workflow.aerator.peakSupplyKgH|round(1) }} kg O₂/h
 全场日液氧用量|{{ farm.totalLOXKgD|round(0) }} kg/d
-液氧站|3 t 真空保温立式储罐 + 汽化器 + 减压控制
+液氧站|{{ farm.oxygenTank.size_t }} t 真空保温立式储罐 × {{ farm.oxygenTank.count }} 套 (主+备) + 汽化器 + 减压控制, 全场共用 (总储 {{ farm.oxygenTank.storage_t }} t, {{ farm.oxygenTank.reserveDays|round(0) }} 天储备)
 @@END_TABLE@@
 {% else %}
 本项目采用<strong>空气曝气</strong>增氧, 通过罗茨风机 + 微孔盘管曝气将空气溶解到水中, DO 通常达到 95% 左右饱和度, 适合中低密度场景。
@@ -2994,7 +2994,14 @@ function buildContext() {
     designStage:        d.results.summary.designStage || '',
     peakFlowM3H:        d.results.summary.peakFlowM3H || 0,
     totalSystemVolume:  d.results.summary.totalSystemVolume || 0,
-    totalLOXKgD:        d.results.summary.totalLOXKgD || 0
+    totalLOXKgD:        d.results.summary.totalLOXKgD || 0,
+    // v1.6: 液氧储罐配置 (站级设备, 全场共用); 老数据无 siteEquipment 时用 fallback
+    oxygenTank: (function(){
+      const s = d.results.summary;
+      if (s && s.siteEquipment && s.siteEquipment.oxygenTank) return s.siteEquipment.oxygenTank;
+      // fallback: 老方案没有 siteEquipment 字段, 用默认 3t × 2 罐
+      return { size_t: 3, count: 2, storage_t: 6, reserveDays: 0, unitPrice: 100000, totalCapex: 200000 };
+    })()
   };
 
   // 累加全场总值

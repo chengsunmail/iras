@@ -219,7 +219,49 @@ function renderAll(data) {
   data.results.perStage.forEach((stage, idx) => {
     html += renderStage(stage, idx, data);
   });
+  // v1.6: 站级设备表 (全场共用, 不分阶段)
+  html += renderSiteEquipment(data);
   document.getElementById('mainContent').innerHTML = html;
+}
+
+// v1.6: 渲染站级设备表 (全场共用设备汇总)
+function renderSiteEquipment(data) {
+  const s = data.results.summary || {};
+  const site = s.siteEquipment;
+  if (!site || !site.oxygenTank) return '';
+  const t = site.oxygenTank;
+  // 反推主+备
+  const sug = t.suggested || {};
+  const mainCount = sug.mainCount || Math.max(1, t.count - 1);
+  const sparesCount = Math.max(0, t.count - mainCount);
+  const reserveCls = t.reserveDays < 3 ? '#fb7185'
+                    : t.reserveDays < 5 ? '#fbbf24'
+                    : t.reserveDays > 30 ? '#94a3b8'
+                    : '#67e8f9';
+  return `
+    <div class="stage-section" style="margin-top:24px; border-top: 2px solid #475569; padding-top:16px;">
+      <h2 style="color:#7dd3fc; font-size:18px; margin-bottom:8px;">🏭 站级设备 (全场共用)</h2>
+      <div style="color:#94a3b8; font-size:11px; margin-bottom:12px;">
+        站级设备不分阶段, 全场仅装一套 (含主备). 在 iRAS 主页面「③ 阶段汇总 & 站级设备」可调规格/数量/单价。
+        ${s.totalLOXKgD ? `全场日耗 <b style="color:#67e8f9">${s.totalLOXKgD.toFixed(0)} kg/d</b>` : ''}
+      </div>
+      <table class="equip-table">
+        <thead>
+          <tr><th style="width:18%">设备</th><th style="width:8%">位号</th><th style="width:10%">规格</th><th style="width:8%">数量</th><th style="width:14%">总储存</th><th style="width:42%">备注</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>液氧站 <span style="color:#94a3b8; font-size:10px">(LOX 储罐 + 汽化器 + 减压)</span></td>
+            <td><code>V-901</code></td>
+            <td>${t.size_t} t/罐</td>
+            <td>${t.count} 套 <span style="color:#94a3b8; font-size:10px">(${mainCount}主+${sparesCount}备)</span></td>
+            <td>${t.storage_t} t · <span style="color:${reserveCls}">${t.reserveDays.toFixed(0)} 天储备</span></td>
+            <td style="color:#94a3b8; font-size:11px">单价 ${(t.unitPrice/10000).toFixed(1)} 万/套 · CAPEX ${(t.totalCapex/10000).toFixed(1)} 万 (已计入工程总投资, 不在阶段设备表重复)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 function renderSummary(data) {

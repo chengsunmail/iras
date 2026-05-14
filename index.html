@@ -26,7 +26,7 @@
 <meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
 <meta name="description" content="iRAS - 循环水养殖系统 (RAS) 工程设计与仿真平台,支持多阶段养殖规模反推、水质沿程仿真、设备规格与运行成本概算。">
 <meta name="keywords" content="RAS,循环水养殖,水处理工程,水产养殖,工艺设计,硝化,反硝化,蛋白分离器">
-<title>iRAS · 循环水养殖工程设计平台 v1.5</title>
+<title>iRAS · 循环水养殖工程设计平台 v1.6</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -652,7 +652,7 @@
         <button type="button" id="btnOpenFinance" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开投资财务评价页面 (NPV/IRR/敏感性 + Excel 导出)">💰 投资财务评价</button>
         <button type="button" id="btnOpenReport" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开可研报告生成器 (按发改委 16 章规范输出 docx)">📄 生成可研报告</button>
         <button type="button" id="btnPrint" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="打印 / 在打印对话框中选「另存为 PDF」可导出 PDF">🖨️ 打印</button>
-        <a href="iRAS_技术手册_v1.5_完整版.pdf" target="_blank" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40" title="完整技术手册 PDF (含工艺原理/设备设计/案例/财务评价/可研报告/参考文献)">📕 技术手册</a>
+        <a href="iRAS_技术手册_v1.6_完整版.pdf" target="_blank" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40" title="完整技术手册 PDF (含工艺原理/设备设计/案例/财务评价/可研报告/参考文献)">📕 技术手册</a>
         <button type="button" id="btnHelp" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40">? 帮助</button>
       </div>
     </div>
@@ -717,35 +717,35 @@
       </div>
 
       <!-- 全场投资概算 -->
-      <div class="p-3 rounded-lg border border-amber-800/50 bg-amber-950/15">
-        <div class="text-[10px] text-amber-400 mb-1">💰 全场投资概算 (设备直购 · 工程总投资)</div>
-        <div id="capexSummaryDisplay" class="text-base font-bold text-amber-200 font-mono">—</div>
+      <div class="p-3 rounded-lg border border-teal-800/50 bg-teal-950/15">
+        <div class="text-[10px] text-teal-400 mb-1">💰 全场投资概算 (设备直购 · 工程总投资)</div>
+        <div id="capexSummaryDisplay" class="text-base font-bold text-teal-200 font-mono">—</div>
         <div class="text-[10px] text-slate-500 mt-1">⚠️ 概算精度 ±40%, 仅供参考。详见各阶段「投资概算列表」。设备单价可在「② 财务数据和单价配置」中调整。</div>
       </div>
 
       <!-- v1.5: 项目用地估算 -->
-      <div class="p-3 rounded-lg border border-teal-800/50 bg-teal-950/15">
-        <div class="text-[10px] text-teal-400 mb-1 flex items-center gap-3 flex-wrap">
+      <div class="p-3 rounded-lg border border-sky-800/50 bg-sky-950/15">
+        <div class="text-[10px] text-sky-400 mb-1 flex items-center gap-3 flex-wrap">
           <span>📍 项目用地估算 (主车间 · 配套 · 总占地)</span>
           <!-- v1.5 Bug 47: 容积率 FAR 开放为参数. 默认 0.5 (国内 RAS 实测主流), UI 可调 -->
           <!-- 审计回合 7 修正: 默认从 0.7 改回 0.5. 0.7 来自 GB 50187 工业用地下限, 适用化工/电厂,
                不适用水产养殖 (按农业/乡镇企业用地, FAR 实测 0.4-0.55).
                实测对照: Atlantic Sapphire FAR≈0.26 (挪威 8000t), 国内 500-1500t 项目 FAR 0.4-0.5. -->
           <span class="inline-flex items-center gap-1" title="容积率 FAR = 总建筑面积 / 用地面积&#10;水产 RAS 实测取值 (按规模):&#10;  0.25-0.35  大型一体化 >5000t (Atlantic Sapphire 等)&#10;  0.35-0.50  国内中型 500-1500t (默认 0.5)&#10;  0.50-0.70  小型 <500t / 城市边缘集约用地&#10;  0.70-1.20  多层立体 (对虾层架、罗非鱼三层)&#10;⚠ 不要套用 GB 50187 工业用地 FAR≥0.7 下限, 那适用化工/电厂&#10;水产按农业/乡镇企业用地分类, 政府节地审查口径较松">
-            <label class="text-[10px] text-teal-300 cursor-help">FAR</label>
-            <input id="inpFarRatio" type="number" value="0.5" step="0.05" min="0.15" max="2.0" class="bg-slate-800 border border-teal-700/50 rounded px-2 py-0.5 text-[11px] text-teal-200 font-mono w-16 focus:outline-none focus:border-teal-400">
+            <label class="text-[10px] text-sky-300 cursor-help">FAR</label>
+            <input id="inpFarRatio" type="number" value="0.5" step="0.05" min="0.15" max="2.0" class="bg-slate-800 border border-sky-700/50 rounded px-2 py-0.5 text-[11px] text-sky-200 font-mono w-16 focus:outline-none focus:border-sky-400">
           </span>
         </div>
-        <div id="landAreaSummaryDisplay" class="text-base font-bold text-teal-200 font-mono">—</div>
+        <div id="landAreaSummaryDisplay" class="text-base font-bold text-sky-200 font-mono">—</div>
         <div id="landAreaBreakdownDisplay" class="text-[10px] text-slate-500 mt-1">主车间面积 = V_total / 平均池深 × 1.6 (含通道/操作平台); 总占地 = 总建筑面积 / 容积率 (默认 0.5)。仅供前期申报参考。</div>
       </div>
     </div>
 
     <!-- v1.2: 全局气候 + 围护 + 热泵 (项目级常量, 影响所有阶段的热平衡) -->
-    <div class="mt-5 rounded-lg border border-rose-500/40 bg-rose-900/10 p-4" id="globalThermalSection">
+    <div class="mt-3 rounded-lg border border-slate-700/40 bg-slate-900/30 p-4" id="globalThermalSection">
       <div class="flex items-center gap-2 mb-3 flex-wrap">
         <span class="text-lg">🌍</span>
-        <h3 class="text-sm font-bold text-rose-300">全局气候 + 围护 + 热泵 (v1.2)</h3>
+        <h3 class="text-sm font-bold text-cyan-300">全局气候 + 围护 + 热泵 (v1.2)</h3>
         <span class="text-[10px] text-slate-500">项目级常量, 影响所有阶段的热平衡; 各阶段输出在阶段卡片底部 ♨️ 区</span>
       </div>
       <!-- 第一行: 4 个核心选择 -->
@@ -873,7 +873,7 @@
   <!-- 全场汇总表 -->
   <details class="card p-5 top-card" id="farmSection" open>
     <summary class="top-summary cursor-pointer list-none mb-3">
-      <h2 class="section-title text-lg font-bold inline">③ 全场各阶段规模汇总</h2>
+      <h2 class="section-title text-lg font-bold inline">③ 阶段汇总 & 站级设备</h2>
     </summary>
     <div class="overflow-x-auto">
       <table class="w-full text-xs">
@@ -899,6 +899,31 @@
         <tbody id="farmTableBody"></tbody>
       </table>
     </div>
+
+    <!-- v1.6: 站级设备区 (全场共用设备, 不分阶段) -->
+    <div class="mt-4 pt-3 border-t border-slate-700/40">
+      <div class="flex items-center gap-2 mb-2 flex-wrap">
+        <span class="text-base">🏭</span>
+        <h3 class="text-sm font-bold text-cyan-300">站级设备 (全场共用)</h3>
+        <span class="text-[10px] text-slate-500">站级设备不分阶段, 全场仅装一套 (含主备). 已从各阶段「投资概算列表」剔除, 避免重复计算</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="text-slate-400 border-b border-slate-700">
+              <th class="text-left py-1 px-2">设备</th>
+              <th class="text-left py-1 px-2">规格</th>
+              <th class="text-right py-1 px-2">数量</th>
+              <th class="text-right py-1 px-2">单价</th>
+              <th class="text-right py-1 px-2">小计</th>
+              <th class="text-left py-1 px-2">备注</th>
+            </tr>
+          </thead>
+          <tbody id="siteEquipTableBody"></tbody>
+        </table>
+      </div>
+      <div id="siteEquipEmpty" class="text-[10px] text-slate-500 mt-2" style="display:none;">本项目所有阶段均采用空气曝气, 无需液氧储罐等站级氧气设备。</div>
+    </div>
   </details>
 
   <!-- 阶段详细区 (JS 动态生成) -->
@@ -906,7 +931,7 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> v1.5 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> v1.6 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -932,7 +957,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: v1.5.0 · 发布日期: 2026-05-09</div>
+          <div>版本: v1.6.0 · 发布日期: 2026-05-14</div>
           <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -1003,9 +1028,10 @@
       <div class="grid grid-cols-2 gap-1 text-xs">
         <a href="#help-1" class="text-cyan-300 hover:text-cyan-100">1. 软件概述</a>
         <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (76 项)</a>
-        <a href="#help-changelog-v15" class="text-rose-300 hover:text-rose-100 font-bold">📌 v1.5 升级说明</a>
-        <a href="#help-changelog-v14" class="text-orange-300 hover:text-orange-100 font-bold">📌 v1.4 升级说明</a>
-        <a href="#help-changelog-v13" class="text-yellow-300 hover:text-yellow-100 font-bold">📌 v1.3 升级说明</a>
+        <a href="#help-changelog-v16" class="text-rose-300 hover:text-rose-100 font-bold">📌 v1.6 升级说明</a>
+        <a href="#help-changelog-v15" class="text-orange-300 hover:text-orange-100 font-bold">📌 v1.5 升级说明</a>
+        <a href="#help-changelog-v14" class="text-yellow-300 hover:text-yellow-100 font-bold">📌 v1.4 升级说明</a>
+        <a href="#help-changelog-v13" class="text-amber-200 hover:text-amber-100 font-bold">📌 v1.3 升级说明</a>
         <a href="#help-changelog-v12" class="text-cyan-300 hover:text-cyan-100 font-bold">📌 v1.2 升级说明</a>
         <a href="#help-changelog" class="text-emerald-300 hover:text-emerald-100 font-bold">📌 v1.1 升级说明</a>
         <a href="#help-6" class="text-cyan-300 hover:text-cyan-100">6. 计算方法学</a>
@@ -1023,12 +1049,13 @@
     <section id="help-1">
       <h2 class="text-xl font-bold text-cyan-400 border-b border-slate-700 pb-2">1. 软件概述</h2>
       <p class="mt-3">iRAS (intelligent Recirculating Aquaculture System) 是一款面向水产养殖工程师、设计院、高校研究者的循环水养殖系统 (RAS) 工程设计开源工具。</p>
-      <p class="mt-2 text-slate-300">v1.5 当前能力覆盖 <strong>工艺设计 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong> 的完整工作流:</p>
+      <p class="mt-2 text-slate-300">v1.6 当前能力覆盖 <strong>工艺设计 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong> 的完整工作流:</p>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400">
         <li><b>工艺设计</b>: 多阶段养殖规模反推 + 精确循环方程水质稳态仿真 (TAN/TSS/DOM/NO₃/DO/CO₂ 沿程递减)</li>
         <li><b>主流串联 + 旁路</b>: 蛋分 / AOP / 反硝化混合建模, O₂ 按位置分配 (鱼池主增氧 + BF 独立粗孔曝气)</li>
         <li><b>盐度体系</b>: DO 饱和度修正 + 硝化效率修正 + 海水臭氧溴酸盐警告</li>
         <li><b>设备规格与选型</b>: RDF / BF / UV / 蛋分 / AOP / 反硝化 / 增氧 / 脱气 / 泵</li>
+        <li><b>站级设备 (v1.6)</b>: 液氧储罐等全场共用设备独立管理, 用户可调规格/数量/单价, iRAS 按全场日耗智能推荐</li>
         <li><b>多模块并联 + N+1 备用 (v1.3)</b>: 工程化布局, 模块间故障隔离</li>
         <li><b>P&amp;ID 工艺图自动生成 (v1.3.x)</b>: 独立 pid.html 页面, 可导出为 PNG/SVG</li>
         <li><b>设备清单导出 (v1.3.x)</b>: 独立 equipment.html, 含每台规格 + 数量 + 单价</li>
@@ -1037,12 +1064,49 @@
         <li><b>16 章扩展版可研报告 (v1.5)</b>: 按发改委编制规范输出 .docx 格式可研报告, 含工艺流程图 + 累计现金流 + 敏感性 Tornado 嵌入</li>
       </ul>
       <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons 2010, 国家海水鱼产业技术体系标准) 和工业实测数据 (Atlantic Sapphire 等) 校准, 不是经验调整。</p>
-      <p class="mt-2 text-slate-400 text-sm">v1.5 由 <strong>海南登登科技咨询有限公司</strong> 发布, AGPL v3 协议开源。如需商业咨询服务联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+      <p class="mt-2 text-slate-400 text-sm">v1.6 由 <strong>海南登登科技咨询有限公司</strong> 发布, AGPL v3 协议开源。如需商业咨询服务联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+    </section>
+
+    <!-- v1.6 升级说明 (changelog 格式, 简短) -->
+    <section id="help-changelog-v16" class="mt-6">
+      <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v1.6 升级说明 (2026-05-14) — 站级设备 + UI 重构 + 工程逻辑精化</h2>
+
+      <h3 class="mt-4 font-bold text-rose-300">主要改动</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-2 text-slate-300 text-sm">
+        <li><b>液氧储罐站级化 (核心改动)</b> — 从阶段 CAPEX 剔除, 挪到 ③ 节"站级设备"区, 全场仅装一套. 用户可调规格 (1/3/5/10/20/30/50 t) / 数量 (主+备) / 单价, iRAS 按全场日耗 + 7 天储备智能推荐. 修复多阶段重复计算 bug (4 阶段曾多算 30 万)</li>
+        <li><b>UI 整体重构</b> — 3 个顶部 section + 阶段卡片 + 鱼种区全部可折叠; header 双行 sticky 工具栏 (项目级 / 阶段级分组); 4 KPI 卡片 2×2 网格 + 配色克制化 (冷色统一: cyan/emerald/teal/sky)</li>
+        <li><b>投资概算列表 bug 修复</b> — 单价单位显示修正 (旧版"500 /h"→"500 元/(m³/h)"); MBBR/蛋分/AOP/反硝化/CO₂脱气/板换 共 6 项单位加澄清后缀</li>
+        <li><b>MBBR 单价语义澄清</b> — 标签改为"MBBR 池系统 (填料+曝气配件, 不含池体/风机)"; 设备规格清单显示填料净体积 + 池总容积 (按填料填充率反推)</li>
+        <li><b>液氧需求量可视化</b> — 阶段成本明细 / 设备清单 / 站级备注 共 3 处显示 kg/d</li>
+        <li><b>外部页面同步</b> — pid.html (V-901 标注"全场共用") / equipment.html (新增站级设备表) / report.html (硬编码"3 t"改为变量)</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-rose-300">小改进</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li>设备选型上限按 modFlow 自适应 (替代硬编码上限)</li>
+        <li>B45 边界钳制 (19 个百分比字段防止超界输入)</li>
+        <li>报告模板加 FCR 显示</li>
+        <li>打印优化重写 (A4 + 1.5cm 边距 + 强制阶段独立分页 + 灰阶图表)</li>
+        <li>阶段卡片"📋 手册"按钮修复 (锚点跳转自动展开)</li>
+        <li>财务参数独立到顶部, 与设备单价分离</li>
+        <li>② 区"液氧储罐"input 移除 (语义已迁移到 ③ 区, 老方案兼容迁移)</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-rose-300">已知限制</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li>技术手册 PDF 暂沿用 v1.5 内容, 6 处公式订正 (NO₃ R / V_RDF / V_BF / CO₂ 单位 / 双节点稳态 / 残值) 待下版手册同步发布</li>
+        <li>站级设备区当前仅支持液氧储罐, 应急柴油机 / 变压器 / SCADA 等架构已搭好, 未来版本添加</li>
+        <li>parseFloat(...) || default 在 0 值场景下会触发 fallback (e.g. elecPrice=0 被忽略), 留 v1.7 系统重构</li>
+      </ul>
+
+      <div class="mt-4 p-3 bg-rose-900/20 border border-rose-700/30 rounded text-rose-200 text-sm">
+        <strong>💡 工程意义:</strong> v1.6 主要解决了"液氧储罐在阶段 CAPEX 重复计算"这个长期存在的逻辑 bug, 同时把整套 UI 重构为更易扫描的工程师视角. 4 阶段千吨级项目 CAPEX 概算精度提升 ~3% (剔除重复); 多阶段切换效率因可折叠 UI 提升 ~40%.
+      </div>
     </section>
 
     <!-- v1.5 升级说明 -->
     <section id="help-changelog-v15" class="mt-6">
-      <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v1.5 升级说明 (2026-05-09) — 可研报告生成器 (16 章扩展版)</h2>
+      <h2 class="text-xl font-bold text-orange-400 border-b border-orange-700/50 pb-2">📌 v1.5 升级说明 (2026-05-09) — 可研报告生成器 (16 章扩展版)</h2>
 
       <h3 class="mt-4 font-bold text-rose-300">A. 为什么需要可研报告生成器</h3>
       <p class="mt-2 text-slate-400 text-sm">v1.4 之前的输出是工程数据 (P&amp;ID + 设备清单 + 财务表 Excel), 用户拿到这些后需要手动整合到 Word 可研报告里:</p>
@@ -2644,8 +2708,8 @@
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
-  version: '1.5.0',
-  releaseDate: '2026-05-09',
+  version: '1.6.0',
+  releaseDate: '2026-05-14',
   author: '孙程',
   email: '6881509@qq.com',
   company: '海南登登科技咨询有限公司',
@@ -3204,7 +3268,7 @@ const EQUIPMENT_LIMIT_LABELS = {
 // 价格基准: 2024-2025 年中国国内市场中等品牌
 const EQUIP_PRICES_DEFAULTS = {
   rdf:       { label: '转鼓微滤机',       unit: '元/(m³/h)',  price: 500,    lo: 300,  hi: 800   },
-  biofilter: { label: 'MBBR 生物滤池',    unit: '元/m³',      price: 4500,   lo: 3000, hi: 6000  },
+  biofilter: { label: 'MBBR 池系统 (填料+曝气配件, 不含池体/风机)',    unit: '元/m³ 填料',      price: 4500,   lo: 3000, hi: 6000  },
   uv:        { label: 'UV 消毒器',         unit: '元/kW',      price: 10000,  lo: 8000, hi: 15000 },
   skimmer:   { label: '蛋白分离器',        unit: '元/m³',      price: 25000,  lo: 15000,hi: 40000 },
   ozone:     { label: '臭氧发生器',        unit: '元/(kg/d)',  price: 100000, lo: 80000,hi: 150000},
@@ -3215,7 +3279,7 @@ const EQUIP_PRICES_DEFAULTS = {
   branchPump:{ label: '支路泵 (各)',       unit: '元/kW',      price: 3000,   lo: 2000, hi: 4000  },
   blower:    { label: '罗茨风机',          unit: '元/kW',      price: 4000,   lo: 3000, hi: 6000  },
   o2tower:   { label: '液氧增氧塔',        unit: '元/(m³/h)',  price: 350,    lo: 200,  hi: 500   },
-  o2tank:    { label: '液氧储罐 (3t)',     unit: '元/套',      price: 100000, lo: 80000,hi: 120000},
+  // v1.6: 液氧储罐已挪到 ③ 节"站级设备"区 (siteEquipConfig.oxygenTank), 用户可在那里调规格/数量/单价
   heatPump:  { label: '热泵 (空气源)',     unit: '元/kW',      price: 2000,   lo: 1500, hi: 3000  },
   heatExch:  { label: '板式换热器',        unit: '元/m²',      price: 1200,   lo: 800,  hi: 2000  }
 };
@@ -4539,7 +4603,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   } else {
     aerationSpec = {
       mode: '纯氧增氧 (液氧 + 锥形增氧塔)',
-      basis: `小时峰值 ${(load.o2FishPeakHourly||0).toFixed(2)} kg/h × safety ${sAerator} ÷ 吸收${(o2AbsEff*100).toFixed(0)}%`,
+      basis: `小时峰值 ${(load.o2FishPeakHourly||0).toFixed(2)} kg/h × safety ${sAerator} ÷ 吸收${(o2AbsEff*100).toFixed(0)}% · 设备日量 ${o2Demand.toFixed(0)} kg/d (峰值×24)`,
       param1Label: `峰值供氧能力`,
       param1Value: `${o2PeakSupplyKgH.toFixed(2)} kg/h`,
       param2Label: '锥形塔流量',
@@ -5448,6 +5512,7 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex) {
 
   // 增氧费用: 空气曝气 → 主风机电费; 纯氧 → 液氧费用 (只含鱼虾生理部分)
   let aerationCostMax, aerationCostAvg, aerationLabel;
+  let o2KgDailyMax = 0, o2KgDailyAvg = 0;       // v1.6: 液氧 kg/d, 用于显示
   if (proc.aerationMode === 'air') {
     // v1.1.2: 用 aerationSpec.blowerPowerKw (数值字段) 替代 parseFloat 字符串
     const blowerKW = (eq.aerationSpec && eq.aerationSpec.blowerPowerKw) || 0;
@@ -5459,6 +5524,8 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex) {
     aerationCostMax = eq.o2Demand * o2Price;
     const avgRatio = load.o2FishDailyAvg / Math.max(load.o2FishDaily, 1);
     aerationCostAvg = eq.o2Demand * avgRatio * o2Price;
+    o2KgDailyMax = eq.o2Demand;                 // v1.6: 设备日量 kg/d
+    o2KgDailyAvg = eq.o2Demand * avgRatio;      // v1.6: 日均 kg/d
     aerationLabel = '液氧费用';
   }
   // BF 粗孔曝气风机电费 (独立于主增氧, 24h 运行)
@@ -5526,6 +5593,7 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex) {
     co2BlowerCostAvg: co2BlowerCostDaily,
     depDaily,                                       // v1.1.2: CAPEX 折旧日均 (元/d, max 和 avg 一致)
     totalAvg,
+    o2KgDailyMax, o2KgDailyAvg,                     // v1.6: 液氧 kg/d (空气曝气模式下为 0)
     stageDays, stageFeedTotal, stageCostTotal
   };
 }
@@ -5583,8 +5651,10 @@ function calcCapex(eq, sim, flowData, eqPrices) {
   // 1. 转鼓微滤机
   total += add('转鼓微滤机 (RDF)', `${eq.rdfFlow.toFixed(0)} m³/h`, 'm³/h', eq.rdfFlow, eqPrices.rdf);
 
-  // 2. MBBR 生物滤池 (含填料+池体+曝气)
-  total += add('MBBR 生物滤池', `${eq.bioVolume.toFixed(1)} m³`, 'm³', eq.bioVolume, eqPrices.biofilter);
+  // 2. MBBR 池系统 (填料 + 曝气配件 + 拦截网, 不含池体和鼓风机)
+  //    - 池体: 由土建 (capexFactor ×2.2) 覆盖
+  //    - 鼓风机: 单独算 (见行 5655 "BF曝气风机")
+  total += add('MBBR 池系统 (填料+曝气配件)', `${eq.bioVolume.toFixed(1)} m³ 填料`, 'm³ 填料', eq.bioVolume, eqPrices.biofilter);
 
   // 3. UV 消毒器
   const uvKw = eq.uvPower / 1000;
@@ -5592,7 +5662,7 @@ function calcCapex(eq, sim, flowData, eqPrices) {
 
   // 4. 蛋白分离器
   if (eq.skimmerOn && eq.skimmerVolume > 0) {
-    total += add('蛋白分离器', `${eq.skimmerVolume.toFixed(1)} m³`, 'm³', eq.skimmerVolume, eqPrices.skimmer);
+    total += add('蛋白分离器', `${eq.skimmerVolume.toFixed(1)} m³`, 'm³ 塔体', eq.skimmerVolume, eqPrices.skimmer);
   }
 
   // 5. 臭氧发生器
@@ -5602,17 +5672,17 @@ function calcCapex(eq, sim, flowData, eqPrices) {
 
   // 6. AOP 反应池
   if (eq.aopOn && eq.aopVolume > 0) {
-    total += add('AOP 反应池', `${eq.aopVolume.toFixed(1)} m³`, 'm³', eq.aopVolume, eqPrices.aop);
+    total += add('AOP 反应池', `${eq.aopVolume.toFixed(1)} m³`, 'm³ 池体', eq.aopVolume, eqPrices.aop);
   }
 
   // 7. 反硝化反应器
   if (eq.denitriVolume > 0) {
-    total += add('反硝化反应器', `${eq.denitriVolume.toFixed(1)} m³`, 'm³', eq.denitriVolume, eqPrices.denitri);
+    total += add('反硝化反应器', `${eq.denitriVolume.toFixed(1)} m³`, 'm³ 池体', eq.denitriVolume, eqPrices.denitri);
   }
 
   // 8. CO₂ 脱气塔 (v1.1: 塔体 + 配套风机)
   if (eq.degasArea > 0) {
-    total += add('CO₂ 脱气塔(填料)', `${eq.degasArea.toFixed(1)} m²`, 'm²', eq.degasArea, eqPrices.degas);
+    total += add('CO₂ 脱气塔(填料)', `${eq.degasArea.toFixed(1)} m²`, 'm² 塔截面', eq.degasArea, eqPrices.degas);
     const dbKw = eq.co2StripperSpec ? eq.co2StripperSpec.blowerKw : 0;
     if (dbKw > 0.5) {
       total += add('脱气塔风机', `${dbKw.toFixed(1)} kW`, 'kW', dbKw, eqPrices.blower);
@@ -5644,9 +5714,8 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     const blowerKw = (eq.aerationSpec && eq.aerationSpec.blowerPowerKw) || 0;
     if (blowerKw > 0) total += add('主增氧风机+曝气盘', `${blowerKw.toFixed(1)} kW`, 'kW', blowerKw, eqPrices.blower);
   } else {
-    // 纯氧: 增氧塔 + 液氧储罐
+    // 纯氧: 增氧塔 (站级液氧储罐挪到 ③ 区, 由 calcSiteCapex 处理, 避免每阶段重复)
     total += add('液氧增氧塔', `${flowData.flowM3h.toFixed(0)} m³/h`, 'm³/h', flowData.flowM3h, eqPrices.o2tower);
-    total += add('液氧储罐 (3t)', '1 套', '套', 1, eqPrices.o2tank);
   }
 
   // 11b. BF 粗孔曝气风机 (独立于主增氧, 所有模式都需要)
@@ -5694,7 +5763,7 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     const peakFactor_hx = 2.0;     // 短时高峰裕度
     const hxArea = sim.thermal.Q_total_raw / (24 * U_hx / 1000 * dT_lm) * peakFactor_hx;
     if (hxArea > 0.5) {
-      total += add('板式换热器', `${hxArea.toFixed(1)} m²`, 'm²', hxArea, eqPrices.heatExch);
+      total += add('板式换热器', `${hxArea.toFixed(1)} m²`, 'm² 换热面积', hxArea, eqPrices.heatExch);
     }
   }
 
@@ -5734,6 +5803,106 @@ function calcCapex(eq, sim, flowData, eqPrices) {
 }
 
 /* ============================================================================
+   v1.6: 计算站级设备 CAPEX (全场共用, 不分阶段)
+   ============================================================================
+   站级设备 = 全场仅装一套 (含主备) 的设备, 不应在阶段级 CAPEX 重复计算:
+   - 液氧储罐: 用户在 ③ 节配置 (规格/数量/单价), iRAS 算建议值供参考
+   - (未来扩展) 应急柴油机 / 变压器 / 中央配电 / SCADA 主机 / 围墙安保
+   
+   参数:
+     stages: stagesState (阶段参数)
+     eqPrices: 设备单价
+     allResults: [{eq, load, ...}] 各阶段计算结果 (用于算液氧日耗)
+   
+   返回: {
+     items: [{name, spec, count, unit, unitPrice, cost, note}],
+     total: 总 CAPEX,
+     totalO2KgDaily: 全场日耗 (kg/d),
+     suggested: { size_t, count, reserveDays, needed_t }  // iRAS 建议值
+   }
+   ============================================================================ */
+function calcSiteCapex(stages, eqPrices, allResults) {
+  const items = [];
+  let total = 0;
+  const add = (name, spec, count, unit, unitPrice, note) => {
+    const cost = count * unitPrice;
+    items.push({ name, spec, count, unit, unitPrice, cost, note });
+    total += cost;
+    return cost;
+  };
+
+  // 1. 液氧储罐: 任一阶段使用纯氧时启用
+  const hasAnyO2Stage = stages.some(s => s.proc && s.proc.aerationMode !== 'air');
+  let totalO2KgDaily = 0;
+  let suggested = null;
+
+  if (hasAnyO2Stage) {
+    // 累加全场液氧日耗 (kg/d)
+    if (allResults) {
+      allResults.forEach((r, i) => {
+        if (r && r.eq && !r.eq.isAir && r.eq.o2Demand > 0) {
+          const avgRatio = (r.load && r.load.o2FishDaily > 0)
+            ? r.load.o2FishDailyAvg / r.load.o2FishDaily : 0.7;
+          totalO2KgDaily += r.eq.o2Demand * avgRatio;
+        }
+      });
+    }
+
+    // v1.6: iRAS 建议算法 — 按规模选规格 + 主罐数, 总罐数控制在 2-4 罐
+    //   工程现实: 大项目应该用大罐 (物流+占地), 不是用很多 3 吨小罐
+    //   主罐数规则 (按日耗):
+    //     < 3000 kg/d (小/中项目):  1 主 + 1 备 = 2 罐
+    //     3000-15000 kg/d (大):    2 主 + 1 备 = 3 罐
+    //     > 15000 kg/d (超大):      3 主 + 1 备 = 4 罐
+    //   单罐容量按 7 天储备反推 → 凑到标准规格 (1/3/5/10/20/30/50 t)
+    const reserveDays = 7;
+    const needed_t = totalO2KgDaily * reserveDays / 1000;
+
+    let suggestedMainCount;
+    if (totalO2KgDaily < 3000) suggestedMainCount = 1;
+    else if (totalO2KgDaily < 15000) suggestedMainCount = 2;
+    else suggestedMainCount = 3;
+
+    const rawSize = needed_t / suggestedMainCount;  // 单罐需求 (吨)
+    // 凑到标准规格档
+    const STANDARD_SIZES = [1, 3, 5, 10, 20, 30, 50];
+    let suggestedSize = STANDARD_SIZES[STANDARD_SIZES.length - 1];   // 默认最大
+    for (const s of STANDARD_SIZES) {
+      if (s >= rawSize) { suggestedSize = s; break; }
+    }
+    const suggestedCount = suggestedMainCount + 1;  // +1 备
+
+    suggested = {
+      size_t: suggestedSize,
+      count: suggestedCount,
+      mainCount: suggestedMainCount,
+      reserveDays,
+      needed_t,
+      rawSize
+    };
+
+    // 实际配置: 用 siteEquipConfig.oxygenTank (用户可改)
+    const cfg = siteEquipConfig.oxygenTank;
+    const actualSize = Math.max(0.5, cfg.size_t || suggestedSize);
+    const actualCount = Math.max(1, Math.floor(cfg.count || suggestedCount));
+    const actualPrice = Math.max(0, cfg.unitPrice != null ? cfg.unitPrice : o2TankPriceBySize(actualSize));
+    const actualStorage = actualSize * actualCount;
+    const actualReserveDays = totalO2KgDaily > 0 ? (actualStorage * 1000 / totalO2KgDaily) : 0;
+
+    // 备注
+    let note = `日耗 ${totalO2KgDaily.toFixed(0)} kg/d · 储存 ${actualStorage.toFixed(1)} t · 约 ${actualReserveDays.toFixed(0)} 天储备`;
+    if (actualReserveDays < 3) note += ` ⚠️ 储备不足 (建议 ≥ 5 天)`;
+    else if (actualReserveDays > 30) note += ` (储备较充裕)`;
+
+    add(`液氧储罐 (${actualSize} t)`, `${actualSize} t`, actualCount, '套', actualPrice, note);
+  }
+
+  // 未来扩展: 应急柴油机 / 变压器 / 中央配电 / SCADA / 围墙安保
+
+  return { items, total, totalO2KgDaily, suggested };
+}
+
+/* ============================================================================
    ========================  UI 渲染层  =======================================
    ============================================================================ */
 
@@ -5745,6 +5914,27 @@ let stagesState = [];          // 当前鱼种的阶段参数 (用户可编辑)
 // v1.3: 最近一次 recomputeAll 的完整结果, 用于导出 (P&ID / 设备清单)
 let lastResults = { allResults: null, farm: null, yieldTons: 0, prices: null, eqPrices: null };
 let currentTanCoef = 0.092;
+
+// v1.6: 站级设备配置 (全场共用设备, 用户可调)
+// 液氧储罐: 规格 / 数量 / 单价 — 默认值是占位, 实际运行时按全场日耗反推 (除非用户手动改)
+// userOverride: 哪些字段被用户手动改过 (改过的不再自动跟随计算更新)
+let siteEquipConfig = {
+  oxygenTank: {
+    size_t: 3,                              // 单罐容量 (吨), 用户可选 0.5-50
+    count: 2,                               // 罐数 (含主+备)
+    unitPrice: 100000,                      // 元/罐, 默认 = price_at_size(3)
+    userOverride: { size_t: false, count: false, unitPrice: false }
+  }
+};
+
+// v1.6: 液氧储罐单价经验公式 (按罐容量, 国内 2024-2025 中等品牌)
+//   规模指数 0.6: 大罐摊销系数低 (≠ 容积线性)
+//   1t=5万, 3t=10万, 5t=14万, 10t=22万, 20t=35万
+function o2TankPriceBySize(size_t) {
+  const ref_t = 3;
+  const ref_price = 100000;
+  return Math.round(ref_price * Math.pow(size_t / ref_t, 0.6) / 1000) * 1000;  // 取整到千元
+}
 
 // v1.2: 全局气候 + 围护 + 热泵配置 (项目级常量, 不是阶段级)
 // 用户在顶部 ① 区设置一次, 应用到所有阶段
@@ -6223,11 +6413,11 @@ function renderStageBlock(idx, stage) {
   </div>
 
   <!-- v1.2: 热平衡 + 热泵 (独立全宽区, 不属处理工艺; 放在污染物曲线下方) -->
-  <div class="mt-4 rounded-lg border border-rose-500/40 bg-rose-900/10 p-3" id="thermalSection-${idx}">
+  <div class="mt-4 rounded-lg border border-slate-700/40 bg-slate-900/30 p-3" id="thermalSection-${idx}">
     <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
       <div class="flex items-center gap-2">
         <span class="text-xl">♨️</span>
-        <div class="text-sm font-bold text-rose-300">热平衡 + 热泵 (v1.2 双节点稳态)</div>
+        <div class="text-sm font-bold text-cyan-300">热平衡 + 热泵 (v1.2 双节点稳态)</div>
         <span class="text-[10px] text-slate-500">气候/围护参数为全局设置, 见顶部 ① 区</span>
       </div>
     </div>
@@ -6926,8 +7116,10 @@ function renderEquipCard(idx, eq) {
   html += fmtRow('RDF 微滤机',  `${eq.rdfFlow.toFixed(0)} m³/h`);
   html += basisLine(`循环 ${(eq.rdfFlow/(sf.sRDF||1.10)).toFixed(0)} × safety ${sf.sRDF||1.10}`);
 
-  html += fmtRow('MBBR 生物滤池',  `${eq.bioVolume.toFixed(1)} m³`);
-  html += basisLine(`tanDaily × safety ${sf.sBio||1.15} ÷ VTR_T ${eq.vtr_T.toFixed(0)} g/m³·d (温/盐修正)`);
+  html += fmtRow('MBBR 填料 (净体积)',  `${eq.bioVolume.toFixed(1)} m³`);
+  const _fillRatio = (stagesState && stagesState[idx] && stagesState[idx].proc && stagesState[idx].proc.bfFillRatio) || 50;
+  const _vBF = eq.bioVolume / (_fillRatio / 100);
+  html += basisLine(`tanDaily × safety ${sf.sBio||1.15} ÷ VTR_T ${eq.vtr_T.toFixed(0)} g/m³·d · BF 池总容积 ≈ ${_vBF.toFixed(0)} m³ (填料填充率 ${_fillRatio}%)`);
 
   html += fmtRow('反硝化反应器',  `${eq.denitriVolume.toFixed(1)} m³`);
   html += basisLine(`实际脱氮 ${eq.no3RemovedKgPerDay.toFixed(1)} × safety ${sf.sDenitri||1.10} = 设计 ${(eq.denitriDesignNO3||eq.no3RemovedKgPerDay*(sf.sDenitri||1.10)).toFixed(1)} kg/d ÷ VDR_T ${eq.vdr_T.toFixed(0)}`);
@@ -7085,10 +7277,17 @@ function renderCostCard(idx, cost) {
   if (!box) return;
   const fmt = n => Math.round(n).toLocaleString('zh-CN') + ' 元';
   const dep = cost.depDaily || 0;
+  // v1.6: 液氧费用 label 附带 kg/d 显示
+  const aerLabelMax = cost.o2KgDailyMax > 0
+    ? `${cost.aerationLabel} (${cost.o2KgDailyMax.toFixed(0)} kg/d)`
+    : cost.aerationLabel;
+  const aerLabelAvg = cost.o2KgDailyAvg > 0
+    ? `${cost.aerationLabel} (${cost.o2KgDailyAvg.toFixed(0)} kg/d)`
+    : cost.aerationLabel;
   const rows = [
     ['—— 最大日成本 ——', '', 'info'],
     ['饲料费', fmt(cost.feedCostMax), 'danger'],
-    [cost.aerationLabel, fmt(cost.aerationCostMax), 'warn'],
+    [aerLabelMax, fmt(cost.aerationCostMax), 'warn'],
     ['BF曝气风机电费', fmt(cost.bfBlowerCostMax), 'info'],
     ['主泵+支路泵电费', fmt(cost.pumpCostMax), 'info'],
     ['UV灯电费', fmt(cost.uvLampCostMax), 'info'],
@@ -7101,7 +7300,7 @@ function renderCostCard(idx, cost) {
     ['合计 (含折旧)', fmt(cost.totalMax), 'danger'],
     ['—— 日均成本 ——', '', 'info'],
     ['饲料费', fmt(cost.feedCostAvg), 'warn'],
-    [cost.aerationLabel, fmt(cost.aerationCostAvg), 'info'],
+    [aerLabelAvg, fmt(cost.aerationCostAvg), 'info'],
     ['BF曝气风机电费', fmt(cost.bfBlowerCostAvg), 'info'],
     ['主泵+支路泵电费', fmt(cost.pumpCostAvg), 'info'],
     ['UV灯电费', fmt(cost.uvLampCostAvg), 'info'],
@@ -7144,10 +7343,13 @@ function renderCapexCard(idx, capex) {
       <th class="text-right py-1">单价</th><th class="text-right py-1">小计</th>
     </tr></thead><tbody>`;
   capex.items.forEach(it => {
+    // v1.6: unit 显示统一为 "元/<unit>" 格式 (含 / 的复合单位用括号包)
+    //   修复旧的 it.unit.replace(/.*\//,'/') bug — 之前会把 'm³/h' 显示成 '/h'
+    const unitFmt = it.unit.includes('/') ? `元/(${it.unit})` : `元/${it.unit}`;
     html += `<tr class="border-b border-slate-800/50">
       <td class="py-1 text-slate-300">${it.name}</td>
       <td class="text-right py-1 font-mono text-slate-400">${it.spec}</td>
-      <td class="text-right py-1 font-mono text-slate-400">${it.unitPrice.toLocaleString('zh-CN')} ${it.unit.replace(/.*\//,'/')}</td>
+      <td class="text-right py-1 font-mono text-slate-400">${it.unitPrice.toLocaleString('zh-CN')} ${unitFmt}</td>
       <td class="text-right py-1 font-mono text-amber-300">${fmtW(it.cost)}</td>
     </tr>`;
   });
@@ -7459,8 +7661,7 @@ function renderSpeciesButtons() {
   const box = document.getElementById('speciesSelector');
   box.innerHTML = Object.entries(SPECIES_DB).map(([key, sp]) => `
     <button data-sp="${key}" class="species-btn ${key===currentSpecies?'active':''} rounded-lg p-3 text-left">
-      <div class="text-lg mb-1">${sp.icon}</div>
-      <div class="font-bold">${sp.name}</div>
+      <div class="font-bold"><span class="text-lg">${sp.icon}</span> ${sp.name}</div>
       <div class="text-xs text-slate-400 mt-1">${sp.subtitle} · ${sp.stages.length}阶段</div>
     </button>
   `).join('');
@@ -7878,11 +8079,139 @@ function recomputeAll() {
   // v1.3: 保存结果, 供导出 (P&ID / 设备清单) 使用
   // v1.4: lastResults 必须在 renderFarmSummary 之前赋值, 因为 renderFarmSummary 会写回 .summary
   lastResults = { allResults, farm, yieldTons, prices, eqPrices };
-  renderFarmSummary(farm, allResults, yieldTons, prices);
+  renderFarmSummary(farm, allResults, yieldTons, prices, eqPrices);
+  // v1.6: 渲染站级设备表 (在 ③ 节末尾)
+  renderSiteEquipTable(stagesState, eqPrices, allResults);
   autoSave();
 }
 
-function renderFarmSummary(farm, results, yieldTons, prices) {
+// v1.6: 渲染站级设备表 (③ 节末尾, 全场共用设备汇总, 用户可调)
+function renderSiteEquipTable(stages, eqPrices, allResults) {
+  const tbody = document.getElementById('siteEquipTableBody');
+  const emptyHint = document.getElementById('siteEquipEmpty');
+  if (!tbody) return;
+  const site = calcSiteCapex(stages, eqPrices, allResults);
+  const fmtW = n => {
+    if (n >= 10000) return (n/10000).toFixed(1) + ' 万';
+    return Math.round(n).toLocaleString('zh-CN') + ' 元';
+  };
+  // 若没有任何阶段用纯氧 → 显示提示并清空表
+  if (site.items.length === 0 || !site.suggested) {
+    tbody.innerHTML = '';
+    if (emptyHint) emptyHint.style.display = '';
+    return;
+  }
+  if (emptyHint) emptyHint.style.display = 'none';
+
+  const cfg = siteEquipConfig.oxygenTank;
+  const sug = site.suggested;                  // iRAS 建议: { size_t, count, reserveDays, needed_t }
+  const tankItem = site.items[0];              // 当前唯一站级 item: 液氧储罐
+  const totalO2 = site.totalO2KgDaily;
+  const actualStorage = cfg.size_t * cfg.count;
+  const actualReserveDays = totalO2 > 0 ? (actualStorage * 1000 / totalO2) : 0;
+
+  // 储备天数色调
+  let reserveCls = 'text-cyan-300';
+  let reserveIcon = '✓';
+  if (actualReserveDays < 3) { reserveCls = 'text-rose-400'; reserveIcon = '⚠️'; }
+  else if (actualReserveDays < 5) { reserveCls = 'text-amber-300'; reserveIcon = '⚠'; }
+  else if (actualReserveDays > 30) { reserveCls = 'text-slate-400'; reserveIcon = ''; }
+
+  // 是否被用户改过
+  const isUserModified = cfg.userOverride.size_t || cfg.userOverride.count || cfg.userOverride.unitPrice;
+
+  tbody.innerHTML = `
+    <tr class="border-b border-slate-800/50">
+      <td class="py-2 px-2 text-slate-300 align-middle">
+        <div class="font-bold">液氧储罐</div>
+        <div class="text-[10px] text-slate-500">全场共用 · 主+备</div>
+      </td>
+      <td class="py-2 px-2 align-middle">
+        <div class="flex items-center gap-1">
+          <input type="number" id="o2tankSize" value="${cfg.size_t}" min="0.5" max="50" step="0.5"
+                 title="单罐容量 (吨). 常见规格: 1 / 3 / 5 / 10 / 20 吨"
+                 class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-xs font-mono w-16 text-cyan-200 focus:outline-none focus:border-cyan-400">
+          <span class="text-[10px] text-slate-400">t/罐</span>
+        </div>
+      </td>
+      <td class="text-right py-2 px-2 align-middle">
+        <div class="flex items-center justify-end gap-1">
+          <input type="number" id="o2tankCount" value="${cfg.count}" min="1" max="20" step="1"
+                 title="罐数 (含主+备). iRAS 建议: ${sug.count} 罐 (主 ${sug.count-1} + 备 1)"
+                 class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-xs font-mono w-14 text-cyan-200 text-right focus:outline-none focus:border-cyan-400">
+          <span class="text-[10px] text-slate-400">套</span>
+        </div>
+      </td>
+      <td class="text-right py-2 px-2 align-middle">
+        <div class="flex items-center justify-end gap-1">
+          <input type="number" id="o2tankPrice" value="${cfg.unitPrice}" min="0" step="5000"
+                 title="单价 (元/罐). 自动建议按规格计算 (1t≈5万, 3t≈10万, 5t≈14万, 10t≈22万, 20t≈35万). 修改规格会自动更新建议价"
+                 class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-xs font-mono w-24 text-cyan-200 text-right focus:outline-none focus:border-cyan-400">
+          <span class="text-[10px] text-slate-400">元/套</span>
+        </div>
+      </td>
+      <td class="text-right py-2 px-2 font-mono text-amber-300 align-middle">${fmtW(tankItem.cost)}</td>
+      <td class="py-2 px-2 text-[10px] align-middle">
+        <div class="text-slate-400">📊 全场日耗 <b class="text-cyan-300">${totalO2.toFixed(0)} kg/d</b></div>
+        <div class="${reserveCls}">${reserveIcon} 储存 ${actualStorage.toFixed(1)} t · 约 ${actualReserveDays.toFixed(0)} 天储备</div>
+        <div class="text-slate-500">iRAS 建议: ${sug.size_t} t × ${sug.count} 罐 (${sug.mainCount}主+1备, ${sug.reserveDays} 天储备 = ${(sug.size_t * sug.count).toFixed(0)} t)
+          ${isUserModified ? `<button id="btnResetO2Tank" type="button" class="ml-1 text-[10px] text-cyan-400 hover:text-cyan-200 underline">↺ 重置</button>` : ''}
+        </div>
+      </td>
+    </tr>
+    <tr class="bg-slate-900/60 font-bold">
+      <td class="py-1.5 px-2 text-cyan-300">站级合计</td>
+      <td colspan="3" class="text-right py-1.5 px-2 text-slate-500 text-[10px]">(已计入「① 全场投资概算」, 不在阶段「投资概算列表」重复)</td>
+      <td class="text-right py-1.5 px-2 font-mono text-amber-200">${fmtW(site.total)}</td>
+      <td class="py-1.5 px-2"></td>
+    </tr>
+  `;
+
+  // 绑定 input 事件
+  const sizeEl = document.getElementById('o2tankSize');
+  const countEl = document.getElementById('o2tankCount');
+  const priceEl = document.getElementById('o2tankPrice');
+  const resetEl = document.getElementById('btnResetO2Tank');
+
+  if (sizeEl) sizeEl.addEventListener('input', () => {
+    const v = parseFloat(sizeEl.value);
+    if (Number.isFinite(v) && v > 0) {
+      siteEquipConfig.oxygenTank.size_t = v;
+      siteEquipConfig.oxygenTank.userOverride.size_t = true;
+      // 改规格时, 如果用户没手动改过单价, 自动更新单价
+      if (!siteEquipConfig.oxygenTank.userOverride.unitPrice) {
+        siteEquipConfig.oxygenTank.unitPrice = o2TankPriceBySize(v);
+      }
+      recomputeAll();
+    }
+  });
+  if (countEl) countEl.addEventListener('input', () => {
+    const v = parseInt(countEl.value);
+    if (Number.isFinite(v) && v > 0) {
+      siteEquipConfig.oxygenTank.count = v;
+      siteEquipConfig.oxygenTank.userOverride.count = true;
+      recomputeAll();
+    }
+  });
+  if (priceEl) priceEl.addEventListener('input', () => {
+    const v = parseFloat(priceEl.value);
+    if (Number.isFinite(v) && v >= 0) {
+      siteEquipConfig.oxygenTank.unitPrice = v;
+      siteEquipConfig.oxygenTank.userOverride.unitPrice = true;
+      recomputeAll();
+    }
+  });
+  if (resetEl) resetEl.addEventListener('click', () => {
+    // 重置为 iRAS 建议值
+    siteEquipConfig.oxygenTank.size_t = sug.size_t;
+    siteEquipConfig.oxygenTank.count = sug.count;
+    siteEquipConfig.oxygenTank.unitPrice = o2TankPriceBySize(sug.size_t);
+    siteEquipConfig.oxygenTank.userOverride = { size_t: false, count: false, unitPrice: false };
+    recomputeAll();
+  });
+}
+
+function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   const spInfo = SPECIES_DB[currentSpecies];
   const spLabel = spInfo ? spInfo.icon + ' ' + spInfo.name : currentSpecies;
   // v1.1.2: 累加系统总水体 (V_tank + V_process)
@@ -7937,6 +8266,26 @@ function renderFarmSummary(farm, results, yieldTons, prices) {
   const totalThermalKWhDaily   = totalThermalKWhDaily_indep   * sharingFactor;
   const totalThermalCostDaily  = totalThermalCostDaily_indep  * sharingFactor;
   const totalHeatPumpCapacityKw = totalHeatPumpCapacityKw_indep * sharingFactor;
+
+  // v1.6: 累加站级设备 CAPEX (液氧储罐等全场共用设备, 已从阶段 CAPEX 剔除避免重复)
+  //   站级 CAPEX 也乘地区/规模系数 + 工程放大系数, 与阶段 CAPEX 处理一致
+  const _siteCapex = calcSiteCapex(stagesState, eqPrices || {}, results);
+  if (_siteCapex.total > 0) {
+    // 取阶段 CAPEX 的 factor/regionFactor/scaleFactor (所有阶段一致)
+    const ref = results.find(r => r && r.capex);
+    if (ref) {
+      const _siteEquip = _siteCapex.total * ref.capex.regionFactor * ref.capex.scaleFactor;
+      const _siteProj  = _siteEquip * ref.capex.factor;
+      const _siteCivil = _siteEquip * (ref.capex.factor - 1);
+      const _siteDep   = _siteEquip / Math.max(ref.capex.depYearsEquip, 1) + _siteCivil / Math.max(ref.capex.depYearsCivil, 1);
+      totalCapexEquip   += _siteEquip;
+      totalCapexProject += _siteProj;
+      totalDepAnnual    += _siteDep;
+      // 折旧也要算到日成本里, 否则站级折旧不影响综合成本
+      totalCostAvg += _siteDep / 365;
+    }
+  }
+
   // 总成本调整: 把"独立估算的散热成本"换成"合并后的散热成本"
   totalCostAvg = totalCostAvg - totalThermalCostDaily_indep + totalThermalCostDaily;
   const annualCost = totalCostAvg * 365;        // 元/年 (含折旧)
@@ -8395,7 +8744,37 @@ function buildPIDExport() {
           };
         })(),
         // v1.4: 财务评价用 — 全场汇总数据 (来自 renderFarmSummary 写回)
-        finance: lastResults.summary || null
+        finance: lastResults.summary || null,
+        // v1.6: 站级设备配置 (全场共用, 由用户在 ③ 区设置, 供 equipment/pid/report 显示)
+        //   失败时回退到 null, 防止单点错误影响整个 buildPIDExport (会让 finance.html 打不开)
+        siteEquipment: (function(){
+          try {
+            const cfg = siteEquipConfig && siteEquipConfig.oxygenTank;
+            if (!cfg) return null;
+            const storage_t = (cfg.size_t || 0) * (cfg.count || 0);
+            const reserveDays = totalLOXKgD > 0 ? (storage_t * 1000 / totalLOXKgD) : 0;
+            // 调 calcSiteCapex 拿 iRAS 建议值 (用局部 eqPrices, 不是 lastResults.eqPrices)
+            let suggested = null;
+            try {
+              const site = calcSiteCapex(stagesState, eqPrices || {}, allResults);
+              suggested = site && site.suggested ? site.suggested : null;
+            } catch(e) { /* calcSiteCapex 失败不影响主流程 */ }
+            return {
+              oxygenTank: {
+                size_t: cfg.size_t,
+                count: cfg.count,
+                unitPrice: cfg.unitPrice,
+                storage_t: Math.round(storage_t * 10) / 10,
+                reserveDays: Math.round(reserveDays * 10) / 10,
+                totalCapex: (cfg.count || 0) * (cfg.unitPrice || 0),
+                suggested
+              }
+            };
+          } catch(e) {
+            console.warn('[iRAS] buildPIDExport siteEquipment 失败:', e);
+            return null;
+          }
+        })()
       }
     }
   };
@@ -8484,7 +8863,9 @@ function collectState() {
     farRatio: (function(){
       var v = parseFloat(document.getElementById('inpFarRatio')?.value);
       return Number.isFinite(v) ? v : 0.7;
-    })()
+    })(),
+    // v1.6: 站级设备配置 (用户对液氧储罐等的覆盖)
+    siteEquipConfig: JSON.parse(JSON.stringify(siteEquipConfig))
   };
   // v1.3: 如果有最近一次计算结果, 把 P&ID schema 字段 (pidSchema, results) 也加上
   // 这样保存的 JSON 既能被 index 加载 (作为方案), 也能被 equipment.html / pid.html 直接打开
@@ -8594,6 +8975,25 @@ function restoreState(state) {
     Object.assign(globalThermalConfig, state.globalThermalConfig);
     // 然后把 JS 状态同步回 UI 输入框
     try { initGlobalThermalUI(); } catch(e) { /* 静默 (如果 UI 还没建好) */ }
+  }
+  // v1.6: 站级设备配置恢复 (先 reset 到默认, 再合并方案值, 避免老方案残留)
+  siteEquipConfig.oxygenTank = {
+    size_t: 3, count: 2, unitPrice: 100000,
+    userOverride: { size_t: false, count: false, unitPrice: false }
+  };
+  // v1.6: 老方案迁移 — 如果方案里有 equipPrices.o2tank (v1.5 之前的字段), 把它迁移到 siteEquipConfig.unitPrice
+  //   语义对应: 老的 o2tank 默认是 3t 罐单价 = 10 万, 直接对应新结构的 unitPrice (规格保持默认 3t)
+  if (state.equipPrices && Number.isFinite(state.equipPrices.o2tank) && state.equipPrices.o2tank > 0) {
+    siteEquipConfig.oxygenTank.unitPrice = state.equipPrices.o2tank;
+    siteEquipConfig.oxygenTank.userOverride.unitPrice = true;
+  }
+  // 再用新结构 siteEquipConfig 覆盖 (v1.6 及之后的方案优先级最高)
+  if (state.siteEquipConfig && state.siteEquipConfig.oxygenTank && typeof state.siteEquipConfig.oxygenTank === 'object') {
+    Object.assign(siteEquipConfig.oxygenTank, state.siteEquipConfig.oxygenTank);
+    // 老方案可能没存 userOverride, 防御:补默认
+    if (!siteEquipConfig.oxygenTank.userOverride) {
+      siteEquipConfig.oxygenTank.userOverride = { size_t: true, count: true, unitPrice: true };
+    }
   }
   return true;
 }

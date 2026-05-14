@@ -2040,18 +2040,23 @@ function renderUtility(stage) {
   const stageLOXKgD = (stage.load && stage.load.o2DailyTotal != null)
     ? stage.load.o2DailyTotal
     : STATE.data.results.summary.totalLOXKgD;   // fallback (老数据没 stage.load.o2DailyTotal)
+  // v1.6: 站级液氧储罐配置 (从 summary.siteEquipment 读, 全场 1 套, 不分阶段)
+  const _siteO2 = STATE.data.results.summary.siteEquipment && STATE.data.results.summary.siteEquipment.oxygenTank;
+  const _o2TankSpec = _siteO2
+    ? `${_siteO2.size_t} t × ${_siteO2.count} 罐`
+    : '3 t 储罐';     // fallback (老数据无 siteEquipment 字段)
 
   // 公用工程设备从左到右顺序: LOX → O3发生器 → 风机 → 热泵 → 反冲泵
   // 用 col 0..4 依次摆 (用 small 尺寸节省纵向空间)
   const utilityItems = [];
 
-  // LOX 罐 — 当前阶段氧耗
+  // LOX 罐 — 数字: 本阶段氧耗 (kg/d); 规格: 全场配置 (站级共用)
   utilityItems.push({
     col: 0,
     spec: {
-      tag: 'V-901', name: 'LOX 储罐', sub: 'Liquid O₂ tank', kind: 'tank',
+      tag: 'V-901', name: '液氧站 (全场共用)', sub: 'Liquid O₂ tank · 站级设备', kind: 'tank',
       tagOffsetY: -6,
-      params: [fmtNum(stageLOXKgD) + ' kg/d', '3 t 储罐'],
+      params: ['本阶段 ' + fmtNum(stageLOXKgD) + ' kg/d', _o2TankSpec],
     },
     connectsTo: { tag: 'A-601', mediumClass: 'gas-line', label: '气态 O₂' },
   });
