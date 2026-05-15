@@ -1099,11 +1099,15 @@
         <li><b>百分比字段加钳制</b>: protein / feedRate / mortality 之前仅 <code>raw/100</code> 无范围保护, 用户误输入 protein=150 (本意 15.0) 会让 TAN 高 10×. v1.6 加 [10%,70%] / [0.1%,30%] / [0%,50%] 钳制 (与其他字段一致)</li>
         <li><b>热泵 COP 默认值统一</b>: 旧代码 PROCESS_DEFAULTS 有 COP_nom_cool=3.8 优先级覆盖 heatPumpCOP_cool=3.0, 导致 UI 显示 3.0 但实际算 3.8. v1.6 删除 COP_nom_* dead path, 统一用 heatPumpCOP_*. <strong>影响</strong>: 制冷热泵耗电 +25% (回归到手册声称值)</li>
         <li><b>反硝化碱度回收 3.57 → 2.8</b>: 旧代码用理论极限 3.57 g CaCO₃/g N, 实际工程 2.5-3.0 (Mateju 1992, Henze 1991). v1.6 默认 2.8, 开放 <code>proc.denitriAlkRecovery</code> 参数. <strong>影响</strong>: NaHCO₃ 投加量 +0.5~1% (与文献对齐)</li>
+        <li><b>工艺占比口径修正</b>: 旧版 V_process / V_tank 在小项目/苗种期会超 100% 误导用户. v1.6 改为 V_process / V_total, 与国内外文献一致 (赵越/刘鹰 2018 大连海洋大学学报 V_BF/V_total≈47%; Drønen 2021 挪威实测 V_process/V_total=38%). <strong>仅显示口径变化, 不影响任何计算</strong> (R_dom / 稳态浓度 / 换水率都用 V_total)</li>
+        <li><b>RDF 集水池 HRT 开放为 UI 可调参数</b>: 旧版固定 0.3 min (紧凑型), 工程师无法调到设计院传统的 1-2 min (含外置缓冲池). v1.6 工艺面板"RDF HRT"输入框开放 0.1-5 min, 默认 0.5 (中位, 兼顾紧凑与缓冲). 仅影响 V_process / V_total 显示, 不影响 RDF 设备规格</li>
+        <li><b>反硝化甲醇工程安全系数</b>: 旧版固定 2.47 g/g NO₃-N (Mokhayeri 2008 工业实测含 5-15% 残余), 但未含 DO 补偿. RAS 反硝化进水 DO 5-8 mg/L (从增氧后主流抽取), 实际工程需 3.0-4.0 g/g (Suhr 2014, Tsukuda 2015). v1.6 公式改为 <code>2.47 × methanolSafetyFactor</code>, 工艺面板新增"甲醇裕度"输入框 (1.0-2.0, 默认 1.3 → 3.21 g/g). <strong>OPEX 影响</strong>: 甲醇成本 +30% (但甲醇仅占总 OPEX 0.5-1%, 项目经济性几乎无变化)</li>
+        <li><b>RDF 排污 → 系统排水重构</b> (语义+模型整体清理): 旧版工艺面板"RDF反冲(%) 2%"是反冲管瞬时分流比, 但 4870 m³/d ÷ V_total = 101%/d <em>物理荒谬</em> (远超合理换水率 1-5%/d). 真相: RDF 反冲水绝大部分经污泥沉淀池回循环 (Sharrer 2010 实测 95-98% 清液回流), 真实穿越系统边界的水量由换水率决定. v1.6 整体清理: (1) UI 工艺面板删除"RDF反冲(%)"输入框 + "RDF反冲H/η"两个反冲泵参数; (2) 反冲泵不再独立设备 — P&ID/设备清单/CAPEX/OPEX 完全移除 (RDF 厂家整体出厂含反冲泵, 工程实际); (3) 字段 <code>rdfBackwash</code>/<code>rdfBackwashPumpHead_m</code>/<code>rdfBackwashPumpEta</code> 从 PROCESS_DEFAULTS / readStageProcFromInputs 删除; (4) <strong>新增"📤 系统排水"卡片</strong> (取代"🗑️ RDF排污"卡片): 显示流量 / TSS / TAN / NO₃-N, 流量按 <code>V_total × exchangeDaily / 100</code> 算 (与"换水率"定义一致), TSS 按质量守恒 (不溶不降解, 日生成 = 日净排出, 全部从此口出), TAN/NO₃ 按 V_disch × C_tank (溶解残留); (5) report.html 第 9 章 "RDF 反冲废水" → "系统排水"</li>
       </ul>
 
       <h3 class="mt-4 font-bold text-rose-300">已知限制</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
-        <li>技术手册 PDF 暂沿用 v1.5 内容, 6 处公式订正 (NO₃ R / V_RDF / V_BF / CO₂ 单位 / 双节点稳态 / 残值) 待下版手册同步发布</li>
+        <li>技术手册 PDF 暂沿用 v1.5 内容, 6 处公式订正 (NO₃ R / V_RDF / V_BF / CO₂ 单位 / 双节点稳态 / 残值) + v1.6 RDF反冲泵移除 + 系统排水重构 待下版手册同步发布</li>
         <li>站级设备区当前仅支持液氧储罐, 应急柴油机 / 变压器 / SCADA 等架构已搭好, 未来版本添加</li>
         <li>parseFloat(...) || default 在 0 值场景下会触发 fallback (e.g. elecPrice=0 被忽略), 留 v1.7 系统重构</li>
       </ul>
@@ -1459,7 +1463,7 @@
       <p class="mt-2 text-slate-400 text-sm">v1.0 用 V_tank (鱼池水体) 算稳态浓度和换水量, 忽略了工艺水体 (BF/RDF/管路/脱气塔等)。v1.1 引入完整 V_total 建模:</p>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
         <li><b>V_total = V_tank + V_process</b>, 其中 V_process 含 BF / RDF / 蛋分 / 脱气塔 / 增氧锥 / 反硝化 / AOP / 管路缓冲</li>
-        <li>典型 V_process 占 V_tank 的 30-50%, 不可忽略</li>
+        <li>典型 V_process 占 V_total 的 30-50% <span class="text-rose-400">(v1.6 口径修正: 旧版按 V_tank 分母,中小项目会超 100% 误导用户)</span>。文献对照: 赵越/刘鹰 2018(大连海洋大学学报,大西洋鲑 MBBR 设计)V_BF/V_total≈47%; Drønen 2021(挪威 Bergen 实测)V_process/V_total=38%</li>
         <li><b>BF 填料填充率 (bfFillRatio)</b> 新参数: 50% (默认) → V_BF = 2 × bioVolume; 高密度装填 70% → 1.43 × bioVolume</li>
         <li><b>换水率口径改为 V_total</b> (Timmons 2010 / 国家海水鱼体系标准): 换水量自动 +50% 左右</li>
         <li>稳态浓度变化: 有完整处理工艺的参数 (TAN/TSS/CO₂) &lt; 1%; 仅靠换水稀释的参数 (无反硝化的 NO₃, 无 AOP 的 Geosmin) 浓度按 V_tank/V_total 缩放, 约 ↓37%</li>
@@ -1638,7 +1642,7 @@
       <p class="mt-2 text-slate-400">每个阶段卡片包含以下可展开的结果区：</p>
       <ul class="mt-1 ml-4 list-disc space-y-1 text-slate-400">
         <li><b>流程图</b>：沿程各节点水质参数阶跃变化（鱼池→RDF→蛋分→BF→UV→增氧）</li>
-        <li><b>旁路面板</b>：反硝化 / UV / AOP / 蛋分 / 热泵 / RDF 排污详细数据</li>
+        <li><b>旁路面板</b>：反硝化 / UV / AOP / 蛋分 / 热泵 / 系统排水 (质量守恒,V_total × 换水率)</li>
         <li><b>图表</b>：污染物沿程曲线 + 气体沿程曲线（Chart.js 交互式图表）</li>
         <li><b>负荷推导</b>：存塘量→投饵→污染物日产量的完整链路</li>
         <li><b>设备规格清单</b>：所有关键设备的选型参数（含 BF 曝气风机）</li>
@@ -2041,15 +2045,6 @@
 <td class="py-1 pr-3 text-slate-400">1-15</td>
 <td class="py-1 pr-3 text-slate-300">AOP 反应池水力停留时间 (按 AOP 类型自动取默认)</td>
 <td class="py-1 text-slate-400 text-[11px]">集成型默认 2 min (UV 反应器内反应秒级); 分体型默认 8 min (含 O3 接触池); Schrader 2010 实测 1 min 接触 geosmin 去除 86-92%</td>
-</tr>
-<tr class="border-b border-slate-800/50 align-top">
-<td class="py-1 pr-3 font-mono text-amber-300/90">rdfBackwash</td>
-<td class="py-1 pr-3 text-slate-200">RDF 反冲排污率</td>
-<td class="py-1 pr-3 text-slate-400">%</td>
-<td class="py-1 pr-3 text-emerald-300/90">2</td>
-<td class="py-1 pr-3 text-slate-400">1-5</td>
-<td class="py-1 pr-3 text-slate-300">RDF 反冲洗排放占循环流量；决定排污量</td>
-<td class="py-1 text-slate-400 text-[11px]">细筛网（更易堵）调高到 3-4</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">co2StripperEnabled</td>
@@ -2480,7 +2475,7 @@
 </tbody></table>
   </div>
   <h3 class="mt-5 font-bold text-cyan-300 text-base" id="paramref-I">I. 泵组（11 项）</h3>
-  <p class="mt-1 text-slate-400 text-sm">6 路泵：主循环、反硝化、UV、AOP、蛋分、RDF 反冲；每路有扬程 + 效率。<b>典型工程默认值都已合理，仅有特殊水力学需求时调整。</b></p>
+  <p class="mt-1 text-slate-400 text-sm">5 路泵：主循环、反硝化、UV、AOP、蛋分；每路有扬程 + 效率。<b>典型工程默认值都已合理，仅有特殊水力学需求时调整。</b>(v1.6 起 RDF 反冲泵不再独立列项, 随 RDF 整机出厂)</p>
   <div class="overflow-x-auto">
 <table class="text-xs my-2 w-full" style="border-collapse: collapse;">
 <thead><tr class="text-cyan-300 border-b border-slate-700/60">
@@ -2583,24 +2578,6 @@
 <td class="py-1 text-slate-400 text-[11px]"></td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
-<td class="py-1 pr-3 font-mono text-amber-300/90">rdfBackwashPumpHead_m</td>
-<td class="py-1 pr-3 text-slate-200">RDF 反冲泵扬程</td>
-<td class="py-1 pr-3 text-slate-400">m</td>
-<td class="py-1 pr-3 text-emerald-300/90">8</td>
-<td class="py-1 pr-3 text-slate-400">5-25</td>
-<td class="py-1 pr-3 text-slate-300">RDF 反冲洗泵扬程；筛网清洗压力</td>
-<td class="py-1 text-slate-400 text-[11px]">大筛网/重污染调高到 15-20</td>
-</tr>
-<tr class="border-b border-slate-800/50 align-top">
-<td class="py-1 pr-3 font-mono text-amber-300/90">rdfBackwashPumpEta</td>
-<td class="py-1 pr-3 text-slate-200">RDF 反冲泵效率</td>
-<td class="py-1 pr-3 text-slate-400">%</td>
-<td class="py-1 pr-3 text-emerald-300/90">55</td>
-<td class="py-1 pr-3 text-slate-400">45-65</td>
-<td class="py-1 pr-3 text-slate-300">RDF 反冲泵效率</td>
-<td class="py-1 text-slate-400 text-[11px]"></td>
-</tr>
-<tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">miscElecKWhPerDay</td>
 <td class="py-1 pr-3 text-slate-200">杂项电耗</td>
 <td class="py-1 pr-3 text-slate-400">kWh/d 每套RAS</td>
@@ -2651,7 +2628,7 @@
       <h3 class="mt-4 font-bold text-cyan-300">6.5 碱度化学计量</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400">
         <li>硝化：1 g TAN-N 消耗 4.57 g O₂ + 7.14 g CaCO₃ 碱度</li>
-        <li>反硝化：1 g NO₃-N 理论回收 3.57 g CaCO₃ 碱度 (理论极限) / 工程实际 2.8 g (默认, v1.6) ，消耗 2.47 g 甲醇</li>
+        <li>反硝化：1 g NO₃-N 理论回收 3.57 g CaCO₃ 碱度 (理论极限) / 工程实际 2.8 g (默认, v1.6) ，消耗 2.47 g 甲醇 (Mokhayeri 2008 工业实测含 5-15% 残余) × 工程安全系数 (v1.6 默认 1.3, 含 DO 补偿 + 运行裕度, 与 Suhr 2014/Tsukuda 2015 RAS 实际 3.0-3.5 g/g 一致)</li>
         <li>NaHCO₃ 换算：1 kg NaHCO₃ ≈ 0.595 kg CaCO₃ 当量</li>
       </ul>
     </section>
@@ -2848,7 +2825,19 @@ const PROCESS_DEFAULTS = {
   uvFlowPct: 10,
   denitriFlowPct: 10,
   denitriEff: 80,
-  rdfBackwash: 2,
+  methanolSafetyFactor: 1.3,    // v1.6 新增: 反硝化甲醇工程安全系数
+                                 //   理论 1.9 g/g, 工业 2.47, 实际 RAS 含 DO 补偿后 3.0-4.0
+                                 //   公式: methanol = no3 × 2.47 × methanolSafetyFactor
+                                 //   默认 1.3 → 2.47×1.3 = 3.21 g/g (Suhr 2014 / Tsukuda 2015 中位)
+                                 //   1.0 = 实验室理论 (无 DO 进水)
+                                 //   1.5 = 高 DO 进水 + 严控运行
+  // v1.6: rdfBackwash 字段已删除 — RDF 反冲水流量是 RDF 厂家内部参数, 不影响系统级排污
+  //       排污量由 V_total × exchangeDaily 决定 (质量守恒)
+  rdfHRT_min: 0.5,             // v1.6 新增: RDF 集水池 HRT (min), 默认 0.5 (中位)
+                                //   0.3 = 紧凑型 (YUTANK/Hydrotech 工业实测)
+                                //   0.5 = 中位 (v1.6 默认, 含小型缓冲)
+                                //   1.5-2.0 = 设计院传统 (含外置缓冲池)
+                                // 仅影响 V_total / V_process 显示, 不影响 RDF 设备规格
   aerationMode: 'o2',
   o2SatTarget: 130,           // v1.1: 默认中性 (温水鱼基线); 鱼种 DB 自动覆盖
                                // 空气模式自动锁定 95%
@@ -2976,7 +2965,7 @@ const PROCESS_DEFAULTS = {
   safetySkimmer: 1.10,           // 蛋白分离器
   safetyCO2:     1.15,           // CO2 脱气塔 (经验偏保守, G:L 不确定性大)
   safetyUV:      1.10,           // UV 消毒器
-  // 水泵: 轴功率 P(kW) = 9.81×Q(m³/h)×H(m)/(3600×η)；四支路泵各自独立；RDF反冲单独
+  // 水泵: 轴功率 P(kW) = 9.81×Q(m³/h)×H(m)/(3600×η)；四支路泵各自独立 (v1.6: 反冲泵 RDF 内嵌, 不再独立列项)
   mainPumpHead_m: 12,
   mainPumpEta: 68,
   denitriPumpHead_m: 10,
@@ -2987,8 +2976,7 @@ const PROCESS_DEFAULTS = {
   aopPumpEta: 60,
   skimmerPumpHead_m: 6,            // 蛋分旁路泵扬程 (m, 通常较低 因蛋分塔在主流池旁边)
   skimmerPumpEta: 60,
-  rdfBackwashPumpHead_m: 8,
-  rdfBackwashPumpEta: 55,
+  // v1.6: rdfBackwashPumpHead_m / Eta 字段已删除 (反冲泵 RDF 内嵌, 不独立)
   miscElecKWhPerDay: 50 // 小负荷杂项 (照明/控制/备用等) kWh/d·套
 };
 // 固定工艺参数 (暂不暴露到 UI, 需要时可按相同模式扩展)
@@ -3734,22 +3722,20 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
   const pumpHeatRatio = (proc.pumpHeatRatio != null) ? proc.pumpHeatRatio : 0.85;
   const uvHeatRatio = (proc.uvHeatRatio != null) ? proc.uvHeatRatio : 0.95;
   // v1.5 Bug 25+26 修复: 泵产热也需按运行占空比, 否则热平衡高估泵产热
-  //   分项: 主泵 0.85 (VFD), 反冲泵 0.08 (周期短启动), 其他支路 1.0 (24h)
+  //   分项: 主泵 0.85 (VFD), 其他支路 1.0 (24h)
+  //   v1.6: 反冲泵已删除独立列项 (RDF 内嵌部件), 产热 ~0.05 kW 忽略
   const mainPumpDuty_th     = (proc.mainPumpDutyFactor != null) ? proc.mainPumpDutyFactor : 0.85;
-  const backwashPumpDuty_th = (proc.backwashDutyFactor != null) ? proc.backwashDutyFactor : 0.08;
   const branchPumpDuty_th   = (proc.branchPumpDutyFactor != null) ? proc.branchPumpDutyFactor : 1.0;
   const mainKw_th     = (eq && eq.mainPumpKw)        || 0;
   const denitriKw_th  = (eq && eq.denitriBranchPumpKw) || 0;
   const uvBKw_th      = (eq && eq.uvBranchPumpKw)    || 0;
   const aopKw_th      = (eq && eq.aopBranchPumpKw)   || 0;
   const skimKw_th     = (eq && eq.skimmerBranchPumpKw) || 0;
-  const bwKw_th       = (eq && eq.backwashPumpKw)    || 0;
   const totalPumpKwh = mainKw_th * 24 * mainPumpDuty_th
                      + denitriKw_th * 24 * branchPumpDuty_th
                      + uvBKw_th * 24 * branchPumpDuty_th
                      + aopKw_th * 24 * branchPumpDuty_th
-                     + skimKw_th * 24 * branchPumpDuty_th
-                     + bwKw_th * 24 * backwashPumpDuty_th;
+                     + skimKw_th * 24 * branchPumpDuty_th;
   // 等效连续功率 (kW), 用于 Q_air_gain_kW 计算 (单位 kW, 而非 kWh)
   const effectivePumpKW = totalPumpKwh / 24;
   const uvPowerKw = ((eq && eq.uvPower) || 0) / 1000;
@@ -4060,10 +4046,12 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
 
 /* ============================================================================
    函数: simulateWaterQualityProcess
-   目的: 工艺流程动态仿真 —— 主循环 + 反硝化支路 + RDF 排污
+   目的: 工艺流程动态仿真 —— 主循环 + 反硝化支路 + 系统排水
    主循环: 鱼池→微滤机→生物滤池→紫外线→增氧/脱气→(回流鱼池)
    反硝化支路: 生物滤池出水分流 α × Q → 反硝化反应器 → 汇回主流
-   RDF 排污: 微滤机反冲排出浓缩污水 (含被拦截的全部 TSS)
+   系统排水: 穿越系统边界的全部水/污染物 (V_total × 换水率, 质量守恒)
+            v1.6 起取代旧 "RDF 排污" 字面口径; RDF 反冲水是 RDF 厂家内部参数,
+            不影响系统级排水量 (反冲水绝大部分经污泥沉淀池回主流)
 
    【氮循环建模】
    饲料蛋白 → 鱼排泄 TAN → 生物滤池硝化 → NO₃⁻ (稳态积累)
@@ -4072,10 +4060,10 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
    NO₃⁻ 在系统内无外排会持续积累 (RAS 主要氮污染问题)
    反硝化支路削减总氮 (TN), 降低换水需求
 
-   【RDF 反冲排污】
-   微滤机去除 TSS 后,排污流量 ≈ 循环流量 × 反冲比例 (1-3%)
-   排污中 TSS 浓度 ≈ 进入RDF的TSS浓度 × RDF效率 / 反冲比例
-   (物料守恒: RDF 拦截的 TSS 全部进入反冲排污)
+   【系统排水 (v1.6)】
+   穿越系统边界的全部水/污染物, 流量 = V_total × exchangeDaily / 100 (m³/d, 与"换水率"定义一致)
+   质量守恒: TSS 生成 ≈ 净排出 (不溶不降解); TAN/NO3 按 V_disch × C_tank
+   旧版 "RDF 反冲" 已删除 (RDF 反冲水绝大部分经污泥沉淀池回循环, 不构成系统净失水)
 
    【增氧模式】
    纯氧: 目标 DO 饱和度 130% (默认), 物种推荐 110-165% (鲑科 165, 海水温水 140 等)
@@ -4090,7 +4078,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   const uvFlowRatio = proc.uvFlowPct / 100;
   const denitriFlowRatio = proc.denitriFlowPct / 100;
   const eta_denitri = proc.denitriEff / 100;
-  const backwashRatio = proc.rdfBackwash / 100;
+  // v1.6: backwashRatio 字段已删除 (RDF 反冲量是厂家内部参数, 不影响系统级排污质量守恒)
   const exchangeDaily = Math.max(proc.exchangeDaily || 0, 0) / 100;
   const cyclesPerDay = flowData.flowM3h * 24 / Math.max(flowData.volume, 0.01);
   // v1.1.2: 换水率口径改为系统总水体 V_total. 鱼池每循环排出占比修正:
@@ -4245,7 +4233,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
 
   // 节点2: 微滤机 RDF (主流串联, TSS 阶跃下降)
   s = {...s, id: 'rdf', name: '微滤机 RDF', icon: '⚙️',
-    desc: `TSS 去除 ${proc.rdfTSS.toFixed(0)}% · 排污 ${proc.rdfBackwash}%`,
+    desc: `TSS 去除 ${proc.rdfTSS.toFixed(0)}%`,
     TSS: s.TSS * (1 - eta_rdf)
   };
   stages.push({...s});
@@ -4355,10 +4343,31 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   const aopOzoneDemand = aopOn ? aopFlow * 24 * 0.5 / 1000 : 0;  // kg O3/d
   const totalOzoneDemand = ozoneDemand + aopOzoneDemand;
 
-  // ---- RDF 排污 ----
-  const wasteTSS = backwashRatio > 0 ? tss_tank * eta_rdf / backwashRatio : 0;
-  const wasteFlow = flowData.flowM3h * backwashRatio;
-  const wasteTSSMass = wasteTSS * wasteFlow * 24 / 1000;
+  // ---- 系统排水 (v1.6: 替代旧 "RDF 排污" 概念) ----
+  //
+  // 物理: 稳态下穿越系统边界的污水/污染物全部出此口
+  //       流量由"故意换水率"决定: V_discharge = V_total × exchangeDaily
+  //       浓度按质量守恒: C_eff = 净排出 (kg/d) × 1000 / V_discharge
+  //
+  // 净排出量(质量守恒, 用稳态全量, 不含气态损失):
+  //   TSS:    load.tssDaily  全量排出 (不溶, 不降解; 设备捕获后进污泥, 仍属"穿过边界")
+  //   TAN:    几乎全部被 BF 硝化掉, 净排出 = V_disch × C_tank (溶解残留, 微量)
+  //   NO3-N:  反硝化扣减后的剩余, 同样按 V_disch × C_tank 计 (溶解, 稳态守恒)
+  //
+  // 取最末一个节点 (回鱼池) 的稳态浓度作为代表
+  const lastNode_disch = stages[stages.length - 1] || stages[stages.length-2] || stages[0];
+  const V_discharge_m3_d = V_total * exchangeDaily;   // m³/d, 与"换水率"定义一致, 不含蒸发
+  const V_discharge_m3_h = V_discharge_m3_d / 24;
+
+  // 溶解态: 稳态下 C_eff = C_tank (按"换水溢流"理解)
+  const disch_TAN_mg_L = lastNode_disch.TAN || 0;
+  const disch_NO3_mg_L = lastNode_disch.NO3 || 0;
+  const disch_TAN_kg_d = V_discharge_m3_d * disch_TAN_mg_L / 1000;
+  const disch_NO3_kg_d = V_discharge_m3_d * disch_NO3_mg_L / 1000;
+
+  // 悬浮态 TSS: 守恒 — 生成 ≈ 排出 (不溶不降解, 全部最终出系统)
+  const disch_TSS_kg_d = load.tssDaily;
+  const disch_TSS_mg_L = V_discharge_m3_d > 0 ? disch_TSS_kg_d * 1000 / V_discharge_m3_d : 0;
 
   // v1.1 新增: 自适应阈值, 在水质模拟时一次算好供 UI 使用
   // 阈值优先级: stage 字段 (鱼种内置) > WATER_LIMITS fallback
@@ -4377,9 +4386,12 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
       flow: denitriFlow, inletNO3: denitriInletNO3, outletNO3: denitriOutletNO3,
       removal: eta_denitri, systemRemoval: systemNO3Removal
     },
-    waste: {
-      flow: wasteFlow, TSS: wasteTSS, TSSMass: wasteTSSMass,
-      concentrationRatio: backwashRatio > 0 ? eta_rdf / backwashRatio : 0
+    discharge: {
+      V_m3_h:    V_discharge_m3_h,
+      V_m3_d:    V_discharge_m3_d,
+      TSS_kg_d:  disch_TSS_kg_d,   TSS_mg_L: disch_TSS_mg_L,
+      TAN_kg_d:  disch_TAN_kg_d,   TAN_mg_L: disch_TAN_mg_L,
+      NO3_kg_d:  disch_NO3_kg_d,   NO3_mg_L: disch_NO3_mg_L
     },
     skimmer: {
       enabled: skimmerOn, mode: proc.skimmerMode,
@@ -4423,8 +4435,7 @@ function calcPumpPowerBreakdown(flowData, proc, branchFlows) {
   const ea = Math.max((proc.aopPumpEta != null ? proc.aopPumpEta : 60) / 100, 0.2);
   const Hs = proc.skimmerPumpHead_m != null ? proc.skimmerPumpHead_m : 6;
   const es = Math.max((proc.skimmerPumpEta != null ? proc.skimmerPumpEta : 60) / 100, 0.2);
-  const Hbw = proc.rdfBackwashPumpHead_m != null ? proc.rdfBackwashPumpHead_m : 8;
-  const ebw = Math.max((proc.rdfBackwashPumpEta != null ? proc.rdfBackwashPumpEta : 55) / 100, 0.2);
+  // v1.6: 反冲泵 Hbw/ebw 已删除 (RDF 内嵌部件, 不独立选型)
 
   const mainPumpKw = shaftKw(flowData.flowM3h, Hm, em);
   const denitriBranchPumpKw = shaftKw(branchFlows.denitriFlow || 0, Hd, ed);
@@ -4433,10 +4444,10 @@ function calcPumpPowerBreakdown(flowData, proc, branchFlows) {
   const aopBranchPumpKw = aopActive ? shaftKw(branchFlows.aopFlow, Ha, ea) : 0;
   const skimmerActive = !!(proc.skimmerEnabled && branchFlows.skimmerOn && (branchFlows.skimmerFlow || 0) > 0);
   const skimmerBranchPumpKw = skimmerActive ? shaftKw(branchFlows.skimmerFlow, Hs, es) : 0;
-  const backwashPumpKw = shaftKw(branchFlows.wasteFlow || 0, Hbw, ebw);
-  const totalPumpKw = mainPumpKw + denitriBranchPumpKw + uvBranchPumpKw + aopBranchPumpKw + skimmerBranchPumpKw + backwashPumpKw;
+  const totalPumpKw = mainPumpKw + denitriBranchPumpKw + uvBranchPumpKw + aopBranchPumpKw + skimmerBranchPumpKw;
   return {
-    mainPumpKw, uvBranchPumpKw, denitriBranchPumpKw, aopBranchPumpKw, skimmerBranchPumpKw, backwashPumpKw, totalPumpKw
+    mainPumpKw, uvBranchPumpKw, denitriBranchPumpKw, aopBranchPumpKw, skimmerBranchPumpKw, totalPumpKw
+    // v1.6: backwashPumpKw 字段已从返回值删除 (RDF 内嵌, 永为 0; 兼容: 外部读 eq.backwashPumpKw 会得 undefined, 用 || 0 兜底)
   };
 }
 
@@ -4535,15 +4546,18 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // v1.1: 反硝化负荷 × sDenitri 工程裕度
   const denitriDesignNO3 = no3RemovedKgPerDay * sDenitri; // kg/d
   const denitriVolume = denitriDesignNO3 / Math.max(vdr_T, 0.01);
-  const methanolDemand = no3RemovedKgPerDay * 2.47;       // OPEX 用日量, 不放大
-  // v1.5 Bug 45 (已知限制, v1.6+ 改进):
-  //   2.47 g/g 是 Mokhayeri 2008 工业实测含 5-15% 残余甲醇 (相对纯化学计量 1.9 g/g)
-  //   残余甲醇会增加主流 DOM 和 BOD, 当前模型未在 simulateWaterQualityProcess 中扣减,
-  //   仅在 OPEX/储罐尺寸上反映. 实际工程影响通常 < 1% DOM 增量, 可接受为概算精度.
-  //   v1.6+ 计划: 加 alpha_methanol_residual ~ 0.1 系数, 把过量甲醇折算成 DOM 增量.
+  // v1.6 (反硝化甲醇工程安全系数):
+  //   理论化学计量 1.9 g CH3OH / g NO3-N (McCarty 1969)
+  //   Mokhayeri 2008 工业实测 2.47 (含 5-15% 残余甲醇)
+  //   实际工程还需含 DO 补偿 (McCarty: + 0.87×DO mg/L 进水), RAS 进水 DO 5-8 mg/L
+  //   工程经验典型 3.0-4.0 g/g (Suhr 2014, Tsukuda 2015 — DO 补偿 + 工艺裕度)
+  //   iRAS v1.6: methanolDemand = no3 × 2.47 × methanolSafetyFactor
+  //   默认 methanolSafetyFactor = 1.3 → 2.47×1.3 = 3.21 g/g (与文献中位一致)
+  //   用户可调 1.0 (实验室理论, 无 DO) ~ 2.0 (高 DO 进水 + 严控运行) 范围
+  const methanolSafety = (proc && proc.methanolSafetyFactor) || 1.3;
+  const methanolDemand = no3RemovedKgPerDay * 2.47 * methanolSafety;
 
-  // ─── RDF 排污流量 ───────────────────────────────────────────
-  const wasteFlow = flowData.flowM3h * proc.rdfBackwash / 100;
+  // v1.6: 旧 "RDF 排污流量" 概念已删除. 系统级排水量由 sim.discharge.V_m3_d 算出 (V_total × exchangeDaily)
 
   // ─── 蛋白分离器 (慢动力学: 流量+HRT × safety) ───────────────
   // v1.1.2: HRT 从 4 min 降至 2 min, 基于工业实测 (ScienceDirect 2023)
@@ -4689,7 +4703,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
 
   // ─── 泵功率分解 ─────────────────────────────────────────────
   const pumpBrk = calcPumpPowerBreakdown(flowData, proc, {
-    uvFlow, denitriFlow, aopFlow, wasteFlow, aopOn,
+    uvFlow, denitriFlow, aopFlow, aopOn,
     skimmerFlow, skimmerOn
   });
 
@@ -4699,11 +4713,13 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   const Q = flowData.flowM3h;
   const Vtank = flowData.volume;
   // 各部分水体 (基于设备规格 + 工程经验):
-  // v1.5 Bug 4: RDF 集水 HRT 开放为参数, 默认 0.3 min (商业实测)
-  //   ⚠ 与手册 8.2 节 "2 min" 不一致: 手册值含外置大缓冲池, 代码默认仅含转鼓+紧凑集水池
-  //   保守取值 (手册口径): proc.rdfHRT_min = 2.0
-  //   激进取值 (代码默认): proc.rdfHRT_min = 0.3 (YUTANK/Hydrotech 工业实测 18s)
-  const rdfHRT_min = (proc.rdfHRT_min != null && proc.rdfHRT_min > 0) ? proc.rdfHRT_min : 0.3;
+  // v1.5 Bug 4 / v1.6 调整: RDF 集水 HRT 开放为参数, 默认 0.5 min (中位)
+  //   ⚠ 与手册 8.2 节 "2 min" 不一致: 手册值含外置大缓冲池, 代码默认仅含转鼓+小集水池
+  //   紧凑型 (YUTANK/Hydrotech 工业实测): 0.3 min (18s)
+  //   中位 (v1.6 默认, 含小型缓冲):      0.5 min
+  //   保守 (设计院传统, 含外置缓冲池):     1.5-2.0 min
+  //   v1.6: UI 工艺面板已开放 input, 默认 0.5
+  const rdfHRT_min = (proc.rdfHRT_min != null && proc.rdfHRT_min > 0) ? proc.rdfHRT_min : 0.5;
   const V_RDF       = Q * rdfHRT_min / 60;
   // v1.1: BF 池水容积 = bioVolume / fillRatio
   // 物理: bioVolume 是填料净体积, V_BF 是池总容积 (含填料 + 水 + 顶部空气)
@@ -4740,7 +4756,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
     tempCorrectionNit, salCorrectionNit, tempCorrectionDen,
     denitriFlow, denitriVolume, denitriDesignNO3,
     no3RemovedKgPerDay, methanolDemand,
-    wasteFlow,
+    // v1.6: wasteFlow 字段已删除. 系统排水从 sim.discharge 读取 (V_total × exchangeDaily)
     skimmerOn, skimmerVolume, skimmerOzoneKg,
     aopOn, aopFlow, aopVolume, aopOzoneKg,
     totalOzoneKg, ozoneGeneratorPower,
@@ -4757,7 +4773,12 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
       V_RDF, V_BF: V_BF_water, V_skim, V_UV, V_AOP, V_denitri,
       V_co2, V_aerator, V_sump, V_pipes,
       V_process, V_total,
-      processFraction: V_process / Math.max(Vtank, 0.01)
+      // v1.6 (口径修正): 工艺占比按 V_total (而非 V_tank), 与国内外文献一致
+      //   赵越/刘鹰 2018 (大连海洋大学学报): V_BF / (V_tank+V_BF) = 47%
+      //   Drønen 2021 (挪威 Bergen 实测): V_process / V_total = 38%
+      //   iRAS 1000t 成鱼期: V_process / V_total ≈ 30%
+      //   旧口径 V_process / V_tank 在小项目/苗种期会超 100%, 误导用户
+      processFraction: V_process / Math.max(V_total, 0.01)
     },
 
     // 工程安全系数 (传递给 UI 显示)
@@ -4832,7 +4853,7 @@ function applyModularization(eq, stage, stageFarm, proc) {
   const modDenitriBranchPumpKw = (eq.denitriBranchPumpKw || 0) * modShare;
   const modAopBranchPumpKw     = (eq.aopBranchPumpKw     || 0) * modShare;
   const modSkimmerBranchPumpKw = (eq.skimmerBranchPumpKw || 0) * modShare;
-  const modBackwashPumpKw      = (eq.backwashPumpKw      || 0) * modShare;
+  // v1.6: modBackwashPumpKw 字段已删除 (反冲泵 RDF 内嵌)
   const modOzoneGenKw          = (eq.ozoneGeneratorPower || 0) * modShare;
 
   // v1.6: 支路泵 / 臭氧 / 加药泵 单机上限已在上方按 modFlow 档位定义 (BRANCH_PUMP_UNIT_KW, OZONE_GEN_UNIT_KW, DOSING_PUMP_UNIT_KW)
@@ -4884,9 +4905,8 @@ function applyModularization(eq, stage, stageFarm, proc) {
 
   // === 支路泵 / 加药泵 / 臭氧发生器: 每套都 1+1 备用 ===
   // 仅当对应设备启用且有功率/产量时, 才加入清单
-  if (modBackwashPumpKw > 0) {
-    modulePerSpec.backwashPump = configure('RDF 反冲泵', modBackwashPumpKw, BRANCH_PUMP_UNIT_KW, true, { sparing: '1+1' });
-  }
+  // v1.6: 反冲泵不再作为独立设备 — 它是 RDF 整机的内嵌部件 (随 RDF 出厂),
+  //       不在设备清单 / P&ID 上独立列项. CAPEX 已含在 RDF 总价中.
   if (modUvBranchPumpKw > 0) {
     modulePerSpec.uvBranchPump = configure('UV 支路泵', modUvBranchPumpKw, BRANCH_PUMP_UNIT_KW, true, { sparing: '1+1' });
   }
@@ -5073,7 +5093,7 @@ const LAYOUT_CONSTANTS = {
    结构: [鱼池厅 (整齐池阵列)] | [走廊] | [水处理厅 (3 排设备: 湿/中/干)]
    设备分类:
      - 湿区 (靠走廊, 直接接触水): RDF, BF 池, CO₂ 塔, 蛋分, AOP, 反硝化
-     - 中区 (泵 + 风机): 主泵, 反冲泵, UV泵, 反硝化泵, AOP泵, 蛋分泵, BF 风机
+     - 中区 (泵 + 风机): 主泵, UV泵, 反硝化泵, AOP泵, 蛋分泵, BF 风机 (v1.6: 反冲泵 RDF 内嵌, 不画)
      - 干区 (远离水, 电气): UV 反应器, 臭氧发生器, 加药泵, 热泵
    坐标: 模块原点 (0, 0) 在左下角, x → 东, y → 北
    输出: { footprint: {L, W}, items: [...], hallInfo: {...} }
@@ -5180,12 +5200,7 @@ function layoutSingleModule(pools, modulePerSpec, eq, numModules) {
     const d = inferEquipDim('bfBlower', kw);
     rowMid.push({ type: 'bfBlower', label: `BF 风机 ${N_bf}台`, w: d.L * N_bf + (N_bf - 1) * 0.3, h: d.W, color: colors.blower });
   }
-  if (modulePerSpec.backwashPump) {
-    const N_p = modulePerSpec.backwashPump.totalCount || 2;
-    const kw = modulePerSpec.backwashPump.perUnitKw || 5;
-    const d = inferEquipDim('branchPump', kw);
-    rowMid.push({ type: 'pump', label: `反冲泵 ${N_p}台`, w: d.L * N_p + (N_p - 1) * 0.2, h: d.W, color: colors.pump });
-  }
+  // v1.6: 反冲泵不再独立绘制 (RDF 内嵌部件)
   if (modulePerSpec.uvBranchPump) {
     const N_p = modulePerSpec.uvBranchPump.totalCount || 2;
     const kw = modulePerSpec.uvBranchPump.perUnitKw || 5;
@@ -5487,7 +5502,7 @@ function layoutSiteFromResults(allResults) {
 /* ============================================================================
    函数: calcCostEstimate
    目的: 年运行成本概算 (feed/O2/泵与电)
-   泵电费: 主循环 + UV/反硝化/AOP/RDF反冲支路轴功率×24h; UV 灯另计; 杂项 kWh/d 可填
+   泵电费: 主循环 + UV/反硝化/AOP/蛋分支路轴功率×24h; UV 灯另计; 杂项 kWh/d 可填
    ============================================================================ */
 /* ============================================================================
    函数: calcCostEstimate
@@ -5507,10 +5522,10 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex) {
   //           理论依据: VFD 流量调节使泵在 70-100% 设计点游动, 平均效率比额定低 15%,
   //                      但平均流量也比设计低 10-15% (夜间 + 投喂间隙), 功率立方关系
   //                      综合 ≈ 0.85 (Atlantic Sapphire 实测 0.82, 国内项目 0.83-0.88)
-  //   Bug 26: RDF 反冲泵周期性短暂启动, 实际日运行时长 ~2h (8% 占空比), 不是 24h
+  //   v1.6: 反冲泵已不再独立 (RDF 内嵌部件)
   //           工业实测: 反冲间隔 5-15 min, 单次 30s, 占空比 3-10%
   const mainPumpDuty       = (proc.mainPumpDutyFactor != null) ? proc.mainPumpDutyFactor : 0.85;  // VFD 平均
-  const backwashPumpDuty   = (proc.backwashDutyFactor != null) ? proc.backwashDutyFactor : 0.08;  // 占空比
+  // v1.6: 反冲泵 OPEX 完全删除 — 反冲泵是 RDF 内嵌部件, 电耗已含在 RDF 厂家整体能耗里 (~0.01% 项目总 OPEX, 无感)
   const branchPumpDuty     = (proc.branchPumpDutyFactor != null) ? proc.branchPumpDutyFactor : 1.0;  // 支路泵 24h
   // 主泵 + 各支路泵分别取占空比 (eq 字段拆分自 calcPumpPowerBreakdown 返回值)
   const mainPumpKwhDaily     = (eq.mainPumpKw || 0)      * 24 * mainPumpDuty;
@@ -5518,8 +5533,7 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex) {
   const uvBranchKwh          = (eq.uvBranchPumpKw || 0)      * 24 * branchPumpDuty;
   const aopBranchKwh         = (eq.aopBranchPumpKw || 0)     * 24 * branchPumpDuty;
   const skimmerBranchKwh     = (eq.skimmerBranchPumpKw || 0) * 24 * branchPumpDuty;
-  const backwashKwh          = (eq.backwashPumpKw || 0)      * 24 * backwashPumpDuty;
-  const pumpKwhDaily = mainPumpKwhDaily + denitriBranchKwh + uvBranchKwh + aopBranchKwh + skimmerBranchKwh + backwashKwh;
+  const pumpKwhDaily = mainPumpKwhDaily + denitriBranchKwh + uvBranchKwh + aopBranchKwh + skimmerBranchKwh;
   const uvLampKw = (eq.uvPower || 0) / 1000;
   const uvLampKwhDaily = uvLampKw * 24;
   const miscKwhDaily = proc.miscElecKWhPerDay != null ? proc.miscElecKWhPerDay : 50;
@@ -5720,9 +5734,9 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     total += add('主循环泵+变频', `${eq.mainPumpKw.toFixed(1)} kW`, 'kW', eq.mainPumpKw, eqPrices.mainPump);
   }
 
-  // 10. 支路泵合计 (反硝化+UV+AOP+蛋分+RDF反冲)
+  // 10. 支路泵合计 (反硝化+UV+AOP+蛋分; v1.6: 反冲泵不再独立)
   const branchTotal = (eq.denitriBranchPumpKw || 0) + (eq.uvBranchPumpKw || 0) +
-    (eq.aopBranchPumpKw || 0) + (eq.skimmerBranchPumpKw || 0) + (eq.backwashPumpKw || 0);
+    (eq.aopBranchPumpKw || 0) + (eq.skimmerBranchPumpKw || 0);
   if (branchTotal > 0) {
     total += add('支路泵合计', `${branchTotal.toFixed(1)} kW`, 'kW', branchTotal, eqPrices.branchPump);
   }
@@ -6153,8 +6167,11 @@ function readStageProcFromInputs(idx, fallbackProc) {
     uvFlowPct: getNumClamped('uvFlowPct', fallbackProc.uvFlowPct, 0, 50),
     denitriFlowPct: getNumClamped('denitriFlowPct', fallbackProc.denitriFlowPct, 0, 50),
     denitriEff: getNumClamped('denitriEff', fallbackProc.denitriEff, 0, 100),
-    // v1.5.1 (B45): RDF 反冲水占比钳到 [0, 50]
-    rdfBackwash: getNumClamped('rdfBackwash', fallbackProc.rdfBackwash, 0, 50),
+    // v1.6: 甲醇工程安全系数 (1.0=理论, 1.3=默认, 2.0=超保守)
+    methanolSafetyFactor: getNum('methanolSafetyFactor', fallbackProc.methanolSafetyFactor || 1.3),
+    // v1.6: rdfBackwash 字段已删除 (反冲泵随 RDF 出厂, 不影响系统级排污)
+    // v1.6: RDF 集水池 HRT 开放为可调参数 (默认 0.5 min, 范围 0.1-5)
+    rdfHRT_min: getNum('rdfHRT_min', fallbackProc.rdfHRT_min || 0.5),
     aerationMode: getStr('aerationMode', fallbackProc.aerationMode),
     o2SatTarget: getNum('o2SatTarget', fallbackProc.o2SatTarget),  // 饱和度目标 %, 但可大于 100 (超饱和)
     // v1.5.1 (B45): 液氧吸收率钳到 [0, 100]
@@ -6238,8 +6255,7 @@ function readStageProcFromInputs(idx, fallbackProc) {
     aopPumpEta: getNum('aopPumpEta', fallbackProc.aopPumpEta),
     skimmerPumpHead_m: getNum('skimmerPumpHead_m', fallbackProc.skimmerPumpHead_m),
     skimmerPumpEta: getNum('skimmerPumpEta', fallbackProc.skimmerPumpEta),
-    rdfBackwashPumpHead_m: getNum('rdfBackwashPumpHead_m', fallbackProc.rdfBackwashPumpHead_m),
-    rdfBackwashPumpEta: getNum('rdfBackwashPumpEta', fallbackProc.rdfBackwashPumpEta),
+    // v1.6: rdfBackwashPumpHead_m / rdfBackwashPumpEta 字段已删除 (反冲泵 RDF 内嵌)
     miscElecKWhPerDay: getNum('miscElecKWhPerDay', fallbackProc.miscElecKWhPerDay),
     // v1.2: 气候/围护/热泵字段已挪到全局 globalThermalConfig (项目级常量),
     //       此处只保留 stage 级的池散热参数 (poolUValue)
@@ -6314,7 +6330,8 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-slate-400" title="UV 旁路流量比 (%)&#10;范围: 5-20&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 健康场 10, 病害防控 15-20">UV Q比(%)</label><input data-proc-stage="${idx}" data-proc-field="uvFlowPct" type="number" step="1" value="${stage.proc.uvFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="反硝化支路流量比 (%)&#10;范围: 5-20 (设 0 表示无反硝化)&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 严控 NO₃⁻→15-20">反硝化Q比(%)</label><input data-proc-stage="${idx}" data-proc-field="denitriFlowPct" type="number" step="1" value="${stage.proc.denitriFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="反硝化单次去除率 (%)&#10;范围: 60-90&#10;默认: 80&#10;含义: 反硝化反应器单次通过 NO₃⁻ 去除率&#10;何时调: C/N 比足够 + 缺氧好→90, 低温→降">反硝化↓(%)</label><input data-proc-stage="${idx}" data-proc-field="denitriEff" type="number" step="1" value="${stage.proc.denitriEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="RDF 反冲排污率 (%)&#10;范围: 1-5&#10;默认: 2&#10;含义: 反冲洗排放占循环流量&#10;何时调: 细筛网→3-4">RDF反冲(%)</label><input data-proc-stage="${idx}" data-proc-field="rdfBackwash" type="number" step="0.1" value="${stage.proc.rdfBackwash}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="甲醇工程安全系数&#10;范围: 1.0-2.0&#10;默认: 1.3 (中位, Suhr 2014 / Tsukuda 2015 RAS 实际)&#10;含义: 在化学计量 2.47 g/g NO₃-N 之上的工程裕度&#10;公式: 甲醇 = NO₃ 去除量 × 2.47 × methanolSafetyFactor&#10;1.0 = 实验室理论 (无 DO 进水, 仅 5-15% 残余)&#10;1.3 = 默认 (含 DO 补偿+ 运行裕度, 2.47×1.3 = 3.21 g/g)&#10;1.5 = 高 DO 进水 (反硝化支路 DO > 8 mg/L)&#10;2.0 = 严控防 NO₃ 积累 (超保守)&#10;影响 OPEX 甲醇 (典型占 OPEX 0.5-1%, 即使翻倍 OPEX 总变化 < 0.5%)">甲醇裕度</label><input data-proc-stage="${idx}" data-proc-field="methanolSafetyFactor" type="number" step="0.1" min="1" max="3" value="${stage.proc.methanolSafetyFactor||1.3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="RDF 集水池 HRT (min)&#10;范围: 0.3-2.0&#10;默认: 0.5 (中位, 兼顾紧凑与缓冲)&#10;含义: 微滤机出水集水池的水力停留时间, 决定 V_RDF = Q × HRT/60&#10;0.3 = 紧凑型 (YUTANK/Hydrotech 工业实测 18s, 转鼓+一体化集水)&#10;0.5 = 中位 (含小型缓冲), iRAS v1.6 默认&#10;1-2 = 大型项目 (含外置缓冲池, 设计院传统做法)&#10;影响: 仅 V_total / V_process / 稀释项, 不影响 RDF 设备规格">RDF HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="rdfHRT_min" type="number" step="0.1" min="0.1" max="5" value="${stage.proc.rdfHRT_min||0.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400">增氧方式</label><select data-proc-stage="${idx}" data-proc-field="aerationMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="o2" ${stage.proc.aerationMode==='o2'?'selected':''}>纯氧 (≥40 kg/m³)</option><option value="air" ${stage.proc.aerationMode==='air'?'selected':''}>空气曝气 (&lt;40)</option></select></div>
       <div data-common><label class="text-[10px] text-slate-400" title="DO 目标饱和度 (%)&#10;范围: 95-180&#10;默认: 130 (空气模式锁95)&#10;含义: 增氧后水中 DO 饱和度&#10;何时调: 鲑165, 海水温水140, 温水淡水110-125, 罗非/对虾100-115">DO 目标(%)</label><input data-proc-stage="${idx}" data-proc-field="o2SatTarget" type="number" step="5" min="100" max="200" value="${stage.proc.o2SatTarget||130}" class="stg-proc-input input-ind !py-1 !text-xs" data-aeration-o2></div>
       <div><label class="text-[10px] text-slate-400" title="液氧吸收效率 (%)&#10;范围: 70-95&#10;默认: 85&#10;含义: 锥形塔/PPC 对液氧吸收率&#10;何时调: 低压锥 80-88, 高压 PPC 90-95">液氧吸收(%)</label><input data-proc-stage="${idx}" data-proc-field="o2AbsorptionEff" type="number" step="5" min="70" max="99" value="${stage.proc.o2AbsorptionEff||85}" class="stg-proc-input input-ind !py-1 !text-xs" data-aeration-o2></div>
@@ -6353,8 +6370,6 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-lime-300" title="AOP 泵效率 (%)&#10;范围: 50-70&#10;默认: 60">AOP泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="aopPumpEta" type="number" step="1" value="${stage.proc.aopPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-sky-300" title="蛋分泵扬程 (m)&#10;范围: 3-10&#10;默认: 6&#10;含义: 蛋分支路泵扬程">蛋分泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="skimmerPumpHead_m" type="number" step="0.5" value="${stage.proc.skimmerPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-sky-300" title="蛋分泵效率 (%)&#10;范围: 50-70&#10;默认: 60">蛋分泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerPumpEta" type="number" step="1" value="${stage.proc.skimmerPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-amber-300" title="RDF 反冲泵扬程 (m)&#10;范围: 5-25&#10;默认: 8&#10;含义: 反冲洗筛网压力, 大筛网调高">RDF反冲H(m)</label><input data-proc-stage="${idx}" data-proc-field="rdfBackwashPumpHead_m" type="number" step="0.5" value="${stage.proc.rdfBackwashPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-amber-300" title="RDF 反冲泵效率 (%)&#10;范围: 45-65&#10;默认: 55">RDF反冲η(%)</label><input data-proc-stage="${idx}" data-proc-field="rdfBackwashPumpEta" type="number" step="1" value="${stage.proc.rdfBackwashPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-cyan-300" title="杂项电耗 kWh/d (每套RAS)&#10;范围: 20-200&#10;默认: 50&#10;含义: 照明/控制柜/备用/仪表等&#10;何时调: 小规模 20-50, 中规模 50-100, 大 100-200">杂项(kWh/d·套)</label><input data-proc-stage="${idx}" data-proc-field="miscElecKWhPerDay" type="number" step="1" value="${stage.proc.miscElecKWhPerDay}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="蛋白分离器启用/停用">蛋分启用</label><select data-proc-stage="${idx}" data-proc-field="skimmerEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.skimmerEnabled?'selected':''}>启用</option><option value="false" ${!stage.proc.skimmerEnabled?'selected':''}>停用</option></select></div>
       <div data-common><label class="text-[10px] text-slate-400" title="蛋分气源: 臭氧 (DOM 去除高) / 空气">蛋分气源</label><select data-proc-stage="${idx}" data-proc-field="skimmerMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="ozone" ${stage.proc.skimmerMode==='ozone'?'selected':''}>臭氧</option><option value="air" ${stage.proc.skimmerMode==='air'?'selected':''}>空气</option></select></div>
@@ -6406,8 +6421,8 @@ function renderStageBlock(idx, stage) {
         <div data-panel="alk-${idx}" class="grid grid-cols-2 gap-2 text-xs"></div>
       </div>
       <div class="rounded-lg border border-dashed border-amber-500/50 bg-amber-900/10 p-3">
-        <div class="flex items-center gap-2 mb-2"><span class="text-xl">🗑️</span><div class="text-sm font-bold text-amber-300">RDF排污</div></div>
-        <div data-panel="waste-${idx}" class="grid grid-cols-2 gap-2 text-xs"></div>
+        <div class="flex items-center gap-2 mb-2"><span class="text-xl">📤</span><div class="text-sm font-bold text-amber-300">系统排水</div></div>
+        <div data-panel="discharge-${idx}" class="grid grid-cols-2 gap-2 text-xs"></div>
       </div>
       <div class="rounded-lg border border-dashed border-sky-500/50 bg-sky-900/10 p-3">
         <div class="flex items-center gap-2 mb-2"><span class="text-xl">🌀</span><div class="text-sm font-bold text-sky-300">蛋白分离器</div></div>
@@ -6604,14 +6619,14 @@ function renderPanels(idx, sim, stage, stageFarm, prices) {
       <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">NaHCO₃ 投加</div><div class="text-teal-300 font-bold">${a.naHCO3Demand.toFixed(1)} kg/d</div></div>
     `;
   }
-  // 排污
-  const w = sim.waste;
-  const wEl = document.querySelector(`[data-panel="waste-${idx}"]`);
-  if (wEl) wEl.innerHTML = `
-    <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">排污流量</div><div class="text-amber-300 font-bold">${w.flow.toFixed(2)} m³/h</div></div>
-    <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">TSS 浓度</div><div class="text-amber-300 font-bold">${w.TSS.toFixed(0)} mg/L</div></div>
-    <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">浓缩倍数</div><div class="text-amber-300 font-bold">${w.concentrationRatio.toFixed(0)} ×</div></div>
-    <div class="metric-chip px-2 py-1.5"><div class="text-[10px] text-slate-400">日排干物质</div><div class="text-amber-300 font-bold">${w.TSSMass.toFixed(1)} kg/d</div></div>
+  // 系统排水 (v1.6: 替代旧 RDF 排污)
+  const d_disch = sim.discharge;
+  const dEl = document.querySelector(`[data-panel="discharge-${idx}"]`);
+  if (dEl && d_disch) dEl.innerHTML = `
+    <div class="metric-chip px-2 py-1.5" title="V_discharge = V_total × 换水率 / 100 (m³/d), 含蒸发以外的全部出水"><div class="text-[10px] text-slate-400">排水流量</div><div class="text-amber-300 font-bold">${d_disch.V_m3_h.toFixed(2)} m³/h<span class="text-[10px] text-slate-400"> · ${d_disch.V_m3_d.toFixed(0)} m³/d</span></div></div>
+    <div class="metric-chip px-2 py-1.5" title="TSS 质量守恒: 不溶不降解, 日生成量 = 日净排出量, 全部从此口出 (含固相进污泥)"><div class="text-[10px] text-slate-400">TSS</div><div class="text-amber-300 font-bold">${d_disch.TSS_mg_L.toFixed(0)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.TSS_kg_d.toFixed(0)} kg/d</span></div></div>
+    <div class="metric-chip px-2 py-1.5" title="TAN 大部分被 BF 硝化, 此为残留 (= 池中浓度 × V_discharge)"><div class="text-[10px] text-slate-400">TAN</div><div class="text-amber-300 font-bold">${d_disch.TAN_mg_L.toFixed(2)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.TAN_kg_d.toFixed(2)} kg/d</span></div></div>
+    <div class="metric-chip px-2 py-1.5" title="NO3-N 反硝化后剩余 (= 池中浓度 × V_discharge)"><div class="text-[10px] text-slate-400">NO₃-N</div><div class="text-amber-300 font-bold">${d_disch.NO3_mg_L.toFixed(1)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.NO3_kg_d.toFixed(1)} kg/d</span></div></div>
   `;
   // 热交换
   if (sim.thermal) {
@@ -6930,7 +6945,7 @@ function renderLoadCard(idx, load, flowData, stage, stageFarm, eq) {
     html += fmtRow('工艺水体',   `${sv.V_process.toFixed(0)} m³`, 'info',
       `BF ${sv.V_BF.toFixed(0)} + RDF ${sv.V_RDF.toFixed(0)} + 蛋分 ${sv.V_skim.toFixed(0)} + 脱气 ${sv.V_co2.toFixed(0)} + 增氧 ${sv.V_aerator.toFixed(0)} + 反硝化 ${sv.V_denitri.toFixed(0)} + AOP ${sv.V_AOP.toFixed(0)} + 集水池 ${(sv.V_sump||0).toFixed(0)} + UV/管路`);
     html += fmtRow('系统总水体', `${sv.V_total.toFixed(0)} m³`, 'ok',
-      `工艺占比 ${(sv.processFraction*100).toFixed(0)}% (典型 30-50%)`);
+      `工艺占比 ${(sv.processFraction*100).toFixed(0)}% = V_process / V_total (典型 30-50%, 参 赵越 2018 / Drønen 2021)`);
   } else {
     html += fmtRow('水体',      `${flowData.volume.toFixed(0)} m³`, 'ok');
   }
@@ -7194,16 +7209,15 @@ function renderEquipCard(idx, eq) {
   html += fmtRow('UV支路泵',  `${eq.uvBranchPumpKw.toFixed(2)} kW`);
   html += fmtRow('AOP支路泵',  `${eq.aopBranchPumpKw.toFixed(2)} kW`);
   html += fmtRow('蛋分支路泵',  `${(eq.skimmerBranchPumpKw||0).toFixed(2)} kW`);
-  html += fmtRow('RDF反冲泵',  `${eq.backwashPumpKw.toFixed(2)} kW`);
+  // v1.6: RDF反冲泵不再独立列项 (RDF 内嵌)
   html += fmtRow('合计轴功率',  `${eq.totalPumpKw.toFixed(2)} kW`, 'warn');
 
-  // 化学品 & 排污
-  html += sectionHeader('🧪 化学品 & 排污');
+  // 化学品 (v1.6: 排污已从此处移除, 改为"系统排水"显示在每阶段卡片)
+  html += sectionHeader('🧪 化学品');
   html += fmtRow('日脱氮量',  `${eq.no3RemovedKgPerDay.toFixed(2)} kg/d`);
   html += fmtRow('甲醇投加',  `${eq.methanolDemand.toFixed(2)} kg/d`);
   html += fmtRow('臭氧总需求',  `${eq.totalOzoneKg.toFixed(2)} kg/d`);
   html += fmtRow('臭氧发生器',  `${eq.ozoneGeneratorPower.toFixed(1)} kW`);
-  html += fmtRow('RDF 排污',  `${eq.wasteFlow.toFixed(2)} m³/h`);
 
   // v1.3: 模块化设备配置 (大型项目 N+1 备用)
   if (eq.modular) {
@@ -7250,8 +7264,8 @@ function renderEquipCard(idx, eq) {
     }
 
     // v1.3.x: 支路泵 / 加药泵 / 臭氧发生器 (1+1 备用)
+    // v1.6: backwashPump 已从此映射删除 (RDF 内嵌, 不独立)
     const supportEquip = [
-      ['backwashPump',     'RDF 反冲泵',    'kW'],
       ['uvBranchPump',     'UV 支路泵',     'kW'],
       ['denitriBranchPump','反硝化支路泵',   'kW'],
       ['aopBranchPump',    'AOP 支路泵',    'kW'],
@@ -8576,7 +8590,7 @@ function buildPIDExport() {
         salinity: stage.salinity || 0
       },
       equipment: {
-        rdf:       { tag: 'F-201', flow: eq.rdfFlow, tssEff: stage.proc.rdfTSS, backwashPct: stage.proc.rdfBackwash },
+        rdf:       { tag: 'F-201', flow: eq.rdfFlow, tssEff: stage.proc.rdfTSS },
         bf:        { tag: 'B-301', volume: eq.bioVolume, tanEff: stage.proc.biofilterTAN, designTAN: eq.bioDesignTAN, fillRatio: stage.proc.bfFillRatio, vtrAtT: eq.vtr_T, vdrAtT: eq.vdr_T },
         uv:        { tag: 'D-401', flow: eq.uvFlow, dose: stage.proc.uvDose, powerKw: eq.uvPower / 1000 },
         co2:       eq.co2StripperSpec && eq.co2StripperSpec.enabled ? {
@@ -8634,7 +8648,7 @@ function buildPIDExport() {
         denitriBranch:  { tag: 'P-601', kw: eq.denitriBranchPumpKw, needed: eq.denitriBranchPumpKw > 0 },
         aopBranch:      { tag: 'P-701', kw: eq.aopBranchPumpKw,   needed: eq.aopBranchPumpKw > 0 },
         skimmerBranch:  { tag: 'P-501', kw: eq.skimmerBranchPumpKw, needed: eq.skimmerBranchPumpKw > 0 },
-        backwash:       { tag: 'P-202', kw: eq.backwashPumpKw,    duty: 'RDF 反冲' },
+        // v1.6: backwash 泵字段已删除 (RDF 内嵌, 不独立)
         totalKw: eq.totalPumpKw
       },
       thermal: sim.thermal ? {

@@ -374,7 +374,7 @@ function renderStage(stage, idx, data) {
     equipRows.push(rowFromMod('BF 曝气风机', 'K-302', bfMod, fmtKw(sp.power), `风量 ${(sp.airFlow||0).toFixed(1)} m³/min · 峰值供氧 ${(sp.o2PeakKgH||0).toFixed(1)} kg/h`));
   }
 
-  // 泵清单 (v1.3.x: 支路泵和反冲泵都已纳入模块化规格, 支持 1+1 备)
+  // 泵清单 (v1.3.x: 支路泵已纳入模块化规格, 支持 1+1 备; v1.6: 反冲泵不再独立列项, RDF 内嵌)
   const pumpRows = [];
   if (p.main && p.main.kw > 0) {
     const mainMod = mod && mod.modulePerSpec.mainPump;
@@ -396,10 +396,7 @@ function renderStage(stage, idx, data) {
     const skMod = mod && mod.modulePerSpec.skimmerBranchPump;
     pumpRows.push(rowFromMod('蛋分支路泵', 'P-501', skMod, fmtKw(p.skimmerBranch.kw), '蛋白分离器进水'));
   }
-  if (p.backwash && p.backwash.kw > 0) {
-    const bwMod = mod && mod.modulePerSpec.backwashPump;
-    pumpRows.push(rowFromMod('RDF 反冲泵', 'P-202', bwMod, fmtKw(p.backwash.kw), p.backwash.duty || 'RDF 反冲'));
-  }
+  // v1.6: 反冲泵已从设备清单移除 (RDF 厂家整体出厂含反冲泵, P-202 不再独立列项)
   // v1.3.x: 加药泵 1+1 备
   if (mod && mod.modulePerSpec.methanolDosing) {
     const dm = mod.modulePerSpec.methanolDosing;

@@ -2046,8 +2046,9 @@ function renderUtility(stage) {
     ? `${_siteO2.size_t} t × ${_siteO2.count} 罐`
     : '3 t 储罐';     // fallback (老数据无 siteEquipment 字段)
 
-  // 公用工程设备从左到右顺序: LOX → O3发生器 → 风机 → 热泵 → 反冲泵
-  // 用 col 0..4 依次摆 (用 small 尺寸节省纵向空间)
+  // 公用工程设备从左到右顺序: LOX → O3发生器 → 风机 → 热泵
+  // 用 col 0..3 依次摆 (用 small 尺寸节省纵向空间)
+  // v1.6: 反冲泵已从 P&ID 移除 — 它是 RDF (F-201) 整机内嵌部件 (随 RDF 出厂)
   const utilityItems = [];
 
   // LOX 罐 — 数字: 本阶段氧耗 (kg/d); 规格: 全场配置 (站级共用)
@@ -2114,17 +2115,8 @@ function renderUtility(stage) {
     });
   }
 
-  // RDF 反冲泵
-  if (pumps.backwash && pumps.backwash.kw > 0) {
-    utilityItems.push({
-      col: 4,
-      spec: null,    // 反冲泵用泵符号, 不用方框
-      pumpTag: pumps.backwash.tag,
-      pumpName: 'RDF 反冲泵',
-      pumpSub: 'Backwash pump',
-      pumpParams: [fmtNum(pumps.backwash.kw) + ' kW'],
-    });
-  }
+  // v1.6: RDF 反冲泵 (P-202) 已删除 — 反冲泵是 RDF (F-201) 整机内嵌部件,
+  //       工程实际由 RDF 厂家整体出厂, 不在 P&ID 上独立绘制
 
   // v1.3.x: AOP 高级氧化 — 从旁路改为公用工程 (按需投运, 不常驻主流)
   // 工艺: 从主管取水 (CO2 后) → AOP → 处理后水回主管 (集水池前)
