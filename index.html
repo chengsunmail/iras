@@ -1090,6 +1090,15 @@
         <li>阶段卡片"📋 手册"按钮修复 (锚点跳转自动展开)</li>
         <li>财务参数独立到顶部, 与设备单价分离</li>
         <li>② 区"液氧储罐"input 移除 (语义已迁移到 ③ 区, 老方案兼容迁移)</li>
+        <li>液氧储罐单位术语精化: "套" → "罐" (UI / 报告统一)</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-rose-300">v1.6 物理校正 (代码 review 补丁)</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>CO₂ 脱气塔风压钳制修复</b>: 旧代码 <code>Math.max(.. || 12, 5)</code> 把 UI 默认 2.5 kPa 强行抬到 5 kPa, 风机功率高估 ~2×. v1.6 改为 <code>Math.max(.. || 2.5, 0.3)</code> 与 Delta Cooling Towers 实测 (0.87-1.12 kPa) 对齐. <strong>影响</strong>: 中等浅塔项目 CO₂ 风机 kW 降低 ~50%, OPEX 电费 -5~10 万/年 (千吨级)</li>
+        <li><b>百分比字段加钳制</b>: protein / feedRate / mortality 之前仅 <code>raw/100</code> 无范围保护, 用户误输入 protein=150 (本意 15.0) 会让 TAN 高 10×. v1.6 加 [10%,70%] / [0.1%,30%] / [0%,50%] 钳制 (与其他字段一致)</li>
+        <li><b>热泵 COP 默认值统一</b>: 旧代码 PROCESS_DEFAULTS 有 COP_nom_cool=3.8 优先级覆盖 heatPumpCOP_cool=3.0, 导致 UI 显示 3.0 但实际算 3.8. v1.6 删除 COP_nom_* dead path, 统一用 heatPumpCOP_*. <strong>影响</strong>: 制冷热泵耗电 +25% (回归到手册声称值)</li>
+        <li><b>反硝化碱度回收 3.57 → 2.8</b>: 旧代码用理论极限 3.57 g CaCO₃/g N, 实际工程 2.5-3.0 (Mateju 1992, Henze 1991). v1.6 默认 2.8, 开放 <code>proc.denitriAlkRecovery</code> 参数. <strong>影响</strong>: NaHCO₃ 投加量 +0.5~1% (与文献对齐)</li>
       </ul>
 
       <h3 class="mt-4 font-bold text-rose-300">已知限制</h3>
@@ -1100,7 +1109,7 @@
       </ul>
 
       <div class="mt-4 p-3 bg-rose-900/20 border border-rose-700/30 rounded text-rose-200 text-sm">
-        <strong>💡 工程意义:</strong> v1.6 主要解决了"液氧储罐在阶段 CAPEX 重复计算"这个长期存在的逻辑 bug, 同时把整套 UI 重构为更易扫描的工程师视角. 4 阶段千吨级项目 CAPEX 概算精度提升 ~3% (剔除重复); 多阶段切换效率因可折叠 UI 提升 ~40%.
+        <strong>💡 工程意义:</strong> v1.6 主要解决了"液氧储罐在阶段 CAPEX 重复计算"这个长期存在的逻辑 bug, 同时把整套 UI 重构为更易扫描的工程师视角. 4 阶段千吨级项目 CAPEX 概算精度提升 ~3% (剔除重复); 多阶段切换效率因可折叠 UI 提升 ~40%. 物理校正补丁 (CO₂ 风压 / 百分比钳制 / COP / 碱度) 把 4 个长期偏差对齐到文献.
       </div>
     </section>
 
@@ -2642,7 +2651,7 @@
       <h3 class="mt-4 font-bold text-cyan-300">6.5 碱度化学计量</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400">
         <li>硝化：1 g TAN-N 消耗 4.57 g O₂ + 7.14 g CaCO₃ 碱度</li>
-        <li>反硝化：1 g NO₃-N 回收 3.57 g CaCO₃ 碱度，消耗 2.47 g 甲醇</li>
+        <li>反硝化：1 g NO₃-N 理论回收 3.57 g CaCO₃ 碱度 (理论极限) / 工程实际 2.8 g (默认, v1.6) ，消耗 2.47 g 甲醇</li>
         <li>NaHCO₃ 换算：1 kg NaHCO₃ ≈ 0.595 kg CaCO₃ 当量</li>
       </ul>
     </section>
@@ -2885,9 +2894,9 @@ const PROCESS_DEFAULTS = {
   //   T_air_*, T_source_*, RH_*, U_*, ACH, ventHR, poolCover, buildingArea_user, buildingHeight
   // PROCESS_DEFAULTS 仅保留 stage 级的 v1.2 兼容字段
   // ==========================================================================
-  COP_nom_heat: 4.0,             // 标定 COP (用户也可在阶段级覆盖, 通常不改)
-  COP_nom_cool: 3.8,
-  // v1.1 兼容字段 (新代码不直接读, 留作向下兼容)
+  // v1.6 (P1 BUG #4 修复): 删除 COP_nom_heat / COP_nom_cool 字段
+  //   旧版本 COP_nom_cool=3.8 与 heatPumpCOP_cool=3.0 不一致, 导致 UI 显示 3.0
+  //   但 calcThermalLoad 实际使用 3.8 (走 COP_nom_cool 优先级). 现统一为 heatPumpCOP_*
   heatPumpCOP_heat: 4.0,
   heatPumpCOP_cool: 3.0,
   // 内部产热项控制 (沿用 v1.1)
@@ -3904,9 +3913,11 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
   }
 
   // COP 计算: v1.2 温度修正 (4 类热泵)
+  // v1.6 (P1 BUG #4 修复): 移除 proc.COP_nom_* 优先级层, 统一从 heatPumpCOP_* 读取
+  //   旧版本 COP_nom_cool=3.8 (PROCESS_DEFAULTS) 与 UI 显示 3.0 (heatPumpCOP_cool) 不一致
   const hpType = proc.hpType || 'air';
-  const COP_nom_heat = proc.COP_nom_heat || proc.heatPumpCOP_heat || 4.0;
-  const COP_nom_cool = proc.COP_nom_cool || proc.heatPumpCOP_cool || 3.8;
+  const COP_nom_heat = proc.heatPumpCOP_heat || 4.0;
+  const COP_nom_cool = proc.heatPumpCOP_cool || 3.0;
   // 热泵热源温度: 空气源用 T_air, 水/海水源用 T_source(源水), 地源用 T_ground
   let T_hp_source;
   if (hpType === 'air') T_hp_source = T_air;
@@ -3963,11 +3974,13 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
      → 每氧化 1 g TAN-N 消耗 7.14 g CaCO₃ 碱度
    反硝化 (甲醇作碳源):
      5 CH₃OH + 6 NO₃⁻ → 3 N₂ + 5 CO₂ + 7 H₂O + 6 OH⁻
-     → 每还原 1 g NO₃-N 回收 3.57 g CaCO₃ 碱度 (理论为硝化的一半)
+     → 理论极限: 每还原 1 g NO₃-N 回收 3.57 g CaCO₃ 碱度 (硝化的一半)
+     → 工程实际 (v1.6): 默认 2.8 g CaCO₃/g N (文献 Mateju 1992, Henze 1991)
+        差异来源: 部分甲醇被好氧异养菌竞争氧化 / 反硝化菌生物量合成消耗碳源
 
    【系统碱度平衡】
      消耗速率 = 7.14 × 实际硝化 TAN 量(kg/d)
-     回收速率 = 3.57 × 实际反硝化 NO₃ 量(kg/d)
+     回收速率 = 2.8 × 实际反硝化 NO₃ 量(kg/d)  [v1.6: 工程实际, 不再用 3.57 理论极限]
      换水补偿 = 源水碱度 × 换水体积 (源水含 HCO₃⁻ 天然补偿)
      投加量 = 净消耗 - 换水补偿 (若为负则不需投加)
 
@@ -4017,8 +4030,14 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   }
 
   // 碱度收支 (kg CaCO₃/d)
+  // v1.6 (P2 OBS #5 修复): 反硝化碱度回收 3.57 (理论极限) → 2.8 (工程实际)
+  //   差异来源: 部分甲醇被好氧异养菌竞争氧化 (不产 OH⁻); 反硝化菌合成生物量消耗一部分碳源
+  //   文献: Mateju 1992, Henze 1991, Crittenden MWH 2012
+  //   理论极限 3.57 = 1 当量 OH⁻ / mol N. 工程实测 2.5-3.0, 中位 2.8
+  //   用户可在 proc.denitriAlkRecovery 覆盖 (UI 暂未开放)
+  const denitriAlkCoef = (proc && proc.denitriAlkRecovery) || 2.8;
   const alkConsumed  = tanNitrified * 7.14;
-  const alkRecovered = no3Denitrified * 3.57;
+  const alkRecovered = no3Denitrified * denitriAlkCoef;
   const alkNetDemand = alkConsumed - alkRecovered;
 
   // 换水补偿 (v1.1.2: 用系统总水体 V_total)
@@ -4649,7 +4668,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // v1.1.2: 风压和效率可调
   // 浅塔 (1-3m): 8-15 kPa; 中塔 (3-5m): 15-25; 深塔 (>5m): 25-35
   // 罗茨风机 0.5-0.7, 离心风机 0.65-0.80
-  const co2Pressure_Pa = Math.max(proc.co2BlowerPressure_kPa || 12, 5) * 1000;
+  const co2Pressure_Pa = Math.max(proc.co2BlowerPressure_kPa || 2.5, 0.3) * 1000;
   const co2BlowerEta = Math.max((proc.co2BlowerEfficiency || 60) / 100, 0.3);
   const degasBlowerKw = co2StripperOn
     ? (degasAirFlow_m3h / 3600) * co2Pressure_Pa / co2BlowerEta / 1000
@@ -6064,7 +6083,15 @@ function ensureStageProc(stage) {
 const STAGE_INPUT_UI_PERCENT_TO_FRACTION = new Set(['protein', 'feedRate', 'mortality']);
 
 function normalizeStageInputValue(field, raw) {
-  if (STAGE_INPUT_UI_PERCENT_TO_FRACTION.has(field)) return raw / 100;
+  // v1.6 (P1 BUG #3 修复): 3 个百分比字段加钳制 (与其他字段一致)
+  //   旧版本仅 raw/100, 无范围保护 → 用户误输入 protein=150 会让 TAN 高 10×
+  if (STAGE_INPUT_UI_PERCENT_TO_FRACTION.has(field)) {
+    const v = raw / 100;
+    if (field === 'protein')   return Math.max(0.10, Math.min(0.70, v));   // 10-70%, 鱼饲料合理范围
+    if (field === 'feedRate')  return Math.max(0.001, Math.min(0.30, v));  // 0.1-30%/d, 工程典型 0.5-3%
+    if (field === 'mortality') return Math.max(0,    Math.min(0.50, v));   // 0-50% (与 MORT_MAX 一致)
+    return v;
+  }
   // v1.3.x: 范围钳制
   if (field === 'subSystemCount') return Math.max(1, Math.min(10, Math.round(raw)));
   if (field === 'poolsPerSet') return Math.max(1, Math.min(10, Math.round(raw)));
@@ -6215,10 +6242,9 @@ function readStageProcFromInputs(idx, fallbackProc) {
     rdfBackwashPumpEta: getNum('rdfBackwashPumpEta', fallbackProc.rdfBackwashPumpEta),
     miscElecKWhPerDay: getNum('miscElecKWhPerDay', fallbackProc.miscElecKWhPerDay),
     // v1.2: 气候/围护/热泵字段已挪到全局 globalThermalConfig (项目级常量),
-    //       此处只保留 stage 级的池散热参数 (poolUValue, COP_nom 兼容字段)
-    poolUValue: fallbackProc.poolUValue != null ? fallbackProc.poolUValue : 5,
-    COP_nom_heat: fallbackProc.COP_nom_heat || 4.0,
-    COP_nom_cool: fallbackProc.COP_nom_cool || 3.8
+    //       此处只保留 stage 级的池散热参数 (poolUValue)
+    // v1.6 (P1 BUG #4 修复): 删除 COP_nom_heat / COP_nom_cool, 统一用 heatPumpCOP_* (上面行 6158-6159 已写)
+    poolUValue: fallbackProc.poolUValue != null ? fallbackProc.poolUValue : 5
   };
 }
 
