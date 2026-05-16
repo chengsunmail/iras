@@ -91,6 +91,43 @@
     return (lo + hi) / 2;
   }
 
+  // ---------- OPEX 可变/固定拆分 (v1.7 修复 Bug 19) ----------
+  //   旧版: hardcoded variable=70%, fixed=30%
+  //   新版: 从 perStage.cost 累加真实占比
+  //         可变 (随产量 ramp 线性缩放): 饲料 + 增氧(液氧或风机电) + 化学品(甲醇/NaHCO3) + 臭氧
+  //         半固定 (基本 24h 定值, 与产量弱相关): 主泵 + UV灯 + 杂项 + BF风机 + CO2风机 + 热泵
+  //   优雅降级: 老数据 (perStage.cost 字段缺失) 退回旧 70/30
+  function computeOpexSplit(d) {
+    const perStage = (d && d.results && d.results.perStage) || [];
+    let totalVar = 0, totalFix = 0, totalAll = 0;
+    perStage.forEach(ps => {
+      const c = ps.cost || {};
+      // 可变 (随饲料/产量)
+      const varCost = (c.feedCostAvg || 0)
+                    + (c.aerationCostAvg || 0)        // 液氧或主风机电费 (随氧需变化)
+                    + (c.methanolCostAvg || 0)
+                    + (c.naHCO3CostAvg || 0)
+                    + (c.ozoneCostAvg || 0);
+      // 半固定 (24h 定值)
+      const fixCost = (c.pumpCostAvg || 0)
+                    + (c.uvLampCostAvg || 0)
+                    + (c.miscCostAvg || 0)
+                    + (c.bfBlowerCostAvg || 0)        // BF 风机也基本定值, 硝化耗氧波动小
+                    + (c.co2BlowerCostAvg || 0)
+                    + (c.thermalCostAvg || 0);
+      totalVar += varCost;
+      totalFix += fixCost;
+      totalAll += (c.totalAvg || 0) - (c.depDaily || 0);   // 不含折旧 (折旧外部单列)
+    });
+    if (totalAll > 0 && (totalVar + totalFix) > 0) {
+      // 钳到合理范围避免极端值: 可变 30%-90%, 固定 10%-70%
+      const sum = totalVar + totalFix;
+      const vFrac = Math.max(0.3, Math.min(0.9, totalVar / sum));
+      return { variableShare: vFrac, fixedShare: 1 - vFrac };
+    }
+    return { variableShare: 0.70, fixedShare: 0.30 };   // fallback (老数据)
+  }
+
   // ---------- 主计算 ----------
   function calculateCore(data, p) {
     if (!data || !data.results || !data.results.summary || !data.results.summary.finance) return null;
@@ -130,6 +167,10 @@
     const salvageCivil = capexCivil * 0.20;
     const totalSalvage = salvageEquip + salvageCivil;
 
+    // v1.7 Bug 19 修复: OPEX 可变/固定从实际 cost 字段算, 不再硬编码 70/30
+    //   air 模式饲料占比更高 (~75-80%) vs o2 模式 (~55%), 旧版 70/30 会高估固定/低估可变
+    const opexSplit = computeOpexSplit(data);
+
     const yearly = [];
     for (let t = 0; t <= Y; t++) {
       const r = t === 0 ? 0 : ramps[t - 1];
@@ -137,8 +178,8 @@
       const salesTax = revenue * p.salesTax;
       const netRevenue = revenue - salesTax;
 
-      const variableOpex = annualOpexFull * 0.70 * r;
-      const fixedOpexBase = annualOpexFull * 0.30;
+      const variableOpex = annualOpexFull * opexSplit.variableShare * r;
+      const fixedOpexBase = annualOpexFull * opexSplit.fixedShare;
       const fixedOpex = t === 0 ? 0 : fixedOpexBase;
       const operatingCost = variableOpex + fixedOpex;
 
@@ -228,7 +269,7 @@
     const avgInterest = loanSchedule.length > 0
       ? loanSchedule.reduce((s, x) => s + x.interest, 0) / loanSchedule.length
       : 0;
-    const fixedAnnual = annualOpexFull * 0.30 + annualDep + avgInterest
+    const fixedAnnual = annualOpexFull * opexSplit.fixedShare + annualDep + avgInterest
       + capexEquip * p.repairRate + p.laborCost;
     const bepKg = marginPerKg > 0 ? fixedAnnual / marginPerKg : 0;
     const bepPct = yieldKg > 0 ? bepKg / yieldKg * 100 : 0;

@@ -359,13 +359,12 @@ function renderStage(stage, idx, data) {
       note: `DO 目标 ${e.o2cone.satTarget}% · 吸收 ${e.o2cone.absorptionEff}%${e.o2cone.topology === 'bypass' ? ` · 旁路 ${e.o2cone.bypassRatio||10}%` : ''}`
     });
   }
-  // v1.7: 鱼池增氧鼓风机 K-101 (仅 air 模式) — 区别于 K-302 BF 风机
+  // v1.7: 鱼池增氧鼓风机 K-101 (仅 air 模式) — 与 K-302 BF 风机同口径 1+1 备
   if (e.tankAirBlower && e.tankAirBlower.enabled) {
-    equipRows.push({
-      label: '鱼池增氧鼓风机', tag: e.tankAirBlower.tag, qty: '1+1 备',
-      spec: `${(e.tankAirBlower.airFlowM3min||0).toFixed(1)} Nm³/min · ${(e.tankAirBlower.powerKw||0).toFixed(1)} kW`,
-      note: `风压 ${e.tankAirBlower.pressureKPa} kPa · η ${e.tankAirBlower.etaPct}% · 服务鱼池微孔曝气盘 (air 模式)`
-    });
+    const tabMod = mod && mod.modulePerSpec.tankAirBlower;
+    const perUnitSpec = `${(e.tankAirBlower.airFlowM3min||0).toFixed(1)} Nm³/min · ${(e.tankAirBlower.powerKw||0).toFixed(1)} kW`;
+    const note = `风压 ${e.tankAirBlower.pressureKPa} kPa · η ${e.tankAirBlower.etaPct}% · 服务鱼池微孔曝气盘 (air 模式主增氧, 故障即鱼窒息, 必须双机轮换)`;
+    equipRows.push(rowFromMod('鱼池增氧鼓风机', e.tankAirBlower.tag, tabMod, perUnitSpec, note));
   }
   if (e.skimmer && e.skimmer.enabled) {
     equipRows.push(rowFromVol('蛋白分离器', 'S-701', e.skimmer.volume, `${e.skimmer.mode === 'ozone' ? '臭氧增效' : '空气'}模式 · ${e.skimmer.flowPct}% 旁路`, `DOM 去除 ${e.skimmer.domEff}% · 臭氧 ${(e.skimmer.ozoneKgD||0).toFixed(2)} kg/d`));

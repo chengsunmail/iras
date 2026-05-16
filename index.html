@@ -1100,52 +1100,54 @@
 
     <!-- v1.7 升级说明 (changelog 格式, 简短) -->
     <section id="help-changelog-v17" class="mt-6">
-      <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v1.7 升级说明 (2026-05-16) — 站级设备 + UI 重构 + 工程逻辑精化 + 氧锥拓扑</h2>
+      <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v1.7 升级说明 (2026-05-16) — 氧锥拓扑 + K-101 + 系统排水重构 + 审计修复</h2>
 
-      <h3 class="mt-4 font-bold text-rose-300">主要改动</h3>
+      <h3 class="mt-4 font-bold text-rose-300">A. 核心改动 (18 项原生)</h3>
       <ul class="mt-2 ml-4 list-disc space-y-2 text-slate-300 text-sm">
-        <li><b>液氧储罐站级化 (核心改动)</b> — 从阶段 CAPEX 剔除, 挪到 ③ 节"站级设备"区, 全场仅装一套. 用户可调规格 (1/3/5/10/20/30/50 t) / 数量 (主+备) / 单价, iRAS 按全场日耗 + 7 天储备智能推荐. 修复多阶段重复计算 bug (4 阶段曾多算 30 万)</li>
-        <li><b>UI 整体重构</b> — 3 个顶部 section + 阶段卡片 + 鱼种区全部可折叠; header 双行 sticky 工具栏 (项目级 / 阶段级分组); 4 KPI 卡片 2×2 网格 + 配色克制化 (冷色统一: cyan/emerald/teal/sky)</li>
-        <li><b>投资概算列表 bug 修复</b> — 单价单位显示修正 (旧版"500 /h"→"500 元/(m³/h)"); MBBR/蛋分/AOP/反硝化/CO₂脱气/板换 共 6 项单位加澄清后缀</li>
-        <li><b>MBBR 单价语义澄清</b> — 标签改为"MBBR 池系统 (填料+曝气配件, 不含池体/风机)"; 设备规格清单显示填料净体积 + 池总容积 (按填料填充率反推)</li>
-        <li><b>液氧需求量可视化</b> — 阶段成本明细 / 设备清单 / 站级备注 共 3 处显示 kg/d</li>
-        <li><b>外部页面同步</b> — pid.html (V-901 标注"全场共用") / equipment.html (新增站级设备表) / report.html (硬编码"3 t"改为变量)</li>
+        <li><b>氧锥拓扑 mainline / bypass 真实区别对待</b> (v1.6 前 UI 已有选项但模型不响应, v1.7 修复) — 全网调研 (Linde SOLVOX cone / Pentair AES Speece / PR Aqua PPC / Global Seafood Advocate 2019), 工程实际"more often plumbed in side stream configuration". v1.7 加 5 个新字段: <code>o2ConeTopology</code> (主路/旁路) / <code>o2ConeHeadLoss_m</code> (主路时主泵附加压头, 默认 3 m, 钳 [0, 15]) / <code>o2BypassRatio</code> (旁路占比 %, 默认 10, 钳 [5, 30]) / <code>o2BypassPumpHead_m</code> (旁路泵扬程, 默认 20 m, 钳 [5, 40]) / <code>o2BypassPumpEta</code>. <strong>物理改动</strong>: (1) 主泵实际扬程 = mainPumpHead + o2ConeHeadLoss (mainline) 或 = mainPumpHead (bypass), 旁路时主泵不过锥子; (2) 氧锥规格 towerFlowM3h 随拓扑变 (mainline=Q 全流量, bypass=Q×ratio 小流量); (3) 旁路泵 P-602 加入设备清单 / CAPEX / OPEX / 热平衡, 1+1 备用模块化; (4) UI 加"氧锥压损 / 旁路占比 / 旁路泵 H" 3 个输入框, 含工程对照 (LHO/Speece/SOLVOX) tooltip. <strong>1000t 三文鱼实测</strong>: bypass 主泵 488.3 kW + P-602 92.2 kW = 580.5 kW vs mainline 610.4 kW, <strong>节能 30 kW</strong>; CAPEX 设备节省约 <strong>612 万元</strong> (氧锥按小流量定价 + bypass 设计省下来的 CAPEX)</li>
+        <li><b>K-101 鱼池增氧鼓风机 (air 模式专属)</b> — 之前 air 模式只有 K-302 (BF 曝气风机), 缺鱼池主增氧风机. v1.7 加 K-101 (空气曝气 + 微孔盘管曝气), 与 K-302 同口径 1+1 备 (鱼池主增氧故障即鱼窒息, 必须双机轮换). P&ID / equipment.html / report.html 全链路同步</li>
+        <li><b>RDF 排污 → 系统排水重构</b> — 旧版工艺面板"RDF反冲(%) 2%"是反冲管瞬时分流比, 但 4870 m³/d ÷ V_total = 101%/d <em>物理荒谬</em> (远超合理换水率 1-5%/d). 真相: RDF 反冲水绝大部分经污泥沉淀池回循环 (Sharrer 2010 实测 95-98% 清液回流), 真实穿越系统边界的水量由<strong>换水率</strong>决定. v1.7 整体清理: (1) UI 删 "RDF反冲(%)" + "反冲泵 H/η" 3 个输入框; (2) 反冲泵不再独立设备 (RDF 厂家整体出厂含反冲泵, 工程实际); (3) <strong>新增"📤 系统排水"卡片</strong> (取代"🗑️ RDF排污"): 流量按 <code>V_total × exchangeDaily</code> 算 (与"换水率"定义一致), TAN/NO₃ 按 V_disch × C_tank (溶解残留), TSS 按质量守恒 (含污泥进沉淀池, tooltip 明确说明)</li>
+        <li><b>V-901 / A-601 / 顶部峰值氧需 口径统一</b> — 旧版 V-901 (液氧储罐) 显示日峰值用 totalLOX, A-601 (增氧锥) 显示 peakSupplyKgH × 24, 顶部"峰值氧需"显示 o2PeakHourly. 三处口径不一致让用户困惑. v1.7 统一: peakSupplyKgH × 24 (全场峰值小时供氧 × 24h), 拆分"鱼 + BF"两项显示</li>
+        <li><b>P&ID 视觉重构 (bypass 模式)</b> — A-601 / V-901 / A-601 旁路三件套 / P-602 旁路泵 / M-601 混合点 全部重新布局, 符合 ISA-5.1 标准. mainline 模式主流路径不变 (T-101 → F-201 → B-301 → C-501 → S-101 → A-601 → 回 T-101). bypass 模式主泵后水平段 + 旁路分流 + M-601 混合 + 回流</li>
+        <li><b>UI 灰显联动 (aerationMode 切换)</b> — air 模式下液氧相关 UI 字段 (V-901 / o2SatTarget / o2AbsorptionEff / o2ConeTopology / 旁路参数) 自动灰显; o2 模式下空气曝气字段 (tankAirBlower 参数) 自动灰显. data-* 属性同步</li>
+        <li><b>JSON 加载兼容性</b> — v1.5 / v1.6 / v1.7 / 缺字段 5 种降级场景全部测试通过. L9121 `{...PROCESS_DEFAULTS, ...(s.proc || {})}` 设计稳健, 老用户 v1.6 方案加载到 v1.7 自动 fallback 到 mainline 默认</li>
+        <li>其他: bypass CAPEX bug 修复 (旧代码 bypass 模式下氧锥按全流量定价多算 ~10×, 1000t 三文鱼多算 ~300 万 + 元); v1.7 sim.discharge 透出供 report.html 使用; computeOpexSplit() 替代 finance-core 70/30 硬编码 (air/o2 模式可变占比真实分化)</li>
       </ul>
 
-      <h3 class="mt-4 font-bold text-rose-300">小改进</h3>
+      <h3 class="mt-4 font-bold text-rose-300">B. 审计修复 (27 项, 2026-05-16 全面审计)</h3>
+
+      <p class="mt-2 text-slate-400 text-sm"><strong>🔴 严重 bug (8 项)</strong>: K-101 modulePerSpec 缺失 (#14) · 系统排水硬编码 7.5% (#20) · 反冲排污率字段已删但模板还在 (#21) · 增氧章节未区分拓扑 (#22) · air 模式没有 K-101 描述 (#23) · DO 行硬编码 (#24) · <strong>#25 灾难性</strong>: report.html `buildContext` return 漏 `workflow` 字段, 影响 55 处引用全部失效, 此 bug 潜伏 1+ 年被 nunjucks 优雅降级机制完全掩盖, 一行修复 · 23 处 *100 单位错误 (#25b)</p>
+
+      <p class="mt-2 text-slate-400 text-sm"><strong>🟡 中等 bug (4 项)</strong>: pid.html isAirMode 改正向判定 (#6) · v1.7 新字段加钳制 (#13) · 主页面 TSS chip 加"含污泥"标签 + tooltip (#16) · finance-core.js OPEX 70/30 改用 computeOpexSplit() 真实拆分 (#19)</p>
+
+      <p class="mt-2 text-slate-400 text-sm"><strong>🟢 清理 (8 项)</strong>: 液氧塔 silent fallback 加 warn (#2) · o2cone 冗余字段加说明 (#3) · 字符串补空格 (#7) · 删 P-602 死代码 (#8) · 注释更新 (#9) · drawMainPump 加 data-cx/cy + lookupEquipPorts .pump fallback (#18) · 删 skimmerWasteFlow 死字段 (#27) · IRAS_META.version 1.6.0 → 1.7.0 (#30)</p>
+
+      <p class="mt-2 text-slate-400 text-sm"><strong>🟠 精度优化 (4 项)</strong>: AOP 臭氧剂量暴露 PROCESS_DEFAULTS 字段 (#28, 默认 0.5 g/m³, v1.8 加 UI) · 蛋分 DOM 移除公式重构为严格物料守恒 (#29, 稳态差异 0.33%) · CO2 风压钳制 [0.3, 10] kPa (#34) · T_room 钳制 ±2°C → ±5°C, 与产热推高物理一致 (#35)</p>
+
+      <p class="mt-2 text-slate-400 text-sm"><strong>🛡️ 鲁棒性 (3 项)</strong>: 阶段 forEach 加 try/catch (#32) · calcCapex add() 加 isFinite 保护 (#37) · 所有阶段崩溃时加 console.warn 不静默 (#39)</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">C. 验证状态</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
-        <li>设备选型上限按 modFlow 自适应 (替代硬编码上限)</li>
-        <li>B45 边界钳制 (19 个百分比字段防止超界输入)</li>
-        <li>报告模板加 FCR 显示</li>
-        <li>打印优化重写 (A4 + 1.5cm 边距 + 强制阶段独立分页 + 灰阶图表)</li>
-        <li>阶段卡片"📋 手册"按钮修复 (锚点跳转自动展开)</li>
-        <li>财务参数独立到顶部, 与设备单价分离</li>
-        <li>② 区"液氧储罐"input 移除 (语义已迁移到 ③ 区, 老方案兼容迁移)</li>
-        <li>液氧储罐单位术语精化: "套" → "罐" (UI / 报告统一)</li>
+        <li>jsdom 三工况主功能 (mainline / bypass / air) — 全部通过</li>
+        <li>P&ID 三工况渲染 (A-601 / V-901 / K-101 / P-602 / M-601 / K-302 各就各位) — 全部通过</li>
+        <li>1000t 三文鱼基准 vs SUMMARY 核心指标 — <strong>100% 吻合</strong> (o2DailyTotal 1113 kg/d / 主泵 mainline 610.4 + bypass 488.3+92.2=580.5 / 节能 29.8 kW / A-601 41.20 kg/h / 流量 10155 m³/h)</li>
+        <li>JSON 加载兼容性 — v1.5/v1.6/v1.7/缺 aerationMode/缺整个 proc 5 种降级场景全部通过</li>
+        <li>finance 完整闭环 (buildPIDExport → calculate → sensitivity) — 全部通过</li>
+        <li>Level 3 审查 6 大块 (computeStageResult 总线 / v1.6 同款 9 项 / calcThermalLoad / calcCapex / calcSiteCapex / 多阶段累加) — 全部已审</li>
       </ul>
 
-      <h3 class="mt-4 font-bold text-rose-300">v1.7 物理校正 (代码 review 补丁)</h3>
+      <h3 class="mt-4 font-bold text-rose-300">D. 知情不修 / 推 v1.8</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
-        <li><b>CO₂ 脱气塔风压钳制修复</b>: 旧代码 <code>Math.max(.. || 12, 5)</code> 把 UI 默认 2.5 kPa 强行抬到 5 kPa, 风机功率高估 ~2×. v1.6 改为 <code>Math.max(.. || 2.5, 0.3)</code> 与 Delta Cooling Towers 实测 (0.87-1.12 kPa) 对齐. <strong>影响</strong>: 中等浅塔项目 CO₂ 风机 kW 降低 ~50%, OPEX 电费 -5~10 万/年 (千吨级)</li>
-        <li><b>百分比字段加钳制</b>: protein / feedRate / mortality 之前仅 <code>raw/100</code> 无范围保护, 用户误输入 protein=150 (本意 15.0) 会让 TAN 高 10×. v1.6 加 [10%,70%] / [0.1%,30%] / [0%,50%] 钳制 (与其他字段一致)</li>
-        <li><b>热泵 COP 默认值统一</b>: 旧代码 PROCESS_DEFAULTS 有 COP_nom_cool=3.8 优先级覆盖 heatPumpCOP_cool=3.0, 导致 UI 显示 3.0 但实际算 3.8. v1.6 删除 COP_nom_* dead path, 统一用 heatPumpCOP_*. <strong>影响</strong>: 制冷热泵耗电 +25% (回归到手册声称值)</li>
-        <li><b>反硝化碱度回收 3.57 → 2.8</b>: 旧代码用理论极限 3.57 g CaCO₃/g N, 实际工程 2.5-3.0 (Mateju 1992, Henze 1991). v1.6 默认 2.8, 开放 <code>proc.denitriAlkRecovery</code> 参数. <strong>影响</strong>: NaHCO₃ 投加量 +0.5~1% (与文献对齐)</li>
-        <li><b>工艺占比口径修正</b>: 旧版 V_process / V_tank 在小项目/苗种期会超 100% 误导用户. v1.6 改为 V_process / V_total, 与国内外文献一致 (赵越/刘鹰 2018 大连海洋大学学报 V_BF/V_total≈47%; Drønen 2021 挪威实测 V_process/V_total=38%). <strong>仅显示口径变化, 不影响任何计算</strong> (R_dom / 稳态浓度 / 换水率都用 V_total)</li>
-        <li><b>RDF 集水池 HRT 开放为 UI 可调参数</b>: 旧版固定 0.3 min (紧凑型), 工程师无法调到设计院传统的 1-2 min (含外置缓冲池). v1.6 工艺面板"RDF HRT"输入框开放 0.1-5 min, 默认 0.5 (中位, 兼顾紧凑与缓冲). 仅影响 V_process / V_total 显示, 不影响 RDF 设备规格</li>
-        <li><b>反硝化甲醇工程安全系数</b>: 旧版固定 2.47 g/g NO₃-N (Mokhayeri 2008 工业实测含 5-15% 残余), 但未含 DO 补偿. RAS 反硝化进水 DO 5-8 mg/L (从增氧后主流抽取), 实际工程需 3.0-4.0 g/g (Suhr 2014, Tsukuda 2015). v1.6 公式改为 <code>2.47 × methanolSafetyFactor</code>, 工艺面板新增"甲醇裕度"输入框 (1.0-2.0, 默认 1.3 → 3.21 g/g). <strong>OPEX 影响</strong>: 甲醇成本 +30% (但甲醇仅占总 OPEX 0.5-1%, 项目经济性几乎无变化)</li>
-        <li><b>RDF 排污 → 系统排水重构</b> (语义+模型整体清理): 旧版工艺面板"RDF反冲(%) 2%"是反冲管瞬时分流比, 但 4870 m³/d ÷ V_total = 101%/d <em>物理荒谬</em> (远超合理换水率 1-5%/d). 真相: RDF 反冲水绝大部分经污泥沉淀池回循环 (Sharrer 2010 实测 95-98% 清液回流), 真实穿越系统边界的水量由换水率决定. v1.7 整体清理: (1) UI 工艺面板删除"RDF反冲(%)"输入框 + "RDF反冲H/η"两个反冲泵参数; (2) 反冲泵不再独立设备 — P&ID/设备清单/CAPEX/OPEX 完全移除 (RDF 厂家整体出厂含反冲泵, 工程实际); (3) 字段 <code>rdfBackwash</code>/<code>rdfBackwashPumpHead_m</code>/<code>rdfBackwashPumpEta</code> 从 PROCESS_DEFAULTS / readStageProcFromInputs 删除; (4) <strong>新增"📤 系统排水"卡片</strong> (取代"🗑️ RDF排污"卡片): 显示流量 / TSS / TAN / NO₃-N, 流量按 <code>V_total × exchangeDaily / 100</code> 算 (与"换水率"定义一致), TSS 按质量守恒 (不溶不降解, 日生成 = 日净排出, 全部从此口出), TAN/NO₃ 按 V_disch × C_tank (溶解残留); (5) report.html 第 9 章 "RDF 反冲废水" → "系统排水"</li>
-        <li><b>氧锥拓扑 (mainline / bypass) 真实区别对待</b> (v1.6 之前 UI 已有选项但模型不响应, 现修复): 旧版 UI 给"主流路径 / 旁路 (节能)"两个选项, 但 calcPumpPowerBreakdown / aerationSpec / OPEX 完全没区分 — UI 假承诺. 全网调研 (Linde SOLVOX cone / Pentair AES Speece / PR Aqua PPC / Global Seafood Advocate 2019): 氧锥操作压力 10-21 psi (玻璃钢 / 14.7 m 上限) 或 1-3 bar (SOLVOX), 工程实际"more often plumbed in side stream configuration". v1.7 加 3 个新字段: <code>o2ConeHeadLoss_m</code> (主路时主泵附加压头, 默认 3 m, 范围 0-15 m), <code>o2BypassRatio</code> (旁路占比 %, 默认 10%, 范围 5-30%), <code>o2BypassPumpHead_m</code> (旁路泵扬程, 默认 20 m). <strong>物理改动</strong>: (1) 主泵实际扬程 = mainPumpHead_m + o2ConeHeadLoss_m (mainline) 或 = mainPumpHead_m (bypass); (2) 氧锥规格 towerFlowM3h 随拓扑变 (mainline=Q, bypass=Q×ratio); (3) 旁路泵 P-602 加入设备清单/CAPEX/OPEX/热平衡, 1+1 备用模块化; (4) UI 加"氧锥压损/旁路占比/旁路泵H"3 个输入框, 详细 tooltip 含工程对照 (LHO/Speece/SOLVOX). <strong>1000t 三文鱼影响 (mainline 12m vs bypass 9m+旁路20m)</strong>: bypass 主泵 488→366 kW + 旁路泵 92 kW = 458 kW vs mainline 488 kW, 节能 30 kW; 氧锥 CAPEX 355→36 万 (锥子缩 10×); 综合 CAPEX 降 ~300 万, OPEX 降 18 万/年 (Q=10155 m³/h 工况)</li>
-      </ul>
-
-      <h3 class="mt-4 font-bold text-rose-300">已知限制</h3>
-      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
-        <li>技术手册 PDF 暂沿用 v1.5 内容, 7 处公式订正 (NO₃ R / V_RDF / V_BF / CO₂ 单位 / 双节点稳态 / 残值 / 氧锥拓扑) + v1.7 RDF反冲泵移除 + 系统排水重构 + 氧锥主路/旁路区分 待下版手册同步发布</li>
-        <li>站级设备区当前仅支持液氧储罐, 应急柴油机 / 变压器 / SCADA 等架构已搭好, 未来版本添加</li>
-        <li>parseFloat(...) || default 在 0 值场景下会触发 fallback (e.g. elecPrice=0 被忽略), 留 v1.8 系统重构</li>
+        <li><strong>#16 深探</strong> (TSS 双口径算法层改造): 工具边界止于"沉淀池入口", 系统排水含污泥进沉淀池是工程现实, tooltip 已说明含污泥口径, <strong>不存在业主对照 GB 8978 误读问题</strong>. 知情不修</li>
+        <li><strong>#33</strong> HP_UNIT_KW=200 硬编码 — 推 v1.8 暴露 UI 让大项目用大热泵</li>
+        <li><strong>#36</strong> 5 条支路泵合并定价 — v1.7 加入 P-602 后误差放大约 5-10 万元 / 1000t, 推 v1.8 拆分各支路泵单价</li>
+        <li>4 工况基线 JSON 重新生成 (bypass CAPEX 修复 + 拓扑字段) — 推 v1.8</li>
+        <li><code>parseFloat() || default</code> 在 0 值场景 fallback 系统重构 — 推 v1.8</li>
+        <li>站级设备区: 应急柴油机 / 变压器 / SCADA / 围墙安保 — 推 v1.8</li>
       </ul>
 
       <div class="mt-4 p-3 bg-rose-900/20 border border-rose-700/30 rounded text-rose-200 text-sm">
-        <strong>💡 工程意义:</strong> v1.6 主要解决了"液氧储罐在阶段 CAPEX 重复计算"这个长期存在的逻辑 bug, 同时把整套 UI 重构为更易扫描的工程师视角. 4 阶段千吨级项目 CAPEX 概算精度提升 ~3% (剔除重复); 多阶段切换效率因可折叠 UI 提升 ~40%. 物理校正补丁 (CO₂ 风压 / 百分比钳制 / COP / 碱度) 把 4 个长期偏差对齐到文献.
+        <strong>💡 工程意义:</strong> v1.7 主要解决了三件事 — (1) <strong>氧锥拓扑 mainline/bypass 真实建模</strong>, 与国际主流接轨, 1000t 三文鱼项目节能 30 kW + CAPEX 节省 612 万元; (2) <strong>air 模式 K-101 鱼池增氧风机补齐</strong>, 覆盖罗非鱼 / 对虾等暖水鱼种; (3) <strong>系统排水重构</strong>, 把陈旧的"RDF 反冲废水"语义清理为质量守恒口径的"沉淀池入口废液". 27 项审计修复中 #25 是<strong>潜伏 1+ 年的灾难性 bug</strong>, 被 nunjucks 模板引擎"缺失即跳过"机制完全掩盖, 报告渲染不报错但 55 处条件分支全部失效 — 这次审计的最大收获.
       </div>
     </section>
 
@@ -2726,8 +2728,8 @@
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
-  version: '1.6.0',
-  releaseDate: '2026-05-14',
+  version: '1.7.0',
+  releaseDate: '2026-05-16',
   author: '孙程',
   email: '6881509@qq.com',
   company: '海南登登科技咨询有限公司',
@@ -2975,6 +2977,11 @@ const PROCESS_DEFAULTS = {
   aopDOMRemoval: 5,              // v1.1 新增: AOP 对总 DOM 单次去除率 (5-15%, 默认保守取 5%)
                                   // 物理: AOP 主要分解小分子嗅味物质 (geosmin/2-MIB),
                                   //       对腐殖酸/蛋白多糖等大分子 DOM 去除有限
+  // v1.7.x: AOP 臭氧投加剂量 (g O3/m³ 处理流量) — 工程范围 0.3-1.5
+  //   低 DOM (<5 mg/L): 0.3-0.5; 中 DOM (5-15 mg/L): 0.5-1.0; 高 DOM (>15 mg/L): 1.0-2.0
+  //   参考: Schroeder et al. 2010; Gonçalves & Gagnon 2011
+  //   v1.7 默认 0.5 (中位值), v1.8 计划加 UI + 按 DOM 自适应
+  aopO3Dose_gm3: 0.5,
   aopHRT_min: 2,                 // v1.1.2 新增: AOP 反应池 HRT (min)
                                  // 集成型 (默认): 2 min - UV 反应器内反应秒级, 含管路缓冲
                                  // 分体型: 8 min - 含臭氧充分溶解 + UV 反应
@@ -3888,11 +3895,12 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
     T_room = denom_T > 1 ?
       (UA_pool * T_target + UA_to_outdoor * T_air + UA_floor * T_ground + Q_air_gain_W) / denom_T :
       T_air + 5;
-    // v1.2.1 修复: T_room 钳制范围 — 物理上介于 T_air 与 T_target 之间 (±2°C 安全边界)
-    //   旧公式 max(min(T_room, T_target+2), T_air-5) 在 T_air > T_target+7 时反向覆盖
-    //   (海南夏 T_air=35, T_target=13: 旧公式强制 T_room=30, 物理算应~22)
-    const T_room_lo = Math.min(T_air, T_target) - 2;
-    const T_room_hi = Math.max(T_air, T_target) + 2;
+    // v1.7.x #35 修正: T_room 钳制范围从 ±2°C 放宽到 ±5°C
+    //   理由: 注释 L3889-3890 承认 Q_air_gain (泵/UV 进空气产热) 可让 T_room 比"被动 T_room"高 5-10°C
+    //   但旧 ±2°C 上限会硬截断这个物理. 极端工况 (围护差 + 大功率泵) 实测可超 T_target+5°C
+    //   ±5°C 兼顾物理 (允许产热推高) 与数值保护 (防输入异常导致发散)
+    const T_room_lo = Math.min(T_air, T_target) - 5;
+    const T_room_hi = Math.max(T_air, T_target) + 5;
     T_room = Math.max(T_room_lo, Math.min(T_room_hi, T_room));
 
     // W_room: 检查饱和约束
@@ -4378,24 +4386,32 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   const systemGeosminRemoval = aopFlowRatio * eta_aop;
 
   // ---- 蛋白分离器排污 (浓缩泡沫液) ----
-  // 排出量约为蛋分处理流量的 1-3%, DOM 浓缩到 30-50 倍
+  // 工程实际: 浓缩泡沫液约为蛋分处理流量的 1-3% (air 蛋分 1-2%; ozone 蛋分 2-3%)
+  // v1.7.x: skimmerWasteFlow 字段从 return 移除 — 该字段从 v1.6 起下游已无消费
+  //   废液最终汇入 sim.discharge (系统排水, 含污泥进沉淀池), 不需要单独透出
   const skimmerFlow = flowData.flowM3h * skimmerFlowRatio;          // m³/h (旁路流量)
-  const skimmerWasteFlow = skimmerOn ? skimmerFlow * 0.02 : 0;      // m³/h 废液 (约蛋分流量 2%)
-  // DOM 移除质量守恒: 稳态下移除速率 = 产生速率 × (蛋分贡献份额)
-  // 蛋分系统去除率占总去除率的份额 (v1.1: AOP 对 DOM 用 eta_aopDOM, 不是 geosmin 系数)
-  const totalRemovalRate = eta_skim_DOM_sys + aopFlowRatio * eta_aopDOM + dilutionPerCycle;
-  const skimmerDOMFraction = totalRemovalRate > 0 ? eta_skim_DOM_sys / totalRemovalRate : 0;
+  // v1.7.x: 蛋分 DOM 移除质量守恒 (重构为直接物料守恒公式, #29)
+  //   旧公式: domDaily × (η_skim_sys / (η_skim_sys + η_aop + dilution))  ← "份额分配"近似
+  //   新公式: Q_skim × 24h × C_dom × η_single / 1000                     ← 严格物料守恒
+  //   两者在稳态下等价 (差异 < 1%), 但新公式:
+  //     - 单位齐整: m³/h × h × mg/L × 无量纲 / 1000 = kg/d
+  //     - 物理直观: "实际处理流量 × 入口浓度 × 单次去除率"
+  //     - 易扩展: 未来加 BF 异养降解等其他 DOM 路径时, 无需重构份额分母
+  //   注: domOut 是鱼池稳态浓度, 用作蛋分入口浓度的近似 (RAS 内部各点 DOM 差异 < 20%)
   const skimmerDOMRemovedKg = skimmerOn
-    ? (load.domDaily || 0) * skimmerDOMFraction
-    : 0;  // kg DOM/d 移除质量
+    ? skimmerFlow * 24 * domOut * eta_skim_DOM_single / 1000
+    : 0;
 
   // ---- 臭氧需求 ----
   // v1.1: 改用 feedMax (真实日饲料量), 不再使用已废弃的 feedDesign
   const ozoneDemand = (skimmerOn && skimmerOzone)
     ? load.feedMax * (proc.ozoneDose || 0.010)  // kg O3/d
     : 0;
-  // AOP 也需臭氧 (典型 2 g O3/g geosmin, 但 geosmin 微量, 主要按流量 0.5 g O3/m³ 计)
-  const aopOzoneDemand = aopOn ? aopFlow * 24 * 0.5 / 1000 : 0;  // kg O3/d
+  // AOP 也需臭氧 (典型 0.3-1.5 g O3/m³, 与原水 DOM 浓度正相关)
+  // v1.7.x: 剂量从 proc.aopO3Dose_gm3 读取 (默认 0.5, 工程范围 0.1-3.0)
+  //   v1.8 计划: 暴露 UI + 按 domOut 自适应
+  const aopO3Dose = proc.aopO3Dose_gm3 != null ? proc.aopO3Dose_gm3 : 0.5;
+  const aopOzoneDemand = aopOn ? aopFlow * 24 * aopO3Dose / 1000 : 0;  // kg O3/d
   const totalOzoneDemand = ozoneDemand + aopOzoneDemand;
 
   // ---- 系统排水 (v1.6: 替代旧 "RDF 排污" 概念) ----
@@ -4454,7 +4470,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
       flow: skimmerFlow,                    // m³/h 旁路流量
       DOMEffSingle: eta_skim_DOM_single,    // 单次通过去除率
       DOMEffSystem: eta_skim_DOM_sys,       // 系统等效去除率 (flowRatio × single)
-      wasteFlow: skimmerWasteFlow,
+      // v1.7.x: wasteFlow 字段已删除 (下游无消费, 废液汇入 sim.discharge 系统排水)
       DOMRemovedKg: skimmerDOMRemovedKg,
       ozoneDemand
     },
@@ -4776,6 +4792,8 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // v1.1.2: 风压和效率可调
   // 浅塔 (1-3m): 8-15 kPa; 中塔 (3-5m): 15-25; 深塔 (>5m): 25-35
   // 罗茨风机 0.5-0.7, 离心风机 0.65-0.80
+  // v1.7.x #34: 钳制已在 readStageProcFromInputs 完成 [0.3, 10] kPa
+  //   此处 Math.max(.., 0.3) 作为双层兜底, 防 JSON 加载等绕过 UI 路径
   const co2Pressure_Pa = Math.max(proc.co2BlowerPressure_kPa || 2.5, 0.3) * 1000;
   const co2BlowerEta = Math.max((proc.co2BlowerEfficiency || 60) / 100, 0.3);
   const degasBlowerKw = co2StripperOn
@@ -4949,6 +4967,9 @@ function applyModularization(eq, stage, stageFarm, proc) {
   const modSkimmerBranchPumpKw = (eq.skimmerBranchPumpKw || 0) * modShare;
   // v1.7: 氧锥旁路泵 (bypass 模式生效, mainline 时 = 0)
   const modO2BypassPumpKw      = (eq.o2BypassPumpKw      || 0) * modShare;
+  // v1.7: 鱼池增氧鼓风机 K-101 (air 模式专属; o2 模式 aerationSpec.blowerPowerKw 不存在, = 0)
+  //   工程意义: K-101 是 air 模式主增氧设备, 故障即鱼窒息, 与 K-302 BF 风机同口径 1+1 备
+  const modTankAirBlowerKw     = (eq.aerationSpec && eq.aerationSpec.blowerPowerKw) ? eq.aerationSpec.blowerPowerKw * modShare : 0;
   // v1.6: modBackwashPumpKw 字段已删除 (反冲泵 RDF 内嵌)
   const modOzoneGenKw          = (eq.ozoneGeneratorPower || 0) * modShare;
 
@@ -5003,6 +5024,12 @@ function applyModularization(eq, stage, stageFarm, proc) {
   // 仅当对应设备启用且有功率/产量时, 才加入清单
   // v1.6: 反冲泵不再作为独立设备 — 它是 RDF 整机的内嵌部件 (随 RDF 出厂),
   //       不在设备清单 / P&ID 上独立列项. CAPEX 已含在 RDF 总价中.
+  // v1.7: 鱼池增氧鼓风机 K-101 (air 模式专属, 与 K-302 BF 风机同口径 1+1 备)
+  //   工程意义: 鱼池主增氧设备故障 → 鱼 15-30 min 内窒息, 比 BF 风机更不能掉, 必须双机轮换
+  //   o2 模式下 modTankAirBlowerKw = 0, 此 entry 跳过
+  if (modTankAirBlowerKw > 0) {
+    modulePerSpec.tankAirBlower = configure('鱼池增氧鼓风机', modTankAirBlowerKw, BLOWER_UNIT_KW, true, { sparing: '1+1' });
+  }
   if (modUvBranchPumpKw > 0) {
     modulePerSpec.uvBranchPump = configure('UV 支路泵', modUvBranchPumpKw, BRANCH_PUMP_UNIT_KW, true, { sparing: '1+1' });
   }
@@ -5776,7 +5803,14 @@ function readEquipPrices() {
    ============================================================================ */
 function calcCapex(eq, sim, flowData, eqPrices) {
   const items = [];
+  // v1.7.x #37: add() 加 NaN/undefined 保护
+  //   防御场景: eq 字段在 pass 1 异常 / eqPrices.* 缺失 / qty 计算溢出
+  //   不抛异常, 静默跳过该项 + warn (避免 NaN 污染整个 total 累加)
   const add = (name, spec, unit, qty, unitPrice) => {
+    if (!Number.isFinite(qty) || !Number.isFinite(unitPrice)) {
+      console.warn(`[iRAS calcCapex] ${name} 数值非有限 (qty=${qty}, unitPrice=${unitPrice}), 跳过该项`);
+      return 0;
+    }
     const cost = qty * unitPrice;
     items.push({ name, spec, unit, qty, unitPrice, cost });
     return cost;
@@ -5852,7 +5886,14 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     // 纯氧: 增氧塔 (站级液氧储罐挪到 ③ 区, 由 calcSiteCapex 处理, 避免每阶段重复)
     // v1.7 Bug fix: 用 aerationSpec.towerFlowM3h (拓扑感知, bypass 时为 Q × ratio 小流量, mainline 时为 Q 全流量)
     //               旧代码用 flowData.flowM3h, bypass 模式下错误地按全流量定价, 多算 ~10x (1000t 三文鱼多算 ~320 万)
-    const towerFlow = (eq.aerationSpec && eq.aerationSpec.towerFlowM3h) || flowData.flowM3h;
+    // v1.7.x: aerationSpec 缺失或 towerFlowM3h 异常时加 warn, 避免 silent fallback 回归全流量定价
+    let towerFlow;
+    if (eq.aerationSpec && eq.aerationSpec.towerFlowM3h > 0) {
+      towerFlow = eq.aerationSpec.towerFlowM3h;
+    } else {
+      console.warn('[iRAS calcCapex] aerationSpec.towerFlowM3h 缺失或异常 (bypass 模式可能 silent fallback 回 v1.7 前 bug 状态), fallback 到主流量定价', { aerationSpec: eq.aerationSpec, flowM3h: flowData.flowM3h });
+      towerFlow = flowData.flowM3h;
+    }
     const topology = (eq.aerationSpec && eq.aerationSpec.topology) || 'mainline';
     const towerLabel = topology === 'bypass'
       ? `液氧增氧塔 (旁路, 小型)`
@@ -6286,10 +6327,12 @@ function readStageProcFromInputs(idx, fallbackProc) {
     // v1.5.1 (B45): 液氧吸收率钳到 [0, 100]
     o2AbsorptionEff: getNumClamped('o2AbsorptionEff', fallbackProc.o2AbsorptionEff, 0, 100),
     o2ConeTopology: getStr('o2ConeTopology', fallbackProc.o2ConeTopology || 'mainline'),
-    // v1.7: 氧锥拓扑相关参数
-    o2ConeHeadLoss_m: getNum('o2ConeHeadLoss_m', fallbackProc.o2ConeHeadLoss_m != null ? fallbackProc.o2ConeHeadLoss_m : 3),
+    // v1.7: 氧锥拓扑相关参数 (含工程范围钳制)
+    //   o2ConeHeadLoss_m 工程范围: LHO 2-3 m / Speece 5-10 m / SOLVOX 110 至 15 m
+    //   o2BypassPumpHead_m 工程范围: 玻璃钢 20m / SOLVOX 25-30m / 极端高压 40m
+    o2ConeHeadLoss_m: getNumClamped('o2ConeHeadLoss_m', fallbackProc.o2ConeHeadLoss_m != null ? fallbackProc.o2ConeHeadLoss_m : 3, 0, 15),
     o2BypassRatio: getNumClamped('o2BypassRatio', fallbackProc.o2BypassRatio != null ? fallbackProc.o2BypassRatio : 10, 5, 30),
-    o2BypassPumpHead_m: getNum('o2BypassPumpHead_m', fallbackProc.o2BypassPumpHead_m != null ? fallbackProc.o2BypassPumpHead_m : 20),
+    o2BypassPumpHead_m: getNumClamped('o2BypassPumpHead_m', fallbackProc.o2BypassPumpHead_m != null ? fallbackProc.o2BypassPumpHead_m : 20, 5, 40),
     o2BypassPumpEta: getNumClamped('o2BypassPumpEta', fallbackProc.o2BypassPumpEta != null ? fallbackProc.o2BypassPumpEta : 60, 30, 85),
     alkTarget: getNum('alkTarget', fallbackProc.alkTarget),
     alkSource: getNum('alkSource', fallbackProc.alkSource),
@@ -6334,6 +6377,9 @@ function readStageProcFromInputs(idx, fallbackProc) {
     aopEnabled: getBool('aopEnabled', fallbackProc.aopEnabled),
     // v1.5.1 (B45): AOP 旁路流量比钳到 [0, 50]
     aopFlowPct: getNumClamped('aopFlowPct', fallbackProc.aopFlowPct, 0, 50),
+    // v1.7.x: AOP 臭氧投加剂量 (g O3/m³), 钳到工程范围 [0.1, 3.0]
+    //   暂未加 UI 输入 (v1.8 任务), 当前从 PROCESS_DEFAULTS 取默认 0.5
+    aopO3Dose_gm3: getNumClamped('aopO3Dose_gm3', fallbackProc.aopO3Dose_gm3 != null ? fallbackProc.aopO3Dose_gm3 : 0.5, 0.1, 3.0),
     // v1.5.1 (B45): AOP 去除率钳到 [0, 100]
     aopGeosminEff: getNumClamped('aopGeosminEff', fallbackProc.aopGeosminEff, 0, 100),
     aopDOMRemoval: getNumClamped('aopDOMRemoval', fallbackProc.aopDOMRemoval || 5, 0, 100),
@@ -6345,7 +6391,10 @@ function readStageProcFromInputs(idx, fallbackProc) {
     co2StripperEff: getNumClamped('co2StripperEff', fallbackProc.co2StripperEff || 65, 0, 100),
     co2StripperGtoL: getNum('co2StripperGtoL', fallbackProc.co2StripperGtoL || 3),
     co2StripperLoadingRate: getNum('co2StripperLoadingRate', fallbackProc.co2StripperLoadingRate || 80),
-    co2BlowerPressure_kPa: getNum('co2BlowerPressure_kPa', fallbackProc.co2BlowerPressure_kPa || 2.5),
+    // v1.7.x #34: CO2 风压钳制 [0.3, 10] kPa
+    //   工程范围: 浅塔 0.5-1.5, 中塔 1.5-3.0, 深塔 3-5, 极端 5-10
+    //   上限 10 kPa 覆盖罕见 >8m 高塔; 下限 0.3 防零值导致风机功率为 0
+    co2BlowerPressure_kPa: getNumClamped('co2BlowerPressure_kPa', fallbackProc.co2BlowerPressure_kPa || 2.5, 0.3, 10),
     // v1.5.1 (B45): CO2 风机效率钳到 [0, 100]
     co2BlowerEfficiency: getNumClamped('co2BlowerEfficiency', fallbackProc.co2BlowerEfficiency || 60, 0, 100),
     // v1.5.1 (B45): CO2 fallback 解吸效率钳到 [0, 100]
@@ -6507,7 +6556,7 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔单次效率 (%)&#10;范围: 50-85&#10;默认: 65&#10;含义: 单次脱气效率, G:L=3 浅塔约 60-70%">脱气效率(%)</label><input data-proc-stage="${idx}" data-proc-field="co2StripperEff" type="number" step="5" min="40" max="95" value="${stage.proc.co2StripperEff||65}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="气液比 G:L (×)&#10;范围: 2-10&#10;默认: 3 (国内中型项目)&#10;含义: 风量/水量比&#10;鲑鱼场 5-7, 罗非高密度 4-5, 大菱鲆/低密度 2-3">G:L 比</label><input data-proc-stage="${idx}" data-proc-field="co2StripperGtoL" type="number" step="0.5" min="1" max="15" value="${stage.proc.co2StripperGtoL||3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 50-150&#10;默认: 80&#10;依据: Summerfelt 2003 / Moran 2003 实测 87-187&#10;何时调: 高密度场降至 50, 低密度场可上 150">水力负荷</label><input data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" step="10" min="20" max="200" value="${stage.proc.co2StripperLoadingRate||80}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-emerald-300" title="风机风压 (kPa)&#10;范围: 0.5-10&#10;默认: 2.5 (中塔典型)&#10;含义: 决定风机功率&#10;Delta Cooling Towers 实测 1-2.5 kPa&#10;浅塔(<2m)0.5-1.5, 中塔(2-4m)1.5-3, 深塔(>4m)3-5">风压(kPa)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" step="0.5" min="0.3" max="15" value="${stage.proc.co2BlowerPressure_kPa||2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="风机风压 (kPa)&#10;范围: 0.3-10&#10;默认: 2.5 (中塔典型)&#10;含义: 决定风机功率&#10;Delta Cooling Towers 实测 1-2.5 kPa&#10;浅塔(<2m)0.5-1.5, 中塔(2-4m)1.5-3, 深塔(>4m)3-5">风压(kPa)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" step="0.5" min="0.3" max="10" value="${stage.proc.co2BlowerPressure_kPa||2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="风机机械效率 (%)&#10;范围: 50-80&#10;默认: 60 (中位)&#10;罗茨风机 50-70, 离心风机 65-80">风机η(%)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" step="5" min="30" max="85" value="${stage.proc.co2BlowerEfficiency||60}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="关闭时附带解吸率 (%)&#10;范围: 2-15&#10;默认: 5&#10;含义: 脱气塔关闭时增氧塔附带解吸效率&#10;何时调: 高 G:L 锥→10-15">附带解吸(%)</label><input data-proc-stage="${idx}" data-proc-field="co2FallbackEff" type="number" step="1" min="1" max="20" value="${stage.proc.co2FallbackEff||5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">🛡️ <b>工程安全系数</b> (v1.1 新增, 在小时峰值/日量之上加裕度. 默认值已校准, 不与 peakFactor 1.5 双重叠加)</div>
@@ -6741,7 +6790,7 @@ function renderPanels(idx, sim, stage, stageFarm, prices) {
   const dEl = document.querySelector(`[data-panel="discharge-${idx}"]`);
   if (dEl && d_disch) dEl.innerHTML = `
     <div class="metric-chip px-2 py-1.5" title="V_discharge = V_total × 换水率 / 100 (m³/d), 含蒸发以外的全部出水"><div class="text-[10px] text-slate-400">排水流量</div><div class="text-amber-300 font-bold">${d_disch.V_m3_h.toFixed(2)} m³/h<span class="text-[10px] text-slate-400"> · ${d_disch.V_m3_d.toFixed(0)} m³/d</span></div></div>
-    <div class="metric-chip px-2 py-1.5" title="TSS 质量守恒: 不溶不降解, 日生成量 = 日净排出量, 全部从此口出 (含固相进污泥)"><div class="text-[10px] text-slate-400">TSS</div><div class="text-amber-300 font-bold">${d_disch.TSS_mg_L.toFixed(0)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.TSS_kg_d.toFixed(0)} kg/d</span></div></div>
+    <div class="metric-chip px-2 py-1.5" title="TSS 总固相质量守恒口径 (含污泥): 日生成量全部从系统边界排出, 但绝大部分由 RDF + 蛋分捕获后进污泥处理, 水相 (污水管口) TSS 实际仅几十 mg/L. 此数字不可直接对照 GB 8978 (污水管口标准), 仅用于固废产生量平衡核算."><div class="text-[10px] text-slate-400">TSS (含污泥)</div><div class="text-amber-300 font-bold">${d_disch.TSS_mg_L.toFixed(0)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.TSS_kg_d.toFixed(0)} kg/d</span></div></div>
     <div class="metric-chip px-2 py-1.5" title="TAN 大部分被 BF 硝化, 此为残留 (= 池中浓度 × V_discharge)"><div class="text-[10px] text-slate-400">TAN</div><div class="text-amber-300 font-bold">${d_disch.TAN_mg_L.toFixed(2)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.TAN_kg_d.toFixed(2)} kg/d</span></div></div>
     <div class="metric-chip px-2 py-1.5" title="NO3-N 反硝化后剩余 (= 池中浓度 × V_discharge)"><div class="text-[10px] text-slate-400">NO₃-N</div><div class="text-amber-300 font-bold">${d_disch.NO3_mg_L.toFixed(1)} mg/L<span class="text-[10px] text-slate-400"> · ${d_disch.NO3_kg_d.toFixed(1)} kg/d</span></div></div>
   `;
@@ -8113,6 +8162,10 @@ function recomputeAll() {
 
   const allResults = [];
   stagesState.forEach((stage, idx) => {
+    // v1.7.x #32: 单阶段 try/catch — 单个阶段抛错不应让整个 recomputeAll 崩溃
+    //   常见触发: exchangeDaily 输异常值 / 鱼种切换瞬间 stage 字段不完整 / proc 残缺等
+    //   失败阶段记录 null, 后续累加 (renderFarmSummary) 自动跳过 (已有 r && r.capex 检查)
+    try {
     ensureStageProc(stage);
     const stageFarm = farm.perStage[idx];
     // v1.1.2 修复: sp 必须包含 DOmin_satRatio 和 DOmin_abs, 否则鱼种内置 DO 阈值失效
@@ -8250,6 +8303,11 @@ function recomputeAll() {
         el.value = load.o2FishFactor.toFixed(3);
         el.classList.add('auto-value');  // 加标识方便加灰色样式
       }
+    }
+    } catch (e) {
+      // v1.7.x #32: 单阶段计算失败 — 不影响其他阶段
+      console.error(`[iRAS] 阶段 ${idx} (${stage && stage.name || '?'}) 计算异常:`, e.message, e.stack);
+      allResults[idx] = null;
     }
   });
 
@@ -8460,6 +8518,10 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
       totalDepAnnual    += _siteDep;
       // 折旧也要算到日成本里, 否则站级折旧不影响综合成本
       totalCostAvg += _siteDep / 365;
+    } else {
+      // v1.7.x #39: 所有阶段都缺 capex (极端边界, 通常配合 #32 单阶段崩出现)
+      //   提示用户站级 CAPEX 未计入, 不静默跳过
+      console.warn(`[iRAS] 所有阶段缺 capex 字段, 站级 CAPEX (站级液氧站 ${(_siteCapex.total/10000).toFixed(1)} 万) 未计入总投资. 请检查阶段配置.`);
     }
   }
 
@@ -8747,6 +8809,10 @@ function buildPIDExport() {
                      absorptionEff: stage.proc.o2AbsorptionEff,
                      topology: stage.proc.o2ConeTopology || 'mainline',
                      // v1.7: bypass 模式相关参数 (P&ID 渲染氧锥旁路三件套需要)
+                     //   注: bypassPumpKw/Head/Flow 也在 pumps.o2Bypass 重复存储, 是有意为之的设计选择:
+                     //     - equipment.o2cone.* 供 P&ID 渲染 (旁路三件套作为同一设备组)
+                     //     - pumps.o2Bypass.*    供 equipment.html 泵清单 (与其他支路泵并列)
+                     //   两处都从同一源 (eq.o2BypassPumpKw 等) 透传, 数据一致, 不存在不一致风险.
                      bypassRatio: stage.proc.o2BypassRatio || 10,
                      bypassPumpKw: eq.o2BypassPumpKw || 0,
                      bypassPumpHead_m: stage.proc.o2BypassPumpHead_m || 20,
@@ -8833,6 +8899,15 @@ function buildPIDExport() {
         RH_room: sim.thermal.RH_room,
         scenario: sim.thermal.scenario,
         climateRegion: sim.thermal.climateRegion
+      } : null,
+      // v1.7: 系统排水 (从 simulateWaterQualityProcess 透出, 供 report.html ch08 / ch09 用真实数据替代 7.5% 硬编码)
+      //   质量守恒口径: 流量 = V_total × exchangeDaily / 100; TSS 日生成全部计入(含污泥); TAN/NO3 按 V_disch × C_tank
+      discharge: sim.discharge ? {
+        V_m3_h:    sim.discharge.V_m3_h,
+        V_m3_d:    sim.discharge.V_m3_d,
+        TSS_kg_d:  sim.discharge.TSS_kg_d,   TSS_mg_L: sim.discharge.TSS_mg_L,
+        TAN_kg_d:  sim.discharge.TAN_kg_d,   TAN_mg_L: sim.discharge.TAN_mg_L,
+        NO3_kg_d:  sim.discharge.NO3_kg_d,   NO3_mg_L: sim.discharge.NO3_mg_L
       } : null,
       // 仪表清单 (基于已有的设备生成默认仪表)
       instruments: [
@@ -9394,7 +9469,7 @@ function showV11UpgradeNotice() {
             <li>蛋分 HRT 可调, AOP 区分集成型/分体型</li>
             <li>📊 文献基准对照 (无量纲强度指标 × 工业区间)</li>
             <li>水质阈值自适应 (DO 按饱和度+绝对值, CO₂ 按淡咸水)</li>
-            <li>📕 49 页技术手册 PDF</li>
+            <li>📕 117 页技术手册 PDF (v1.7)</li>
           </ul>
         </div>
 

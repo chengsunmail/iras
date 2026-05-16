@@ -925,25 +925,10 @@ const EQUIP_ICONS = {
   //   v1.7 修正: 移除 EQUIP_ICONS 字典中 M-601 项, 改在 renderBypass 中直接画 T 接头小圆 + 标签
   //   工程实际: SOLVOX cone mixer 是个管件 (in-line mixer), 不占独立设备位
 
-  // v1.7: P-602 氧锥旁路泵 — bypass 模式下把主流 10% 的水抽过氧锥
-  //   ISA 标准: 圆+中央水平线 (类似主泵 P-101, 但区分 tag)
-  'P-602': {
-    inner: `
-      <!-- 主泵符号 -->
-      <circle cx="100" cy="70" r="32" class="eq-stroke eq-fill-water"/>
-      <!-- 横向水流箭头 (左进右出) -->
-      <path d="M 70 70 L 130 70" class="eq-stroke" fill="none"/>
-      <path d="M 122 64 L 130 70 L 122 76" class="eq-stroke" fill="none"/>
-    `,
-    ports: {
-      in:     { x:  68, y:  70, dir: 'W' },
-      out:    { x: 132, y:  70, dir: 'E' },
-      left:   { x:  68, y:  70, dir: 'W' },
-      right:  { x: 132, y:  70, dir: 'E' },
-      top:    { x: 100, y:  38, dir: 'N' },
-      bottom: { x: 100, y: 102, dir: 'S' },
-    },
-  },
+  // v1.7.x: P-602 氧锥旁路泵 — 由 drawMainPump 直接渲染 (与 P-101 主泵共用泵符号 + 自动加 tag 文字)
+  //   原 EQUIP_ICONS['P-602'] entry 是死代码 (drawMainPump 不读 EQUIP_ICONS), 已删除
+  //   要修改 P-602 符号外观, 改 drawMainPump (~L1431) 即可统一所有泵
+
   // S-701 蛋白分离器
   'S-701': {
     inner: `
@@ -1430,7 +1415,16 @@ function drawEquipBox(parent, cx, cy, opts) {
  */
 function drawMainPump(parent, cx, cy, opts) {
   const r = GRID.pump.r;
-  const g = svgEl('g', { 'class': 'pump', 'data-tag': opts.tag }, parent);
+  // v1.7.x: 添加 data-cx/cy/w/h, 让 lookupEquipPorts 能用 .pump fallback 找到泵 (#18)
+  //   w/h 取 2r (圆形外接矩形), 后续 SCADA 仪表挂泵时可正确定位
+  const g = svgEl('g', {
+    'class': 'pump',
+    'data-tag': opts.tag,
+    'data-cx': cx,
+    'data-cy': cy,
+    'data-w': 2 * r,
+    'data-h': 2 * r,
+  }, parent);
 
   svgEl('circle', { 'class': 'pump-circle', cx: cx, cy: cy, r: r }, g);
   // 内三角: 朝右 (= 流向)
@@ -1893,7 +1887,9 @@ function drawStub(parent, port, medium, peerTag, role, lineClass, colOffset, opt
  * 用于跨图层连接 (旁路 → 主流程, 公用 → 主流程)
  */
 function lookupEquipPorts(tag) {
-  const equipG = document.querySelector('.equip[data-tag="' + tag + '"]');
+  // v1.7.x: 优先 .equip, 退回 .pump (主泵/旁路泵由 drawMainPump 创建, 也带 data-cx/cy/w/h)
+  let equipG = document.querySelector('.equip[data-tag="' + tag + '"]');
+  if (!equipG) equipG = document.querySelector('.pump[data-tag="' + tag + '"]');
   if (!equipG) return null;
 
   const cx = parseFloat(equipG.getAttribute('data-cx'));
@@ -2255,8 +2251,10 @@ function renderUtility(stage) {
   const utilityItems = [];
 
   // v1.7: 增氧公用设施 — air 模式画 K-101 鱼池鼓风机, o2 模式画 V-901 液氧站
-  //   逻辑: stage.equipment.o2cone.enabled = !isAir (主页面 buildPIDExport 已正确传值)
-  const isAirMode = !(eq.o2cone && eq.o2cone.enabled);
+  //   v1.7.x 改正向判定: 用 tankAirBlower.enabled 而非 !o2cone.enabled
+  //   理由: schema 演化时若 o2cone 字段缺失或 enabled 不写, 反向判定会错误回到 air 模式
+  //         正向判定 fallback 到 o2 模式 (更保守, 不会画错鱼池增氧)
+  const isAirMode = !!(eq.tankAirBlower && eq.tankAirBlower.enabled);
   if (isAirMode) {
     // air 模式: K-101 鱼池增氧鼓风机 (服务鱼池 T-101)
     const tankBlower = eq.tankAirBlower;
@@ -2897,8 +2895,8 @@ function renderProcessFlow(stageData) {
   // 末端设备 → 鱼池 回流 (绕到顶上方)
   // v1.7: bypass 模式下主泵后没有 A-601, 回流从主泵 P-101 输出经水平段后上行到顶部回鱼池
   //       mainline 模式: 回流从 A-601 (即 last) 顶部
-  // v1.7: bypass 模式额外加 90 px 水平段, 让氧锥旁路取水/回水点都落在主泵右侧 (工程实际:
-  //       P-101 加压后的水才能进氧锥; 取水点不再从 S-101 而是 P-101 出水段)
+  // v1.7: bypass 模式额外加 BYPASS_PUMP_HORIZ_EXT px (30) 水平段, 让氧锥旁路取水/回水点都落在主泵右侧
+  //       (工程实际: P-101 加压后的水才能进氧锥; 取水点不再从 S-101 而是 P-101 出水段)
   const first = equipNodes[0];
   let returnFromX, returnFromY;
   const BYPASS_PUMP_HORIZ_EXT = 30;   // bypass 模式: 主泵后水平段长度 (留给 M-601 T 接头落位)
@@ -2908,8 +2906,8 @@ function renderProcessFlow(stageData) {
     returnFromX = last.ports.top.x;
     returnFromY = last.ports.top.y;
   } else {
-    // bypass: 主泵后水平段 90 px → 上行
-    //   水平段末端 x = 主泵右 + 90, 此处也是 M-601 T 接头落点 (回流横管的右端)
+    // bypass: 主泵后 BYPASS_PUMP_HORIZ_EXT px 水平段 → 上行
+    //   水平段末端 x = 主泵右 + BYPASS_PUMP_HORIZ_EXT, 此处也是 M-601 T 接头落点 (回流横管的右端)
     returnFromX = pump.ports.out.x + BYPASS_PUMP_HORIZ_EXT;
     returnFromY = pump.ports.out.y;
   }
@@ -3296,7 +3294,7 @@ function refreshTopSummary() {
   const o2Display = (oxFish != null && oxBF != null)
     ? '峰值氧需 <b>' + fmtNum(oxTotal) + ' kg/h</b> '
       + '<span class="summary-sub">(鱼 ' + fmtNum(oxFish) + ' + BF ' + fmtNum(oxBF) + ')</span>'
-    : '峰值氧需<b>' + fmtNum(oxTotal) + ' kg/h</b>';
+    : '峰值氧需 <b>' + fmtNum(oxTotal) + ' kg/h</b>';
   el.innerHTML = [
     '<span class="summary-item">物种<b>' + (d.speciesName || d.species) + '</b></span>',
     '<span class="summary-item">规模<b>' + d.yieldTons + ' t/yr</b></span>',
