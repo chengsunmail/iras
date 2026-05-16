@@ -349,10 +349,22 @@ function renderStage(stage, idx, data) {
   }
   if (e.o2cone && e.o2cone.enabled) {
     const sp = e.o2cone.spec || {};
+    // v1.7: 标签随拓扑变, 让设备清单上一眼看出 mainline / bypass
+    const topoLabel = e.o2cone.topology === 'bypass'
+      ? `液氧增氧塔 (旁路, 小型)`
+      : `液氧增氧塔 (主路)`;
     equipRows.push({
-      label: '液氧增氧塔', tag: 'A-601', qty: '1 套',
+      label: topoLabel, tag: 'A-601', qty: '1 套',
       spec: `${sp.param2Value || '—'} · 峰值供氧 ${e.o2cone.peakSupplyKgH ? e.o2cone.peakSupplyKgH.toFixed(2) : '—'} kg/h`,
-      note: `DO 目标 ${e.o2cone.satTarget}% · 吸收 ${e.o2cone.absorptionEff}%`
+      note: `DO 目标 ${e.o2cone.satTarget}% · 吸收 ${e.o2cone.absorptionEff}%${e.o2cone.topology === 'bypass' ? ` · 旁路 ${e.o2cone.bypassRatio||10}%` : ''}`
+    });
+  }
+  // v1.7: 鱼池增氧鼓风机 K-101 (仅 air 模式) — 区别于 K-302 BF 风机
+  if (e.tankAirBlower && e.tankAirBlower.enabled) {
+    equipRows.push({
+      label: '鱼池增氧鼓风机', tag: e.tankAirBlower.tag, qty: '1+1 备',
+      spec: `${(e.tankAirBlower.airFlowM3min||0).toFixed(1)} Nm³/min · ${(e.tankAirBlower.powerKw||0).toFixed(1)} kW`,
+      note: `风压 ${e.tankAirBlower.pressureKPa} kPa · η ${e.tankAirBlower.etaPct}% · 服务鱼池微孔曝气盘 (air 模式)`
     });
   }
   if (e.skimmer && e.skimmer.enabled) {
@@ -395,6 +407,11 @@ function renderStage(stage, idx, data) {
   if (p.skimmerBranch && p.skimmerBranch.needed && p.skimmerBranch.kw > 0) {
     const skMod = mod && mod.modulePerSpec.skimmerBranchPump;
     pumpRows.push(rowFromMod('蛋分支路泵', 'P-501', skMod, fmtKw(p.skimmerBranch.kw), '蛋白分离器进水'));
+  }
+  // v1.7: 氧锥旁路泵 (仅 bypass 拓扑时显示)
+  if (p.o2Bypass && p.o2Bypass.kw > 0) {
+    const o2bpMod = mod && mod.modulePerSpec.o2BypassPump;
+    pumpRows.push(rowFromMod('氧锥旁路泵', 'P-602', o2bpMod, fmtKw(p.o2Bypass.kw), `bypass 模式: ${(p.o2Bypass.flow||0).toFixed(0)} m³/h × ${(p.o2Bypass.headM||0)}m`));
   }
   // v1.6: 反冲泵已从设备清单移除 (RDF 厂家整体出厂含反冲泵, P-202 不再独立列项)
   // v1.3.x: 加药泵 1+1 备
