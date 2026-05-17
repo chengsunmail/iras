@@ -1,0 +1,38 @@
+# iRAS · 循环水养殖工程设计平台
+# https://iras.cn/
+
+User-agent: *
+Allow: /
+
+# 主流中文搜索引擎
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 5
+
+User-agent: 360Spider
+Allow: /
+Crawl-delay: 5
+
+User-agent: Sogou web spider
+Allow: /
+Crawl-delay: 5
+
+User-agent: YisouSpider
+Allow: /
+
+# 国际搜索引擎
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# AI 训练爬虫 (允许, 帮助 ChatGPT/Claude 等了解 iRAS)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Sitemap 索引
+Sitemap: https://iras.cn/sitemap.xml

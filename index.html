@@ -24,9 +24,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="孙程 / 海南登登科技咨询有限公司">
 <meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
-<meta name="description" content="iRAS - 循环水养殖系统 (RAS) 工程设计与仿真平台,支持多阶段养殖规模反推、水质沿程仿真、设备规格与运行成本概算。">
-<meta name="keywords" content="RAS,循环水养殖,水处理工程,水产养殖,工艺设计,硝化,反硝化,蛋白分离器">
-<title>iRAS · 循环水养殖工程设计平台 v1.7</title>
+
+<!-- ============================================================
+     SEO 优化 (v1.7)
+     核心关键词覆盖: 循环水养殖 / 工厂化养殖 / RAS / 工艺设计 /
+                    P&ID / 投资概算 / 可行性研究报告
+     长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
+                氧锥 / 生物滤池 / 蛋白分离器 / 主泵
+     ============================================================ -->
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.7</title>
+<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.7 新增氧锥拓扑 mainline/bypass 建模、K-101 鱼池增氧风机、系统排水重构。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万元。">
+<meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
+<meta name="robots" content="index,follow">
+<meta name="googlebot" content="index,follow">
+<meta name="bingbot" content="index,follow">
+<meta name="baidu-site-verification" content="待替换 — 在百度站长平台获取后填入">
+<meta name="google-site-verification" content="待替换 — 在 Google Search Console 获取后填入">
+<link rel="canonical" href="https://iras.cn/">
+
+<!-- Open Graph (微信/微博/Facebook/LinkedIn 分享卡片) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.7">
+<meta property="og:description" content="覆盖工艺设计→P&ID→设备清单→投资概算→16 章可研报告完整工作流。AGPL v3 永久免费。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万。">
+<meta property="og:url" content="https://iras.cn/">
+<meta property="og:image" content="https://iras.cn/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.7">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.7">
+<meta name="twitter:description" content="循环水养殖 / 工厂化养殖工程设计开源工具。AGPL v3 永久免费。">
+<meta name="twitter:image" content="https://iras.cn/og-cover.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4d8'/%3E%3Ctext x='50' y='62' font-family='-apple-system,sans-serif' font-size='42' font-weight='800' text-anchor='middle' fill='%23fff'%3EiR%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<!-- Schema.org 结构化数据 (帮助 Google / 百度更好理解工具性质) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iRAS",
+  "alternateName": "iRAS 循环水养殖工程设计平台",
+  "description": "面向水产养殖工程师、设计院、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。",
+  "url": "https://iras.cn/",
+  "applicationCategory": "EngineeringApplication",
+  "applicationSubCategory": "Aquaculture Engineering Design",
+  "operatingSystem": "Any (Web Browser)",
+  "softwareVersion": "1.7.0",
+  "datePublished": "2026-05-16",
+  "inLanguage": "zh-CN",
+  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "孙程",
+    "jobTitle": "水处理工程师 (25 年) / 挪威 NTNU 博士",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "海南登登科技咨询有限公司"
+    },
+    "email": "6881509@qq.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "海南登登科技咨询有限公司",
+    "url": "https://iras.cn/"
+  },
+  "keywords": "循环水养殖, 工厂化养殖, RAS, 工艺设计, P&ID, 投资概算, 可研报告, 三文鱼, 罗非鱼, 对虾",
+  "codeRepository": "https://github.com/chengsunmail/iras",
+  "downloadUrl": "https://github.com/chengsunmail/iras/releases"
+}
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -1079,23 +1157,46 @@
     <!-- 1. 软件概述 -->
     <section id="help-1">
       <h2 class="text-xl font-bold text-cyan-400 border-b border-slate-700 pb-2">1. 软件概述</h2>
-      <p class="mt-3">iRAS (intelligent Recirculating Aquaculture System) 是一款面向水产养殖工程师、设计院、高校研究者的循环水养殖系统 (RAS) 工程设计开源工具。</p>
-      <p class="mt-2 text-slate-300">v1.7 当前能力覆盖 <strong>工艺设计 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong> 的完整工作流:</p>
-      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400">
-        <li><b>工艺设计</b>: 多阶段养殖规模反推 + 精确循环方程水质稳态仿真 (TAN/TSS/DOM/NO₃/DO/CO₂ 沿程递减)</li>
-        <li><b>主流串联 + 旁路</b>: 蛋分 / AOP / 反硝化混合建模, O₂ 按位置分配 (鱼池主增氧 + BF 独立粗孔曝气)</li>
-        <li><b>盐度体系</b>: DO 饱和度修正 + 硝化效率修正 + 海水臭氧溴酸盐警告</li>
-        <li><b>设备规格与选型</b>: RDF / BF / UV / 蛋分 / AOP / 反硝化 / 增氧 / 脱气 / 泵</li>
-        <li><b>站级设备 (v1.6)</b>: 液氧储罐等全场共用设备独立管理, 用户可调规格/数量/单价, iRAS 按全场日耗智能推荐</li>
-        <li><b>多模块并联 + N+1 备用 (v1.3)</b>: 工程化布局, 模块间故障隔离</li>
-        <li><b>P&amp;ID 工艺图自动生成 (v1.3.x)</b>: 独立 pid.html 页面, 可导出为 PNG/SVG</li>
-        <li><b>设备清单导出 (v1.3.x)</b>: 独立 equipment.html, 含每台规格 + 数量 + 单价</li>
-        <li><b>双节点稳态热平衡 (v1.2)</b>: 车间空气-水体联立求解, 4 工况一键切换 (挪威/海南/青岛等)</li>
-        <li><b>投资财务评价 (v1.4)</b>: NPV / IRR / 投资回收期 / 盈亏平衡点 + 8 张标准财务表 + 5 因子敏感性分析 + Excel 导出</li>
-        <li><b>16 章扩展版可研报告 (v1.5)</b>: 按发改委编制规范输出 .docx 格式可研报告, 含工艺流程图 + 累计现金流 + 敏感性 Tornado 嵌入</li>
+      <p class="mt-3"><strong>iRAS</strong> (intelligent Recirculating Aquaculture System) 是面向<strong>水产养殖工程师、设计院、高校研究者</strong>的<strong>循环水养殖系统 (RAS) 工程设计开源软件</strong>,也是国内首个覆盖"<strong>工艺设计 → P&amp;ID 工艺图 → 设备清单 → 投资概算 → 可行性研究报告生成</strong>"完整工作流的<strong>工厂化养殖设计平台</strong>。</p>
+
+      <p class="mt-3 text-slate-300">iRAS 适用于以下场景:</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>设计院</b>: <strong>陆基循环水养殖项目</strong>的早期工艺方案、概算、可研草稿编制</li>
+        <li><b>业主 / 投资方</b>: <strong>工厂化养殖项目</strong>的可行性快速评估</li>
+        <li><b>设备商 / EPC 总包</b>: <strong>RAS 项目</strong>选型与方案对比</li>
+        <li><b>高校 / 研究者</b>: <strong>循环水养殖工程</strong>教学与课程设计</li>
+        <li><b>政府机构</b>: <strong>水产养殖产业园</strong>规划与项目评审</li>
       </ul>
-      <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons 2010, 国家海水鱼产业技术体系标准) 和工业实测数据 (Atlantic Sapphire 等) 校准, 不是经验调整。</p>
-      <p class="mt-2 text-slate-400 text-sm">v1.6 由 <strong>海南登登科技咨询有限公司</strong> 发布, AGPL v3 协议开源。如需商业咨询服务联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+
+      <p class="mt-3 text-slate-300">支持的 <strong>8 种主流养殖鱼种</strong> (按盐度 + 温度自适应水质模型):</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>冷水海水鱼</b>: <strong>大西洋三文鱼 (大西洋鲑)</strong> · <strong>大菱鲆</strong> (适合青岛、烟台、大连等北方沿海项目)</li>
+        <li><b>温水海水鱼</b>: <strong>石斑鱼</strong> · <strong>对虾 (南美白对虾)</strong> · <strong>鳗鱼</strong> (适合海南、福建、广东等南方沿海项目)</li>
+        <li><b>温水淡水鱼</b>: <strong>罗非鱼</strong> · <strong>加州鲈</strong> · <strong>鳜鱼</strong> (适合内陆 RAS 项目)</li>
+      </ul>
+
+      <p class="mt-3 text-slate-300">v1.7 完整能力覆盖 <strong>工艺设计 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong>:</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>工艺设计</b>: 多阶段养殖规模反推 + 精确循环方程水质稳态仿真 (TAN/TSS/DOM/NO₃/DO/CO₂ 沿程递减)</li>
+        <li><b>主流串联 + 旁路</b>: <strong>蛋白分离器</strong> / <strong>AOP 高级氧化</strong> / <strong>反硝化反应器</strong> 混合建模, O₂ 按位置分配 (<strong>鱼池主增氧</strong> + <strong>生物滤池 (MBBR) 独立粗孔曝气</strong>)</li>
+        <li><b>氧锥拓扑 mainline / bypass (v1.7)</b>: 与国际主流 (Linde SOLVOX / Pentair AES Speece / PR Aqua PPC) 接轨, <strong>1000t 三文鱼项目实测节能 30 kW、CAPEX 节省 612 万元</strong></li>
+        <li><b>K-101 鱼池增氧鼓风机 (v1.7)</b>: 空气曝气模式补齐, 覆盖罗非鱼 / 对虾等温水鱼种</li>
+        <li><b>盐度体系</b>: DO 饱和度修正 + 硝化效率修正 + 海水臭氧溴酸盐警告</li>
+        <li><b>设备规格与选型</b>: <strong>转鼓微滤机 RDF</strong> / <strong>MBBR 生物滤池</strong> / <strong>UV 消毒</strong> / 蛋分 / AOP / 反硝化 / 增氧锥 / CO₂ 脱气塔 / 主循环泵 / 旁路泵</li>
+        <li><b>站级设备 (v1.6)</b>: 液氧储罐等全场共用设备独立管理, 用户可调规格/数量/单价, iRAS 按全场日耗智能推荐</li>
+        <li><b>多模块并联 + N+1 备用 (v1.3)</b>: 工程化布局, 模块间故障隔离 (千吨级项目 4-6 模块, Atlantic Sapphire / Stolt Sea Farm 同款架构)</li>
+        <li><b>P&amp;ID 工艺图自动生成 (v1.3.x)</b>: 独立 pid.html 页面, 可导出为 PNG/SVG, 符合 ISA-5.1 标准</li>
+        <li><b>设备清单导出 (v1.3.x)</b>: 独立 equipment.html, 含每台规格 + 数量 + 单价 (设计院投资概算可直接引用)</li>
+        <li><b>双节点稳态热平衡 (v1.2)</b>: 车间空气-水体联立求解, 4 工况一键切换 (<strong>挪威 Bergen</strong> / <strong>青岛</strong> / <strong>海南</strong> 等典型场景, 热泵装机自动估算)</li>
+        <li><b>投资财务评价 (v1.4)</b>: NPV / IRR / 投资回收期 / 盈亏平衡点 + 8 张标准财务表 + 5 因子敏感性分析 + Excel 导出</li>
+        <li><b>16 章可行性研究报告 (v1.5)</b>: 按发改委 2017 编制规范输出 <strong>.docx 格式可研报告</strong>, 含工艺流程图 + 累计现金流 + Tornado 敏感性嵌入</li>
+      </ul>
+
+      <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010 等) 和工业实测数据 (Atlantic Sapphire, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="iRAS_技术手册_v1.7_完整版.pdf" target="_blank" class="text-cyan-300 underline">117 页 v1.7 技术手册附录 E</a> (40+ 篇核心文献)。</p>
+
+      <p class="mt-2 text-slate-400 text-sm">v1.7 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 海外镜像 <a href="https://chengsunmail.github.io/iras/" class="text-cyan-300 underline">chengsunmail.github.io/iras/</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">GitHub</a> · 国内镜像 <a href="https://gitee.com/chengsunmail/iras" class="text-cyan-300 underline">Gitee</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+
+      <p class="mt-3 text-xs text-slate-500">本工具不替代正式的环境影响评价 / 安全评价 / 节能评价 / 施工图详细设计, 仅用于工程概算阶段 (精度 ±40%)。详见技术手册附录 F 完整免责声明。</p>
     </section>
 
     <!-- v1.7 升级说明 (changelog 格式, 简短) -->
