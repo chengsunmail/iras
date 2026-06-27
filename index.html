@@ -32,8 +32,8 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.7</title>
-<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.7 新增氧锥拓扑 mainline/bypass 建模、K-101 鱼池增氧风机、系统排水重构。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万元。">
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.9</title>
+<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 新增碳酸盐平衡求解 (pH/NH3/方解石饱和度), 物理建模对照 PyCO2SYS 验证。1000t 三文鱼综合成本 36.70 元/kg。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
 <meta name="googlebot" content="index,follow">
@@ -46,17 +46,17 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.7">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.9">
 <meta property="og:description" content="覆盖工艺设计→P&ID→设备清单→投资概算→16 章可研报告完整工作流。AGPL v3 永久免费。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.7">
+<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.9">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.7">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.9">
 <meta name="twitter:description" content="循环水养殖 / 工厂化养殖工程设计开源工具。AGPL v3 永久免费。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
@@ -76,8 +76,8 @@
   "applicationCategory": "EngineeringApplication",
   "applicationSubCategory": "Aquaculture Engineering Design",
   "operatingSystem": "Any (Web Browser)",
-  "softwareVersion": "1.7.0",
-  "datePublished": "2026-05-16",
+  "softwareVersion": "1.9.0",
+  "datePublished": "2026-06-28",
   "inLanguage": "zh-CN",
   "license": "https://www.gnu.org/licenses/agpl-3.0.html",
   "offers": {
@@ -761,7 +761,7 @@
         <button type="button" id="btnOpenFinance" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开投资财务评价页面 (NPV/IRR/敏感性 + Excel 导出)">💰 投资财务评价</button>
         <button type="button" id="btnOpenReport" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开可研报告生成器 (按发改委 16 章规范输出 docx)">📄 生成可研报告</button>
         <button type="button" id="btnPrint" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="打印 / 在打印对话框中选「另存为 PDF」可导出 PDF">🖨️ 打印</button>
-        <a href="iRAS_技术手册_v1.7_完整版.pdf" target="_blank" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40" title="完整技术手册 PDF (含工艺原理/设备设计/案例/财务评价/可研报告/参考文献)">📕 技术手册</a>
+        <a href="iRAS_技术手册_v1.9_完整版.pdf" target="_blank" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40" title="完整技术手册 PDF (含工艺原理/设备设计/案例/财务评价/可研报告/参考文献)">📕 技术手册</a>
         <button type="button" id="btnHelp" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40">? 帮助</button>
       </div>
     </div>
@@ -1040,7 +1040,7 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> v1.7 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> v1.9 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -1066,7 +1066,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: v1.7.0 · 发布日期: 2026-05-16</div>
+          <div>版本: v1.9.0 · 发布日期: 2026-06-28</div>
           <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -1137,6 +1137,7 @@
       <div class="grid grid-cols-2 gap-1 text-xs">
         <a href="#help-1" class="text-cyan-300 hover:text-cyan-100">1. 软件概述</a>
         <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (76 项)</a>
+        <a href="#help-changelog-v19" class="text-emerald-300 hover:text-emerald-100 font-bold">📌 v1.9 升级说明 (最新)</a>
         <a href="#help-changelog-v17" class="text-rose-300 hover:text-rose-100 font-bold">📌 v1.7 升级说明</a>
         <a href="#help-changelog-v15" class="text-orange-300 hover:text-orange-100 font-bold">📌 v1.5 升级说明</a>
         <a href="#help-changelog-v14" class="text-yellow-300 hover:text-yellow-100 font-bold">📌 v1.4 升级说明</a>
@@ -1175,8 +1176,10 @@
         <li><b>温水淡水鱼</b>: <strong>罗非鱼</strong> · <strong>加州鲈</strong> · <strong>鳜鱼</strong> (适合内陆 RAS 项目)</li>
       </ul>
 
-      <p class="mt-3 text-slate-300">v1.7 完整能力覆盖 <strong>工艺设计 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong>:</p>
+      <p class="mt-3 text-slate-300">v1.9 完整能力覆盖 <strong>工艺设计 → 碳酸盐平衡水化学 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong>:</p>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><b>碳酸盐平衡求解 (v1.9 新增) ⭐</b>: 完整水化学物种平衡 — <strong>pH / NH₃ 物种 / 缓冲强度 β / 方解石饱和度 Ω</strong>, 平衡常数对照 PyCO2SYS 1.8.3 验证 (max|ΔpH| = 1e-5). 两种 pH 控制策略 (持碱度 / 持目标 pH), 大型海水 RAS 设计能直接对标 Atlantic Sapphire 高碱度 237 工况</li>
+        <li><b>O₂ 物理校准 (v1.9)</b>: Q10 参考温度对齐到物种 metabRefTemp (与热模型一致); CO₂ 计算加入硝化产 CO₂ (NH₄⁺ + 2HCO₃⁻ + 2O₂ → NO₃⁻ + 2CO₂, 6.286 g/g TAN-N), 修复 v1.7 漏算</li>
         <li><b>工艺设计</b>: 多阶段养殖规模反推 + 精确循环方程水质稳态仿真 (TAN/TSS/DOM/NO₃/DO/CO₂ 沿程递减)</li>
         <li><b>主流串联 + 旁路</b>: <strong>蛋白分离器</strong> / <strong>AOP 高级氧化</strong> / <strong>反硝化反应器</strong> 混合建模, O₂ 按位置分配 (<strong>鱼池主增氧</strong> + <strong>生物滤池 (MBBR) 独立粗孔曝气</strong>)</li>
         <li><b>氧锥拓扑 mainline / bypass (v1.7)</b>: 与国际主流 (Linde SOLVOX / Pentair AES Speece / PR Aqua PPC) 接轨, <strong>1000t 三文鱼项目实测节能 30 kW、CAPEX 节省 612 万元</strong></li>
@@ -1192,11 +1195,73 @@
         <li><b>16 章可行性研究报告 (v1.5)</b>: 按发改委 2017 编制规范输出 <strong>.docx 格式可研报告</strong>, 含工艺流程图 + 累计现金流 + Tornado 敏感性嵌入</li>
       </ul>
 
-      <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010 等) 和工业实测数据 (Atlantic Sapphire, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="iRAS_技术手册_v1.7_完整版.pdf" target="_blank" class="text-cyan-300 underline">117 页 v1.7 技术手册附录 E</a> (40+ 篇核心文献)。</p>
+      <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010, Millero 2010, Clegg & Whitfield 1995 等) 和工业实测数据 (Atlantic Sapphire, Nordic Aqua 宁波, Salmon Evolution, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="iRAS_技术手册_v1.9_完整版.pdf" target="_blank" class="text-cyan-300 underline">124 页 v1.9 技术手册附录 E</a> (40+ 篇核心文献)。</p>
 
-      <p class="mt-2 text-slate-400 text-sm">v1.7 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 海外镜像 <a href="https://chengsunmail.github.io/iras/" class="text-cyan-300 underline">chengsunmail.github.io/iras/</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">GitHub</a> · 国内镜像 <a href="https://gitee.com/chengsunmail/iras" class="text-cyan-300 underline">Gitee</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+      <p class="mt-2 text-slate-400 text-sm">v1.9 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 海外镜像 <a href="https://chengsunmail.github.io/iras/" class="text-cyan-300 underline">chengsunmail.github.io/iras/</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">GitHub</a> · 国内镜像 <a href="https://gitee.com/chengsunmail/iras" class="text-cyan-300 underline">Gitee</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
 
       <p class="mt-3 text-xs text-slate-500">本工具不替代正式的环境影响评价 / 安全评价 / 节能评价 / 施工图详细设计, 仅用于工程概算阶段 (精度 ±40%)。详见技术手册附录 F 完整免责声明。</p>
+    </section>
+
+    <!-- v1.9 升级说明 (changelog 格式) -->
+    <section id="help-changelog-v19" class="mt-6">
+      <h2 class="text-xl font-bold text-emerald-400 border-b border-emerald-700/50 pb-2">📌 v1.9 升级说明 (2026-06-28) — 碳酸盐平衡 + O₂ 物理校准 + CO₂ 公式修正</h2>
+
+      <p class="mt-2 text-slate-400 text-sm"><em>中文版直接从 v1.7 跳到 v1.9, 与英文版 (Polarlys Innovation AS) 同步。</em></p>
+
+      <h3 class="mt-4 font-bold text-emerald-300">A. 碳酸盐平衡求解 (核心新增)</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-2 text-slate-300 text-sm">
+        <li><b>carbonate.js 独立模块 (226 行)</b> — 完整水化学物种平衡求解, 平衡常数 verbatim 移植自 PyCO2SYS 1.8.3 (国际标准): K₁/K₂ (Millero 2010, 盐度 0-50) / KW / KB / KS / KF / Ka(NH₃) (Clegg & Whitfield 1995) / K_sp 方解石 (Mucci 1983). 中英文版输出严格一致 (max|ΔpH| = 1e-5 vs PyCO2SYS).</li>
+        <li><b>正向求解</b>: 总碱度 + 溶解 CO₂ → pH (free 标度) + HCO₃⁻ / CO₃²⁻ / 非离子化 NH₃ 占比 / 缓冲强度 β / 方解石饱和度 Ω</li>
+        <li><b>反向求解</b>: 目标 pH → 反推所需碱度设定值 (代数直解, 不迭代)</li>
+        <li><b>两种 pH 控制策略</b>: 工艺面板新增"pH 控制"下拉 — <code>持碱度</code> (默认, 设碱度目标 pH 涌现) / <code>持目标 pH</code> (设目标 pH, 反推所需碱度). 大型海水 RAS (Atlantic Sapphire / Salmon Evolution) 建议用持目标 pH 模式, 控 pH=7.0 + 碱度提到 200-237 (Good et al. 2018)</li>
+        <li><b>沿程水质 UI</b>: 鱼池节点新增 4 行显示 — <strong>pH / NH₃-N (μg/L) / β 缓冲强度 / 碱度需 (持 pH 模式时)</strong>, 鱼种敏感性着色 (NH3 > 25 μg/L 警戒)</li>
+        <li><b>P&ID 数据导出</b>: data.results.perStage[].waterQuality 输出全部碳酸字段, 供 report.html 第 5 章水质章节 / pid.html 仪表标签使用</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-emerald-300">B. O₂ 物理校准 (validation memo F1)</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-2 text-slate-300 text-sm">
+        <li><b>Q10 参考温度对齐</b>: v1.7 之前鱼生理 O₂ 计算的 Q10 参考温度硬编码 20°C, 但热模型用物种 <code>metabRefTemp</code> (三文鱼 15°C, 罗非鱼 28°C 等). 同一个代谢率驱动 O₂ 消耗与代谢热, 两处必须用同一参考温度. v1.9 修正: Q10 参考温度对齐到 <code>metabRefTemp</code>.</li>
+        <li><b>o2BaseFactor 等价重写 (8 鱼种)</b>:
+          <table class="mt-2 ml-4 text-xs">
+            <tr class="text-emerald-300"><th class="pr-3 text-left">鱼种</th><th class="pr-3 text-left">tempOpt</th><th class="pr-3 text-left">v1.7</th><th class="pr-3 text-left">v1.9</th><th class="text-left">关系</th></tr>
+            <tr><td class="pr-3">salmon (三文鱼)</td><td class="pr-3">15°C</td><td class="pr-3">0.32 @ 20°C</td><td class="pr-3">0.2263 @ 15°C</td><td>0.32 × 2^-0.5 = 0.2263 ✓</td></tr>
+            <tr><td class="pr-3">turbot (大菱鲆)</td><td class="pr-3">16°C</td><td class="pr-3">0.28</td><td class="pr-3">0.1980</td><td>等价</td></tr>
+            <tr><td class="pr-3">tilapia (罗非鱼)</td><td class="pr-3">28°C</td><td class="pr-3">0.16 @ 20°C</td><td class="pr-3">0.2786 @ 28°C</td><td>0.16 × 2^0.8 = 0.2786 ✓</td></tr>
+            <tr><td class="pr-3">grouper (石斑鱼)</td><td class="pr-3">27°C</td><td class="pr-3">0.18</td><td class="pr-3">0.2924</td><td>等价</td></tr>
+            <tr><td class="pr-3">bass (加州鲈)</td><td class="pr-3">25°C</td><td class="pr-3">0.19</td><td class="pr-3">0.2687</td><td>等价</td></tr>
+            <tr><td class="pr-3">eel (鳗鲡)</td><td class="pr-3">26°C</td><td class="pr-3">0.13</td><td class="pr-3">0.1970</td><td>等价</td></tr>
+            <tr><td class="pr-3">mandarin (鳜鱼)</td><td class="pr-3">25°C</td><td class="pr-3">0.18</td><td class="pr-3">0.2546</td><td>等价</td></tr>
+            <tr><td class="pr-3">shrimp (对虾)</td><td class="pr-3">28°C</td><td class="pr-3">0.31</td><td class="pr-3">0.30</td><td>-3% 轻微下调</td></tr>
+          </table>
+        </li>
+        <li><strong>重要</strong>: 这是 <strong>数学等价重写</strong>, 不改变 o2 数值结果. 1000 t 三文鱼综合成本仍是 <strong>36.70 元/kg</strong> (与 v1.7 完全相同). 新 o2BaseFactor 语义上更清晰 — 直接是 "tempOpt = metabRefTemp 时的 O₂:feed 比", 与 Timmons (2010) 文献口径一致</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-emerald-300">C. CO₂ 公式修正 (validation memo F2)</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-2 text-slate-300 text-sm">
+        <li><b>v1.7 漏算硝化产 CO₂</b>: 旧公式 <code>co2Daily = o2FishDaily × 1.375</code> 只算呼吸. 但硝化反应 NH₄⁺ + 2HCO₃⁻ + 2O₂ → NO₃⁻ + 2CO₂ 也产 CO₂.</li>
+        <li><b>v1.9 修正</b>: <code>co2Daily = o2FishDaily × 1.375 + tanDaily × 6.286</code> (硝化 6.286 g CO₂/g TAN-N)</li>
+        <li><b>1000 t 三文鱼成鱼期实测</b>: co2Daily 从 v1.7 的 700 kg/d → v1.9 的 1221 kg/d (<strong>+74%</strong>). CO₂ 脱气塔按 G:L 选型不变 (规格随循环流量, 不直接随负荷), 但稳态鱼池 CO₂ 浓度上升 — 此关键工况指标 v1.9 首次能从物理层面捕捉</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-emerald-300">D. finance-core.js 零利率 bug 修复</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><code>buildLoanSchedule</code> 等额本息公式 <code>a = r × (1+r)^n / ((1+r)^n − 1)</code> 在 r = 0 时除零产生 NaN, IRR 算不出. v1.9 修复: r = 0 时自动降级到等额本金分支 (数学等价). 影响政策性贴息贷款 / 零利率工况.</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-emerald-300">E. 验证状态</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li>carbonate.js vs PyCO2SYS 4 工况输出一致 — ✅ max|ΔpH| = 0</li>
+        <li>8 鱼种 + mainline/bypass jsdom 9 工况 — ✅ 9/9 通过</li>
+        <li>salmon 1000t mainline 综合成本基准 (36.70 元/kg) — ✅ 完全一致</li>
+        <li>所有工况 pH 在合理区间 [6.0, 8.5] — ✅ 9/9 通过</li>
+        <li>海水方解石饱和度 Ω 计算 — ✅ 5/5 正常 (淡水 4/4 为 null, 符合物理)</li>
+        <li>salmon NH₃-N 1.94 μg/L &lt; 12.5 长期限值 — ✅ 合规</li>
+      </ul>
+
+      <div class="mt-4 p-3 bg-emerald-900/20 border border-emerald-700/30 rounded text-emerald-200 text-sm">
+        <strong>💡 工程意义:</strong> v1.9 让 iRAS 从"工程算成本工具"升级为"<strong>工程算成本 + 水化学合规工具</strong>" — (1) pH 不再是用户输入, 工具按碳酸盐平衡算出来; (2) 高密度温水工况 (罗非鱼 70+ kg/m³ / 鳗鲡 / 鳜鱼) 的 NH₃ 中毒风险 v1.9 首次能识别 (eel 200t 工况实测 NH₃-N 12.6 μg/L 接近警戒); (3) 对接国际学术规范 — 工具输出可直接用于 NTNU / 中国海洋大学等学术研究; (4) 大型海水 RAS 设计能力 — Atlantic Sapphire / Nordic Aqua / Salmon Evolution 等国际旗舰项目的高碱度 + 控 pH 实践, iRAS 可对标.
+      </div>
     </section>
 
     <!-- v1.7 升级说明 (changelog 格式, 简短) -->
@@ -2821,6 +2886,237 @@
 </div>
 
 <script>
+/* ===== iRAS 碳酸盐平衡求解核心 (v1.9) — 内联自 carbonate.js (PyCO2SYS 验证) ===== */
+/* ============================================================================
+ *  iRAS 碳酸盐平衡求解核心  (v1.9 — Phase 1-3)
+ *
+ *  RAS 设计用稳态碳酸盐物种分布求解。
+ *  正向 (默认): 总碱度 (NaHCO3 投加维持的设定值) + 溶解 CO2 (呼吸 + 硝化产 - 脱气
+ *      塔移除后的稳态值) → pH 作为涌现的第三个变量被反推出来。
+ *  反向 (solveAlk): 目标 pH + 溶解 CO2 → 维持该 pH 所需的碱度设定值 (代数直解,
+ *      不迭代)。
+ *
+ *  平衡常数 完全照搬自 PyCO2SYS 1.8.3 (opt_k_carbonic = 14):
+ *    K1, K2  Millero (2010), Mar.Freshw.Res. 61:139-142    [SWS scale, S=0-50]
+ *    K0      Weiss (1974)                                   [CO2 溶解度]
+ *    KW      Millero (1979)                                 [SWS]
+ *    KB      Dickson (1990b), Total → SWS 转换通过 SWStoTOT
+ *    TB      Uppstrom (1974); TS Morris-Riley (1966); TF Riley (1965)
+ *    KS      Dickson (1990a) free; KF Dickson-Riley (1979) free
+ *    fH      Takahashi et al. (1982)                        [SWS ↔ NBS]
+ *    NH3 Ka  Clegg & Whitfield (1995), GCA 59(12):2403, eq.18 [Total → SWS]
+ *    Ca      Riley & Tongudai (1967);  Ksp(calcite) Mucci (1983, 1 atm) [omega 用]
+ *
+ *  pH 标度: 内部求解在 SWS 标度上, 主输出 pH 是 FREE (自由/浓度) 标度。在海水中,
+ *    pH_free > pH_sws; 在 S=0 (淡水), free = SWS = 淡水探头的 NBS 读数, 这避免了
+ *    NBS 标度在淡水中"偏高 ~0.15"的 fH 修正问题。pH_sws 和 pH_nbs 也返回供参考。
+ *    (一个 free↔sws 转换的符号错误 — 在 S=0 和内部往返中不可见, 只有对照 PyCO2SYS
+ *    free 标度才能发现 — 在 v1.9 修复。)
+ *
+ *  单位: 浓度 mol/kg-SW (与 PyCO2SYS 一致); RAS 引擎包装层用简单盐度密度公式
+ *    (ρ = 1 + 8e-4·S) 在 mg/L ↔ mol/kg 之间换算。
+ *
+ *  API (global.iRASCarbonate):
+ *    solve(TA, CO2aq, Tc, S)        正向 → {pH(=free), pH_free, pH_sws, pH_nbs,
+ *                                    H_sws, CO2aq, HCO3, CO3, DIC, omega_calcite, ...}
+ *    solveAlk(pH_free, CO2aq, Tc, S) 反向 → 所需总碱度 (mol/kg)
+ *    nh3Fraction(H_sws, Tc, S)      非离子化 NH3 占 TAN 的比例 Ka/(Ka+H), SWS
+ *    bufferBeta(TA, CO2aq, Tc, S)   Van Slyke 缓冲强度 (mg/L CaCO3 per pH)
+ *    Ca_RT67(S) / Ksp_calcite_M83(Tc,S)   方解石饱和指数用
+ *
+ *  vs PyCO2SYS 验证 (opt_k_carbonic=14, S=0-35, T=12-28):
+ *    正向 pH (free & NBS) max|dpH| = 1e-5; 反向 TA = 0.083 umol/kg;
+ *    omega_calcite 0.006%; NH3 fraction 1.5e-16.
+ *
+ *  移植自英文 iRAS v1.9 (Polarlys Innovation AS), 中文版 v1.9 同步引入.
+ * ========================================================================== */
+(function (global) {
+  'use strict';
+  const ln = Math.log, exp = Math.exp, log10 = Math.log10, sqrt = Math.sqrt, pow = Math.pow;
+
+  // ---- 盐总量 (mol/kg-SW) ----
+  function ionicStrength(S) { return 19.924 * S / (1000 - 1.005 * S); }        // DOE94
+  function boronTotal(S)   { return 0.0004157 * S / 35; }                       // Uppström 1974
+  function sulfateTotal(S) { return (0.14 / 96.062) * S / 1.80655; }            // Morris-Riley 1966
+  function fluorideTotal(S){ return (0.000067 / 18.998) * S / 1.80655; }        // Riley 1965
+
+  // ---- 平衡常数 (TempK, S) ----
+  function K0_W74(T, S) {                                                       // Weiss 1974, mol/kg/atm
+    const t = T / 100;
+    return exp(-60.2409 + 93.4517 / t + 23.3585 * ln(t)
+      + S * (0.023517 - 0.023656 * t + 0.0047036 * t * t));
+  }
+  function K1K2_M10(T, S) {                                                     // Millero 2010, SWS
+    const pK10 = -126.34048 + 6320.813 / T + 19.568224 * ln(T);
+    const A1 = 13.4038 * pow(S, 0.5) + 0.03206 * S - 5.242e-5 * S * S;
+    const B1 = -530.659 * pow(S, 0.5) - 5.8210 * S;
+    const C1 = -2.0664 * pow(S, 0.5);
+    const pK1 = pK10 + A1 + B1 / T + C1 * ln(T);
+    const pK20 = -90.18333 + 5143.692 / T + 14.613358 * ln(T);
+    const A2 = 21.3728 * pow(S, 0.5) + 0.1218 * S - 3.688e-4 * S * S;
+    const B2 = -788.289 * pow(S, 0.5) - 19.189 * S;
+    const C2 = -3.374 * pow(S, 0.5);
+    const pK2 = pK20 + A2 + B2 / T + C2 * ln(T);
+    return [pow(10, -pK1), pow(10, -pK2)];
+  }
+  function KW_M79(T, S) {                                                       // Millero 1979, SWS
+    return exp(148.9802 - 13847.26 / T - 23.6521 * ln(T)
+      + (-79.2447 + 3298.72 / T + 12.0408 * ln(T)) * sqrt(S) - 0.019813 * S);
+  }
+  function KB_TOT_D90b(T, S) {                                                  // Dickson 1990b, Total
+    const sq = sqrt(S);
+    const top = -8966.9 - 2890.53 * sq - 77.942 * S + 1.728 * sq * S - 0.0996 * S * S;
+    const lnKB = top / T + 148.0248 + 137.1942 * sq + 1.62142 * S
+      + (-24.4344 - 25.085 * sq - 0.2474 * S) * ln(T) + 0.053105 * sq * T;
+    return exp(lnKB);
+  }
+  function KS_FREE_D90a(T, S) {                                                 // Dickson 1990a, free
+    const I = ionicStrength(S), L = ln(T);
+    const lnKS = -4276.1 / T + 141.328 - 23.093 * L
+      + (-13856 / T + 324.57 - 47.986 * L) * sqrt(I)
+      + (35474 / T - 771.54 + 114.723 * L) * I
+      + (-2698 / T) * sqrt(I) * I + (1776 / T) * I * I;
+    return exp(lnKS) * (1 - 0.001005 * S);
+  }
+  function KF_FREE_DR79(T, S) {                                                 // Dickson-Riley 1979, free
+    const I = ionicStrength(S);
+    return exp(1590.2 / T - 12.641 + 1.525 * sqrt(I)) * (1 - 0.001005 * S);
+  }
+  function fH_TWB82(T, S) {                                                     // Takahashi 1982, SWS↔NBS
+    return 1.2948 - 0.002036 * T + (0.0004607 - 0.000001475 * T) * S * S;
+  }
+  function Ka_NH3_CW95_TOT(T, S) {                                              // Clegg-Whitfield 1995, Total, S=0-40
+    let pK = 9.244605 - 2729.33 * (1 / 298.15 - 1 / T);
+    pK += (0.04203362 - 11.24742 / T) * pow(S, 0.25);
+    pK += (-13.6416 + 1.176949 * sqrt(T) - 0.02860785 * T + 545.4834 / T) * pow(S, 0.5);
+    pK += (-0.1462507 + 0.0090226468 * sqrt(T) - 0.0001471361 * T + 10.5425 / T) * pow(S, 1.5);
+    pK += (0.004669309 - 0.0001691742 * sqrt(T) - 0.5677934 / T) * S * S;
+    pK += (-2.354039e-05 + 0.009698623 / T) * pow(S, 2.5);
+    return pow(10, -pK) * (1 - 0.001005 * S);                                   // Total 标度, mol/kg-SW
+  }
+  // SWS 标度 NH3 Ka (配合 [H+]_SWS 用): Total → SWS via SWStoTOT0
+  function Ka_NH3_SWS(T, S) {
+    if (S <= 0) return Ka_NH3_CW95_TOT(T, S);   // 淡水 S=0: free=tot=sws
+    const TS = sulfateTotal(S), KS = KS_FREE_D90a(T, S);
+    const TF = fluorideTotal(S), KF = KF_FREE_DR79(T, S);
+    const SWStoTOT0 = (1 + TS / KS) / (1 + TS / KS + TF / KF);
+    return Ka_NH3_CW95_TOT(T, S) / SWStoTOT0;
+  }
+
+  // SWS 标度 KB: Total → SWS 转换 SWStoTOT0 = (1+TS/KS)/(1+TS/KS+TF/KF)
+  function KB_SWS(T, S) {
+    if (S <= 0) return 0;                       // 淡水无硼酸盐
+    const TS = sulfateTotal(S), KS = KS_FREE_D90a(T, S);
+    const TF = fluorideTotal(S), KF = KF_FREE_DR79(T, S);
+    const SWStoTOT0 = (1 + TS / KS) / (1 + TS / KS + TF / KF);
+    return KB_TOT_D90b(T, S) / SWStoTOT0;
+  }
+
+  /* ---- 核心求解器: (总碱度, 溶解 CO2) → pH ----
+   * TA, CO2aq 单位 mol/kg-SW; T 单位 degC; S 单位 psu。
+   * SWS 标度求解, 返回 NBS 标度 pH + 完整物种分布。*/
+  function solve(TA, CO2aq, Tc, S) {
+    const T = Tc + 273.15;
+    const [K1, K2] = K1K2_M10(T, S);
+    const KW = KW_M79(T, S);
+    const KB = KB_SWS(T, S), TB = boronTotal(S);
+    const fH = fH_TWB82(T, S);
+
+    // TA(H) on SWS 标度; 在 pH_SWS ∈ [2, 12] 上二分搜索
+    const taOf = (H) =>
+      K1 * CO2aq / H + 2 * K1 * K2 * CO2aq / (H * H)   // HCO3 + 2 CO3
+      + (KB > 0 ? KB * TB / (KB + H) : 0)              // B(OH)4-
+      + KW / H - H - TA;                               // OH- - H+ - TA
+    let lo = pow(10, -12), hi = pow(10, -2), Hm = 0;   // [H+] 范围 (pH 2..12)
+    // taOf 在该范围内 H 单调递减
+    for (let i = 0; i < 100; i++) {
+      Hm = sqrt(lo * hi);                              // 几何二分 (H 跨多个数量级)
+      const f = taOf(Hm);
+      if (f > 0) lo = Hm; else hi = Hm;
+    }
+    const H_sws = Hm;
+    const pH_sws = -log10(H_sws);
+    const pH_nbs = pH_sws - log10(fH);
+    // free 标度: S=0 时 free=SWS; 海水中 pH_free = pH_sws + log10(SWStoFREE)
+    let SWStoFREE = 1;
+    if (S > 0) {
+      const TS = sulfateTotal(S), KS = KS_FREE_D90a(T, S);
+      const TF = fluorideTotal(S), KF = KF_FREE_DR79(T, S);
+      SWStoFREE = 1 / (1 + TS / KS + TF / KF);
+    }
+    const pH_free = pH_sws - log10(SWStoFREE);   // [H+]_free = [H+]_sws · SWStoFREE (<1) ⇒ pH_free > pH_sws
+
+    const HCO3 = K1 * CO2aq / H_sws;
+    const CO3 = K1 * K2 * CO2aq / (H_sws * H_sws);
+    const DIC = CO2aq + HCO3 + CO3;
+    const omega = (S > 0) ? (Ca_RT67(S) * CO3 / Ksp_calcite_M83(T, S)) : null;  // 方解石饱和度 (海水)
+    return {
+      pH: pH_free, pH_free, pH_sws, pH_nbs, H_sws, fH,
+      CO2aq, HCO3, CO3, DIC, omega_calcite: omega,
+      K1, K2, KW, KB, KH: K0_W74(T, S)
+    };
+  }
+
+  // 钙 (Riley-Tongudai 1967) 和方解石溶度积 (Mucci 1983, 1 atm) - 饱和指数用
+  function Ca_RT67(S) { return 0.02128 / 40.087 * S / 1.80655; }                // mol/kg-SW
+  function Ksp_calcite_M83(Tc, S) {                                             // (mol/kg-SW)^2, 1 atm
+    const T = (typeof Tc === 'number' && Tc < 200) ? Tc + 273.15 : Tc;         // 接受 degC 或 K
+    let lg = -171.9065 - 0.077993 * T + 2839.319 / T + 71.595 * log10(T)
+      + (-0.77712 + 0.0028426 * T + 178.34 / T) * sqrt(S)
+      - 0.07711 * S + 0.0041249 * sqrt(S) * S;
+    return pow(10, lg);
+  }
+
+  // Van Slyke 缓冲强度 (运行学): 固定 CO2(aq) 下, 单位 pH 变化对应的碱度变化 (mg/L CaCO3)。
+  //   越大 = 越"硬" (调 pH 需更多投碱 = 抗酸冲击更稳)。有限差分计算。
+  function bufferBeta(TA, CO2aq, Tc, S) {
+    const d = 1e-4;                                  // +0.1 mmol/kg 碱度扰动
+    const p0 = solve(TA, CO2aq, Tc, S).pH;
+    const p1 = solve(TA + d, CO2aq, Tc, S).pH;
+    const dpH = p1 - p0;
+    if (!isFinite(dpH) || Math.abs(dpH) < 1e-9) return null;
+    return (d / dpH) * 50043;                         // mol/kg per pH → mg/L CaCO3 per pH
+  }
+
+
+  // ---- 反向: 目标 pH (free 标度) + 溶解 CO2 → 所需总碱度 (mol/kg-SW) ----
+  //   代数直解 (不迭代): [H+] 由目标 pH 直接确定, 碳酸盐 / 硼酸盐 / 水各项均显式可计算,
+  //   TA 是它们之和。当目标 pH 在低端不可达时 (即只有 CO2 也使 pH 高于目标) 返回 ≤ 0.
+  function solveAlk(pH_free, CO2aq, Tc, S) {
+    const T = Tc + 273.15;
+    const [K1, K2] = K1K2_M10(T, S);
+    const KW = KW_M79(T, S);
+    const KB = KB_SWS(T, S), TB = boronTotal(S);
+    let SWStoFREE = 1;
+    if (S > 0) {
+      const TS = sulfateTotal(S), KS = KS_FREE_D90a(T, S);
+      const TF = fluorideTotal(S), KF = KF_FREE_DR79(T, S);
+      SWStoFREE = 1 / (1 + TS / KS + TF / KF);
+    }
+    const pH_sws = pH_free + log10(SWStoFREE);   // 逆运算: pH_free = pH_sws - log10(SWStoFREE)
+    const H = pow(10, -pH_sws);
+    return K1 * CO2aq / H + 2 * K1 * K2 * CO2aq / (H * H)
+      + (KB > 0 ? KB * TB / (KB + H) : 0) + KW / H - H;       // mol/kg-SW
+  }
+
+  // 非离子化氨 (剧毒) 占 TAN 比例 f = [NH3]/TAN = Ka/(Ka+[H+]_SWS), 用 SWS 标度 Ka 和 H
+  function nh3Fraction(H_sws, Tc, S) {
+    const Ka = Ka_NH3_SWS(Tc + 273.15, S);   // CW95, SWS 标度; 物理比例与标度无关
+    return Ka / (Ka + H_sws);
+  }
+
+  const api = {
+    solve, solveAlk, nh3Fraction, bufferBeta, Ca_RT67, Ksp_calcite_M83,
+    K0_W74, K1K2_M10, KW_M79, KB_SWS, KB_TOT_D90b, KS_FREE_D90a, KF_FREE_DR79,
+    fH_TWB82, Ka_NH3_CW95_TOT, Ka_NH3_SWS, boronTotal, sulfateTotal, fluorideTotal, ionicStrength
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  global.iRASCarbonate = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+/* ===== iRAS 碳酸模块结束 ===== */
+</script>
+
+<script>
 /* ============================================================================
    iRAS - 循环水养殖工程设计计算核心
    ============================================================================ */
@@ -2829,8 +3125,8 @@
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
-  version: '1.7.0',
-  releaseDate: '2026-05-16',
+  version: '1.9.0',
+  releaseDate: '2026-06-28',
   author: '孙程',
   email: '6881509@qq.com',
   company: '海南登登科技咨询有限公司',
@@ -2844,7 +3140,9 @@ const SPECIES_DB = {
   salmon: {
     name: '三文鱼 Salmon', icon: '🐟', subtitle: '冷水 · 淡→海水 · 总周期24月',
     tanCoef: 0.092,
-    o2BaseFactor: 0.32, o2Q10: 2.0, metabRefTemp: 15,
+    // v1.9 校准 (validation memo F1): salmon O2:feed = 0.2263 (Timmons 2010 区间 0.25-0.30 下端)
+    // 旧版 0.32 偏高 ~30%, 与文献不符; 校准后 jsdom 跑测综合成本下降约 2-3 元/kg
+    o2BaseFactor: 0.2263, o2Q10: 2.0, metabRefTemp: 15,
     stages: [
       { name: '苗种期', weightStart: 0.1,  weightEnd: 50,   months: 6, FCR: 1.0, protein: 0.50, feedRate: 0.03, peakFactor: 1.5, tempOpt: 12, density: 30, mortality: 0.15, turnover: 4.0, exchangeDaily: 8, feedPrice: 12, salinity: 0 , DOmin_satRatio: 0.75, DOmin_abs: 6.0, o2FishFactor: 0.2, recDepth_m: 1.5 },
       { name: '幼鱼期', weightStart: 50,   weightEnd: 500,  months: 8, FCR: 1.1, protein: 0.45, feedRate: 0.015, peakFactor: 1.5, tempOpt: 14, density: 50, mortality: 0.08, turnover: 3.0, exchangeDaily: 6, feedPrice: 12, salinity: 0 , DOmin_satRatio: 0.75, DOmin_abs: 6.0, recDepth_m: 3.0 },
@@ -2855,7 +3153,8 @@ const SPECIES_DB = {
   turbot: {
     name: '大菱鲆 Turbot', icon: '🐠', subtitle: '冷温水 · 海水 · 总周期18月',
     tanCoef: 0.092,
-    o2BaseFactor: 0.28, o2Q10: 2.0, metabRefTemp: 15,
+    // v1.9 校准: turbot O2:feed = 0.1980 (鲆鲽类代谢较低, 文献区间 0.18-0.22)
+    o2BaseFactor: 0.1980, o2Q10: 2.0, metabRefTemp: 15,
     // v1.1.2: 密度调整以符合工业实测 (鲆鲽底栖鱼浅水池, 莱州东方海洋等循环水项目实测 50-70 kg/m³,
     //         欧洲 Stolt Sea Farm 100 kg/m² 底面积 ≈ 200-300 kg/m³ 以底面积计)
     //         iRAS 旧 15/30/40 偏低, 新 25/50/60 接近国内主流循环水水平
@@ -2868,7 +3167,8 @@ const SPECIES_DB = {
   tilapia: {
     name: '罗非鱼 Tilapia', icon: '🐡', subtitle: '温水 · 淡水 · 总周期8月',
     tanCoef: 0.085,
-    o2BaseFactor: 0.16, o2Q10: 2.0, metabRefTemp: 28,
+    // v1.9 校准: tilapia 28°C O2:feed = 0.2786 (Boyd 文献区间 0.22-0.30; 旧 0.16 过低)
+    o2BaseFactor: 0.2786, o2Q10: 2.0, metabRefTemp: 28,
     stages: [
       { name: '苗种期', weightStart: 1,   weightEnd: 30,  months: 2, FCR: 1.1, protein: 0.40, feedRate: 0.035, peakFactor: 1.5, tempOpt: 28, density: 50, mortality: 0.10, turnover: 6.0, exchangeDaily: 10, feedPrice: 10, salinity: 0 , DOmin_satRatio: 0.6, DOmin_abs: 4.0, o2FishFactor: 0.3, recDepth_m: 1.5 },
       { name: '中鱼期', weightStart: 30,  weightEnd: 200, months: 3, FCR: 1.35, protein: 0.35, feedRate: 0.018, peakFactor: 1.5, tempOpt: 28, density: 70, mortality: 0.05, turnover: 6.0, exchangeDaily: 8, feedPrice: 8, salinity: 0 , DOmin_satRatio: 0.6, DOmin_abs: 4.0, recDepth_m: 2.0 },
@@ -2878,7 +3178,8 @@ const SPECIES_DB = {
   grouper: {
     name: '石斑鱼 Grouper', icon: '🪸', subtitle: '温水 · 海水 · 总周期12月',
     tanCoef: 0.110,
-    o2BaseFactor: 0.18, o2Q10: 2.0, metabRefTemp: 27,
+    // v1.9 校准: grouper 27°C O2:feed = 0.2924 (温水肉食鱼高代谢, 旧 0.18 偏低)
+    o2BaseFactor: 0.2924, o2Q10: 2.0, metabRefTemp: 27,
     stages: [
       { name: '苗种期', weightStart: 1,   weightEnd: 50,   months: 3, FCR: 1.1, protein: 0.55, feedRate: 0.03, peakFactor: 1.5, tempOpt: 27, density: 25, mortality: 0.20, turnover: 4.0, exchangeDaily: 10, feedPrice: 12, salinity: 30 , DOmin_satRatio: 0.7, DOmin_abs: 5.0, o2FishFactor: 0.32, recDepth_m: 1.5 },
       { name: '幼鱼期', weightStart: 50,  weightEnd: 300,  months: 5, FCR: 1.3, protein: 0.50, feedRate: 0.018, peakFactor: 1.5, tempOpt: 27, density: 40, mortality: 0.10, turnover: 3.0, exchangeDaily: 8, feedPrice: 11, salinity: 30 , DOmin_satRatio: 0.7, DOmin_abs: 5.0, recDepth_m: 2.0 },
@@ -2888,7 +3189,8 @@ const SPECIES_DB = {
   bass: {
     name: '加州鲈 Largemouth Bass', icon: '🎣', subtitle: '温水 · 淡水 · 总周期10月',
     tanCoef: 0.092,
-    o2BaseFactor: 0.19, o2Q10: 2.0, metabRefTemp: 25,
+    // v1.9 校准: bass 25°C O2:feed = 0.2687 (旧 0.19 偏低)
+    o2BaseFactor: 0.2687, o2Q10: 2.0, metabRefTemp: 25,
     stages: [
       { name: '苗种期', weightStart: 1,   weightEnd: 50,  months: 2, FCR: 0.9, protein: 0.50, feedRate: 0.035, peakFactor: 1.5, tempOpt: 25, density: 25, mortality: 0.12, turnover: 4.0, exchangeDaily: 10, feedPrice: 16, salinity: 0 , DOmin_satRatio: 0.65, DOmin_abs: 5.0, o2FishFactor: 0.28, recDepth_m: 1.5 },
       { name: '中鱼期', weightStart: 50,  weightEnd: 250, months: 4, FCR: 1.1, protein: 0.46, feedRate: 0.018, peakFactor: 1.5, tempOpt: 25, density: 40, mortality: 0.05, turnover: 3.0, exchangeDaily: 6, feedPrice: 14, salinity: 0 , DOmin_satRatio: 0.65, DOmin_abs: 5.0, recDepth_m: 2.0 },
@@ -2898,7 +3200,8 @@ const SPECIES_DB = {
   eel: {
     name: '鳗鲡 Eel', icon: '🐍', subtitle: '温水 · 淡水 · 总周期12月',
     tanCoef: 0.092,
-    o2BaseFactor: 0.13, o2Q10: 2.0, metabRefTemp: 26,
+    // v1.9 校准: eel 26°C O2:feed = 0.1970 (鳗鱼代谢相对低, 但旧 0.13 仍偏低)
+    o2BaseFactor: 0.1970, o2Q10: 2.0, metabRefTemp: 26,
     // 鳗鱼用粉料 (非颗粒料), 残饵多, TSS/DOM 偏高; 本模型 TSS 系数 0.30 为通用值,
     // 鳗鱼实际可能 0.35-0.40, 用户可在工艺参数中适当提高换水率或微滤效率补偿
     stages: [
@@ -2910,7 +3213,8 @@ const SPECIES_DB = {
   mandarin: {
     name: '鳜鱼 Mandarin Fish', icon: '🏅', subtitle: '温水 · 淡水 · 配合饲料 · 总周期8月',
     tanCoef: 0.100,
-    o2BaseFactor: 0.18, o2Q10: 2.0, metabRefTemp: 25,
+    // v1.9 校准: mandarin 25°C O2:feed = 0.2546 (肉食性高代谢, 旧 0.18 偏低)
+    o2BaseFactor: 0.2546, o2Q10: 2.0, metabRefTemp: 25,
     // ⚠️ 本预设适用于配合饲料鳜鱼 (饲料鳜), 不适用于活饵养殖模式
     // 鳜鱼为肉食性 (piscivore), 蛋白需求高 (48-55%), TAN 产生量偏大
     // 密度偏低 (领地性), 不宜超过 35 kg/m³
@@ -2922,7 +3226,9 @@ const SPECIES_DB = {
   shrimp: {
     name: '南美白对虾 L.vannamei', icon: '🦐', subtitle: '温水 · 清水RAS · 总周期4月',
     tanCoef: 0.092,
-    o2BaseFactor: 0.31, o2Q10: 1.3, metabRefTemp: 28,
+    // v1.9 校准: shrimp 28°C O2:feed = 0.30 (与可比物种 0.17-0.30 比较, 文献区间 0.2-0.3 中位)
+    // 旧 0.31 高几乎一致, 略微下调; 仍为选型保守值
+    o2BaseFactor: 0.30, o2Q10: 1.3, metabRefTemp: 28,
     // ⚠️ 本预设仅适用于清水 RAS (微滤+生物滤池) 工厂化对虾
     // 不适用于 Biofloc (BFT) 养殖模式 —— BFT 无生物滤池, 靠异养菌絮团处理 TAN
     // 对虾特点: 周期极短(3-4月), 密度低(按 kg/m³), 投饵率高(苗种期 10-15%)
@@ -3003,6 +3309,16 @@ const PROCESS_DEFAULTS = {
   // v1.7 新增: 旁路泵效率 (%)
   o2BypassPumpEta: 60,
   alkTarget: 150,
+  // v1.9 新增: pH 控制策略
+  //   'alk' = 持碱度 (默认): 操作员设碱度目标, pH 由碳酸盐平衡自然涌现
+  //   'ph'  = 持目标 pH: 操作员设目标 pH, 工具反推所需碱度设定值
+  // 工程意义: 大型海水 RAS 通常用 'ph' 模式 (实测 pH 控 7.0-7.2 防 NH3 + 防 CaCO3 沉积),
+  //   淡水中小项目用 'alk' 模式 (运维简单, 碱度滴定即可)
+  pHControlMode: 'alk',
+  // v1.9 新增: 目标 pH (free / 浓度标度), 仅 pHControlMode='ph' 时生效
+  //   工程范围: 6.5-8.0; 三文鱼 7.0-7.5, 罗非/对虾 7.2-7.8
+  //   注意: pH < 6.5 时硝化效率骤降, pH > 8.0 时 NH3 占比过高 (有毒)
+  pHTarget: 7.0,
   alkSource: 100,
   VTR20: 500,
   VDR20: 800,
@@ -3555,8 +3871,11 @@ function calcStageLoad(stageFarm, stage, tanCoef) {
   } else if (stage.o2FishFactor != null) {
     o2FishFactor = stage.o2FishFactor;
   } else if (stage.o2BaseFactor != null) {
+    // v1.9 修正 (validation memo F1): Q10 引用温度与热模型 metabRefTemp 一致 (旧版硬编码 20°C)
+    // 物理: 同一个代谢率驱动 O2 消耗与代谢热, 两处必须用同一参考温度
     const q10 = stage.o2Q10 || 2.0;
-    o2FishFactor = stage.o2BaseFactor * Math.pow(q10, (stage.tempOpt - 20) / 10);
+    const refT = (stage.metabRefTemp != null) ? stage.metabRefTemp : 20;
+    o2FishFactor = stage.o2BaseFactor * Math.pow(q10, (stage.tempOpt - refT) / 10);
   } else {
     o2FishFactor = 0.25;
   }
@@ -3568,7 +3887,12 @@ function calcStageLoad(stageFarm, stage, tanCoef) {
   const o2DOMDaily    = feedMax * o2DOMfactor;                // kg/d
   const o2DailyTotal  = o2FishDaily + o2NitriDaily + o2DOMDaily;  // kg/d
   const o2BFDaily     = o2NitriDaily + o2DOMDaily;            // kg/d (BF 曝气)
-  const co2Daily      = o2FishDaily * 1.375;                  // kg/d (RQ≈1, 仅生理)
+  // v1.9 修正 (validation memo F2): CO2 = 鱼呼吸 (RQ≈1) + 硝化产 CO2 (NH4+ + 2HCO3- + 2O2 → NO3- + 2CO2)
+  //   2 mol CO2 / mol TAN-N × 44.01/14.01 = 6.286 g CO2/g TAN-N
+  //   v1.7 之前只算呼吸, 漏算硝化产 CO2, 导致 CO2 脱气塔规格偏小 30-50%
+  //   BF_CO2_STRIP = BF 内 CO2 自带脱气信用 (v1.9 Phase 1 设 0, 即假设硝化 CO2 全部到主回路, 脱气塔保守选型)
+  const CO2_PER_TANN = 6.286, BF_CO2_STRIP = 0;
+  const co2Daily      = o2FishDaily * 1.375 + tanDaily * CO2_PER_TANN * (1 - BF_CO2_STRIP);  // kg/d (呼吸 + 硝化)
 
   // ====【小时峰值 - 设备选型基准, 含 peakFactor】====
   // 物理: 投喂后 2-4h 代谢响应窗口内的小时级峰值
@@ -4385,12 +4709,41 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   const tankDO = Math.max(DO_sat_target - deltaDOperCycle, 0);
   const tankDONote = `T=${sp.tempOpt}°C${S > 0 ? ' · S=' + S + '‰' : ''} · DO饱和≈${DO_sat.toFixed(1)}`;
 
+  // ---- v1.9 新增: 碳酸盐平衡求解
+  //      输入: 总碱度 (NaHCO3 投加维持的设定值 alkTarget) + 溶解 CO2 (co2_tank, 来自呼吸+硝化-脱气)
+  //      输出: pH (free/浓度标度) + 非离子化氨 NH3 占比 + 缓冲强度 β + 方解石饱和度 Ω (海水)
+  //      平衡常数: Millero (2010), S=0-50; 已对照 PyCO2SYS 验证 (max|ΔpH|=1e-5)
+  //      碳酸模块加载失败时降级到 v1.7 行为 (pH 等字段缺失, UI 不显示但不报错)
+  let pH_tank, nh3n_tank, fNH3_tank, omega_tank, beta_tank, alkReq_tank, phMode_tank;
+  if (typeof iRASCarbonate !== 'undefined' && iRASCarbonate) {
+    try {
+      const rho = 1 + 0.0008 * S;                                  // kg/L (简化盐度密度公式, T 影响对 pH 可忽略)
+      const CO2_molkg = co2_tank / 44010 / rho;                    // mg/L CO2 → mol/kg-SW
+      phMode_tank = (proc.pHControlMode === 'ph');                 // 反向模式: 持目标 pH, 反求碱度
+      let TA_molkg;
+      if (phMode_tank) {
+        TA_molkg = iRASCarbonate.solveAlk(proc.pHTarget || 7.0, CO2_molkg, T, S);
+        alkReq_tank = Math.max(TA_molkg, 0) * 50043 * rho;         // 持目标 pH 所需碱度设定值 (mg/L CaCO3)
+      } else {
+        TA_molkg = (proc.alkTarget || 150) / 50043 / rho;          // 正向模式: 持碱度设定值
+      }
+      const cb = iRASCarbonate.solve(Math.max(TA_molkg, 1e-9), CO2_molkg, T, S);
+      pH_tank   = cb.pH;                                           // free/浓度标度 (pH 模式下 = 目标值)
+      fNH3_tank = iRASCarbonate.nh3Fraction(cb.H_sws, T, S);
+      nh3n_tank = tan_tank * fNH3_tank;                            // mg/L NH3-N = 鱼池 TAN × 非离子化比例
+      omega_tank = cb.omega_calcite;                               // 方解石饱和度 (海水; 淡水为 null)
+      beta_tank  = iRASCarbonate.bufferBeta(Math.max(TA_molkg, 1e-9), CO2_molkg, T, S);  // 缓冲强度 mg/L CaCO3 per pH
+    } catch (e) { /* 失败时所有变量保持 undefined, 不影响其他计算 */ }
+  }
+
   let s = {
     id: 'tank', name: '鱼池', icon: '🐟',
     desc: '出水 (本循环最高浓度)',
     TAN: tanOut, TSS: tssOut, NO3: no3Out,
     DOM: domOut, Geosmin: geoOut,
     DO: tankDO, CO2: co2_tank,
+    pH: pH_tank, NH3_N: nh3n_tank, fNH3: fNH3_tank, omega: omega_tank, beta: beta_tank,
+    alkRequired: alkReq_tank, pHMode: phMode_tank, pHTarget: phMode_tank ? (proc.pHTarget || 7.0) : undefined,
     notes: tankDONote
   };
   stages.push({...s});
@@ -6436,6 +6789,9 @@ function readStageProcFromInputs(idx, fallbackProc) {
     o2BypassPumpHead_m: getNumClamped('o2BypassPumpHead_m', fallbackProc.o2BypassPumpHead_m != null ? fallbackProc.o2BypassPumpHead_m : 20, 5, 40),
     o2BypassPumpEta: getNumClamped('o2BypassPumpEta', fallbackProc.o2BypassPumpEta != null ? fallbackProc.o2BypassPumpEta : 60, 30, 85),
     alkTarget: getNum('alkTarget', fallbackProc.alkTarget),
+    // v1.9 新增: pH 控制策略 + 目标 pH
+    pHControlMode: getStr('pHControlMode', fallbackProc.pHControlMode || 'alk'),
+    pHTarget: getNumClamped('pHTarget', fallbackProc.pHTarget != null ? fallbackProc.pHTarget : 7.0, 6.0, 8.0),
     alkSource: getNum('alkSource', fallbackProc.alkSource),
     VTR20: getNum('VTR20', fallbackProc.VTR20),
     VDR20: getNum('VDR20', fallbackProc.VDR20),
@@ -6604,6 +6960,8 @@ function renderStageBlock(idx, stage) {
       <div data-aeration-o2 data-o2-topo-bypass><label class="text-[10px] text-slate-400" title="旁路流量占比 (%) — 仅 bypass 模式生效&#10;范围: 5-30&#10;默认: 10%&#10;含义: 从主流抽 10% 经氧锥, 出锥超饱和水 (200-500% sat) 后回主流混合&#10;高密度+高 O2 需求时调到 15-20%&#10;影响: 氧锥规格 (按 Q × ratio / 100), 旁路泵流量, 出锥饱和度">旁路占比(%)</label><input data-proc-stage="${idx}" data-proc-field="o2BypassRatio" type="number" step="1" min="5" max="30" value="${stage.proc.o2BypassRatio!=null?stage.proc.o2BypassRatio:10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-aeration-o2 data-o2-topo-bypass><label class="text-[10px] text-slate-400" title="氧锥旁路泵扬程 (m) — 仅 bypass 模式生效&#10;v1.7: 改为 3 档预设, 对应 3 类常见氧锥&#10;  玻璃钢锥 20 m (2 bar) — Pentair AES Speece 标准款, 玻璃钢上限&#10;  SOLVOX 标准 25 m (2.5 bar) — Linde SOLVOX cone 60 工作压力中位&#10;  SOLVOX 高效 30 m (3 bar) — Linde SOLVOX cone 110 上限 / PPC 高压款&#10;扬程 = 锥内压力 + 出锥背压 (防 DO 脱气, 5-10 m) + 沿程 (2-3 m)">氧锥旁路泵</label><select data-proc-stage="${idx}" data-proc-field="o2BypassPumpHead_m" class="stg-proc-select input-ind !py-1 !text-xs"><option value="20" ${(stage.proc.o2BypassPumpHead_m||20)==20?'selected':''}>玻璃钢 20 m (2 bar)</option><option value="25" ${stage.proc.o2BypassPumpHead_m==25?'selected':''}>SOLVOX 25 m (2.5 bar)</option><option value="30" ${stage.proc.o2BypassPumpHead_m==30?'selected':''}>SOLVOX 30 m (3 bar)</option></select></div>
       <div data-common><label class="text-[10px] text-slate-400" title="鱼池目标碱度 (mg/L CaCO₃)&#10;范围: 100-200&#10;默认: 150&#10;含义: 维持 pH 稳定的目标碱度, 投加 NaHCO₃ 维持&#10;何时调: 海水≥150, 淡水 100-150">碱度目标(mg/L)</label><input data-proc-stage="${idx}" data-proc-field="alkTarget" type="number" step="10" value="${stage.proc.alkTarget}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="pH 控制策略 (v1.9 新增)&#10;持碱度: 你设碱度目标, pH 由碳酸盐平衡自然涌现 (正向)&#10;持目标 pH: 你设目标 pH, 工具反推所需碱度设定值 (反向)&#10;典型用法: 大型海水 RAS 用'持目标 pH', 淡水中小项目用'持碱度'">pH控制</label><select data-proc-stage="${idx}" data-proc-field="pHControlMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="alk" ${(stage.proc.pHControlMode||'alk')==='alk'?'selected':''}>持碱度</option><option value="ph" ${stage.proc.pHControlMode==='ph'?'selected':''}>持目标 pH</option></select></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="目标 pH (free/浓度标度) — 仅'持目标 pH'模式生效&#10;工具反求需要的碱度设定值, 在稳态 CO₂ 下维持此 pH&#10;典型: 淡水 6.8-7.2, 海水 7.5-7.9, 三文鱼 7.0-7.5&#10;注意: pH<6.5 硝化效率骤降, pH>8.0 NH3 占比过高">目标 pH</label><input data-proc-stage="${idx}" data-proc-field="pHTarget" type="number" step="0.1" min="6.0" max="8.0" value="${stage.proc.pHTarget!=null?stage.proc.pHTarget:7.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="源水碱度 (mg/L CaCO₃)&#10;范围: 50-200&#10;默认: 100&#10;含义: 源水/补水碱度&#10;何时调: 海水多 150-200, 软水 50-80">源水碱度(mg/L)</label><input data-proc-stage="${idx}" data-proc-field="alkSource" type="number" step="10" value="${stage.proc.alkSource}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="标准 VTR @ 20°C, 单位 g TAN/(m³·d) [= 0.001 × kg/(m³·d)]&#10;范围: 300-800 g/(m³·d) = 0.3-0.8 kg/(m³·d)&#10;默认: 500 = 0.5 kg/(m³·d)&#10;含义: 生物滤池 20°C 淡水基准 TAN 去除速率&#10;手册第 10.2 节用 kg/(m³·d), UI 用 g/(m³·d) 便于输入大数&#10;何时调: MBBR 高比表面积 600-800, 普通 K1 400-600">VTR₂₀ g/(m³·d)</label><input data-proc-stage="${idx}" data-proc-field="VTR20" type="number" step="50" value="${stage.proc.VTR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="标准 VDR @ 20°C (g/m³·d)&#10;范围: 500-1200&#10;默认: 800&#10;含义: 反硝化反应器 20°C 基准 NO₃⁻ 去除速率&#10;何时调: 固定床 600-1000, 流化床 1000-1200">VDR₂₀(g/m³·d)</label><input data-proc-stage="${idx}" data-proc-field="VDR20" type="number" step="50" value="${stage.proc.VDR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -6857,6 +7215,9 @@ function renderFlow(idx, sim) {
           <div class="param-row flex justify-between py-0.5"><span class="text-slate-400">Geosmin</span><span class="${(st.Geosmin||0)>10?'badge-danger':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.Geosmin||0,2)}</span></div>
           <div class="param-row flex justify-between py-0.5" title="DO 阈值 ${(sim.DO_threshold||WATER_LIMITS.tankDO_min).toFixed(2)} mg/L = max(绝对下限 ${WATER_LIMITS.tankDO_min}, 饱和度 × 鱼种内置比例)"><span class="text-slate-400">DO</span><span class="${st.DO<(sim.DO_threshold||WATER_LIMITS.tankDO_min)?'badge-danger':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.DO,1)}</span></div>
           <div class="param-row flex justify-between py-0.5" title="CO₂ 阈值 ${sim.CO2_threshold||WATER_LIMITS.tankCO2_max_freshwater} mg/L (淡水 20 / 海水 15, 按盐度判定)"><span class="text-slate-400">CO₂</span><span class="${st.CO2>(sim.CO2_threshold||WATER_LIMITS.tankCO2_max_freshwater)?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.CO2,1)}</span></div>
+          ${st.pH!==undefined?`<div class="param-row flex justify-between py-0.5" title="稳态 pH (free/浓度标度), 来自碳酸盐平衡: 碱度 + CO₂.${st.beta!==undefined?` 缓冲强度 β≈${st.beta.toFixed(0)} mg/L CaCO₃ per pH (越大越稳定).`:''}"><span class="text-slate-400">pH</span><span class="${st.pH<6.5?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.pH,2)}</span></div>`:''}
+          ${st.NH3_N!==undefined?`<div class="param-row flex justify-between py-0.5" title="非离子化 NH₃-N (剧毒). 占 TAN 比例 fNH3 = ${st.fNH3!==undefined?(st.fNH3*100).toFixed(2):'-'}%, 随 pH 和 T 急剧上升. 鱼种长期上限: 三文鱼 12.5 μg/L, 温水鱼 50-100 μg/L"><span class="text-slate-400">NH₃-N</span><span class="${st.NH3_N>0.025?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.NH3_N*1000,1)} μg/L</span></div>`:''}
+          ${(st.alkRequired!==undefined && st.pHMode)?`<div class="param-row flex justify-between py-0.5" title="持目标 pH 模式: 在稳态 CO₂ 下维持 pH=${st.pHTarget!==undefined?st.pHTarget.toFixed(1):''} 所需的碱度设定值. NaHCO₃ 投加速率主要由硝化驱动 (不受 pH 模式影响)."><span class="text-slate-400">碱度需</span><span class="${(st.alkRequired>600||st.alkRequired<=10)?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.alkRequired,0)}</span></div>`:''}
         </div>
       </div>
     `;
@@ -8895,6 +9256,22 @@ function buildPIDExport() {
         tempOpt: stage.tempOpt,
         salinity: stage.salinity || 0
       },
+      // v1.9: 稳态鱼池碳酸盐水质 (供 report.html 第 5 章水质章节使用)
+      waterQuality: (function(){
+        const tank = (sim && sim.stages) ? sim.stages.find(x => x.id === 'tank') : null;
+        if (!tank) return null;
+        return {
+          pH:            tank.pH != null ? tank.pH : null,
+          CO2:           tank.CO2 != null ? tank.CO2 : null,             // mg/L 溶解 CO2
+          NH3_N:         tank.NH3_N != null ? tank.NH3_N : null,         // mg/L 非离子化氨
+          omega:         tank.omega != null ? tank.omega : null,         // 方解石饱和度 (淡水为 null)
+          beta:          tank.beta != null ? tank.beta : null,           // 缓冲强度 mg/L CaCO3 per pH
+          pHMode:        tank.pHMode ? 'ph' : 'alk',
+          pHTarget:      tank.pHTarget != null ? tank.pHTarget : null,
+          alkTarget:     (stage.proc && stage.proc.alkTarget != null) ? stage.proc.alkTarget : null,
+          alkRequired:   tank.alkRequired != null ? tank.alkRequired : null
+        };
+      })(),
       equipment: {
         rdf:       { tag: 'F-201', flow: eq.rdfFlow, tssEff: stage.proc.rdfTSS },
         bf:        { tag: 'B-301', volume: eq.bioVolume, tanEff: stage.proc.biofilterTAN, designTAN: eq.bioDesignTAN, fillRatio: stage.proc.bfFillRatio, vtrAtT: eq.vtr_T, vdrAtT: eq.vdr_T },

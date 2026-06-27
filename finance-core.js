@@ -27,8 +27,8 @@
   function buildLoanSchedule(L, r, n, method) {
     const sch = [];
     if (L <= 0 || n <= 0) return sch;
-    if (method === 'equal_payment') {
-      // 等额本息
+    if (method === 'equal_payment' && r > 0) {
+      // 等额本息 (r=0 时公式退化为 0/0, 落入下面等额本金分支)
       const a = r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
       const annual = L * a;
       let bal = L;
