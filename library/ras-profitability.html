@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>循环水养殖到底能不能赚钱？一个工程师的中立测算 | iRAS 资料库</title>
+<meta name="description" content="循环水养殖(RAS)能不能赚钱?不卖设备不唱衰,用真实造价(2025实绩30000+美元/吨)、能耗(5.1-12.8 kWh/kg)、破产案例与盈亏关键变量,中立测算RAS投资。附免费开源测算工具。">
+<meta name="keywords" content="循环水养殖赚钱吗,RAS投资,工厂化养殖成本,循环水养殖利润,RAS能耗,陆基养殖投资,循环水养殖能不能投">
+<link rel="canonical" href="https://iras.cn/library/ras-profitability.html">
+<meta property="og:title" content="循环水养殖到底能不能赚钱?一个工程师的中立测算">
+<meta property="og:description" content="不卖设备不唱衰,用真实数据把RAS投资的账摊开算给你看。">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4d8'/%3E%3Ctext x='50' y='62' font-family='sans-serif' font-size='42' font-weight='800' text-anchor='middle' fill='%23fff'%3EiR%3C/text%3E%3C/svg%3E">
+<style>
+:root { --accent:#00b4d8; --ink:#1a2530; --muted:#5a6b7a; }
+* { box-sizing: border-box; }
+body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); line-height:1.85; background:#f7f9fb; margin:0; }
+.iras-topbar { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(7,18,32,0.95); border-bottom:1px solid #1e4976; backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:space-between; padding:10px 20px; }
+.iras-topbar a { text-decoration:none; }
+.iras-brand { display:flex; align-items:center; gap:9px; }
+.iras-brand .logo { width:28px; height:28px; border-radius:8px; background:#00b4d8; color:#fff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; }
+.iras-brand .name { color:#c7eaf5; font-weight:700; font-size:15px; }
+.iras-nav-links { display:flex; align-items:center; gap:16px; }
+.iras-nav-links a { color:#7fc7dd; font-size:13px; }
+.iras-nav-links a:hover { color:#d6f1fa; }
+.iras-print-btn { background:linear-gradient(135deg,#00b4d8,#0096c7); color:#fff; font-weight:600; font-size:13px; border:none; border-radius:8px; padding:7px 16px; cursor:pointer; }
+.article { max-width:760px; margin:0 auto; padding:96px 24px 80px; background:#fff; }
+@media screen and (min-width:800px){ .article { margin:40px auto 60px; border-radius:12px; box-shadow:0 2px 24px rgba(20,50,90,0.07); } }
+.article h1 { font-size:30px; line-height:1.3; color:#0d2c54; margin:0 0 24px; font-weight:800; }
+.article h2 { font-size:22px; color:#1a4480; margin:44px 0 16px; padding-top:8px; border-top:2px solid #eef2f6; font-weight:700; }
+.article h3 { font-size:17px; color:#2a5da0; margin:28px 0 12px; font-weight:600; }
+.article p { margin:14px 0; font-size:16.5px; }
+.article ul,.article ol { padding-left:24px; margin:14px 0; }
+.article li { margin:8px 0; font-size:16.5px; }
+.article blockquote { border-left:4px solid var(--accent); background:#f0f9fc; margin:20px 0; padding:14px 20px; border-radius:0 8px 8px 0; color:#2a4a5a; font-size:15.5px; }
+.article blockquote p { margin:6px 0; }
+.article a { color:#0096c7; text-decoration:none; border-bottom:1px solid #b8e0ee; }
+.article a:hover { color:#0077a3; border-bottom-color:#0096c7; }
+.article strong { color:#0d2c54; }
+.article hr { border:none; border-top:1px solid #e4eaef; margin:32px 0; }
+.article > p:first-of-type { font-size:17px; color:var(--muted); background:#f7f9fb; padding:16px 20px; border-radius:10px; border-left:3px solid var(--accent); }
+.cta-final { display:inline-block; background:linear-gradient(135deg,#00b4d8,#0096c7); color:#fff !important; font-weight:700; padding:13px 26px; border-radius:10px; border:none !important; margin:8px 0; font-size:16px; }
+@media print { .iras-topbar{display:none!important;} .article{box-shadow:none;max-width:none;padding:0;margin:0;} body{background:#fff;} @page{size:A4;margin:2cm;} }
+</style>
+</head>
+<body>
+<div class="iras-topbar">
+  <a href="/library.html" class="iras-brand"><span class="logo">iR</span><span class="name">iRAS 资料库</span></a>
+  <div class="iras-nav-links">
+    <a href="/library.html">← 资料库</a>
+    <a href="/">iRAS 工具</a>
+    <button class="iras-print-btn" onclick="window.print()">🖨 打印 / 存为 PDF</button>
+  </div>
+</div>
+<article class="article">
+<h1>循环水养殖到底能不能赚钱？一个工程师的中立测算</h1>
+<blockquote>
+<p>这篇文章不卖设备，也不唱衰。我们用真实的造价、能耗和盈亏数据，把"循环水养殖能不能投"这个问题拆开算给你看——包括那些设备商不会告诉你的部分。</p>
+</blockquote>
+<p>如果你正在考虑投资一个循环水养殖（RAS）项目，大概率已经搜过这个问题，并且看到了两类截然相反的答案：</p>
+<p>一类来自设备供应商，标题往往是"循环水养殖成本大揭秘，教你省下 50%"——读完你会觉得这是个稳赚的好生意。另一类来自养殖论坛和自媒体，措辞要激烈得多："十人养殖九人亏""操贩毒的心，赚白菜的钱"。</p>
+<p>两类说法都有立场：前者要卖设备，后者多是踩过坑的情绪表达。<strong>这篇文章试图做第三件事——把账摊开，用可追溯的数据算一遍，让你自己判断。</strong></p>
+<p>文中每个关键数字都标注了来源（行业实测、公开财报、学术文献或法规）。文末有一个免费工具，你可以用自己的项目参数算一遍。</p>
+<hr />
+<h2>一、先说结论：能赚钱，但门槛比你想的高</h2>
+<p>直接给判断，再展开论证：</p>
+<p>RAS <strong>可以盈利</strong>，但它不是"先进技术=稳赚"的生意。它的真实面貌是一个<strong>高投入、高技术门槛、对运营管理极度敏感</strong>的重资产项目。能赚钱的项目有三个共同特征：选对了品种和地段、控制住了能耗、运营管理没有犯致命错误。三者缺一，很容易从"先进模式"变成"先进的亏损方式"。</p>
+<p>中国水产科学研究院渔业机械仪器研究所的研究员倪琦曾公开指出一个核心问题：行业把 RAS "作为先进模式的代表，试图替代其它传统模式"，而一些地方"好大喜功、一哄而上"的做法不符合产业规律，结果是"实际产量与设计产能尚有差距，提高了养殖成本"。</p>
+<p>这句话点破了 RAS 投资最大的认知误区：<strong>把技术先进性当成了盈利保证。</strong> 实际上，技术只是入场券，赚钱靠的是后面的精算和管理。</p>
+<hr />
+<h2>二、第一笔账：建设投资（CAPEX）到底多少钱</h2>
+<p>这是最容易被低估、也最容易被销售话术模糊的一笔账。</p>
+<h3>国内中小型项目的真实区间</h3>
+<p>一套占地约 500 m²、产量规模约 24 吨/批的中等海水 RAS 系统，设备投入约 30 万元，鱼池约 15 万元（PP 材质），加上土建、管道、阀门等，<strong>总投资约 50 万元</strong>（水泥池可更低）。这是国内设备商给出的、相对落地的数字。</p>
+<p>但这只是"设备级"的账。真正建一个能稳定运营的场，还要算上土地、厂房（沿海防台风钢结构、北方保温）、配电、道路——这些"系统级"成本经常是设备费的数倍，且因地段差异极大。</p>
+<h3>大型工业化项目：现实远超预期</h3>
+<p>如果你看的是国际对标的大型项目，会发现一个残酷的事实：<strong>实际造价普遍远超早期预测。</strong></p>
+<ul>
+<li>2020 年前后，行业对大型陆基三文鱼 RAS 的单位 CAPEX 预期约 <strong>15,000 美元/吨年产能</strong>。</li>
+<li>到 2025 年，已建项目（含 Atlantic Sapphire、Nordic Aqua Partners、Proximar 等）的<strong>实绩普遍超过 30,000 美元/吨</strong>——比预期翻了一倍多。</li>
+<li>早期可研模型普遍低估了 30–50% 的实际造价，主因是混凝土、配管、人工通胀（2021–2024）。</li>
+</ul>
+<blockquote>
+<p>数据来源：行业基准报告 Spheric Research LBAR 第 5 版（2025.12），及上市公司公开财报。完整 CAPEX BOM 拆解见本站<a href="/library/norway-ras.html">挪威 RAS 运营资料汇编第五册</a>。</p>
+</blockquote>
+<p><strong>这对中国投资者的启示</strong>：任何一份把单位造价压在 20,000 美元/吨以下的可研报告，都值得你追问它的假设——这个数字只在特定地区和特殊条件下才达得到。</p>
+<hr />
+<h2>三、第二笔账：运营成本（OPEX）——能耗是盈亏的命门</h2>
+<p>如果说 CAPEX 决定你能不能进场，OPEX 决定你能不能活下去。而 OPEX 里最关键的变量，是<strong>能耗</strong>。</p>
+<h3>一个被反复验证的数字：电费</h3>
+<p>加拿大格力威水产养殖技术开发公司总裁钱阳博士的判断很直接："能耗也就是电力费用太贵，是制约循环水养殖盈利的主要原因，每公斤鱼要耗电 4 度左右。"</p>
+<p>挪威的实测数据印证了能耗的离散度有多大：NTNU 对挪威 RAS 设施的调研显示，Smolt 阶段的比能耗在 <strong>5.1–12.8 kWh/kg 活重</strong>之间（均值 8.8）。同样的产量，能耗最高的场是最低的两倍多——这个差距直接决定了盈亏。</p>
+<p>更关键的是<strong>电价</strong>。同一套系统模型，挪威实际电价约是模型电价的 3 倍（0.17 vs 0.05 美元/kWh），仅这一项就把电费从约 0.3 美元/kg 抬高到约 1.0 美元/kg，把总成本推到 4.5–5.5 美元/kg。</p>
+<blockquote>
+<p><strong>这对选址的启示</strong>：RAS 本质上是"把电变成鱼"的生意。没有廉价、稳定的电力（和热源），再好的技术也难盈利。这也是为什么有经验的设计者会建议靠近水电、风电或工业余热——每一度电的成本改善，都直接落到利润上。</p>
+</blockquote>
+<h3>其他运营成本</h3>
+<p>除了能耗，OPEX 还包括苗种、饲料（饲料系数通常 1:1.1–1.4）、液氧、动保、人工。这些相对可控，但能耗是那个最容易失控、且一旦失控就吃掉全部利润的变量。</p>
+<hr />
+<h2>四、最容易被忽略的账：失败的代价</h2>
+<p>谈赚钱前，必须看亏钱——因为 RAS 的失败案例密度，远高于行业愿意承认的程度。</p>
+<p>国际上，仅近几年公开的大型 RAS 破产/危机就包括：Inter Aqua Advance（2018）、Billund Aquaculture（2024 计划破产）、Gaia Salmon（2025，奥斯陆法庭判赔）、West Coast Salmon（2025，从未动工即清算）、Atlantic Sapphire（迈阿密设施多次大规模死亡）。</p>
+<blockquote>
+<p>完整失败案例与教训见本站<a href="/library/norway-ras.html">挪威 RAS 运营资料汇编第二册</a>。</p>
+</blockquote>
+<p>国内的情况，一线从业者描述得更直白：循环水养殖"十人养殖九人亏"，前几年池塘循环水火爆时"养殖的人都是盯准政府那一点补贴"，但"最后绝大多数都失败了，即使有少数成功了也不赚钱"。</p>
+<p>这些失败的共同原因不是技术不行，而是：</p>
+<ol>
+<li><strong>前期设计/施工出错</strong>——鱼离不开水，水温波动、溶氧不足都是致命的。前期设计没做好，后面改动的代价是数倍。一位从业者总结成功率构成：规划设计建设占 4 成、养殖过程占 3 成、销售占 3 成。</li>
+<li><strong>能耗/选址失控</strong>——没有廉价热源水源，"仅加热及换水的成本就不支持养殖场盈利"。</li>
+<li><strong>把系统当成全部，忽视了管理</strong>——"三分技术，七分管理"。再好的硬件，运营管理跟不上也是亏。</li>
+</ol>
+<hr />
+<h2>五、那么，什么样的项目能赚钱？</h2>
+<p>把上面的账反过来看，盈利项目的画像就清晰了：</p>
+<p><strong>1. 选对品种。</strong> 高价值品种（石斑、鲑鳟、特定虾类）才能覆盖 RAS 的高成本。低值鱼用 RAS 养，账很难算平。</p>
+<p><strong>2. 选对地段。</strong> 廉价稳定的电力和热源是硬指标。靠近水电/风电/工业余热的地段，盈利概率显著更高。</p>
+<p><strong>3. 控住能耗。</strong> 从增氧效率（用微纳米气泡而非粗气泡）、厂房保温、设备选型多个环节抠 kWh/kg。每一点能耗改善都是纯利润。</p>
+<p><strong>4. 精算先行，别信"拍脑袋"的可研。</strong> 把 CAPEX、OPEX、产能、回本周期算清楚再投。这恰恰是大多数失败项目最薄弱的环节——要么没认真算，要么信了销售给的乐观数字。</p>
+<p><strong>5. 重视运营管理。</strong> 七分管理不是空话。再好的系统，缺乏专业运营团队也会亏。</p>
+<hr />
+<h2>六、自己算一遍：别用别人的数字做你的决策</h2>
+<p>这篇文章给的是行业区间和判断逻辑，但<strong>你的项目能不能赚钱，取决于你的品种、你的地段、你的电价、你的规模</strong>——没有任何一篇通用文章能替你回答。</p>
+<p>我们开发了一个免费的开源工具 <strong>iRAS</strong>，可以输入你自己的项目参数（养殖品种、产量、水温、电价等），自动测算工艺设计、设备清单、建设投资（CAPEX）、运营成本（OPEX）与财务评价（回本周期、IRR），并生成可行性研究报告。</p>
+<p>它不卖设备、不接广告，所有物理模型基于公开文献校准，计算过程透明可查。<strong>与其相信设备商给你的乐观数字，不如自己算一遍。</strong></p>
+<p style="text-align:center;margin:28px 0;"><a href="/" class="cta-final">打开 iRAS 工具，测算你的项目 →</a></p>
+<p>如果你想在算之前先看看别人是怎么成功和失败的，挪威几十个真实项目的造价、能耗、事故与教训，都整理在了我们的<a href="/library/norway-ras.html">挪威 RAS 运营资料汇编</a>里。</p>
+<hr />
+<h2>总结</h2>
+<p>循环水养殖能不能赚钱？<strong>能，但它是一门需要精算的重资产生意，不是买套先进设备就能稳赚的生意。</strong></p>
+<ul>
+<li><strong>建设投资</strong>容易被低估，大型项目实绩普遍是早期预期的两倍；</li>
+<li><strong>运营成本</strong>的命门是能耗和电价，选址几乎决定成败；</li>
+<li><strong>失败案例</strong>密度很高，且原因多在设计、选址和管理，而非技术本身；</li>
+<li><strong>能赚钱的项目</strong>都做对了同一件事：选对品种地段、控住能耗、精算先行、重视管理。</li>
+</ul>
+<p>最实在的建议是：<strong>别用别人的数字做你的决策。</strong> 把你自己的参数算一遍，看清楚回本周期和盈亏平衡点，再决定要不要投。</p>
+<hr />
+<p><em>本文数据来源包括行业实测报告、上市公司财报、学术文献及一线从业者公开访谈，力求中立。具体数字会因时间、地区、品种而变化，引用时请核对最新情况。本文不构成投资建议。</em></p>
+</article>
+</body>
+</html>
