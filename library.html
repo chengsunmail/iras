@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iRAS 资料库 — 循环水养殖 (RAS) 水力学 / 水质 / SOP / 工程设计手册 | iras.cn</title>
+<meta name="description" content="iRAS 资料库汇集循环水养殖 (RAS) 工程原创手册：鱼池水力学与流场控制、标准操作规程 (SOP) 与水质参数限值、16 章完整工程设计技术手册。每项数据均标注文献与法规出处，开源免费，AGPL v3。作者孙程 / 海南登登科技 / iras.cn。">
+<meta name="keywords" content="循环水养殖,RAS,工厂化养殖,鱼池水力学,切向进水,水质参数,标准操作规程,SOP,大西洋鲑,RAS工程设计,iRAS">
+<link rel="canonical" href="https://iras.cn/library.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4d8'/%3E%3Ctext x='50' y='62' font-family='-apple-system,sans-serif' font-size='42' font-weight='800' text-anchor='middle' fill='%23fff'%3EiR%3C/text%3E%3C/svg%3E">
+
+<!-- Open Graph / 社交分享 -->
+<meta property="og:title" content="iRAS 资料库 — 循环水养殖 (RAS) 工程手册">
+<meta property="og:description" content="鱼池水力学、SOP 与水质参数、完整工程设计手册。开源免费，每项数据可追溯。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://iras.cn/library.html">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --ind-bg: #0a1628;
+    --ind-panel: #0f2340;
+    --ind-card: #13304f;
+    --ind-border: #1e4976;
+    --ind-accent: #00b4d8;
+    --ind-accent2: #48cae4;
+    --ind-warn: #ffb703;
+    --ind-ok: #06d6a0;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at top left, #0d2847 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, #0a1f3a 0%, transparent 50%),
+      #071220;
+    color: #e6f1ff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+  }
+  /* 顶部导航条 */
+  .topbar {
+    background: rgba(7,18,32,0.85);
+    border-bottom: 1px solid var(--ind-border);
+    backdrop-filter: blur(8px);
+  }
+  /* 手册卡片 */
+  .doc-card {
+    background: linear-gradient(145deg, rgba(19,48,79,0.85), rgba(15,35,64,0.92));
+    border: 1px solid var(--ind-border);
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .doc-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--ind-accent);
+    box-shadow: 0 10px 32px rgba(0,180,216,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .doc-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    background: rgba(0,180,216,0.12);
+    border: 1px solid rgba(0,180,216,0.3);
+  }
+  .tag-chip {
+    background: rgba(0,180,216,0.1);
+    border: 1px solid rgba(0,180,216,0.28);
+    color: #7fe0f5;
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .btn-read {
+    background: linear-gradient(135deg, #00b4d8, #0096c7);
+    color: #fff; font-weight: 600;
+    border-radius: 9px;
+    padding: 9px 0;
+    text-align: center;
+    transition: filter 0.15s;
+    border: none;
+  }
+  .btn-read:hover { filter: brightness(1.12); }
+  .btn-pdf {
+    background: rgba(7,18,32,0.6);
+    border: 1px solid var(--ind-border);
+    color: #94d4e8; font-weight: 600;
+    border-radius: 9px;
+    padding: 9px 0;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .btn-pdf:hover { border-color: var(--ind-accent); color: #c8eef8; }
+  /* 即将推出占位卡 */
+  .doc-card.soon {
+    border-style: dashed;
+    opacity: 0.6;
+    background: linear-gradient(145deg, rgba(19,48,79,0.4), rgba(15,35,64,0.5));
+  }
+  .doc-card.soon:hover { transform: none; border-color: var(--ind-border); box-shadow: none; }
+  a { text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航条 ===== -->
+<div class="topbar sticky top-0 z-20">
+  <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center font-extrabold text-white text-sm" style="background:#00b4d8">iR</div>
+      <span class="font-bold text-cyan-100 text-lg">iRAS 资料库</span>
+    </div>
+    <a href="/" class="text-sm text-cyan-300 hover:text-cyan-100 flex items-center gap-1.5 transition">
+      <span>←</span> 返回 iRAS 工具
+    </a>
+  </div>
+</div>
+
+<!-- ===== 头部定位区 ===== -->
+<header class="max-w-6xl mx-auto px-5 pt-12 pb-8 text-center">
+  <div class="inline-flex items-center gap-2 text-4xl mb-3">📚</div>
+  <h1 class="text-3xl sm:text-4xl font-extrabold text-cyan-50 mb-3">iRAS 资料库</h1>
+  <p class="text-lg text-cyan-200/90 mb-2">循环水养殖 (RAS) 工程手册与技术资料</p>
+  <p class="text-sm text-slate-400 max-w-2xl mx-auto leading-relaxed">
+    iRAS 工具背后的工程知识 —— 原创深度手册，每项数据均标注文献与法规出处。<br class="hidden sm:block">
+    覆盖鱼池水力学、水质运行参数、标准操作规程与完整工程设计方法。开源免费。
+  </p>
+</header>
+
+<!-- ===== 手册卡片网格 ===== -->
+<main class="max-w-6xl mx-auto px-5 pb-16">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- 卡片 1: 水力学手册 -->
+    <div class="doc-card p-6">
+      <div class="doc-icon mb-4">💧</div>
+      <h2 class="text-xl font-bold text-cyan-50 mb-1.5">鱼池水力学与流场控制工程手册</h2>
+      <p class="text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+        圆池 / 八角池 / 方圆角池的水力学对比、流速生理准则 (BL/s)、切向进水设计、深径比、CFD 工程应用与现场调试。含决策树、文献值与设计算例。
+      </p>
+      <div class="flex flex-wrap gap-1.5 mb-5">
+        <span class="tag-chip">8 章 + 4 附录</span>
+        <span class="tag-chip">40 表</span>
+        <span class="tag-chip">v0.1</span>
+      </div>
+      <div class="grid grid-cols-1 gap-2 mt-auto">
+        <a href="/library/hydraulics.html" class="btn-read">在线阅读</a>
+      </div>
+    </div>
+
+    <!-- 卡片 2: SOP + 水质手册 -->
+    <div class="doc-card p-6">
+      <div class="doc-icon mb-4">🧪</div>
+      <h2 class="text-xl font-bold text-cyan-50 mb-1.5">RAS 标准操作规程框架与水质参数手册</h2>
+      <p class="text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+        启动 / 日常运行 / 应急处置三大场景的 SOP 框架，配大西洋鲑 Post-smolt / 成鱼阶段水质运行参数限值表。每项数据标注文献或法规出处，可直接用于本场 SOP 制定。
+      </p>
+      <div class="flex flex-wrap gap-1.5 mb-5">
+        <span class="tag-chip">SOP 框架</span>
+        <span class="tag-chip">水质限值表</span>
+        <span class="tag-chip">大西洋鲑</span>
+        <span class="tag-chip">V1.0</span>
+      </div>
+      <div class="grid grid-cols-1 gap-2 mt-auto">
+        <a href="/library/sop-water-quality.html" class="btn-read">在线阅读</a>
+      </div>
+    </div>
+
+    <!-- 卡片 3: 技术手册 v1.9 -->
+    <div class="doc-card p-6">
+      <div class="doc-icon mb-4">📖</div>
+      <h2 class="text-xl font-bold text-cyan-50 mb-1.5">iRAS 技术手册</h2>
+      <p class="text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+        16 章完整 RAS 工程设计方法论：工艺设计、碳酸盐平衡水化学、P&amp;ID 工艺图、设备清单、投资财务评价与可研报告生成。iRAS 工具的物理建模与算法出处。
+      </p>
+      <div class="flex flex-wrap gap-1.5 mb-5">
+        <span class="tag-chip">16 章</span>
+        <span class="tag-chip">124 页</span>
+        <span class="tag-chip">v1.9</span>
+      </div>
+      <div class="grid grid-cols-1 gap-2 mt-auto">
+        <a href="/library/manual.html" class="btn-read">在线阅读</a>
+      </div>
+    </div>
+
+    <!-- 占位: 即将推出 (预留扩展位) -->
+    <div class="doc-card soon p-6 items-center justify-center text-center min-h-[260px]">
+      <div class="text-3xl mb-3 opacity-50">➕</div>
+      <h2 class="text-base font-bold text-slate-400 mb-1.5">更多手册陆续上线</h2>
+      <p class="text-xs text-slate-500 leading-relaxed">
+        国际案例数据、设备选型指南、文献与术语索引等正在整理中。
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<!-- ===== 页脚 ===== -->
+<footer class="border-t border-slate-700/50 mt-4">
+  <div class="max-w-6xl mx-auto px-5 py-8 text-center text-sm text-slate-400 space-y-3">
+    <p class="text-slate-300">
+      <strong>关于资料库</strong> —— 本资料库收录的手册为开源文档，允许免费下载、使用、复制、传播、修改与改编，可用于商业与非商业用途。使用时请保留原始作者署名与来源。
+    </p>
+    <p>
+      作者：<span class="text-cyan-300">孙程</span> · 海南登登科技咨询有限公司 ·
+      <a href="https://iras.cn" class="text-cyan-300 hover:text-cyan-100">iras.cn</a>
+    </p>
+    <p class="text-xs text-slate-500">
+      联系：6881509@qq.com ·
+      <a href="https://github.com/chengsunmail/iras" class="text-slate-400 hover:text-cyan-300">GitHub</a> ·
+      <a href="https://gitee.com/chengsunmail/iras" class="text-slate-400 hover:text-cyan-300">Gitee</a> ·
+      内容授权 AGPL v3 / 文档开源
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
