@@ -32,8 +32,8 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.9</title>
-<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 新增碳酸盐平衡求解 (pH/NH3/方解石饱和度), 物理建模对照 PyCO2SYS 验证。1000t 三文鱼综合成本 36.70 元/kg。">
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.9.1</title>
+<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 新增碳酸盐平衡求解 (pH/NH3/方解石饱和度), 物理建模对照 PyCO2SYS 验证; v1.9.1 修正液氧消耗口径与蒸发系数量纲。1000t 三文鱼综合成本 36.70 元/kg。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
 <meta name="googlebot" content="index,follow">
@@ -46,17 +46,17 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.9">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.9.1">
 <meta property="og:description" content="覆盖工艺设计→P&ID→设备清单→投资概算→16 章可研报告完整工作流。AGPL v3 永久免费。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.9">
+<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.9.1">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.9">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.9.1">
 <meta name="twitter:description" content="循环水养殖 / 工厂化养殖工程设计开源工具。AGPL v3 永久免费。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
@@ -76,7 +76,7 @@
   "applicationCategory": "EngineeringApplication",
   "applicationSubCategory": "Aquaculture Engineering Design",
   "operatingSystem": "Any (Web Browser)",
-  "softwareVersion": "1.9.0",
+  "softwareVersion": "1.9.1",
   "datePublished": "2026-06-28",
   "inLanguage": "zh-CN",
   "license": "https://www.gnu.org/licenses/agpl-3.0.html",
@@ -761,7 +761,7 @@
         <button type="button" id="btnOpenFinance" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开投资财务评价页面 (NPV/IRR/敏感性 + Excel 导出)">💰 投资财务评价</button>
         <button type="button" id="btnOpenReport" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="在新窗口打开可研报告生成器 (按发改委 16 章规范输出 docx)">📄 生成可研报告</button>
         <button type="button" id="btnPrint" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40 shrink-0" title="打印 / 在打印对话框中选「另存为 PDF」可导出 PDF">🖨️ 打印</button>
-        <a href="/library.html" class="no-print text-[10px] px-2 py-1 rounded border border-cyan-500 text-cyan-300 hover:bg-cyan-900/30 shrink-0" title="iRAS 资料库 — 鱼池水力学、SOP 与水质参数、技术手册等原创工程手册">📚 资料库</a>
+        <a href="/library.html" class="no-print text-[10px] px-2 py-1 rounded border border-cyan-500 text-cyan-300 hover:bg-cyan-900/30 shrink-0" title="iRAS 资料库 — 鱼池水力学、SOP 与水质参数、技术手册、挪威 RAS 对标资料">📚 资料库</a>
         <button type="button" id="btnHelp" class="no-print text-[10px] px-2 py-1 rounded border border-slate-600 text-slate-300 hover:bg-slate-700/40">? 帮助</button>
       </div>
     </div>
@@ -772,6 +772,7 @@
       <button type="button" id="btnAddStage" class="text-[10px] px-2 py-1 rounded border border-cyan-600 text-cyan-300 hover:bg-cyan-900/30">+ 添加阶段</button>
       <!-- 危险: rose (会覆盖所有用户编辑) -->
       <button type="button" id="btnResetSpeciesStages" class="text-[10px] px-2 py-1 rounded border border-rose-700/60 text-rose-400 hover:bg-rose-900/30 shrink-0">↺ 恢复鱼种默认</button>
+      <button type="button" id="btnClearCache" class="text-[10px] px-2 py-1 rounded border border-rose-700/60 text-rose-400 hover:bg-rose-900/30 shrink-0" title="清除自动保存的方案数据与浏览器缓存，重新加载为全新状态（用于版本升级后结果异常）">🗑️ Clear cache</button>
     </div>
   </div>
 </header>
@@ -1040,7 +1041,7 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> v1.9 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> v1.9.1 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -1066,7 +1067,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: v1.9.0 · 发布日期: 2026-06-28</div>
+          <div>版本: v1.9.1 · 发布日期: 2026-07-18</div>
           <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -3125,7 +3126,7 @@
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
-  version: '1.9.0',
+  version: '1.9.1',
   releaseDate: '2026-06-28',
   author: '孙程',
   email: '6881509@qq.com',
@@ -3591,17 +3592,25 @@ function latentHeat_water(T) {
  * 蒸发系数 β [m/s], 对流传质系数 (mass transfer coefficient)
  * 物理: m_evap [kg/(s·m²)] = β × ρ_air × (W_pool_sat - W_room)
  *                          = β × ρ_air × ΔW
- * 数据源 (ASHRAE Applications 2019, Ch.6 Indoor Pools):
- *   静水面, 自然对流: β ≈ 0.045-0.075 m/s (RH 50-80%)
- *   微气流 0.1-0.3 m/s 时 β ≈ 0.060-0.090 m/s
- * 工业 RAS 取室内中等风速默认 0.060 m/s
  *
- * 注: 旧版 Carrier 1918 公式用经验式 (95+0.425V), 单位换算复杂; 改用 ASHRAE 现代形式
+ * 推导 (Lewis 传热传质类比):
+ *   β = h_c / (ρ_air · c_p · Le^(2/3))
+ *   取 ρ_air = 1.2 kg/m³, c_p = 1006 J/(kg·K), Le^(2/3) ≈ 0.91
+ *   水面对流换热 h_c [W/m²K] = 4.0 + 6.0 × v_air (随风速增强)
+ *   → β ≈ 0.0035 - 0.010 m/s
+ *
+ * ⚠️ 出处更正 (v2.0):
+ *   旧版注释声称 β 取自 ASHRAE Applications Ch.6 的 0.045-0.075 m/s —— 这是错误出处。
+ *   ASHRAE / Carrier 的池面蒸发系数 (≈0.045-0.089) 是定义在**蒸气压差**上的英制系数
+ *   [lb/(h·ft²·inHg)], 不能直接当作 ΔW × ρ_air 形式的 β [m/s] 使用,
+ *   否则高估约一个数量级 (约 13 倍)。
+ *   交叉验证: 把 ASHRAE 的 0.089 换算到湿度比基准, 同样得到 β ≈ 0.005 m/s。
  */
 function evapCoeff(v_air) {
   v_air = (v_air != null) ? v_air : 0.15;
-  // 经验拟合: β [m/s] = 0.045 + 0.10 × v_air, 限制在 [0.045, 0.15]
-  return Math.max(0.045, Math.min(0.045 + 0.10 * v_air, 0.15));
+  const h_c  = 4.0 + 6.0 * v_air;              // W/m²K,水面对流换热(随风速增强)
+  const beta = h_c / (1.2 * 1006 * 0.91);      // Lewis 传热传质类比 → m/s
+  return Math.max(0.0035, Math.min(beta, 0.010));
 }
 
 // 池盖修正系数
@@ -5154,8 +5163,17 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   const o2AbsEff = isAir ? 1.0 : (proc.o2AbsorptionEff || 85) / 100;
   // 设备峰值供氧能力 (kg/h)
   const o2PeakSupplyKgH = (load.o2FishPeakHourly || 0) * sAerator / o2AbsEff;
-  // 等效日量 (kg/d, 用于报价/储罐尺寸/CAPEX 计价基准)
+  // 峰值持续 24h 的等效日量(kg/d)—— 仅限 CAPEX / 设备容量口径。
+  // 注意:含 peakFactor × sAerator 选型余量。禁止用于液氧采购/OPEX 或基准值,
+  // 那些请用下方的 o2ConsumptionDaily / o2ConsumptionDailyAvg。
   const o2Demand = o2PeakSupplyKgH * 24;
+
+  // 液氧实际消耗量(kg/d)—— OPEX / 基准值口径
+  // 液氧是按量计费的消耗品:只有吸收效率会合理放大采购量;
+  // peakFactor(日→小时峰值)与 sAerator(设备老化余量)是容量系数,不得用于消耗品
+  //(参见 calcStageLoad 头部原则:peakFactor 只用于"日→小时峰值",绝不放大日总量)
+  const o2ConsumptionDaily    = isAir ? 0 : (load.o2FishDaily    || 0) / o2AbsEff;  // kg/d,满负荷口径
+  const o2ConsumptionDailyAvg = isAir ? 0 : (load.o2FishDailyAvg || 0) / o2AbsEff;  // kg/d,周期均值口径
 
   let aerationSpec;
   if (isAir) {
@@ -5329,6 +5347,8 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
 
     // 快动力学设备 (基于小时峰值 × safety)
     aerationSpec, o2Demand, o2PeakSupplyKgH, isAir,
+    // 液氧消耗口径(不含选型余量)—— 供 OPEX / 基准值使用
+    o2ConsumptionDaily, o2ConsumptionDailyAvg, o2AbsEff,
     bfBlowerSpec,
 
     degasArea, co2StripperSpec,
@@ -6137,11 +6157,18 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex) {
     aerationCostAvg = aerationCostMax * loadRatio;
     aerationLabel = '主风机电费';
   } else {
-    aerationCostMax = eq.o2Demand * o2Price;
-    const avgRatio = load.o2FishDailyAvg / Math.max(load.o2FishDaily, 1);
-    aerationCostAvg = eq.o2Demand * avgRatio * o2Price;
-    o2KgDailyMax = eq.o2Demand;                 // v1.6: 设备日量 kg/d
-    o2KgDailyAvg = eq.o2Demand * avgRatio;      // v1.6: 日均 kg/d
+    // 液氧是消耗品:按实际消耗计价(不含 peakFactor / sAerator)
+    // 仅当新字段缺失(旧存档)时回退到旧口径
+    const o2ConsMax = (eq.o2ConsumptionDaily != null)
+      ? eq.o2ConsumptionDaily
+      : eq.o2Demand / ((load.peakFactor || 1.5) * (proc.safetyAerator || 1.10));
+    const o2ConsAvg = (eq.o2ConsumptionDailyAvg != null)
+      ? eq.o2ConsumptionDailyAvg
+      : o2ConsMax * (load.o2FishDailyAvg / Math.max(load.o2FishDaily, 1));
+    aerationCostMax = o2ConsMax * o2Price;
+    aerationCostAvg = o2ConsAvg * o2Price;
+    o2KgDailyMax = o2ConsMax;                   // 满负荷液氧消耗 kg/d
+    o2KgDailyAvg = o2ConsAvg;                   // 周期均值液氧消耗 kg/d
     aerationLabel = '液氧费用';
   }
   // BF 粗孔曝气风机电费 (独立于主增氧, 24h 运行)
@@ -6478,9 +6505,14 @@ function calcSiteCapex(stages, eqPrices, allResults) {
     if (allResults) {
       allResults.forEach((r, i) => {
         if (r && r.eq && !r.eq.isAir && r.eq.o2Demand > 0) {
-          const avgRatio = (r.load && r.load.o2FishDaily > 0)
-            ? r.load.o2FishDailyAvg / r.load.o2FishDaily : 0.7;
-          totalO2KgDaily += r.eq.o2Demand * avgRatio;
+          // 消耗口径(不含 peakFactor / sAerator);旧存档回退
+          if (r.eq.o2ConsumptionDailyAvg != null) {
+            totalO2KgDaily += r.eq.o2ConsumptionDailyAvg;
+          } else {
+            const avgRatio = (r.load && r.load.o2FishDaily > 0)
+              ? r.load.o2FishDailyAvg / r.load.o2FishDaily : 0.7;
+            totalO2KgDaily += r.eq.o2Demand * avgRatio;
+          }
         }
       });
     }
@@ -8163,8 +8195,14 @@ function renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage) 
   //    仅纯氧模式有意义; 不含 BF 曝气供氧
   let o2TankPerFeed = null;
   if (eq && !eq.isAir && eq.o2Demand > 0) {
-    const loadRatio = Math.max(0.5, load.o2FishDailyAvg / Math.max(load.o2FishDaily, 1));
-    o2TankPerFeed = eq.o2Demand * loadRatio / feedAvg;
+    // 消耗口径:每 kg 饲料采购液氧 = 鱼耗氧 / 吸收效率
+    // 不得含 peakFactor / sAerator,否则显示约 0.44,而文献约 0.25–0.30
+    if (eq.o2ConsumptionDailyAvg != null && feedAvg > 0) {
+      o2TankPerFeed = eq.o2ConsumptionDailyAvg / feedAvg;
+    } else {
+      const loadRatio = Math.max(0.5, load.o2FishDailyAvg / Math.max(load.o2FishDaily, 1));
+      o2TankPerFeed = eq.o2Demand * loadRatio / feedAvg;
+    }
   }
   // 6) 系统总氧/饲料 (含 BF 曝气) — RAS 内部实际 O2 消耗
   //    总氧 = 鱼生理 + 硝化 + DOM 分解 (即 o2DailyTotal)
@@ -8203,8 +8241,8 @@ function renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage) 
     },
     {
       key: '鱼池液氧',  unit: 'kg O₂/kg 饲料', value: o2TankPerFeed,
-      lo: 0.25, hi: 0.95,
-      ref: 'Summerfelt 鲑鱼 0.3-0.7; 对虾甲壳代谢可达 0.85+ (含 safety/吸收率)'
+      lo: 0.20, hi: 0.45,
+      ref: '液氧采购量 = 鱼耗氧 / 吸收效率。鲑鱼约 0.27,温水种约 0.33-0.35;区间覆盖物种与阶段温度差异。不含选型余量,不含生物滤池曝气'
     },
     {
       key: '系统总氧',  unit: 'kg O₂/kg 饲料', value: o2TotalPerFeed,
@@ -9755,7 +9793,10 @@ function restoreState(state) {
 // localStorage 自动保存 (每次 recomputeAll 后调用)
 // v1.5 Bug 21: 失败时给用户可见提示 (旧版完全静默 catch, 用户不知道存档失败)
 let _autoSaveQuotaWarned = false;
+// 清除缓存后置为 true, 阻止页面跳转前的残余 recomputeAll 把数据写回
+let _autoSaveDisabled = false;
 function autoSave() {
+  if (_autoSaveDisabled) return;
   try {
     const json = JSON.stringify(collectState());
     // 超过 4 MB 时 localStorage 可能拒绝写入 (典型上限 5 MB)
@@ -10152,6 +10193,65 @@ document.getElementById('btnResetSpeciesStages').addEventListener('click', () =>
   loadStagesFromDB(currentSpecies);
   rebuildStages();
   recomputeAll();
+});
+
+// 彻底重置: 清除本地保存的方案数据 + 浏览器缓存, 回到全新状态
+// 用途: (a) 版本升级后旧方案数据导致结果异常  (b) 页面版本不是最新
+//   1) 清除 localStorage 中全部 iRAS 数据(自动保存方案、跨页面数据、公告标记)
+//   2) 清除 Cache Storage / Service Worker 缓存(若有)
+//   3) 用时间戳查询参数绕过 HTTP 缓存重新加载
+document.getElementById('btnClearCache').addEventListener('click', async () => {
+  if (!confirm(
+    '将清除本浏览器保存的全部 iRAS 数据并重新加载：\n' +
+    '  · 自动保存的方案(当前参数与计算结果)\n' +
+    '  · P&ID / 设备清单 / 财务 / 可研的跨页面数据\n' +
+    '  · 浏览器缓存(强制拉取服务器最新版本)\n\n' +
+    '⚠️ 此操作不可撤销。若想保留当前方案，请先点「💾 保存方案」导出 JSON 文件。\n\n' +
+    '常见用途：版本升级后旧数据导致计算结果异常，或页面不是最新版。\n\n' +
+    '确定继续？'
+  )) return;
+
+  let removed = 0;
+
+  // 0) 先禁用自动保存, 防止清除后残余的 recomputeAll 把方案写回 localStorage
+  _autoSaveDisabled = true;
+
+  // 1) 清除 localStorage 中全部 iRAS 数据
+  try {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && /^iRAS[_-]/i.test(k)) keys.push(k);
+    }
+    keys.forEach(k => { try { localStorage.removeItem(k); removed++; } catch(e) {} });
+    // 兜底: 显式清除已知 key
+    [IRAS_STORAGE_KEY, PID_SHARE_KEY, EQUIPMENT_SHARE_KEY, FINANCE_SHARE_KEY, REPORT_SHARE_KEY]
+      .forEach(k => { try { if (k && localStorage.getItem(k) !== null) { localStorage.removeItem(k); removed++; } } catch(e) {} });
+  } catch (e) {
+    alert('清除本地数据失败：' + (e.message || e) + '\n\n可能是浏览器隐私模式或存储被禁用。');
+    return;
+  }
+
+  // 2) 清除 Cache Storage(PWA/Service Worker 缓存, 若存在)
+  try {
+    if (window.caches && caches.keys) {
+      const names = await caches.keys();
+      await Promise.all(names.map(n => caches.delete(n)));
+    }
+  } catch (e) { /* 不支持或被禁用, 忽略 */ }
+
+  // 3) 注销 Service Worker(若有), 避免它继续返回旧缓存
+  try {
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r => r.unregister()));
+    }
+  } catch (e) { /* 忽略 */ }
+
+  alert('已清除 ' + removed + ' 项本地数据。\n\n点击确定后页面将重新加载为全新状态。');
+
+  // 4) 带时间戳重新加载, 绕过 HTTP 缓存
+  location.replace(location.pathname + '?nocache=' + Date.now());
 });
 
 // 添加阶段: 在末尾追加, 体重自动衔接
