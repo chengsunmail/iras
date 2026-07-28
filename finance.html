@@ -274,6 +274,7 @@
       <div class="field">
         <label>人工成本 <span class="hint">(万元/年, 默认按规模估)</span></label>
         <input type="number" id="inpLaborCost" step="10" min="0" value="0">
+        <div id="laborHint" style="font-size:10px;color:#64748b;margin-top:2px;"></div>
       </div>
     </div>
   </div>
@@ -347,10 +348,21 @@ function bootstrap(srcLabel) {
       priceEl.value = defaultPrice;
     }
   }
-  // 人工成本默认按规模估算
+  // 人工成本默认值
+  //   v1.9.2: 优先用主页面导出的 annualLabor —— 主页面按【定员 × 人均年成本】计算,
+  //   定员 = max(最小班组, 年产量 ÷ 劳动生产率), 三个参数在主页面 UI 上可调.
+  //   旧的 estimateLaborCost 是写死的阶梯函数 (5 万元/人·年口径), 与主页面相差 1.1-2 倍,
+  //   会让同一份可研的成本表与财务章出现两个人工成本. 仅在主页面未导出时回退.
   const laborEl = document.getElementById('inpLaborCost');
   if (laborEl && +laborEl.value === 0) {
-    laborEl.value = estimateLaborCost(d.yieldTons);  // 万元/年
+    const finSum = (d.results && d.results.summary && d.results.summary.finance) || {};
+    if (finSum.annualLabor > 0) {
+      laborEl.value = Math.round(finSum.annualLabor / 10000);      // 元 → 万元
+      const hint = document.getElementById('laborHint');
+      if (hint) hint.textContent = `主页面定员 ${finSum.headcount || '—'} 人`;
+    } else {
+      laborEl.value = estimateLaborCost(d.yieldTons);              // 回退: 老版本主页面
+    }
   }
   recalc();
 }
@@ -532,7 +544,7 @@ function renderCostTable(c) {
   const total = sat.opCostTotal + sat.dep + sat.interest;
   const pct = v => total > 0 ? (v/total*100).toFixed(1) + '%' : '—';
   html += `<tr><td>1. 经营成本 (饲料/电/液氧/化学品 等 OPEX)</td><td>${fmt.wan(sat.operatingCost)}</td><td>${pct(sat.operatingCost)}</td></tr>`;
-  html += `<tr><td>2. 修理费 (${(c.params.repairRate*100).toFixed(1)}% × 设备)</td><td>${fmt.wan(sat.repairCost)}</td><td>${pct(sat.repairCost)}</td></tr>`;
+  html += `<tr><td>2. 修理费 (${(c.params.repairRate*100).toFixed(1)}% × 设备)<br><span style="font-size:10px;color:#64748b;">主页面 OPEX 基数已剔除维护费，此处不重复计算</span></td><td>${fmt.wan(sat.repairCost)}</td><td>${pct(sat.repairCost)}</td></tr>`;
   html += `<tr><td>3. 管理费 (${(c.params.adminRate*100).toFixed(1)}% × 销售收入)</td><td>${fmt.wan(sat.adminCost)}</td><td>${pct(sat.adminCost)}</td></tr>`;
   html += `<tr><td>4. 人工成本</td><td>${fmt.wan(sat.laborCost)}</td><td>${pct(sat.laborCost)}</td></tr>`;
   html += `<tr class="subtotal"><td>5. 经营成本小计</td><td>${fmt.wan(sat.opCostTotal)}</td><td>${pct(sat.opCostTotal)}</td></tr>`;

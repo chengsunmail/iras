@@ -521,7 +521,8 @@
 运营|年销售收入(满产)|{{ ((farm.yieldTons * 1000 * finance.params.price)/10000)|round(0) }} 万元
 运营|年总成本费用(满产)|{{ finance.tables.totalCost.total|wan }} 万元
 运营|年净利润(满产)|{{ finance.tables.profitLoss.y3.profitNet|wan }} 万元
-运营|综合成本|{{ opex.costPerKg|round(2) }} 元/kg
+运营|工艺运行成本|{{ opex.costPerKg|round(2) }} 元/kg
+运营|企业全成本|{{ opex.fullCostPerKg|round(2) }} 元/kg
 @@SUBTOTAL@@财务评价指标|—|—
 财务评价指标|全投资 IRR(税后)|{{ (finance.indicators.irrTotal*100)|round(2) }}%
 财务评价指标|自有资金 IRR|{{ (finance.indicators.irrEquity*100)|round(2) }}%
@@ -1273,7 +1274,8 @@ Geosmin/2-MIB|< 5 ng/L|{% if workflow.aop.enabled %}AOP 80-95% 去除{% else %}�
 - <strong>地坪</strong>: 抗腐蚀环氧树脂地坪, 找坡 0.5-1%, 设排水沟
 - <strong>墙面</strong>: 内墙抗腐蚀涂料 + 卫生级防霉, 外墙保温(节能要求)
 - <strong>屋面</strong>: 钢结构屋面板 + 保温层 + 防水层, 设采光窗(白天可借自然光)
-- <strong>通风</strong>: 屋顶通风器或机械通风, 换气次数 6-10 次/h, 防止氨气和湿气积聚
+- <strong>通风</strong>: 屋顶通风器或机械通风。<strong>注意区分两个口径</strong> —— <strong>总循环风量</strong> 6-10 次/h(含除湿机内循环,不带新风热负荷);<strong>新风量</strong>约 1 次/h,按车间 CO₂ ≤1500 ppm 由鱼载荷反算,取 max(ACH × 车间体积, CO₂ 稀释需求)。两者相差 6-10 倍,混用会使通风热负荷严重高估
+- <strong>除湿</strong>: 湿热气候下通风<strong>不能除湿</strong>(室外含湿量高于室内目标值,增大新风只会同时增加湿负荷与制冷负荷),须配机械除湿机;干冷气候靠通风除湿仅需约 0.14 次/h。配除湿机不为省电,是为避免霉菌、结构件腐蚀与电气故障
 - <strong>保温</strong>: 围护保温符合《公共建筑节能设计标准》(GB 50189)
 - <strong>防水</strong>: 地坪 + 1 m 高墙裙做防水处理
 @@END_LIST@@
@@ -2504,7 +2506,8 @@ function renderSummaryBox() {
     <div class="row"><span class="label">📊 方案概要</span></div>
     <div class="row">鱼种: <strong>${d.speciesName || d.species}</strong> · 产量 <strong>${d.yieldTons} t/年</strong> · ${d.stages.length} 阶段</div>
     <div class="row">CAPEX 工程总投资: <strong>${fmt.wan(fin.totalCapexProject)} 万元</strong> · 年 OPEX <strong>${fmt.wan(fin.annualOpex)} 万元</strong> · 年折旧 <strong>${fmt.wan(fin.annualDep)} 万元</strong></div>
-    <div class="row">综合成本: <strong>${fin.costPerKg.toFixed(2)} 元/kg</strong>(其中折旧 ${fin.depPerKg.toFixed(2)} 元/kg)</div>
+    <div class="row">工艺运行成本: <strong>${fin.costPerKg.toFixed(2)} 元/kg</strong>(其中折旧 ${fin.depPerKg.toFixed(2)} 元/kg)</div>
+    ${fin.fullCostPerKg != null ? `<div class="row">企业全成本: <strong>${fin.fullCostPerKg.toFixed(2)} 元/kg</strong>(含苗种/人工/管理费 ${(fin.enterprisePerKg||0).toFixed(2)} 元/kg)</div>` : ''}
   </div>`;
 }
 
@@ -3112,9 +3115,15 @@ function buildContext() {
   const opex = {
     totalAnnual:    fin.annualCost || 0,
     totalExclDep:   fin.annualOpex || 0,
-    costPerKg:      fin.costPerKg || 0,
+    costPerKg:      fin.costPerKg || 0,        // 工艺运行成本 (含维护/保险/补水/排污/折旧)
     depPerKg:       fin.depPerKg || 0,
-    opexPerKg:      fin.opexPerKg || 0
+    opexPerKg:      fin.opexPerKg || 0,
+    // v1.9.2: 企业全成本 = 工艺运行成本 + 苗种 + 人工 + 管理费
+    //   老版本主页面不导出这些字段时回退到工艺成本, 保证模板不出 undefined
+    fullCostPerKg:    (fin.fullCostPerKg != null) ? fin.fullCostPerKg : (fin.costPerKg || 0),
+    enterprisePerKg:  fin.enterprisePerKg || 0,
+    annualMaint:      fin.annualMaint || 0,
+    annualSeed:       fin.annualSeed || 0
   };
 
   // ------- finance 命名空间 -------
@@ -3137,7 +3146,10 @@ function buildContext() {
     salesTax:    0,
     repairRate:  0.02,
     adminRate:   0.03,
-    laborCost:   estimateLaborCost(d.yieldTons) * 10000
+    // v1.9.2: 优先用主页面导出的人工成本 (定员 × 人均年成本, 参数用户可调),
+    //   避免同一份可研的成本表与财务章出现两个人工成本 (旧阶梯函数为 5 万元/人·年口径,
+    //   与主页面 15 万元/人·年 相差 1.1-2 倍). 老版本主页面未导出时回退.
+    laborCost:   (fin.annualLabor > 0) ? fin.annualLabor : estimateLaborCost(d.yieldTons) * 10000
   };
   const finCalc = calculateFinance(d, finParams);
 
