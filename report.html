@@ -521,8 +521,9 @@
 运营|年销售收入(满产)|{{ ((farm.yieldTons * 1000 * finance.params.price)/10000)|round(0) }} 万元
 运营|年总成本费用(满产)|{{ finance.tables.totalCost.total|wan }} 万元
 运营|年净利润(满产)|{{ finance.tables.profitLoss.y3.profitNet|wan }} 万元
-运营|工艺运行成本|{{ opex.costPerKg|round(2) }} 元/kg
-运营|企业全成本|{{ opex.fullCostPerKg|round(2) }} 元/kg
+运营|企业全成本(卖鱼口径)|{{ opex.fullCostPerKg|round(2) }} 元/kg
+运营|　其中工艺运行成本|{{ opex.costPerKg|round(2) }} 元/kg
+运营|　其中苗种/人工/管理费|{{ opex.enterprisePerKg|round(2) }} 元/kg
 @@SUBTOTAL@@财务评价指标|—|—
 财务评价指标|全投资 IRR(税后)|{{ (finance.indicators.irrTotal*100)|round(2) }}%
 财务评价指标|自有资金 IRR|{{ (finance.indicators.irrEquity*100)|round(2) }}%
@@ -2506,8 +2507,8 @@ function renderSummaryBox() {
     <div class="row"><span class="label">📊 方案概要</span></div>
     <div class="row">鱼种: <strong>${d.speciesName || d.species}</strong> · 产量 <strong>${d.yieldTons} t/年</strong> · ${d.stages.length} 阶段</div>
     <div class="row">CAPEX 工程总投资: <strong>${fmt.wan(fin.totalCapexProject)} 万元</strong> · 年 OPEX <strong>${fmt.wan(fin.annualOpex)} 万元</strong> · 年折旧 <strong>${fmt.wan(fin.annualDep)} 万元</strong></div>
-    <div class="row">工艺运行成本: <strong>${fin.costPerKg.toFixed(2)} 元/kg</strong>(其中折旧 ${fin.depPerKg.toFixed(2)} 元/kg)</div>
-    ${fin.fullCostPerKg != null ? `<div class="row">企业全成本: <strong>${fin.fullCostPerKg.toFixed(2)} 元/kg</strong>(含苗种/人工/管理费 ${(fin.enterprisePerKg||0).toFixed(2)} 元/kg)</div>` : ''}
+    ${fin.fullCostPerKg != null ? `<div class="row"><strong>企业全成本(卖鱼口径): ${fin.fullCostPerKg.toFixed(2)} 元/kg</strong></div>` : ''}
+    <div class="row">　其中 工艺运行成本 ${fin.costPerKg.toFixed(2)}(含折旧 ${fin.depPerKg.toFixed(2)}) + 苗种/人工/管理费 ${(fin.enterprisePerKg||0).toFixed(2)}</div>
   </div>`;
 }
 

@@ -821,13 +821,14 @@
 
       <!-- 综合养殖成本 -->
       <div class="p-3 rounded-lg border border-emerald-800/50 bg-emerald-950/20">
-        <div class="text-[10px] text-slate-400 mb-1">养殖成本（每公斤成鱼,卖鱼口径）</div>
+        <div class="text-[10px] text-slate-400 mb-1">养殖成本（每公斤成鱼<span class="text-slate-500">，活重</span>，卖鱼口径）</div>
         <div id="harvestCostPerKgDisplay" class="text-2xl font-bold text-emerald-300 font-mono">—</div>
         <div class="text-[10px] text-slate-500 mt-1">
-          <b class="text-emerald-300">工艺运行成本</b>=饲料+工艺电耗+工艺消耗品+维护+保险+补水+排污+CAPEX折旧；
-          <b class="text-amber-300">企业全成本</b>=再加苗种+人工+管理费。
+          <b class="text-amber-300">企业全成本</b>（主数）= 工艺运行成本 + 苗种 + 人工 + 管理费 —— <b>卖鱼时需要回收的全部成本，用它对售价判断可行性</b>。<br>
+          <b class="text-emerald-300">工艺运行成本</b> = 饲料 + 工艺电耗 + 工艺消耗品 + 维护 + 保险 + 补水 + 排污 + CAPEX 折旧 —— 供工程侧比选方案用。<br>
           均按「全厂日均运行费 × 365 ÷ 成鱼年产量」折算。<br>
-          <span class="text-slate-600">两者<b>均不含</b>包装/物流/加工、疫苗药物、顾问技术服务费——随项目差异极大，须另行估算。
+          <span class="text-slate-600">⚠ 产量为<b>活重</b>口径。若按 HOG（去头去内脏）报价，需除以出成率（鲑鱼约 0.83）再与售价比较。<br>
+          两者<b>均不含</b>包装/物流/加工、疫苗药物、顾问技术服务费——随项目差异极大，须另行估算。
           费率与人工参数可在「② 财务数据和单价配置 → 运营费率与人工」调整。</span>
         </div>
       </div>
@@ -9785,10 +9786,15 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
       const thermalShareColor = thermalCostShare > 10 ? 'text-rose-300' : (thermalCostShare > 5 ? 'text-amber-300' : 'text-slate-400');
       const thermalShareIcon = thermalCostShare > 10 ? '⚠️ ' : '';
       harvestEl.innerHTML =
-        costPerKg.toFixed(2) + ' 元/kg' +
-        `<span class="text-[11px] text-slate-500 font-normal ml-1">工艺运行成本</span>` +
-        `<div class="text-[13px] text-amber-300 font-mono mt-0.5">${fullCostPerKg.toFixed(2)} 元/kg` +
-        `<span class="text-[11px] text-slate-500 font-normal ml-1">企业全成本 (其中苗种+人工+管理费 ${enterprisePerKg.toFixed(2)})</span></div>` +
+        // v1.9.2: 主数取【企业全成本】—— 卖鱼口径要回收的是全部成本,
+        //   只看工艺运行成本会漏掉苗种/人工/管理费, 拿它对售价会误判项目可行性.
+        //   工艺运行成本降为副行, 供工程侧分析用.
+        fullCostPerKg.toFixed(2) + ' 元/kg' +
+        `<span class="text-[11px] text-slate-400 font-normal ml-1">企业全成本</span>` +
+        `<div class="text-[11px] text-slate-400 mt-1 font-normal">` +
+        `工艺运行成本 <span class="text-emerald-300 font-mono">${costPerKg.toFixed(2)}</span>` +
+        ` + 苗种/人工/管理费 <span class="text-amber-300 font-mono">${enterprisePerKg.toFixed(2)}</span>` +
+        `</div>` +
         `<div class="text-[11px] text-slate-400 mt-1 font-normal">` +
         `OPEX <span class="text-amber-300 font-mono">${opexPerKg.toFixed(2)}</span> + 折旧 <span class="text-cyan-300 font-mono">${depPerKg.toFixed(2)}</span>` +
         ` · <span class="${thermalShareColor}" title="v1.2: 热泵电费占总成本比例 (${(annualThermalCost/10000).toFixed(0)} 万元/年). >10% 醒目, 提示该气候下热平衡已是显著成本项. 比电耗 ${thermalKWhPerKg.toFixed(1)} kWh/kg/yr">${thermalShareIcon}热泵 <span class="font-mono">${thermalCostShare.toFixed(1)}%</span></span>` +
@@ -9922,7 +9928,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
     <td class="text-right py-1.5 px-2 font-mono">${totalFlow.toFixed(0)}</td>
     <td class="text-right py-1.5 px-2 font-mono">${totalFeedMax.toFixed(0)}</td>
     <td class="text-right py-1.5 px-2 font-mono">${Math.round(totalCostAvg).toLocaleString('zh-CN')}</td>
-    <td class="text-right py-1.5 px-2 font-mono text-emerald-300">${costPerKg.toFixed(2)}</td>
+    <td class="text-right py-1.5 px-2 font-mono text-emerald-300" title="工艺运行成本口径（各阶段可分摊的部分）。&#10;企业侧的苗种/人工/管理费是全场量、无法按阶段分摊，故不在本表内，&#10;见上方「养殖成本」卡片的企业全成本。">${costPerKg.toFixed(2)}</td>
     <td class="text-right py-1.5 px-2 font-mono text-amber-300">${fmtW(totalCapexEquip)}</td>
     <td class="text-right py-1.5 px-2 font-mono text-amber-200">${fmtW(totalCapexProject)}</td>
   </tr>`;
