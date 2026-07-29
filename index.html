@@ -33,7 +33,7 @@
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
 <title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.9.2</title>
-<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 新增碳酸盐平衡求解 (pH/NH3/方解石饱和度), 物理建模对照 PyCO2SYS 验证; v1.9.1 修正液氧消耗口径与蒸发系数量纲; v1.9.2 修正通风量口径、新增机械除湿机, 并修正泵功率口径 (轴功率 vs 电功率) 与扬程默认值。1000t 三文鱼综合成本 32.65 元/kg (青岛冬工况)。">
+<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 新增碳酸盐平衡求解 (pH/NH3/方解石饱和度), 物理建模对照 PyCO2SYS 验证; v1.9.1 修正液氧消耗口径与蒸发系数量纲; v1.9.2 修正通风量口径、新增机械除湿机, 并修正泵功率口径 (轴功率 vs 电功率) 与扬程默认值。1000t 三文鱼综合成本 35.63 元/kg (工艺运行成本) / 40.52 元/kg (企业全成本), 青岛冬工况。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
 <meta name="googlebot" content="index,follow">
@@ -105,6 +105,15 @@
   "downloadUrl": "https://github.com/chengsunmail/iras/releases"
 }
 </script>
+<!-- ⚠ v1.9.2 审计遗留 (未修复, 属部署决策):
+     1) 两个 CDN 均无 integrity (SRI) 属性 —— CDN 被投毒即可在本站源上执行任意脚本.
+        chart.js 有固定版本号, 可直接加 SRI hash;
+        cdn.tailwindcss.com 是【运行时编译】, 内容随访问变化, 无稳定 hash, 无法做 SRI.
+     2) cdn.tailwindcss.com 官方明确标注"仅供开发, 不要用于生产":
+        每次访问都在客户端跑一遍编译, 首屏会有 FOUC.
+     3) 本工具宣传"离线可用的单文件", 但断网时样式与图表会全失.
+     建议: 把 Tailwind 编译产物与 chart.js 内联进本文件 (已 7xx KB, 增量可接受),
+           彻底去掉 CDN 依赖, 同时解决 SRI、FOUC 与离线三个问题. -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -919,6 +928,9 @@
           <div><label class="text-[10px] text-slate-400" title="比除湿效率 SMER (Specific Moisture Extraction Rate), kg水/kWh.&#10;冷凝式除湿机典型 2-3; 转轮除湿较低; 热泵型可更高.&#10;除湿机电耗 = 除湿量 / SMER.">SMER(kg/kWh)</label><input id="g_dehumSMER" type="number" step="0.1" min="0.5" max="6" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="除湿机冷凝器排热去向 — 对制冷负荷影响很大.&#10;排热量 = 移除潜热 + 压缩机功, 通常是凝结放热的数倍.&#10;• 排至室外: 独立风冷机组, 不影响车间 (默认)&#10;• 排入车间: 移动式/吊装式除湿机, 车间显著升温, 制冷负荷大增&#10;• 热回收给水: 高端机组, 冬季可省加热">冷凝热去向</label><select id="g_dehumHeatDest" class="input-ind !py-1 !text-xs"><option value="outdoor">排至室外</option><option value="indoor">排入车间</option><option value="water">热回收给水</option></select></div>
           <div><label class="text-[10px] text-slate-400" title="除湿机冷凝水是否回收作补水.&#10;冷凝水是蒸馏水级别 (硬度/盐度接近 0), 回收可减少补水量与补水加热能耗.&#10;不回收的情形: 车间空气含尘/含药雾, 或无回收管路.">冷凝水回收</label><select id="g_dehumCondRecovery" class="input-ind !py-1 !text-xs"><option value="1">回收作补水</option><option value="0">直接排放</option></select></div>
+          <div><label class="text-[10px] text-slate-400" title="自然冷却 (free cooling)&#10;制冷工况下, 若【冷源温度 + 逼近温差】低于目标水温,&#10;可直接用干冷器/板换把热排给室外空气或冷源水, 压缩机不启动 ——&#10;只跑风机与泵, 能效比可达 15-30 而非机械制冷的 3-3.5。&#10;&#10;RAS 是常年制冷型负荷, 冬季这条路径能省下绝大部分热泵电耗。&#10;关闭则强制全部走机械压缩制冷 (保守)。">自然冷却</label><select id="g_freeCooling" class="input-ind !py-1 !text-xs"><option value="1">启用</option><option value="0">关闭 (强制机械制冷)</option></select></div>
+          <div><label class="text-[10px] text-slate-400" title="自然冷却逼近温差 K&#10;冷源温度需比目标水温低多少才判定可用。&#10;干冷器对环境 5-10 K;再串一级板换 +2-3 K。&#10;实际总逼近常在 8-13 K, 默认 6 偏乐观但在寒冷气候下余量大、不影响判定;&#10;过渡季 (年均气温接近水温) 附近敏感, 保守可调到 8-10。">逼近温差 K</label><input id="g_fcApproach" type="number" value="6" step="1" min="0" max="20" class="input-ind !py-1 !text-xs"></div>
+          <div><label class="text-[10px] text-slate-400" title="自然冷却能效比 EER&#10;仅风机 + 循环泵的耗电, 无压缩机。&#10;干冷器方案 15-25, 板换 + 冷源水方案可更高。&#10;⚠ 注意: 本模型【不额外计 CAPEX】, 假设复用热泵已有排热侧。&#10;实际带集成自然冷却的机组比普通机组贵 15-30% (多一组干冷盘管 + 三通阀 + 控制),&#10;只有项目本来就有开式冷却塔/干冷器时才真是零成本旁通。">自然冷却 EER</label><input id="g_fcEER" type="number" value="20" step="1" min="2" max="50" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="泵电机效率 (0.5-1.0).&#10;泵功率公式 9.81·Q·H/(3600·η泵) 算的是【轴功率】, 不含电机效率.&#10;电耗 = 轴功率 / 电机效率; 电机损失进车间空气.&#10;600 kW 级 IE3 电机 0.95-0.97; 小功率电机 0.85-0.90.&#10;湿式/潜水电机填 1.0 (损失直接进水).">电机效率</label><input id="g_motorEta" type="number" step="0.01" min="0.5" max="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="轴功率中耗散进被泵送水体的比例 (0.5-1.0).&#10;水力功 + 泵内损失几乎全部进水, 仅轴承/密封/泵壳散热进空气.&#10;典型 0.97-0.99.&#10;⚠ 此值不是电机效率 —— 调低会虚增车间得热, 把 T_room 顶穿钳位并人为压低 RH.">泵热进水比例</label><input id="g_pumpHeatRatio" type="number" step="0.01" min="0.5" max="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="排风热回收效率 0-0.85. 国内多为 0; 北欧 0.7-0.85">热回收</label><input id="g_ventHeatRecovery" type="number" step="0.05" min="0" max="0.85" class="input-ind !py-1 !text-xs"></div>
@@ -1239,7 +1251,7 @@
 
       <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010, Millero 2010, Clegg & Whitfield 1995 等) 和工业实测数据 (Atlantic Sapphire, Nordic Aqua 宁波, Salmon Evolution, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="/library/manual.html" target="_blank" class="text-cyan-300 underline">v1.9 技术手册附录 E</a> (40+ 篇核心文献)。</p>
 
-      <p class="mt-2 text-slate-400 text-sm">v1.9 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 海外镜像 <a href="https://chengsunmail.github.io/iras/" class="text-cyan-300 underline">chengsunmail.github.io/iras/</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">GitHub</a> · 国内镜像 <a href="https://gitee.com/chengsunmail/iras" class="text-cyan-300 underline">Gitee</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+      <p class="mt-2 text-slate-400 text-sm">v1.9 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 国内服务器 <a href="http://iras.dengdengtech.cn/" class="text-cyan-300 underline">iras.dengdengtech.cn</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">github.com/chengsunmail/iras</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
 
       <p class="mt-3 text-xs text-slate-500">本工具不替代正式的环境影响评价 / 安全评价 / 节能评价 / 施工图详细设计, 仅用于工程概算阶段 (精度 ±40%)。详见技术手册附录 F 完整免责声明。</p>
     </section>
@@ -1251,7 +1263,7 @@
       <p class="mt-3 text-slate-400 text-sm">本版全部改动都是<strong>物理口径修正</strong>, 不是新增功能。共同特征: 影响运行成本与装机容量, 但<strong>不改变增氧设备选型</strong> (<code>o2PeakSupplyKgH</code> / <code>o2Demand</code> / 氧锥流量逐位未变)。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">A. 液氧消耗口径修正</h3>
-      <p class="mt-2 text-slate-400 text-sm">液氧采购量原先误用设备选型口径 <code class="text-emerald-300">o2Demand</code>, 其中含 <code>peakFactor</code> (1.5) 与 <code>sAerator</code> (1.10) 两个<strong>容量系数</strong>。液氧是按量计费的消耗品, 只应被吸收效率放大 —— 旧口径高估 <strong>1.65 倍</strong>。新增 <code class="text-emerald-300">o2ConsumptionDaily / o2ConsumptionDailyAvg</code> 并行口径, 基准值 0.44 → <strong>0.266</strong> kg O₂/kg 饲料 (文献 0.25-0.30), 年耗 527 → <strong>326 t</strong> (本项单独效果; 叠加 F 项的池内 TSS 附加后为 <strong>364 t</strong>)。</p>
+      <p class="mt-2 text-slate-400 text-sm">液氧采购量原先误用设备选型口径 <code class="text-emerald-300">o2Demand</code>, 其中含 <code>peakFactor</code> (1.5) 与 <code>sAerator</code> (1.10) 两个<strong>容量系数</strong>。液氧是按量计费的消耗品, 只应被吸收效率放大 —— 旧口径高估 <strong>1.65 倍</strong>。新增 <code class="text-emerald-300">o2ConsumptionDaily / o2ConsumptionDailyAvg</code> 并行口径, 基准值 0.44 → <strong>0.266</strong> kg O₂/kg 饲料 (文献 0.25-0.30), 年耗 527 → <strong>326 t</strong> (本项单独效果; 叠加 F 项的池内 TSS 附加与基础异养耗氧后为 <strong>473 t</strong>)。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">B. 蒸发系数 β 量纲修正</h3>
       <p class="mt-2 text-slate-400 text-sm">旧注释称 β 取自 ASHRAE 的 0.045-0.075 m/s —— <strong>错误出处</strong>。ASHRAE/Carrier 的池面蒸发系数定义在<strong>蒸气压差</strong>上 [lb/(h·ft²·inHg)], 不能当作 ΔW×ρ 形式的 β [m/s], 高估约 13 倍。改用 Lewis 传热传质类比 <code>β = h_c/(ρ·c_p·Le^(2/3))</code> ≈ 0.0035-0.010 m/s。实测蒸发率降 2-2.4 倍 (非 13 倍, 因 W_room 自洽求解存在自补偿), <strong>RH=99% 饱和虚警消失</strong>。</p>
@@ -1273,16 +1285,30 @@
       <div class="mt-2 overflow-x-auto">
       <table class="text-xs text-slate-300 w-full">
         <tr class="text-cyan-300 border-b border-slate-700"><th class="text-left py-1 pr-3">工况</th><th class="text-left py-1 pr-3">气温/源水</th><th class="text-right py-1 pr-3">OPEX</th><th class="text-right py-1 pr-3">折旧</th><th class="text-right py-1 pr-3">综合成本</th><th class="text-right py-1 pr-3">比电耗</th></tr>
-        <tr><td class="py-1 pr-3">青岛冬</td><td class="py-1 pr-3">-7°C / 4°C</td><td class="text-right py-1 pr-3">24.84</td><td class="text-right py-1 pr-3">7.82</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">32.65</td><td class="text-right py-1 pr-3">12.0</td></tr>
-        <tr><td class="py-1 pr-3">海南冬</td><td class="py-1 pr-3">17°C / 22°C</td><td class="text-right py-1 pr-3">25.19</td><td class="text-right py-1 pr-3">7.83</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">33.02</td><td class="text-right py-1 pr-3">12.5</td></tr>
-        <tr><td class="py-1 pr-3">海南夏</td><td class="py-1 pr-3">32°C / 27°C</td><td class="text-right py-1 pr-3">25.67</td><td class="text-right py-1 pr-3">7.86</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">33.53</td><td class="text-right py-1 pr-3">13.2</td></tr>
-        <tr><td class="py-1 pr-3">挪威 Bergen 冬</td><td class="py-1 pr-3">0°C / 4°C</td><td class="text-right py-1 pr-3">24.88</td><td class="text-right py-1 pr-3">7.82</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">32.70</td><td class="text-right py-1 pr-3">12.1</td></tr>
+        <tr><td class="py-1 pr-3">青岛冬</td><td class="py-1 pr-3">-7°C / 4°C</td><td class="text-right py-1 pr-3">27.70</td><td class="text-right py-1 pr-3">7.93</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">35.63</td><td class="text-right py-1 pr-3">9.7</td></tr>
+        <tr><td class="py-1 pr-3">海南冬</td><td class="py-1 pr-3">17°C / 22°C</td><td class="text-right py-1 pr-3">29.40</td><td class="text-right py-1 pr-3">7.99</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.39</td><td class="text-right py-1 pr-3">12.1</td></tr>
+        <tr><td class="py-1 pr-3">海南夏</td><td class="py-1 pr-3">32°C / 27°C</td><td class="text-right py-1 pr-3">29.91</td><td class="text-right py-1 pr-3">8.04</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.94</td><td class="text-right py-1 pr-3">12.8</td></tr>
+        <tr><td class="py-1 pr-3">挪威 Bergen 冬</td><td class="py-1 pr-3">0°C / 4°C</td><td class="text-right py-1 pr-3">27.71</td><td class="text-right py-1 pr-3">7.94</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">35.65</td><td class="text-right py-1 pr-3">9.7</td></tr>
       </table>
       </div>
-      <p class="mt-2 text-slate-400 text-sm">单位元/kg 鱼, 电 0.7 元/kWh / 液氧 1.2 元/kg / 饲料 12 元/kg。比电耗单位 kWh/kg·yr。年液氧消耗 <strong>364 t</strong> (四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化, 与气候无关)。<br><span class="text-slate-500">方法学: 每行按<strong>独立稳态点</strong>评估 —— 设计冬 / 设计夏两个热工况均取该行的气温与源水温, 以隔离气候单一变量。实际项目中热泵装机应按当地全年包线 (冬夏两端) 定容, 折旧会略高于本表 (实测约 +0.5%)。</span></p>
-      <p class="mt-2 text-slate-400 text-sm"><strong>与 v1.3 老基线的差异</strong>: 老表 (青岛冬 35.96 / 海南冬 37.70 / 海南夏 40.47 / Bergen 36.30) 跨气候跨度 4.51 元/kg, 新基线只有 <strong>0.88 元/kg</strong>。压缩来自 B 项蒸发系数量纲修正 (凝结放热降 2-2.4 倍)、C 项通风口径, 以及 H 项代谢产热改由氧当量导出 —— 气候差异现在几乎全部体现在热泵费上 (1.59 → 2.42 元/kg), 饲料费 14.80 与泵电费 5.30 跨工况不变。<br><strong>四工况全部为制冷工况</strong>: 气候无关的基础热负荷 (鱼呼吸 4053 + 设备产热 20677 = 24730 kWh/d) 远超水侧散热能力, 青岛 -7°C 也不例外 —— 这是 RAS 常年需要制冷的结构性原因, 不是模型异常。</p>
+      <p class="mt-2 text-slate-400 text-sm">单位元/kg 鱼, 电 0.7 元/kWh / 液氧 1.2 元/kg / 饲料 12 元/kg。比电耗单位 kWh/kg·yr。年液氧消耗 <strong>473 t</strong> (四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化, 与气候无关)。<br><span class="text-slate-500">方法学: 每行按<strong>独立稳态点</strong>评估 —— 设计冬 / 设计夏两个热工况均取该行的气温与源水温, 以隔离气候单一变量。实际项目中热泵装机应按当地全年包线 (冬夏两端) 定容, 折旧会略高于本表 (实测约 +0.5%)。</span></p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>与 v1.3 老基线的差异</strong>: 老表 (青岛冬 35.96 / 海南冬 37.70 / 海南夏 40.47 / Bergen 36.30) 跨气候跨度 4.51 元/kg, 新基线为 <strong>2.31 元/kg</strong>。压缩来自 B 项蒸发系数量纲修正 (凝结放热降 2-2.4 倍)、C 项通风口径, 以及 H 项代谢产热改由氧当量导出 —— 气候差异现在几乎全部体现在热泵费上 (<strong>0.29 → 2.53 元/kg</strong>), 饲料费 14.80 与泵电费 5.30 跨工况不变。<br><strong>四工况全部为制冷工况</strong>: 气候无关的基础热负荷 (池内生物产热 5271 + 设备产热 20677 = 25948 kWh/d) 远超水侧散热能力, 青岛 -7°C 也不例外 —— 这是 RAS 常年需要制冷的结构性原因, 不是模型异常。</p>
 
-      <h3 class="mt-4 font-bold text-cyan-300">H. mainline vs bypass (青岛冬)</h3>
+      <h3 class="mt-4 font-bold text-cyan-300">H. 第三方审计修复 + 自然冷却 + 自检</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.9.2 主体完成后接受一轮第三方代码审计, 修复 <strong>8 项缺陷</strong>:
+      <strong>o2FishFactor 回写污染</strong> (含 TSS 附加的值被当作手填生理值读回, 每操作一次 +8% 无限累积) ·
+      <strong>生物滤池节点氮不守恒</strong> (低 η 时 NaHCO₃ 投加量算成 0, 给出"不用加碱"的危险结论) ·
+      <strong>热泵按电功率计价</strong> (2000 元/kW 是制冷量口径, CAPEX 缩到约 1/COP) ·
+      <strong>CO₂ 产量两个口径</strong> (通风用常数 500, 模型自算 671-1084, 差 34%-117%) ·
+      <strong>发散被静默钳制</strong> (无去除路径时给出"看起来精确"的假数, 已改显式告警) ·
+      <strong>BF 去除率与接触时间无校核</strong> (新增 EBCT 判据) ·
+      <strong>空场 NaN 污染</strong> (清空产量输入框即触发, 全场汇总显示 NaN 且无提示) ·
+      <strong>方案 JSON 导入 DOM-XSS</strong>。
+      新增<strong>自然冷却</strong>路径 (冬季室外低温直接排热, 压缩机不启动, 寒冷气候热泵费 1.68 → 0.29 元/kg)
+      与 <strong>?selftest=1 自检入口</strong> (11 个工况走真实 recomputeAll 路径比对基线)。
+      详见技术手册「版本演进 → I. 第三方审计修复」。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">I. mainline vs bypass (青岛冬)</h3>
       <div class="mt-2 overflow-x-auto">
       <table class="text-xs text-slate-300 w-full">
         <tr class="text-cyan-300 border-b border-slate-700"><th class="text-left py-1 pr-3">对比项</th><th class="text-right py-1 pr-3">mainline</th><th class="text-right py-1 pr-3">bypass</th><th class="text-right py-1 pr-3">差</th></tr>
@@ -1290,8 +1316,8 @@
         <tr><td class="py-1 pr-3">旁路泵 P-602</td><td class="text-right py-1 pr-3">0</td><td class="text-right py-1 pr-3">92.2 kW</td><td class="text-right py-1 pr-3">+92.2</td></tr>
         <tr><td class="py-1 pr-3">综合泵功率</td><td class="text-right py-1 pr-3">369.0 kW</td><td class="text-right py-1 pr-3">350.5 kW</td><td class="text-right py-1 pr-3 text-emerald-300">-18.4</td></tr>
         <tr><td class="py-1 pr-3">氧锥流量</td><td class="text-right py-1 pr-3">10155 m³/h</td><td class="text-right py-1 pr-3">1015 m³/h</td><td class="text-right py-1 pr-3">缩 10×</td></tr>
-        <tr><td class="py-1 pr-3">工程总投资</td><td class="text-right py-1 pr-3">9296 万</td><td class="text-right py-1 pr-3">7967 万</td><td class="text-right py-1 pr-3 text-emerald-300">-1329 万</td></tr>
-        <tr><td class="py-1 pr-3">综合成本</td><td class="text-right py-1 pr-3">32.66</td><td class="text-right py-1 pr-3">31.51</td><td class="text-right py-1 pr-3 text-emerald-300">-1.14 元/kg</td></tr>
+        <tr><td class="py-1 pr-3">工程总投资</td><td class="text-right py-1 pr-3">9433 万</td><td class="text-right py-1 pr-3">8104 万</td><td class="text-right py-1 pr-3 text-emerald-300">-1329 万</td></tr>
+        <tr><td class="py-1 pr-3">综合成本(工艺)</td><td class="text-right py-1 pr-3">35.63</td><td class="text-right py-1 pr-3">33.95</td><td class="text-right py-1 pr-3 text-emerald-300">-1.68 元/kg</td></tr>
       </table>
       </div>
       <p class="mt-2 text-slate-400 text-sm">bypass 节能幅度从 v1.7 的 29.8 kW 降到 18.4 kW —— 主泵扬程降低后, "旁路让主泵不过锥"这个优势的绝对值随之变小; 但 CAPEX 节省 (氧锥按小流量定价) 基本不变, 仍是 bypass 的主要收益来源。</p>
@@ -3395,7 +3421,34 @@ const PROCESS_DEFAULTS = {
   biofilterTAN: 70,
   uvDose: 40,
   uvFlowPct: 10,
-  denitriFlowPct: 10,
+  // v1.9.2 (复审 P3): 反硝化旁路比例 10% → 2%
+  //   【为什么 10% 太大】旁路 10% 使稳态 NO₃-N 只有 4.2 mg/L —— 那是饮用水级别,
+  //   不是养殖水. 商业鲑鱼 RAS 的 NO₃-N 普遍 50-150 mg/L, 配了反硝化的也多在 20-60.
+  //   而 10% 旁路对应 1015 m³/h 的反硝化反应器 (主循环流量的十分之一),
+  //   按 HRT 1-2 h 需 1000-2000 m³ 填料, 工程上少见且造价被严重低估.
+  //   反硝化还是 RAS 里有风险的单元 —— 缺氧反应器控制不好会产 H₂S
+  //   (Atlantic Sapphire 有过教训), 工程上倾向【小比例、可旁通】而非大流量常开.
+  //
+  //   实测对应关系 (三文鱼成鱼期, 水体 5178 m³, TAN 日产 82.8 kg/d, 换水 4%/d):
+  //     旁路 0%   → NO₃-N 414 mg/L      旁路 2%  → 20.2 mg/L  ← 新默认
+  //     旁路 0.5% → 70.2                旁路 3%  → 13.7
+  //     旁路 1%   → 38.5                旁路 10% → 4.2        ← 旧默认
+  //   取 2% 对应反应器 203 m³/h、NO₃-N 20 mg/L, 落在"配了反硝化的 RAS"合理区间.
+  //
+  //   ⚠ 注: 旁路 0% 时算出 414 mg/L, 高于产业实际的"无反硝化 RAS" 50-150 —— 
+  //     差距提示默认换水率 4%/d 可能偏低, 或 TAN 日产偏高, 待单独核.
+  //   ⚠ 与换水率的关系 (重要, 不要孤立看这两个参数):
+  //     iRAS 各鱼种的换水率折算成产业通用口径【单位投饵补水量】后:
+  //       鳗鲡 0.055 · 罗非 0.060 · 鲑鱼 0.092 · 大菱鲆 0.105 · 加州鲈 0.106
+  //       石斑 0.123 · 鳜鱼 0.165 · 对虾 0.216   [m³/kg 饲料]
+  //     产业口径: 极集约 RAS 0.1-0.3 · 常规商业 0.3-1.0 · 半流水 >3
+  //     —— 全部压在下沿, 三个鱼种低于极集约下限. 这是【刻意的极致节水取向】,
+  //        不是缺陷: 国内 RAS 项目普遍以节水为核心卖点.
+  //     但代价是硝酸盐排不出去: 旁路 0% 时鲑鱼稳态 NO₃-N 达 414 mg/L
+  //     (产业"无反硝化 RAS"通常 50-150, 因为它们的补水强度高 3-10 倍).
+  //     ⇒ 在这套换水率下【反硝化不是可选项而是必需项】. 若把 denitriFlowPct 调到 0,
+  //        模型给出的高 NO₃ 是真实后果, 不是算错.
+  denitriFlowPct: 2,
   denitriEff: 80,
   methanolSafetyFactor: 1.3,    // v1.6 新增: 反硝化甲醇工程安全系数
                                  //   理论 1.9 g/g, 工业 2.47, 实际 RAS 含 DO 补偿后 3.0-4.0
@@ -3533,8 +3586,37 @@ const PROCESS_DEFAULTS = {
   laborCostPerPerson: 150000,      // 人均年成本 元/(人·年), 含社保与福利
   laborBaseCrew: 8,                // 最小班组人数 (小场也需 24h 三班 + 管理)
   overheadRate: 5.0,               // 管理费 = 上述 OPEX 的 %/年 (办公/差旅/审计/IT)
-  o2TssRefMgL: 3.0,                // 零附加基准 TSS (mg/L)
-  o2TssSlope: 0.05,                // kg O₂/(kg 饲料·mg/L TSS)
+  //   【实测两点定线 —— 截距不能丢】
+  //     TSS  3.0 mg/L → 池内耗氧 0.30 kg O₂/kg 饲料
+  //     TSS 10-12     → 0.70
+  //   斜率 k = (0.70−0.30)/(11−3) = 0.05
+  //   截距: TSS=3 时池内耗氧【不等于】鱼生理值 —— 即使"清水"条件, 池壁生物膜、
+  //     悬浮细颗粒、粪便碎屑仍在耗氧. 鲑鱼生理 0.2263, 实测 0.30,
+  //     差 0.074 就是这部分【与 TSS 无关的基础异养耗氧】.
+  //   v1.9.2 首版漏了截距 (等于强行让直线过"生理值"这一点), 使池内耗氧偏低约 23%,
+  //     默认工况 0.246 vs 工程设计经验值 0.35. 补截距后 0.320, 且两个实测锚点都能对上.
+  //   ⚠ 该截距源自冷水 (鲑鱼 smolt, 约 12-15°C) 实测. 异养耗氧随温度上升,
+  //     温水种 (28-30°C) 理论上应更高, 但缺实测数据, 暂对所有鱼种取同值.
+  // ══ v1.9.2 (审计 P3): 自然冷却 (free cooling) ══
+  //   【原缺陷】旧模型在【任何】需要制冷的工况下都走机械压缩制冷, COP 封顶 3.45.
+  //   但 RAS 是常年制冷型负荷 (设备产热 + 生物产热远超散热能力), 而冬季室外 −7°C 时
+  //   完全可以用干冷器/板换直接把热排给室外空气或冷源水 —— 压缩机不启动, 只跑风机和泵.
+  //   实际能效比 (EER) 可达 15-30, 而不是 3.45. 旧模型在寒冷气候下高估热泵电耗约 5-8 倍.
+  //
+  //   【判定】制冷工况下, 若 冷源温度 + 逼近温差 < 目标水温, 即可全自然冷却.
+  //     冷源: 空气源热泵取 T_air; 水/海水/地源取对应源温.
+  //     逼近温差: 干冷器 5-8 K (取 6); 板换 2-3 K —— 统一用 freeCoolingApproach_K.
+  //   【部分自然冷却】未做. 冷源温度接近但不足时, 实际可做预冷 + 压缩机补足,
+  //     本模型按"全有或全无"处理 (保守: 达不到判定就全走机械制冷).
+  //
+  //   【CAPEX】不额外计 —— 自然冷却复用热泵已有的换热排热侧, 只是压缩机旁通.
+  //     热泵仍按最不利工况 (通常夏季) 定容, 故装机不变、只省电.
+  freeCoolingEnabled: true,        // 是否允许自然冷却
+  freeCoolingApproach_K: 6,        // 逼近温差 K (干冷器 5-8, 板换 2-3)
+  freeCoolingEER: 20,              // 自然冷却能效比 (仅风机+泵, 15-30)
+  o2TssRefMgL: 3.0,                // 基准 TSS (mg/L), 截距的参照点
+  o2TssBaseHetero: 0.074,          // kg O₂/kg 饲料 — 基准 TSS 下的基础异养耗氧 (截距)
+  o2TssSlope: 0.05,                // kg O₂/(kg 饲料·mg/L TSS) — 超出基准 TSS 后的增量 (斜率)
   o2TssMaxMgL: 15,                 // 外推上限 — 实测区间 3-12, 超出后held flat
   sourceSS: 10,
   sourcePH: 7.5,
@@ -3616,7 +3698,21 @@ const PROCESS_DEFAULTS = {
   //   Atlantic Sapphire 实测: ~10 kW per 1000 m³/h
   //   Delta Cooling Towers 工业项目: 风压 0.87-1.12 kPa @ G:L 36-140
   // v1.1.0 默认 G:L=5/30kPa/0.5η 算出 ~150 kW/1000 m³/h, 高 10-15 倍
-  // v1.1.2 新默认 G:L=3/2.5kPa/0.6η 算出 ~17 kW/1000 m³/h, 落入文献区间
+  // v1.9.2 修正 (审计 P4): 注释与实算脱节.
+  //   旧注释称"新默认 G:L=3/2.5kPa/0.6η 算出 ~17 kW/1000 m³/h, 落入文献区间" ——
+  //   实算是 3.47, 不是 17, 而且【低于】Summerfelt 文献下限 5.
+  //   (校核: 10155 m³/h 水 × G:L 3 = 30465 m³/h 气; 30465/3600 × 2500 Pa / 0.60 = 35.3 kW;
+  //    35.3 / 10.155 = 3.47 kW/1000 m³/h.)
+  //   注释里的 17 应是 v1.1.2 当时另一组参数的结果, 后续调参未同步.
+  //
+  //   【当前默认为何偏低】G:L=3 是国内中型项目的浅塔口径, 风压 2.5 kPa 也偏低;
+  //   Summerfelt 的 5-15 与 Atlantic Sapphire 的 ~10 对应的是鲑鱼场高塔:
+  //     G:L=5 + ΔP=5.0 kPa → 11.6 kW/1000 m³/h  (落入文献区间)
+  //     G:L=7 + ΔP=8.0 kPa → 25.9  (高塔上限, 超文献)
+  //   要达到文献中位 10, 需 G:L=3→ΔP 7.2 kPa / G:L=5→4.3 / G:L=7→3.1.
+  //
+  //   默认值保持 3/2.5 不变 —— 它对应国内常见的浅塔配置, 是设计选择而非错误;
+  //   但做鲑鱼等高 CO₂ 负荷项目时应上调 G:L 与风压, 否则脱气能力与电耗都会偏乐观.
   co2StripperEnabled: true,      // 默认开启; 关闭时 CO2 仅靠换水稀释 + 增氧扰动
   co2StripperEff: 65,            // 单次脱气效率 (50-85%, G:L=3 浅塔实际 60-70%)
   co2StripperGtoL: 3,            // 气液比 (国内中型项目 2-4, 鲑鱼场 5-7)
@@ -3979,7 +4075,8 @@ const EQUIP_PRICES_DEFAULTS = {
   blower:    { label: '罗茨风机',          unit: '元/kW',      price: 4000,   lo: 3000, hi: 6000  },
   o2tower:   { label: '液氧增氧塔',        unit: '元/(m³/h)',  price: 350,    lo: 200,  hi: 500   },
   // v1.6: 液氧储罐已挪到 ③ 节"站级设备"区 (siteEquipConfig.oxygenTank), 用户可在那里调规格/数量/单价
-  heatPump:  { label: '热泵 (空气源)',     unit: '元/kW',      price: 2000,   lo: 1500, hi: 3000  },
+  // v1.9.2: 明确为【制冷/制热量】口径 (国内冷水机组/空气源热泵报价惯例), 非电功率
+  heatPump:  { label: '热泵 (空气源)',     unit: '元/kW(热)',  price: 2000,   lo: 1500, hi: 3000  },
   heatExch:  { label: '板式换热器',        unit: '元/m²',      price: 1200,   lo: 800,  hi: 2000  },
   // v1.9.2: 机械除湿机 — 工业冷凝式按额定除湿量计价 (家用机换算约 1000-1500, 工业整机含风道/控制约 1500-3000)
   dehumidifier: { label: '机械除湿机',     unit: '元/(kg/h)',  price: 1500,   lo: 800,  hi: 3000  }
@@ -4076,8 +4173,16 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
   const feedAvg = stageFarm.yearGrowth * stage.FCR / 365;    // kg/d
 
   // 校验: 理论平均投饵率 (物料守恒 / 真实存塘)
-  const impliedAvgFeedRate = feedAvg / biomass;              // 小数
-  const peakToAvgRatio = stage.feedRate / Math.max(impliedAvgFeedRate, 1e-6);
+  // v1.9.2 修复 (审计 P4): 空场防护.
+  //   产量输入框被清空 (yieldTons=0) 是必然出现的中间态 —— 用户改产量时必然先清空.
+  //   此时 biomass=0, feedAvg/biomass = 0/0 = NaN, 并沿
+  //   load → sim.alk → naHCO3Cost → totalAvg → overhead → fullCost 一路污染,
+  //   最终使全场汇总、成本卡片、财务评价全部显示 NaN, 且无任何提示.
+  //   空场的正确语义是"没有鱼" ⇒ 各比值取 0, 而非 NaN.
+  const impliedAvgFeedRate = biomass > 0 ? (feedAvg / biomass) : 0;
+  const peakToAvgRatio = impliedAvgFeedRate > 0
+    ? (stage.feedRate / impliedAvgFeedRate)
+    : 0;
 
   // ====【日尺度 - 污染物日总量, 不含 peakFactor】====
   // 这些是真实的日质量流量, 用于:
@@ -4115,9 +4220,12 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
   const _pc = (stage && stage.proc) || {};
   const _tssRef   = (_pc.o2TssRefMgL != null) ? _pc.o2TssRefMgL : 3.0;
   const _tssSlope = (_pc.o2TssSlope  != null) ? _pc.o2TssSlope  : 0.05;
+  const _tssBase  = (_pc.o2TssBaseHetero != null) ? _pc.o2TssBaseHetero : 0.074;
   const _tssMax   = (_pc.o2TssMaxMgL != null) ? _pc.o2TssMaxMgL : 15;
   const _tssEff = Math.min(Math.max((tssTank != null && isFinite(tssTank)) ? tssTank : _tssRef, _tssRef), _tssMax);
-  const o2TssSurcharge   = _tssSlope * (_tssEff - _tssRef);   // kg O₂/kg 饲料
+  // v1.9.2 修正: 附加项 = 基础异养(截距) + TSS 增量异养(斜率×超出量).
+  //   首版漏了截距, 相当于假设"TSS=基准时池内除鱼外无任何耗氧", 与实测不符.
+  const o2TssSurcharge   = _tssBase + _tssSlope * (_tssEff - _tssRef);   // kg O₂/kg 饲料
   const o2FishFactorBase = o2FishFactor;                      // 纯生理, 供 UI/诊断
   const o2TankFactor     = o2FishFactorBase + o2TssSurcharge; // 池内总耗氧系数
   const o2FishDaily   = feedMax * o2TankFactor;               // kg/d (池内总耗氧)
@@ -4543,8 +4651,19 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
   const dC_g_m3        = Math.max((co2Limit_ppm - co2Out_ppm) * 1e-6 * 44 / 24.45 * 1000, 0.05);
   const degasFrac      = (proc.degasserExhaustIndoorFrac != null)
                          ? Math.min(Math.max(proc.degasserExhaustIndoorFrac, 0), 1) : 0.2;
-  const CO2_PER_FEED_G = 500;                                            // g CO₂ / kg 饲料
+  // v1.9.2 修复 (审计 P3): CO₂ 产量改用【模型自算值】, 不再用独立的文献常数.
+  //   原实现固定 500 g/kg 饲料, 但同一模型的 load.co2Daily 是自算的:
+  //     co2Daily = o2FishDaily × 1.375 (呼吸, RQ≈1) + tanDaily × 6.286 (硝化产 CO₂)
+  //   两者差 34%-117% (鲑鱼 671、大菱鲆 749、石斑 861、鳗鲡 1084 g/kg 饲料),
+  //   且差异随鱼种、水温、池内 TSS 变化 —— 同一个模型出现两个 CO₂ 产量口径,
+  //   会让"新风按 CO₂ 定"这条逻辑与水侧 CO₂ 脱气塔选型互相矛盾.
+  //   改为优先取 load.co2Daily / feed; 老 load 无该字段时回退到 500 保持兼容.
+  //   ⚠ 注意: co2Daily 是【系统总产 CO₂】(鱼呼吸 + 硝化), 而进入车间空气的只是其中
+  //     经脱气塔吹脱、且尾气未直排室外的那部分 —— 这由 degasFrac 承担, 与常数无关.
   const feedForVent    = (load && (load.feedMax || load.feedAvg)) || 0;  // kg/d
+  const CO2_PER_FEED_G = (load && load.co2Daily > 0 && feedForVent > 0)
+    ? (load.co2Daily / feedForVent * 1000)     // g CO₂/kg 饲料, 模型自算
+    : 500;                                      // 回退: 文献值 (Terjesen/Vinci/Heinsbroek 409-550)
   // 鱼载荷决定的新风需求 (m³/h) — 与车间体积无关
   const V_vent_fish_m3h = (feedForVent > 0)
     ? (CO2_PER_FEED_G * feedForVent * degasFrac) / dC_g_m3 / 24
@@ -4768,8 +4887,28 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
   else T_hp_source = T_source;  // water / seawater_open
   const COP_heat_corr = correctedCOP('heat', hpType, T_hp_source, COP_nom_heat);
   const COP_cool_corr = correctedCOP('cool', hpType, T_hp_source, COP_nom_cool);
-  const COP = pumpDirection === 'heat' ? COP_heat_corr : (pumpDirection === 'cool' ? COP_cool_corr : 1);
-  const heatPumpKWh = Q_pump_load / Math.max(COP, 0.5);
+  let COP = pumpDirection === 'heat' ? COP_heat_corr : (pumpDirection === 'cool' ? COP_cool_corr : 1);
+
+  // v1.9.2 (审计 P3): 自然冷却判定 —— 见 PROCESS_DEFAULTS.freeCoolingEnabled 处的完整说明
+  const _fcOn       = (proc.freeCoolingEnabled !== false);
+  const _fcApproach = (proc.freeCoolingApproach_K != null) ? proc.freeCoolingApproach_K : 6;
+  const _fcEER      = Math.max((proc.freeCoolingEER != null) ? proc.freeCoolingEER : 20, 1);
+  // 冷源温度: 与热泵热源同源 (空气源→室外空气, 水/海水/地源→对应源温)
+  const _fcSink     = T_hp_source;
+  const freeCoolingAvailable = _fcOn
+    && pumpDirection === 'cool'
+    && (_fcSink + _fcApproach) < T_target;
+  if (freeCoolingAvailable) COP = _fcEER;   // 压缩机旁通, 只跑风机/泵
+
+  const heatPumpKWh = Q_pump_load / Math.max(COP, 0.5);   // kWh/d 【耗电量】
+  // v1.9.2 修复 (审计 P3): 热泵选型必须用【热功率】而非电功率.
+  //   heatPumpKWh 是耗电量 (= 热负荷 / COP); 用它除以利用小时得到的是电功率,
+  //   而国内冷水机组 / 空气源热泵的报价惯例是【元/kW 制冷(制热)量】,
+  //   EQUIP_PRICES_DEFAULTS.heatPump 的 2000 元/kW 正是这个口径
+  //   (反推: 若按电功率理解, 等效制冷量单价仅约 580 元/kW, 与市场不符).
+  //   旧实现按电功率计价, 使热泵 CAPEX 缩到约 1/COP (冷模式 COP≈3.45 → 少算约 2/3).
+  //   UI 上"热泵 xx kW"工程师也必然当制冷量读, 口径必须一致.
+  const heatPumpThermalKWh = Q_pump_load;                 // kWh/d 【热负荷】, 供 CAPEX 定容
   const needsThermal = Q_pump_load > 0.01;
 
   // ============ 8. 返回 ============
@@ -4777,7 +4916,8 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
     V_makeup: V_makeup_net, T_source, T_target, dT_total, mode, needsThermal,
     Q_total_raw: Q_makeup_raw,
     Q_recovered, Q_after_hx: Q_makeup,
-    heatPumpKWh, hxEff: hxEff*100,
+    heatPumpKWh, heatPumpThermalKWh, hxEff: hxEff*100,
+    freeCoolingAvailable, freeCoolingSinkT: _fcSink, freeCoolingApproach: _fcApproach,
     COP, COP_heat: COP_heat_corr, COP_cool: COP_cool_corr,
     direction, pumpDirection,
     Q_metab_basal, Q_metab_feed, Q_metab,
@@ -4863,7 +5003,20 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   // 【历史 bug】之前用 tanDaily * eta_bio 把 "BF 单次通过去除率"
   //   当成 "系统总硝化率", 导致 NaHCO3 投加量低估 ~30%
   //   (eta_bio = 70% 单次效率, 但稳态下系统总硝化 ≈ 100%)
-  const tanNitrified = load.tanDaily;                            // kg TAN-N/d (稳态全量硝化)
+  // v1.9.2 (复审 P3): 同上 —— 硝化量 = 产生量 − 换水排出量, 不再无条件取全量.
+  //   正常工况 (TAN < 1 mg/L) 两者差 < 1%, 与旧式一致;
+  //   η 很低时 TAN 浓度高, 换水排出的份额显著, 此时全量硝化会高估碱度消耗与 NaHCO₃ 投加.
+  //   优先用 sim 已解出的鱼池 TAN 与实际排水量; 缺任一项时回退到旧式 (全量).
+  const _tanConc = (sim && sim.stages && sim.stages[0] && isFinite(sim.stages[0].TAN))
+                 ? sim.stages[0].TAN : null;                     // mg/L
+  const _dischV  = (sim && sim.discharge && isFinite(sim.discharge.V_m3_d))
+                 ? sim.discharge.V_m3_d : null;                  // m³/d
+  //   ⚠ 边界: TAN 发散时 (η=0 且换水=0) 上面的浓度是钳制产物, 不能用来反算.
+  //     此时没有硝化菌 ⇒ 硝化量为 0 ⇒ 不耗碱. 与水质侧的处理保持一致.
+  const _tanDiverged = !!(sim && sim.divergent && sim.divergent.indexOf('TAN') >= 0);
+  const _tanExportKgD = (!_tanDiverged && _tanConc != null && _dischV != null)
+                      ? (_tanConc * _dischV / 1000) : 0;
+  const tanNitrified = _tanDiverged ? 0 : Math.max(load.tanDaily - _tanExportKgD, 0);  // kg TAN-N/d
 
   // 反硝化 NO3-N 量:
   //   优先用 sim.denitri (稳态口径: denitriFlow × no3_tank × eta × 24/1000)
@@ -4871,6 +5024,8 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   // v1.5 Bug 27: 因 Bug 1 修复 (NO3 = TAN × 1.0), sim.denitri.inletNO3 自动跟着上升 ~43%,
   //              alkRecovered 自动跟着上升, NaHCO3 投加量自动下降. 此处无需单独修.
   //              三 pass 收敛 (Bug 28) 后取的是稳态 inletNO3, 是正确的反硝化口径.
+  // v1.9.2 修复 (审计 P4): 下方各项在空场 (无鱼、无流量) 时可能出现 0/0 或 NaN 传播,
+  //   统一在本函数出口做有限性兜底 —— 见 _fin() 及 return 处.
   let no3Denitrified;
   if (sim && sim.denitri) {
     no3Denitrified = sim.denitri.flow * sim.denitri.inletNO3 * sim.denitri.removal * 24 / 1000;
@@ -4903,10 +5058,17 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   const alkToAdd = Math.max(0, alkNetDemand - alkFromMakeup);
   const naHCO3Demand = alkToAdd / 0.595;                        // kg/d
 
+  // v1.9.2 修复 (审计 P4): 出口有限性兜底.
+  //   空场 (yieldTons=0 / biomass=0 / flow=0) 时上游可能出现 0/0, 使本函数返回 NaN,
+  //   并沿 naHCO3Cost → totalAvg → overhead → fullCost 污染整个成本与财务链路.
+  //   空场语义是"没有负荷" ⇒ 各量取 0. 不做兜底会让 UI 全场显示 NaN 且无提示.
+  const _fin = (x) => (typeof x === 'number' && isFinite(x)) ? x : 0;
   return {
-    alkConsumed, alkRecovered, alkNetDemand,
-    alkFromMakeup, alkToAdd, naHCO3Demand,
-    no3Denitrified,
+    alkConsumed: _fin(alkConsumed), alkRecovered: _fin(alkRecovered),
+    alkNetDemand: _fin(alkNetDemand),
+    alkFromMakeup: _fin(alkFromMakeup), alkToAdd: _fin(alkToAdd),
+    naHCO3Demand: _fin(naHCO3Demand),
+    no3Denitrified: _fin(no3Denitrified),
     alkTarget: proc.alkTarget, alkSource: proc.alkSource
   };
 }
@@ -4939,6 +5101,34 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
             适合低密度 (<40 kg/m³), 投资低运行成本低, 但 DO 上限有限
    ============================================================================ */
 function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
+  // ── v1.9.2 (复审 P4 残留): 零流量短路 ──
+  //   产量输入框被清空 (yieldTons=0) 时 flowM3h=0 → cyclesPerDay=0 → tanPerCycle=0/0=NaN,
+  //   沿程各节点的 TAN/TSS/NO3/DOM/Geosmin/NH3_N 全变 NaN.
+  //   成本链已在 v1.9.2 首轮做了兜底, 但水质链没有 —— 而沿程水质卡片的格式化函数是
+  //     const fmt = (n, d=2) => (typeof n === 'number' ? n.toFixed(d) : n);
+  //   NaN 也是 number, 于是界面上最显眼的那块面板直接显示 "NaN mg/L".
+  //   空场的正确语义是"没有鱼、没有负荷" ⇒ 返回全 0 骨架并置 emptyFarm, 由 UI 提示"未设定产量".
+  if (!flowData || !(flowData.flowM3h > 1e-6)) {
+    // ⚠ 这些字段必须【省略】而非置 null: 渲染层的守卫是 `st.pH !== undefined`,
+    //   给 null 会通过守卫、随后 .toFixed() 抛异常, 整个 renderFlow 崩掉.
+    //   省略 ⇒ undefined ⇒ 渲染层自动跳过该行, 正是空场想要的效果.
+    const _z = (id, name) => ({ id, name, TAN: 0, TSS: 0, NO3: 0, DOM: 0, Geosmin: 0,
+                                DO: 0, CO2: 0, NH3_N: 0, fNH3: 0, alkReq: 0 });
+    return {
+      emptyFarm: true,
+      stages: [_z('tank', '鱼池'), _z('rdf', '微滤机'), _z('bio', '生物滤池'), _z('sump', '集水池')],
+      DO_sat: 0, DO_sat_target: 0, eta_uv_system: 0,
+      DO_threshold: 0, CO2_threshold: 0, TGP_pct: 100, TGP_limit: 115, satTarget: 1,
+      divergent: [],
+      denitri: { flow: 0, inletNO3: 0, outletNO3: 0, removal: 0, systemRemoval: 0 },
+      discharge: { V_m3_h: 0, V_m3_d: 0, TSS_kg_d: 0, TSS_mg_L: 0,
+                   TAN_kg_d: 0, TAN_mg_L: 0, NO3_kg_d: 0, NO3_mg_L: 0 },
+      // 下游用 `sim.skimmer ? sim.skimmer.ozoneDemand : 0` 取值 —— 对象存在但字段缺失
+      // 会得到 undefined, 再参与加法即 NaN. 骨架必须把下游会读的字段补全为 0.
+      skimmer: { enabled: false, ozoneDemand: 0, tssRemoved: 0, domRemoved: 0 },
+      aop: { enabled: false, ozoneDemand: 0, geosminRemoved: 0 }
+    };
+  }
   const eta_rdf = proc.rdfTSS / 100;
   const eta_bio = proc.biofilterTAN / 100;
   const eta_bioTSS = PROCESS_FIXED.biofilterTSS;
@@ -5055,18 +5245,47 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   // C_in  = 增氧后回水 (处理完成后最低浓度)
   // 沿程: C_out → ×(1-η_rdf) → ×(1-η_skim) → ×(1-η_bio) → ... → C_in
 
+  // v1.9.2 (审计 P3): 发散检测.
+  //   稳态解 C_out = Δ / (1 − R) 只在 R < 1 时成立. 当某污染物【无有效去除路径】
+  //   (η=0 且换水=0) 时 R → 1, 物理上浓度无稳态、随时间线性发散;
+  //   Math.max(1 − R, 0.001) 只是防除零, 却把发散变成一个【看起来精确的有限值】
+  //   —— 例如 η_bio=0 + 换水=0 时给出 TAN 339.89 mg/L, 用户会以为这是可信的稳态浓度,
+  //   实际上"稳态"根本不存在, 该数字仅等价于"Δ × 1000", 无物理意义.
+  //   本函数在出口把这些工况标出来 (divergent 数组), 由 UI 显式告警而非静默给数.
+  //   ⚠ 阈值必须【贴着 1】取, 不能用 0.999 这类"看起来接近 1"的数:
+  //     R 是【单次循环】通过率, 而单次稀释率 = 日换水率 ÷ 日循环次数.
+  //     典型工况 (5178 m³ 水体 / 10155 m³/h → 47 次/日, 换水 4%/d) 单次稀释仅 0.085%,
+  //     R = 0.99915 —— 用 0.999 判会把【换水率 ≤ 约 4.7%/d 且无旁路处理】的正常工况
+  //     全部误判成"无稳态解", 而 iRAS 默认换水率就是 4%.
+  //     真正的发散只在【完全没有去除路径】时出现, 此时 R 恰为 1.
+  const _DIVERGE_R = 1 - 1e-9;
+  const _divergent = [];
+  //   ⚠ 防除零下限必须取【极小值】, 不能用 0.001:
+  //     0.001 实际是"单次循环去除率 0.1%"的下限, 而典型 RAS 的单次稀释率
+  //     = 日换水率 ÷ 日循环次数 = 4% ÷ 72 ≈ 0.056%, 【本来就低于该下限】.
+  //     后果: 只靠换水去除的组分 (旁路小时的 NO₃、无 AOP 时的 geosmin) 在
+  //     换水率 ≤ 约 4.8%/d 时被硬钳成同一个值, 完全不响应换水率 ——
+  //     实测 1%/2%/4% 三档 NO₃ 都输出 339.9, 而理论值分别是 1657/829/414 mg/L.
+  //     这是 v1.0 起就存在的缺陷, 而 iRAS 默认换水率正是 4%.
+  //     改用 1e-9 后: 正常工况算真值; 真发散 (R 恰为 1) 时给出天文数字,
+  //     同时 divergent 告警触发 —— 数值荒谬 + 明确告警, 比"看似合理的假数"安全.
+  const _solveSteady = (perCycle, R, label) => {
+    if (R >= _DIVERGE_R) _divergent.push(label);
+    return perCycle / Math.max(1 - R, 1e-9);
+  };
+
   // TAN: 只有 BF 去除 + 换水
   const R_tan = (1 - eta_bio) * (1 - dilutionPerCycle);
-  const tanOut = tanPerCycle / Math.max(1 - R_tan, 0.001);
+  const tanOut = _solveSteady(tanPerCycle, R_tan, 'TAN');
 
   // TSS: RDF → 蛋分(旁路) → BF + 换水
   const R_tss = (1 - eta_rdf) * (1 - eta_skim_TSS_sys) * (1 - eta_bioTSS) * (1 - dilutionPerCycle);
-  const tssOut = tssPerCycle / Math.max(1 - R_tss, 0.001);
+  const tssOut = _solveSteady(tssPerCycle, R_tss, 'TSS');
 
   // DOM: 蛋分(旁路) + AOP(旁路, 仅小比例) + 换水
   // v1.1 修复: AOP 对 DOM 用 aopDOMRemoval (≈5%), 不再误用 geosmin 系数 (90%)
   const R_dom = (1 - eta_skim_DOM_sys) * (1 - aopFlowRatio * eta_aopDOM) * (1 - dilutionPerCycle);
-  const domOut = domPerCycle / Math.max(1 - R_dom, 0.001);
+  const domOut = _solveSteady(domPerCycle, R_dom, 'DOM');
 
   // NO3: BF 硝化产生, 反硝化(旁路) + 换水 去除
   // v1.5 修复 (Bug 1): 稳态下 NO3 产生速率 ≈ TAN 产生速率 × 1.0, 不是 × eta_bio
@@ -5076,13 +5295,29 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   // 旧公式 (no3PerCycle = tanPerCycle × eta_bio) 是 v1.0 历史 bug, calcAlkalinity
   //   注释 (Sharma & Ahlert 1977 推导) 已识别并修复, 但水质循环方程一直保留旧版.
   //   结果: 稳态 NO3 偏低 ~30%, 反硝化设备/甲醇/碱度回收估算全部偏低.
-  const no3PerCycle = tanPerCycle * 1.0;
+  // v1.9.2 (复审 P3): 硝化通量与 η 解耦的残留修正.
+  //   稳态物料守恒: TAN 产生 = TAN 硝化 + TAN 随换水排出
+  //   ⇒ 硝化量 = 产生量 − 换水排出量, 而 NO₃ 产生量 = 硝化量 (1:1 摩尔氮)
+  //   正常工况下 TAN 浓度 < 1 mg/L, 换水排出可忽略, 硝化量 ≈ 100% 产生量 —— 旧式成立.
+  //   但 η 很低时 TAN 浓度飙升, 换水带走的份额不再可忽略:
+  //     η=0 时根本没有硝化菌, 全部 TAN 只能靠换水排出, NO₃ 产生量应为 0,
+  //     而旧式仍按 100% 产 NO₃ 并消耗全额碱度 —— 一边说 TAN 发散、一边照常产硝酸盐.
+  //   改法: 用本轮已解出的 tanOut 反算换水排出量.
+  //   (tanOut 只依赖 TAN 自身的收支, 不依赖 NO₃, 故无循环依赖.)
+  //   ⚠ 边界: TAN 本身发散时 (η=0 且换水=0), tanOut 是钳制产物、无物理意义,
+  //     换水导出项又恒为 0, 公式会退化回"全量硝化" —— 与"没有硝化菌"矛盾.
+  //     此时 TAN 已被标记 divergent, 下游的 NO₃ / 碱度同样不可信, 一并标记,
+  //     由 UI 的发散告警统一提示"相关浓度均不可信", 不再单独特判.
+  const _tanDivergent = _divergent.indexOf('TAN') >= 0;
+  const _tanExportPerCycle = tanOut * dilutionPerCycle;          // mg/L·循环, 换水带走
+  const no3PerCycle = _tanDivergent ? 0 : Math.max(tanPerCycle - _tanExportPerCycle, 0);
+  if (_tanDivergent && _divergent.indexOf('NO₃') < 0) _divergent.push('NO₃(随 TAN)');
   const R_no3 = (1 - denitriFlowRatio * eta_denitri) * (1 - dilutionPerCycle);
-  const no3Out = no3PerCycle / Math.max(1 - R_no3, 0.001);
+  const no3Out = _solveSteady(no3PerCycle, R_no3, 'NO₃');
 
   // Geosmin: AOP(旁路) + 换水
   const R_geo = (1 - aopFlowRatio * eta_aop) * (1 - dilutionPerCycle);
-  const geoOut = geosminPerCycle / Math.max(1 - R_geo, 0.001);
+  const geoOut = _solveSteady(geosminPerCycle, R_geo, '土霉素/geosmin');
 
   // 保留 _tank 变量供设备选型/告警 (C_out = 最不利工况)
   const tan_tank = tanOut, tss_tank = tssOut, dom_tank = domOut;
@@ -5168,7 +5403,16 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
     desc: `硝化 ${proc.biofilterTAN.toFixed(0)}% · TAN→NO₃⁻ · 粗孔曝气`,
     TAN: s.TAN * (1 - eta_bio),
     TSS: s.TSS * (1 - eta_bioTSS),
-    NO3: s.NO3 + s.TAN * 1.0,  // v1.5: 进 BF 的 TAN 浓度(质量守恒, 几乎全部转 NO3)
+    // v1.9.2 修复 (审计 P2): 单节点氮守恒
+    //   旧式 NO3 += s.TAN × 1.0 与同一节点的 TAN × (1 − η) 自相矛盾:
+    //   只有 η 比例的 TAN 被去除, 却有 100% 变成 NO₃ —— 单节点凭空多出 (1−η)×TAN_in 的氮.
+    //   沿程 profile 口径下, 本节点新增的 NO₃ 只应等于本节点【实际硝化掉】的 TAN.
+    //   ("稳态下 TAN 几乎全部硝化"这层意思已由独立的 no3PerCycle = tanPerCycle × 1.0 表达,
+    //    不应在沿程节点上再算一遍.)
+    //   默认工况偏差约 3%, 但低 η 时失控: biofilterTAN=0 且换水=0 时旧式给出
+    //   denitriInletNO3 = 115.7 mg/L (应为 4.1), 进而使碱度回收 > 硝化消耗,
+    //   NaHCO₃ 投加量被算成 0 —— 模型给出"不用加碱"的危险结论, 而实际 pH 会崩.
+    NO3: s.NO3 + s.TAN * eta_bio,
     DO: bfDOout
   };
   stages.push({...s});
@@ -5293,6 +5537,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   return {
     stages, DO_sat, DO_sat_target, eta_uv_system,
     DO_threshold, CO2_threshold,    // v1.1: 自适应阈值传给 UI
+    divergent: _divergent,          // v1.9.2: 无稳态解的污染物列表 (R≥0.999), 供 UI 告警
     TGP_pct, TGP_limit, satTarget,  // v1.9.2: 气泡病约束
     denitri: {
       flow: denitriFlow, inletNO3: denitriInletNO3, outletNO3: denitriOutletNO3,
@@ -6660,6 +6905,10 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
   const overheadAvg = (totalAvg + enterpriseExtraBase) * _gp('overheadRate', 5.0) / 100;
   const fullCostMax = totalMax + enterpriseExtraBase + overheadMax;
   const fullCostAvg = totalAvg + enterpriseExtraBase + overheadAvg;
+  // v1.9.2 (审计 P4): 成本出口有限性兜底 —— 任一上游分项为 NaN 都会让整卡片显示 NaN.
+  //   已在 calcStageLoad / calcAlkalinity 源头修了 0/0, 此处是纵深防御:
+  //   将来新增成本项若引入 NaN, 至少不会污染全场汇总与财务评价.
+  const _finC = (x) => (typeof x === 'number' && isFinite(x)) ? x : 0;
 
   const stageDays = stage.months * 30.42;
   const stageFeedTotal = load.feedAvg * stageDays;
@@ -6679,13 +6928,14 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
     maintCostDaily, insureCostDaily, waterCostDaily, dischargeCostDaily, processExtraDaily,
     maintBase: _maintBase, maintBaseMode: _mBase,
     // v1.9.2 成本扩展 —— 企业侧
-    seedCostDaily, laborCostDaily, overheadMax, overheadAvg,
+    seedCostDaily: _finC(seedCostDaily), laborCostDaily: _finC(laborCostDaily),
+    overheadMax: _finC(overheadMax), overheadAvg: _finC(overheadAvg),
     headcount: _headcount, seedCountIn: _countIn, waterPriceUsed: _waterPrice,
-    fullCostMax, fullCostAvg,
+    fullCostMax: _finC(fullCostMax), fullCostAvg: _finC(fullCostAvg),
     co2BlowerCostMax: co2BlowerCostDaily, co2BlowerKw, co2BlowerKWh,
     thermalKWh: heatPumpKWh, ozoneKWh,
     pumpKwhDaily, uvLampKwhDaily, miscKwhDaily,
-    totalMax,
+    totalMax: _finC(totalMax),
     feedCostAvg, aerationCostAvg,
     pumpCostAvg: pumpCostDaily, uvLampCostAvg: uvLampCostDaily, miscCostAvg: miscCostDaily,
     powerCostAvg: powerDailyAvg,
@@ -6693,7 +6943,7 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
     thermalCostAvg: thermalCostDaily, ozoneCostAvg: ozoneCostAvgDaily,
     co2BlowerCostAvg: co2BlowerCostDaily,
     depDaily,                                       // v1.1.2: CAPEX 折旧日均 (元/d, max 和 avg 一致)
-    totalAvg,
+    totalAvg: _finC(totalAvg),
     o2KgDailyMax, o2KgDailyAvg,                     // v1.6: 液氧 kg/d (空气曝气模式下为 0)
     stageDays, stageFeedTotal, stageCostTotal
   };
@@ -6729,6 +6979,42 @@ function readEquipPrices() {
   if (!Number.isFinite(p.scaleExponent)) p.scaleExponent = 0.10;
   return p;
 }
+
+// ══════════ v1.9.2 (复审 P0): 热泵装机的【唯一口径】 ══════════
+//   【问题】v1.9.2 修 P3 时只把 calcCapex 改成了热功率, 其余三处消费点没跟上,
+//   导致同一台热泵在页面上出现 4 个数 (三文鱼成鱼期):
+//     热平衡卡片"装机容量"   heatPumpKWh / 16          (电功率, 当前工况, 无共用系数)  40 kW
+//     工况对比表"装机"        各工况 heatPumpKWh / 16    (同上)                    冬 40 / 夏 321 kW
+//     设备清单 / N+1 / P&ID   max(冬,夏) 电 / 22 × 0.75                            175 kW
+//     CAPEX 计价              max(冬,夏) 热 / 22 × 0.75                            545 kW
+//   最大与最小差 13.6 倍. 而 P3 的修复注释自己写的就是"口径必须一致".
+//   自然冷却让问题更糟: 冬季 heatPumpKWh 被 EER=20 压掉一个数量级,
+//   设备清单的定容工况从冬悄悄切到夏, 而 CAPEX 用热功率、冬夏都没变 —— 两条链主导工况都不同了.
+//
+//   【统一】全部改用【热功率 (制冷/制热量)】+ 利用小时 22h:
+//     · 热功率: 与 2000 元/kW 的报价口径一致, 也与工程师读"热泵 xx kW"的直觉一致
+//     · 22h: /16 是 v1.5 Bug 7 只改了一处留下的分歧, 统一到 22
+//   自检里应加断言: 设备清单热泵 kW == CAPEX 热泵 kW.
+const HP_UTIL_HOURS_DEFAULT = 22;
+/** 从一个 thermal 结果取【热负荷】kWh/d. 老方案无 heatPumpThermalKWh 时用 电耗 × COP 还原. */
+function hpThermalKWh(sc) {
+  if (!sc) return 0;
+  if (sc.heatPumpThermalKWh != null) return sc.heatPumpThermalKWh;
+  return (sc.heatPumpKWh || 0) * Math.max(sc.COP || sc.cop || 1, 0.5);
+}
+/** 全场热泵装机 kW (制冷/制热量口径) = max(设计冬, 设计夏) 热负荷 / 利用小时 × 车间共用系数 */
+function hpInstalledKwOf(sim, sharingFactor) {
+  const sf = (sharingFactor != null) ? sharingFactor : 1;
+  const h = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
+    ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
+    : HP_UTIL_HOURS_DEFAULT;
+  if (sim && sim.thermalScenarios && sim.thermalScenarios.design_winter && sim.thermalScenarios.design_summer) {
+    return Math.max(hpThermalKWh(sim.thermalScenarios.design_winter),
+                    hpThermalKWh(sim.thermalScenarios.design_summer)) / h * sf;
+  }
+  return hpThermalKWh(sim && sim.thermal) / h * sf;
+}
+
 
 /* ============================================================================
    函数: calcCapex
@@ -6862,14 +7148,17 @@ function calcCapex(eq, sim, flowData, eqPrices) {
       const hpUtilHours = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
         ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
         : HP_UTIL_FALLBACK;
-      const winterKw = (sim.thermalScenarios.design_winter.heatPumpKWh || 0) / hpUtilHours * sharingFactor;
-      const summerKw = (sim.thermalScenarios.design_summer.heatPumpKWh || 0) / hpUtilHours * sharingFactor;
-      hpInstalledKw = Math.max(winterKw, summerKw);
+      // v1.9.2 修复 (审计 P3): 用【热功率】(制冷/制热量) 定容, 不用电功率.
+      //   单价 2000 元/kW 是"元/kW 制冷(热)量"口径; 旧实现传电功率, CAPEX 缩到约 1/COP.
+      //   heatPumpThermalKWh = Q_pump_load (kWh/d 热负荷); 老版本 sim 无此字段时回退,
+      //   用 heatPumpKWh × COP 还原热负荷, 保证读老方案不出错.
+      // v1.9.2 (复审 P0): 与设备清单/模块化/热平衡卡片共用 hpInstalledKwOf, 消除重复实现
+      hpInstalledKw = hpInstalledKwOf(sim, sharingFactor);
     } else {
-      hpInstalledKw = sim.thermal.heatPumpKWh / HP_UTIL_FALLBACK;
+      hpInstalledKw = hpThermalKWh(sim.thermal) / HP_UTIL_FALLBACK;
     }
     if (hpInstalledKw > 0.5) {
-      total += add('空气源热泵', `${hpInstalledKw.toFixed(1)} kW`, 'kW', hpInstalledKw, eqPrices.heatPump);
+      total += add('空气源热泵', `${hpInstalledKw.toFixed(1)} kW 制冷/制热量`, 'kW(热)', hpInstalledKw, eqPrices.heatPump);
     }
     // v1.5 Bug 8 修复: 板换面积基于物理推导, 不再用经验 /50
     // 公式: A = Q_design [kW] / (U × ΔT_lm)
@@ -7180,6 +7469,22 @@ let stageCharts = {};          // 每阶段 {pollutant: Chart, gas: Chart}
 //     shrimp = 虾苗 (P5-P12)
 //   ⚠ 这些是市场价, 不是物理量 —— 波动大、地区差异大, 务必按项目实际询价覆盖.
 //     鳗鲡白仔尤其: 历史价格在 10-40 元/尾之间剧烈波动, 苗种成本可占总成本一半以上.
+// v1.9.2 (复审 P3): 非离子氨 NH₃-N 长期安全上限, μg/L —— 按鱼种取值.
+//   原实现着色阈值写死 25 μg/L, 而同一个 tooltip 自己写着"三文鱼 12.5、温水鱼 50-100" ——
+//   对冷水鲑科偏松一倍, 对温水种又偏严 2-4 倍.
+//   冷水鲑科对 NH₃ 最敏感 (低温高 pH 时非离子占比高、鳃组织易损); 温水种耐受显著更高.
+const NH3_LIMIT_UG_L = {
+  salmon:   12.5,  // 鲑科冷水鱼 —— 最敏感
+  turbot:   20,    // 海水比目鱼
+  grouper:  30,    // 海水温水肉食
+  bass:     50,    // 温水淡水肉食
+  mandarin: 50,    // 鳜鱼
+  eel:      60,    // 鳗鲡 (耐受较高)
+  tilapia:  100,   // 罗非鱼 —— 最耐受
+  shrimp:   50,    // 对虾
+  custom:   25     // 默认中性 (原写死值)
+};
+
 const SEED_PRICE_BY_SPECIES = {
   salmon:   1.5,   // 大西洋鲑发眼卵 (冰岛/挪威进口, NOAP 财报反推约 0.2 EUR/粒)
   turbot:   2.0,   // 大菱鲆苗 3 g
@@ -7477,7 +7782,7 @@ function renderStageBlock(idx, stage) {
 <details class="card p-5 scroll-mt-28 stage-card" id="stage-${idx}" open>
   <summary class="stage-summary flex items-center justify-between mb-4 flex-wrap gap-2 cursor-pointer list-none">
     <h2 class="section-title text-lg font-bold flex-1">
-      ${['④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫'][idx] || '▶'} 阶段 ${idx+1}: <span class="text-cyan-300">${stage.name}</span>
+      ${['④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫'][idx] || '▶'} 阶段 ${idx+1}: <span class="text-cyan-300">${escapeHtml(stage.name)}</span>
       <span class="text-xs text-slate-400 ml-2">${stage.weightStart}→${stage.weightEnd}g · ${stage.months}月 · ${stage.tempOpt}°C · ${stage.density} kg/m³${(stage.salinity||0) > 0 ? ' · ' + stage.salinity + '‰' : ''}</span>
     </h2>
     <div class="flex items-center gap-2 flex-wrap" onclick="event.stopPropagation()">
@@ -7788,7 +8093,7 @@ function renderFlow(idx, sim) {
         <div class="flex items-center gap-2 mb-2">
           <span class="node-icon">${st.icon}</span>
           <div>
-            <div class="font-bold text-cyan-200 text-sm">${st.name}</div>
+            <div class="font-bold text-cyan-200 text-sm">${escapeHtml(st.name)}</div>
             <div class="text-[10px] text-slate-400">${st.desc}</div>
           </div>
         </div>
@@ -8004,10 +8309,13 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
   const condenseAlert = (t.m_condense_kg_d||0) > 100;
 
   // === A: 装机容量 + 比电耗 (v1.2 关键指标, 工程意义大于 OPEX 占比) ===
-  // 装机: 设计日峰值小时 ≈ heatPumpKWh / 16h (利用率 67%, 工程惯例)
-  //   工程上热泵选型按"设计日 24h 累计电耗 / 利用小时数"
-  //   16h 是国内 RAS 工程典型 (含夜间投喂峰)
-  const hpCapacityKw = (t.heatPumpKWh || 0) / 16;
+  // v1.9.2 (复审 P0): 与 CAPEX / 设备清单统一到【热功率 ÷ 22h】.
+  //   旧式用 heatPumpKWh(电耗)/16, 与另外三处口径都不同, 同一台机出现 4 个数、最大差 13.6 倍.
+  //   这里显示的是【当前工况】的装机需求 (不含冬夏取大与车间共用系数),
+  //   与设备清单的全场装机不同 —— 标签已注明, 供判断本工况热负荷用.
+  const hpUtilH = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
+    ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours)) : HP_UTIL_HOURS_DEFAULT;
+  const hpCapacityKw = hpThermalKWh(t) / hpUtilH;
   // 比电耗: 该阶段年通过量为分母 (不是该阶段稳态量)
   //   如果 stageFarm.yearGrowth 不可用 (legacy 调用), fallback 用 biomass × 12 / 周期
   const yearGrowth = (stageFarm && stageFarm.yearGrowth) || 0;
@@ -8297,6 +8605,85 @@ function renderStageWarnings(idx, load, stage, stageFarm, eq, sim) {
   if (sim && sim.stages && sim.stages.length > 0) {
     const tank = sim.stages.find(s => s.id === 'tank') || sim.stages[0];
     // DO 阈值检查 (鱼种内置或 fallback)
+    // v1.9.2 (复审 P3): 方解石饱和指数 Ω 欠饱和告警 (仅海水系统)
+    //   Ω = [Ca²⁺][CO₃²⁻] / Ksp. Ω < 1 时水对碳酸钙【欠饱和】, 会溶蚀:
+    //     · 混凝土池体与砂浆 (长期强度下降、表面粉化)
+    //     · 贝壳类/甲壳类的钙化 (对虾蜕壳、贝类育苗尤其敏感)
+    //   RAS 海水系统因 CO₂ 累积 + 硝化耗碱, Ω 普遍偏低, 是真实工程关切但此前无提示.
+    //   判据: Ω < 1 告警; Ω < 0.6 严重. 提高碱度或强化 CO₂ 脱气可改善.
+    if (tank && tank.omega != null && isFinite(tank.omega) && (stage.salinity || 0) > 5) {
+      const om = tank.omega;
+      if (om < 1) {
+        warns.push({
+          level: om < 0.6 ? 'danger' : 'warn',
+          text: `🐚 <b>方解石饱和指数 Ω = ${om.toFixed(2)} &lt; 1，水对碳酸钙欠饱和</b>`
+              + (om < 0.6 ? '（&lt; 0.6，程度较重）' : '') + '<br>'
+              + `　　长期后果：<b>溶蚀混凝土池体与砂浆</b>（强度下降、表面粉化）；`
+              + `对<b>甲壳类蜕壳与贝类钙化</b>不利。<br>`
+              + `　　成因：RAS 海水系统 CO₂ 累积 + 硝化耗碱使 CO₃²⁻ 活度下降。<br>`
+              + `　　改善：提高碱度设定值（当前 ${stage.proc && stage.proc.alkTarget || '—'} mg/L CaCO₃）、`
+              + `强化 CO₂ 脱气（提高 G:L 或风压）、或对池体做防腐衬里。`
+        });
+      }
+    }
+
+    // v1.9.2 (审计 P3): 无稳态解告警 —— 必须在任何浓度类告警之前, 因为此时所有浓度都不可信
+    if (sim.divergent && sim.divergent.length) {
+      warns.push({
+        level: 'danger',
+        text: `☢️ <b>【${sim.divergent.join('、')}】没有稳态解，下方相关浓度均不可信</b><br>`
+            + `　　这些污染物在当前配置下<b>没有任何有效去除路径</b>（处理效率为 0 且换水率为 0），`
+            + `浓度会随时间<b>持续累积、不收敛</b>。<br>`
+            + `　　模型给出的数字仅是防除零钳制的产物（等价于"单周期增量 × 1000"），<b>没有物理意义</b>，`
+            + `不要用于设备选型或可研。<br>`
+            + `　　请为上述污染物配置去除单元（生物滤池 / 微滤机 / 蛋分 / 反硝化 / AOP），或设置非零换水率。`
+      });
+    }
+
+    // v1.9.2 (审计 P3): BF 单次去除率 η 与容积去除率 VTR 的一致性校核
+    //   两套参数各管一头, 模型不校验其自洽性:
+    //     · VTR20/θ  → 决定【填料容积】: bioVolume = tanDaily × sBio / VTR(T,S)
+    //                  (故 bioVolume × VTR ≡ tanDaily × sBio, 恒成立, 校核它没有意义)
+    //     · biofilterTAN (η) → 决定【池内稳态浓度】: C_out = Δ/(1−(1−η)(1−换水))
+    //   真正的隐患是: η 是"单次通过去除率", 受【接触时间】约束 —— 而接触时间由
+    //   填料容积与过滤流量共同决定. 用户可以填 η=95% 却配一个空床停留时间只有几十秒的 BF,
+    //   模型照单全收, 算出一个过于乐观的池内 TAN.
+    //   经验判据: MBBR 单次通过去除率与空床接触时间 (EBCT) 大致对应
+    //     EBCT < 2 min → η 通常 < 30%;  2-5 min → 30-60%;  > 5 min → 可达 60-80%
+    //   (η > 80% 需极低进水 TAN 或多级串联, 单级很难达到.)
+    try {
+      const _etaIn  = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN / 100 : 0.7;
+      const _bioVol = (eq && eq.bioVolume) || 0;
+      // v1.9.2 (复审): rdfFlow = 循环流量 × 安全系数 1.10, 略大于实际进 BF 流量,
+      //   EBCT 因此偏小约 9% (偏保守, 无害). fallback 改用 load.flowM3h ——
+      //   原写的 stageFarm.flowM3h 字段不存在, 是死代码.
+      const _flow   = (eq && eq.rdfFlow) || (load && load.flowM3h) || 0;
+      if (_bioVol > 0 && _flow > 0 && _etaIn > 0) {
+        const _ebct = _bioVol / _flow * 60;    // 空床接触时间 min
+        // 该 EBCT 下经验可达的 η 上限
+        //   ⚠ 判据必须留足余量: 单次去除率还强烈依赖【进水 TAN 浓度】——
+        //   低进水浓度下反应处于一级动力学区, 同样 EBCT 可达到更高的百分比去除率.
+        //   iRAS 默认 biofilterTAN=70% + EBCT≈2.4 min 是国内常见配置, 不应报警.
+        //   故只对【明显离谱】的组合告警 (阈值取经验上限再放宽), 避免默认配置误报.
+        const _etaMax = _ebct < 1 ? 0.55 : (_ebct < 2 ? 0.70 : (_ebct < 5 ? 0.85 : 0.92));
+        if (_etaIn > _etaMax) {
+          warns.push({
+            level: 'warn',
+            text: `⚗️ <b>生物滤池去除率与接触时间可能不自洽</b>：`
+                + `设定单次通过去除率 <b>${(_etaIn*100).toFixed(0)}%</b>，`
+                + `而 ${_bioVol.toFixed(0)} m³ 填料在 ${_flow.toFixed(0)} m³/h 流量下`
+                + `空床接触时间仅 <b>${_ebct.toFixed(1)} min</b>，`
+                + `该接触时间经验上单级可达约 ${(_etaMax*100).toFixed(0)}%。<br>`
+                + `　　注意 <code>biofilterTAN</code>(单次去除率，决定池内浓度) 与 `
+                + `<code>VTR₂₀/θ</code>(容积速率，决定填料容积) 是<b>两套独立参数</b>，`
+                + `模型不会自动调和 —— 填料容积按 VTR 反算已满足日处理量，`
+                + `但单次通过效率受接触时间约束。<br>`
+                + `　　请下调 <code>biofilterTAN</code>、增大填料容积/降低过滤流量，或改多级串联。`
+          });
+        }
+      }
+    } catch (e) { /* 校核失败不阻断主流程 */ }
+
     if (tank.DO !== undefined && sim.DO_threshold !== undefined && tank.DO < sim.DO_threshold) {
       const satRatio = stage.DOmin_satRatio || 0.70;
       const satFromAbs = sim.DO_sat * satRatio;
@@ -8701,7 +9088,7 @@ function renderCapexCard(idx, capex) {
     //   修复旧的 it.unit.replace(/.*\//,'/') bug — 之前会把 'm³/h' 显示成 '/h'
     const unitFmt = it.unit.includes('/') ? `元/(${it.unit})` : `元/${it.unit}`;
     html += `<tr class="border-b border-slate-800/50">
-      <td class="py-1 text-slate-300">${it.name}</td>
+      <td class="py-1 text-slate-300">${escapeHtml(it.name)}</td>
       <td class="text-right py-1 font-mono text-slate-400">${it.spec}</td>
       <td class="text-right py-1 font-mono text-slate-400">${it.unitPrice.toLocaleString('zh-CN')} ${unitFmt}</td>
       <td class="text-right py-1 font-mono text-amber-300">${fmtW(it.cost)}</td>
@@ -9021,7 +9408,7 @@ function renderSpeciesButtons() {
   const box = document.getElementById('speciesSelector');
   box.innerHTML = Object.entries(SPECIES_DB).map(([key, sp]) => `
     <button data-sp="${key}" class="species-btn ${key===currentSpecies?'active':''} rounded-lg p-3 text-left">
-      <div class="font-bold"><span class="text-lg">${sp.icon}</span> ${sp.name}</div>
+      <div class="font-bold"><span class="text-lg">${escapeHtml(sp.icon)}</span> ${escapeHtml(sp.name)}</div>
       <div class="text-xs text-slate-400 mt-1">${sp.subtitle} · ${sp.stages.length}阶段</div>
     </button>
   `).join('');
@@ -9067,7 +9454,7 @@ function rebuildStages() {
   const nav = document.getElementById('stageNav');
   nav.innerHTML = stagesState.map((st, i) => `
     <a href="#stage-${i}" class="px-2.5 py-1 rounded-md border border-slate-600 hover:border-cyan-400 hover:bg-cyan-900/20 text-slate-300 hover:text-cyan-300 transition-all">
-      ${i+1}. ${st.name}
+      ${i+1}. ${escapeHtml(st.name)}
     </a>
   `).join('');
   // v1.6: 锚点点击展开目标阶段由全局事件委托处理 (见底部 document.addEventListener)
@@ -9293,6 +9680,19 @@ function rebuildStages() {
 /* ============================================================================
    主计算: 循环所有阶段
    ============================================================================ */
+// v1.9.2 修复 (审计: DOM-XSS): HTML 转义
+//   方案 JSON 导入 (btnLoadJSON → JSON.parse → restoreState → rebuildStages) 会把
+//   stage.name / 鱼种名等【完全来自文件】的字符串直接拼进 innerHTML, 无转义.
+//   构造 name 含 `"><img src=x onerror=...>` 的方案文件即可在本站源上执行脚本,
+//   读取或篡改 localStorage 里的全部方案数据.
+//   而"设计院之间互发方案 JSON"正是本工具的预期用法, 故这不是理论风险.
+function escapeHtml(v) {
+  if (v == null) return '';
+  return String(v)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 // v1.9.2: 数值读取辅助 —— 0 是合法输入 (免排污费 / 自有水源 / 不投保),
 //   不能用 `parseFloat(...) || default`, 否则 0 会被静默替换成默认值.
 //   (这正是 v1.5 审计回合 17 记录的已知缺陷, 新字段不再重蹈.)
@@ -9430,9 +9830,11 @@ function recomputeAll() {
       const hpUtilHours = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
         ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
         : 22;
-      const winterKw = (sim.thermalScenarios.design_winter.heatPumpKWh || 0) / hpUtilHours * sharingFactor;
-      const summerKw = (sim.thermalScenarios.design_summer.heatPumpKWh || 0) / hpUtilHours * sharingFactor;
-      const peakHpKw = Math.max(winterKw, summerKw);
+      // v1.9.2 (复审 P0): 改用与 CAPEX 同一口径 —— 热功率 (制冷/制热量), 见 hpInstalledKwOf
+      const peakHpKw = hpInstalledKwOf(sim, sharingFactor);
+      // 冬/夏分量仅供 UI 展示定容依据 (同为热功率口径)
+      const winterKw = hpThermalKWh(sim.thermalScenarios && sim.thermalScenarios.design_winter) / hpUtilHours * sharingFactor;
+      const summerKw = hpThermalKWh(sim.thermalScenarios && sim.thermalScenarios.design_summer) / hpUtilHours * sharingFactor;
       const modShare = eq.modular.numModules > 0 ? 1 / eq.modular.numModules : 1;
       const modHpKw = peakHpKw * modShare;
       const HP_UNIT_KW = 200;
@@ -9478,15 +9880,36 @@ function recomputeAll() {
       renderPoolConfigInfo(idx, eq.modular.pools, stage);
     }
 
-    // v1.1.1: 把当前生效的 o2FishFactor 显示到 UI 输入框
-    // 仅当用户没有手动改过 (stage.proc.o2FishFactor == null) 时回写
-    // 这样用户能看到"自动算出"的值, 但不会覆盖用户的手动修改
-    if (stage.proc && stage.proc.o2FishFactor == null && load.o2FishFactor != null) {
+    // v1.9.2 修复 (审计 P1): 自动值改走 placeholder, 不再写入 value
+    //
+    //   【原缺陷】v1.1.1 起这里把自动算出的值【写回 value】, 而 readStageProcFromInputs
+    //   判断"用户是否手填"的依据是 `el.value === ''`. 在 v1.9.2 之前两者是幂等的
+    //   (load.o2FishFactor 就是纯生理值, 写回再读出仍是同一个数), 所以没有问题.
+    //
+    //   但 v1.9.2 把 load.o2FishFactor 的语义改成了【池内总耗氧系数】
+    //   (= 纯生理 o2FishFactorBase + TSS 依赖附加), 幂等性被打破:
+    //     回写含附加的值 → 用户碰任一工艺参数 → 该值被当作"手填的纯生理值"读回
+    //     → calcStageLoad 再叠一次 TSS 附加 → 每操作一次多累加一次, 且不再随水温/鱼种更新
+    //   实测三文鱼成鱼期: 553.8 → 598.2 → 643.2 kg/d (每次 +8%, 可无限累积);
+    //   高 TSS 工况 (微滤 30% + 关蛋分 + 换水 2%) 单次即 +42%.
+    //   液氧采购、CO₂ 脱气塔选型、代谢产热三项会同时错.
+    //
+    //   【修法】不写 value, 只写 placeholder —— 自动值与用户手填值在数据结构上彻底分开,
+    //   value 保持为空 ⇒ readStageProcFromInputs 永远返回 null ⇒ 永远走自动公式,
+    //   除非用户真的键入了数字. 这样无论 o2FishFactor 的语义将来怎么变都不会再出现回写污染.
+    //
+    //   placeholder 显示【纯生理基准】(与输入框标签"鱼生理耗氧系数"一致),
+    //   池内总耗氧含 TSS 附加, 在阶段详情的"当前生效"行单独展示.
+    if (stage.proc && stage.proc.o2FishFactor == null && load.o2FishFactorBase != null) {
       const el = document.querySelector(`[data-proc-stage="${idx}"][data-proc-field="o2FishFactor"]`);
       if (el && document.activeElement !== el) {
-        // 不要在用户正在编辑时打断
-        el.value = load.o2FishFactor.toFixed(3);
-        el.classList.add('auto-value');  // 加标识方便加灰色样式
+        el.placeholder = load.o2FishFactorBase.toFixed(3);
+        if (el.value !== '') el.value = '';   // 清掉历史版本回写进去的污染值
+        el.classList.add('auto-value');
+        el.title = `自动: 物种生理基准 ${load.o2FishFactorBase.toFixed(3)}`
+                 + ` + 池内 TSS 附加 ${(load.o2TssSurcharge||0).toFixed(3)}`
+                 + ` = 池内总耗氧 ${load.o2FishFactor.toFixed(3)} kg O₂/kg 饲料。`
+                 + `留空即自动跟随水温/鱼种/池内 TSS；键入数字则覆盖【生理基准】(TSS 附加仍会另加)。`;
       }
     }
     } catch (e) {
@@ -9785,12 +10208,25 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
       // v1.2: 热泵成本占比着色 (>10% 醒目, 5-10% 正常, <5% 偏淡)
       const thermalShareColor = thermalCostShare > 10 ? 'text-rose-300' : (thermalCostShare > 5 ? 'text-amber-300' : 'text-slate-400');
       const thermalShareIcon = thermalCostShare > 10 ? '⚠️ ' : '';
+      // v1.9.2 (复审 P2): 标注当前热工况.
+      //   默认 thermalScenario='design_winter', 而自然冷却使【设计冬成为全年最省的工况】
+      //   (青岛冬 35.63 / 年均约 37.4 / 设计夏 37.94 元/kg).
+      //   不标注的话读者容易把设计冬的数当成年均值, 高估项目经济性.
+      const _scLabel = ({ design_winter: '设计冬', design_summer: '设计夏', annual: '年均' })
+                       [globalThermalConfig.thermalScenario] || globalThermalConfig.thermalScenario;
+      const _scHint = (globalThermalConfig.thermalScenario === 'design_winter')
+        ? '⚠ 设计冬工况。自然冷却使冬季成为全年最省，年均与设计夏会更高——判断项目经济性请切到「年均」工况'
+        : (globalThermalConfig.thermalScenario === 'design_summer'
+           ? '设计夏工况（通常为全年最不利），年均会低于此值'
+           : '年均工况');
+
       harvestEl.innerHTML =
         // v1.9.2: 主数取【企业全成本】—— 卖鱼口径要回收的是全部成本,
         //   只看工艺运行成本会漏掉苗种/人工/管理费, 拿它对售价会误判项目可行性.
         //   工艺运行成本降为副行, 供工程侧分析用.
         fullCostPerKg.toFixed(2) + ' 元/kg' +
         `<span class="text-[11px] text-slate-400 font-normal ml-1">企业全成本</span>` +
+        `<span class="text-[10px] ${globalThermalConfig.thermalScenario==='design_winter'?'text-amber-400':'text-slate-500'} font-normal ml-1.5" title="${_scHint}">[${_scLabel}工况]</span>` +
         `<div class="text-[11px] text-slate-400 mt-1 font-normal">` +
         `工艺运行成本 <span class="text-emerald-300 font-mono">${costPerKg.toFixed(2)}</span>` +
         ` + 苗种/人工/管理费 <span class="text-amber-300 font-mono">${enterprisePerKg.toFixed(2)}</span>` +
@@ -9901,7 +10337,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
     const stCapex = r && r.capex ? r.capex.total : 0;
     const stCapexProj = r && r.capex ? r.capex.totalProject : 0;
     return `<tr class="border-b border-slate-800 hover:bg-slate-800/40">
-      <td class="py-1.5 px-2"><a href="#stage-${i}" class="text-cyan-300 hover:text-cyan-100 font-bold">${st.name}</a> <span class="text-[10px] text-slate-500">(${st.weightStart}→${st.weightEnd}g, ${st.months}月)</span></td>
+      <td class="py-1.5 px-2"><a href="#stage-${i}" class="text-cyan-300 hover:text-cyan-100 font-bold">${escapeHtml(st.name)}</a> <span class="text-[10px] text-slate-500">(${st.weightStart}→${st.weightEnd}g, ${st.months}月)</span></td>
       <td class="text-right py-1.5 px-2 font-mono">${(f.countIn/10000).toFixed(1)}</td>
       <td class="text-right py-1.5 px-2 font-mono">${(f.countSteady/10000).toFixed(1)}</td>
       <td class="text-right py-1.5 px-2 font-mono">${f.avgWeight.toFixed(0)}</td>
@@ -10812,6 +11248,12 @@ function initGlobalThermalUI() {
   if (dhd) dhd.value = globalThermalConfig.dehumHeatDest || 'outdoor';
   const dcr = document.getElementById('g_dehumCondRecovery');
   if (dcr) dcr.value = (globalThermalConfig.dehumCondRecovery === false) ? '0' : '1';
+  const fce = document.getElementById('g_freeCooling');
+  if (fce) fce.value = (globalThermalConfig.freeCoolingEnabled === false) ? '0' : '1';
+  const fca = document.getElementById('g_fcApproach');
+  if (fca && globalThermalConfig.freeCoolingApproach_K != null) fca.value = globalThermalConfig.freeCoolingApproach_K;
+  const fcr = document.getElementById('g_fcEER');
+  if (fcr && globalThermalConfig.freeCoolingEER != null) fcr.value = globalThermalConfig.freeCoolingEER;
 }
 
 function readGlobalThermalConfig() {
@@ -10825,6 +11267,11 @@ function readGlobalThermalConfig() {
     const el = document.getElementById(id);
     return el ? (el.value || def) : def;
   };
+  // v1.9.2 (复审 P2): 自然冷却三参数接入 UI —— 原先只在 PROCESS_DEFAULTS,
+  //   靠 ensureStageProc 合并回来, 行为稳定但用户改不了, 等于硬编码.
+  globalThermalConfig.freeCoolingEnabled   = getStr('g_freeCooling', '1') !== '0';
+  globalThermalConfig.freeCoolingApproach_K = getNum('g_fcApproach', 6);
+  globalThermalConfig.freeCoolingEER        = getNum('g_fcEER', 20);
   globalThermalConfig.climateRegion = getStr('globalClimateRegion', 'china_qingdao');
   globalThermalConfig.thermalScenario = getStr('globalThermalScenario', 'design_winter');
   globalThermalConfig.envelopePreset = getStr('globalEnvelopePreset', 'industrial_standard');
@@ -10930,6 +11377,8 @@ function bindGlobalThermalEvents() {
     'g_airChangeRate','g_ventHeatRecovery','g_poolCover',
     'g_co2IndoorLimit_ppm','g_degasserExhaustIndoorFrac',
     'g_dehumEnabled','g_dehumTargetRH','g_dehumSMER','g_dehumHeatDest','g_dehumCondRecovery',
+    // v1.9.2 (复审 P2): 自然冷却三参数
+    'g_freeCooling','g_fcApproach','g_fcEER',
     'g_motorEta','g_pumpHeatRatio',
     'g_buildingArea_user','g_buildingHeight','g_thermalSharingFactor'];
   detailIds.forEach(id => {
@@ -11393,6 +11842,255 @@ if (location.search.includes('test=1')) {
   };
   document.head.appendChild(s);
 }
+
+/* ============================================================================
+   v1.9.2 自检 (Self-test)  —— 访问 index.html?selftest=1 触发
+   ============================================================================
+   【为什么需要它】
+   v1.9.2 审计发现: 对外发布的四工况基线 (32.65 元/kg) 是用一份【外部测试脚本】
+   跑出来的, 而该脚本写于成本模型扩展之前, 调 calcCostEstimate 时少传三个参数 ——
+   它算的是旧口径。这个数被写进 index / 手册 / README 三个文件对外发布, 直到外部
+   审计才发现。正确值是 36.06, 差 3.41 元/kg。
+
+   根因不是某个公式错, 而是【验证路径与产品路径不是同一条】。
+
+   【本自检的唯一设计约束】
+   必须调用真实的 recomputeAll(), 读真实的 lastResults.summary ——
+   不得重新实现任何计算管线。否则又会重蹈覆辙。
+
+   【用法】
+     index.html?selftest=1           跑全部工况, 结果打到 console 并弹出面板
+     index.html?selftest=1&quiet=1   只打 console, 不弹面板 (供 CI/无头浏览器)
+   退出码语义: window.__iRAS_selftest = { pass, fail, results }
+   ========================================================================== */
+const SELFTEST_BASELINE = [
+  // 四工况 (1000 t 大西洋鲑, mainline). 数值 = 工艺运行成本 / 企业全成本 元/kg
+  { id: 'salmon_qingdao_w',  species: 'salmon', yieldTons: 1000,
+    climate: { T_air_design_winter: -7, T_source_design_winter: 4,
+               T_air_design_summer: -7, T_source_design_summer: 4, RH_winter: 60 },
+    expect: { costPerKg: 35.6, fullCostPerKg: 40.49 } },
+  { id: 'salmon_hainan_w',   species: 'salmon', yieldTons: 1000,
+    climate: { T_air_design_winter: 17, T_source_design_winter: 22,
+               T_air_design_summer: 17, T_source_design_summer: 22, RH_winter: 78 },
+    expect: { costPerKg: 36.96, fullCostPerKg: 41.94 } },
+  { id: 'salmon_hainan_s',   species: 'salmon', yieldTons: 1000,
+    climate: { T_air_design_winter: 32, T_source_design_winter: 27,
+               T_air_design_summer: 32, T_source_design_summer: 27, RH_winter: 78 },
+    expect: { costPerKg: 37.37, fullCostPerKg: 42.38 } },
+  { id: 'salmon_bergen_w',   species: 'salmon', yieldTons: 1000,
+    climate: { T_air_design_winter: 0, T_source_design_winter: 4,
+               T_air_design_summer: 0, T_source_design_summer: 4, RH_winter: 75 },
+    expect: { costPerKg: 35.62, fullCostPerKg: 40.51 } },
+  // 各鱼种 (默认气候 = 青岛, 走 UI 默认值)
+  { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000, expect: { costPerKg: 27.48, fullCostPerKg: 31.95 } },
+  { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,  expect: { costPerKg: 47.6, fullCostPerKg: 57.32 } },
+  { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,  expect: { costPerKg: 38.92, fullCostPerKg: 48.3 } },
+  { id: 'bass_300',      species: 'bass',     yieldTons: 300,  expect: { costPerKg: 40.08, fullCostPerKg: 46.71 } },
+  { id: 'eel_200',       species: 'eel',      yieldTons: 200,  expect: { costPerKg: 48.42, fullCostPerKg: 103.73 } },
+  { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,  expect: { costPerKg: 51.59, fullCostPerKg: 63.06 } },
+  { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,  expect: { costPerKg: 41.49, fullCostPerKg: 58.11 } },
+  // ── 边界工况: 只跑不变量断言 (不比对数值), 用于捕捉 NaN/Infinity 与口径漂移 ──
+  { id: 'edge_yield_0',   species: 'salmon', yieldTons: 0,      expect: {} },
+  { id: 'edge_yield_tiny',species: 'salmon', yieldTons: 0.001,  expect: {} },
+  { id: 'edge_yield_huge',species: 'salmon', yieldTons: 100000, expect: {} },
+];
+
+const SELFTEST_TOL = 0.02;   // 元/kg. 容差取 0.02 —— 大于浮点噪声, 小于任何有意义的口径变化
+
+function runSelfTest(quiet) {
+  const out = { pass: 0, fail: 0, results: [], startedAt: new Date().toISOString() };
+  // ── 保存现场 ──
+  const saved = {
+    species: currentSpecies,
+    stages: JSON.parse(JSON.stringify(stagesState)),
+    yieldVal: (document.getElementById('inpYield') || {}).value,
+    seedVal: (document.getElementById('priceSeed') || {}).value,
+    climate: JSON.parse(JSON.stringify(globalThermalConfig)),
+  };
+  const setNum = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+
+  try {
+    for (const c of SELFTEST_BASELINE) {
+      // 设定工况 —— 通过【和用户操作同一条路径】: 改 UI / 全局状态, 再走 recomputeAll
+      currentSpecies = c.species;
+      loadStagesFromDB(currentSpecies);
+      // 苗种单价随鱼种带出默认值 —— 与点击鱼种按钮的联动保持一致.
+      //   (自检直接改 currentSpecies 不会触发按钮的 click handler, 必须手动同步,
+      //    否则会用上一个鱼种的苗价: 例如对虾按鲑鱼卵 1.5 元/尾算, 苗种成本高 50 倍.)
+      if (SEED_PRICE_BY_SPECIES[currentSpecies] != null) {
+        setNum('priceSeed', SEED_PRICE_BY_SPECIES[currentSpecies]);
+      }
+      if (typeof rebuildStages === 'function') rebuildStages();
+      setNum('inpYield', c.yieldTons);
+      readGlobalThermalConfig();                       // 先按 UI 读一遍默认
+      if (c.climate) Object.assign(globalThermalConfig, c.climate);   // 再覆盖本工况
+
+      recomputeAll();                                  // ★ 真实产品路径
+      try { window.__iRAS_gtc = JSON.parse(JSON.stringify(globalThermalConfig)); } catch(e){}
+
+      const f = (lastResults && lastResults.summary) || {};
+
+      // ── v1.9.2 (复审建议): 不变量断言 ──
+      //   golden-master 基线只能锁行为, 一个常数错了它会安静地一直通过.
+      //   下面两类断言不依赖"当前值是对的"这个前提, 能抓系统性错误.
+      const inv = [];
+      try {
+        const rs = (lastResults && lastResults.allResults) || [];
+        rs.forEach(function (r, si) {
+          if (!r || !r.sim || !r.capex) return;
+          const tag = c.id + '#' + si;
+          // ① 口径一致: 热泵装机在 CAPEX / 设备清单 / 模块化三处必须同值
+          //    (正是复审 P0 那个"同一台机 4 个数、最大差 13.6 倍"的通用捕手)
+          const hpRef = hpInstalledKwOf(r.sim, (globalThermalConfig.thermalSharingFactor != null)
+                                                ? globalThermalConfig.thermalSharingFactor : 0.75);
+          const hpItem = (r.capex.items || []).find(function (x) { return /热泵/.test(x.name || ''); });
+          if (hpItem && hpRef > 0.01 && Math.abs(hpItem.qty - hpRef) / hpRef > 0.01) {
+            inv.push(tag + ' 热泵口径不一致: CAPEX ' + hpItem.qty.toFixed(1)
+                     + ' vs 统一公式 ' + hpRef.toFixed(1) + ' kW');
+          }
+          const mh = r.eq && r.eq.modular && r.eq.modular.modulePerSpec
+                   && r.eq.modular.modulePerSpec.heatPump;
+          if (mh && hpRef > 0.01) {
+            const nm = (r.eq.modular.numModules > 0) ? r.eq.modular.numModules : 1;
+            const full = (mh.totalKw || 0) * nm;
+            if (Math.abs(full - hpRef) / hpRef > 0.01) {
+              inv.push(tag + ' 热泵口径不一致: 模块化 ' + full.toFixed(1)
+                       + ' vs 统一公式 ' + hpRef.toFixed(1) + ' kW');
+            }
+          }
+          // ② 边界有限性: 遍历关键返回对象的所有数值字段, 不得出现 NaN/Infinity
+          //    (P1/P4 那类"静默污染"问题的通用捕手)
+          [['load', r.load], ['sim.thermal', r.sim.thermal], ['eq', r.eq],
+           ['capex', r.capex], ['cost', r.cost]].forEach(function (pair) {
+            const nm = pair[0], obj = pair[1];
+            if (!obj) return;
+            Object.keys(obj).forEach(function (k) {
+              const v = obj[k];
+              if (typeof v === 'number' && !isFinite(v)) inv.push(tag + ' ' + nm + '.' + k + '=' + v);
+            });
+          });
+          // ③ 沿程水质节点同样不得出现 NaN
+          ((r.sim.stages) || []).forEach(function (nd, ni) {
+            Object.keys(nd || {}).forEach(function (k) {
+              const v = nd[k];
+              if (typeof v === 'number' && !isFinite(v)) inv.push(tag + ' 节点' + ni + '.' + k + '=' + v);
+            });
+          });
+        });
+      } catch (e) { inv.push(c.id + ' 不变量检查异常: ' + (e && e.message)); }
+
+      const row = { id: c.id, species: c.species, yieldTons: c.yieldTons,
+                    // v1.9.2: 附带诊断字段, 便于失败时定位 (不参与判定)
+                    _diag: { yieldTons: f.yieldTons, stages: (stagesState||[]).length,
+                             enterprisePerKg: f.enterprisePerKg,
+                             annualSeed: f.annualSeed, annualLabor: f.annualLabor,
+                             headcount: f.headcount, annualDep: f.annualDep,
+                             capexProject: f.totalCapexProject,
+                             // v1.9.2 (复审): 新告警的可观测性 —— 供自检确认不误报
+                             freeCooling: !!((lastResults.allResults||[]).some(function(r){
+                               return r && r.sim && r.sim.thermal && r.sim.thermal.freeCoolingAvailable; })),
+                             omegaMin: (function(){
+                               var m=null;
+                               (lastResults.allResults||[]).forEach(function(r){
+                                 var n=r&&r.sim&&(r.sim.stages||[])[0];
+                                 if(n&&n.omega!=null&&isFinite(n.omega)&&(m==null||n.omega<m)) m=n.omega; });
+                               return m; })(),
+                             nh3MaxUgL: (function(){
+                               var m=0;
+                               (lastResults.allResults||[]).forEach(function(r){
+                                 var n=r&&r.sim&&(r.sim.stages||[])[0];
+                                 if(n&&n.NH3_N!=null&&isFinite(n.NH3_N)) m=Math.max(m,n.NH3_N*1000); });
+                               return m; })(),
+                             nh3Limit: (NH3_LIMIT_UG_L[currentSpecies]!=null?NH3_LIMIT_UG_L[currentSpecies]:25) } };
+      let ok = true;
+      for (const k of Object.keys(c.expect)) {
+        const got = f[k], exp = c.expect[k];
+        const d = (typeof got === 'number' && isFinite(got)) ? (got - exp) : NaN;
+        row[k] = { expect: exp, got: got, diff: d };
+        if (!(Math.abs(d) <= SELFTEST_TOL)) ok = false;
+      }
+      if (inv.length) { ok = false; row.invariants = inv.slice(0, 6); }
+      row.ok = ok;
+      ok ? out.pass++ : out.fail++;
+      out.results.push(row);
+    }
+  } catch (e) {
+    out.error = e && e.message;
+    out.fail++;
+  } finally {
+    // ── 恢复现场 ──
+    try {
+      currentSpecies = saved.species;
+      stagesState = saved.stages;
+      if (typeof rebuildStages === 'function') rebuildStages();
+      if (saved.yieldVal != null) setNum('inpYield', saved.yieldVal);
+      if (saved.seedVal != null) setNum('priceSeed', saved.seedVal);
+      Object.assign(globalThermalConfig, saved.climate);
+      recomputeAll();
+    } catch (e) { console.error('[iRAS selftest] 现场恢复失败:', e); }
+  }
+
+  // ── 输出 ──
+  const tag = out.fail === 0 ? '✅ 全部通过' : ('❌ ' + out.fail + ' 项失败');
+  console.log('%c[iRAS 自检] ' + tag + '  (' + out.pass + '/' + (out.pass + out.fail) + ')',
+              'font-weight:bold;color:' + (out.fail ? '#f43f5e' : '#10b981'));
+  console.table(out.results.map(r => ({
+    工况: r.id,
+    '工艺 期望': r.costPerKg ? r.costPerKg.expect : '',
+    '工艺 实测': r.costPerKg ? (typeof r.costPerKg.got === 'number' ? r.costPerKg.got.toFixed(2) : r.costPerKg.got) : '',
+    '全成本 期望': r.fullCostPerKg ? r.fullCostPerKg.expect : '',
+    '全成本 实测': r.fullCostPerKg ? (typeof r.fullCostPerKg.got === 'number' ? r.fullCostPerKg.got.toFixed(2) : r.fullCostPerKg.got) : '',
+    判定: r.ok ? 'PASS' : 'FAIL',
+  })));
+  if (out.error) console.error('[iRAS 自检] 异常:', out.error);
+  window.__iRAS_selftest = out;
+
+  if (!quiet) {
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;inset:5% 8%;z-index:99999;overflow:auto;padding:20px;'
+      + 'background:#0f172a;color:#e2e8f0;border:2px solid ' + (out.fail ? '#f43f5e' : '#10b981')
+      + ';border-radius:12px;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace;box-shadow:0 20px 60px rgba(0,0,0,.6)';
+    let h = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
+      + '<b style="font-size:16px;color:' + (out.fail ? '#fda4af' : '#6ee7b7') + '">iRAS 自检 ' + tag
+      + ' (' + out.pass + '/' + (out.pass + out.fail) + ')</b>'
+      + '<button onclick="this.closest(\'div\').parentNode.remove()" style="background:#334155;color:#e2e8f0;'
+      + 'border:0;border-radius:6px;padding:6px 14px;cursor:pointer">关闭</button></div>'
+      + '<div style="font-size:11px;color:#94a3b8;margin-bottom:10px">'
+      + '本自检调用真实的 recomputeAll() 与 lastResults.summary，不重新实现任何计算管线。<br>'
+      + '基线值来自 v1.9.2 审计修复后的实测；容差 ±' + SELFTEST_TOL + ' 元/kg。'
+      + '若有 FAIL，说明模型行为已改变 —— 请确认是有意的修改，并同步更新 SELFTEST_BASELINE 与三份文档。'
+      + '</div><table style="width:100%;border-collapse:collapse"><tr style="color:#94a3b8;text-align:left">'
+      + '<th style="padding:4px 8px">工况</th><th>工艺 期望</th><th>实测</th><th>Δ</th>'
+      + '<th>全成本 期望</th><th>实测</th><th>Δ</th><th>判定</th></tr>';
+    for (const r of out.results) {
+      const c1 = r.costPerKg || {}, c2 = r.fullCostPerKg || {};
+      const fmt = (x) => (typeof x === 'number' && isFinite(x)) ? x.toFixed(2) : String(x);
+      const dc = (d) => (typeof d === 'number' && isFinite(d) && Math.abs(d) > SELFTEST_TOL) ? '#f43f5e' : '#64748b';
+      h += '<tr style="border-top:1px solid #1e293b">'
+        + '<td style="padding:4px 8px">' + r.id + '</td>'
+        + '<td>' + fmt(c1.expect) + '</td><td>' + fmt(c1.got) + '</td>'
+        + '<td style="color:' + dc(c1.diff) + '">' + (typeof c1.diff === 'number' ? (c1.diff >= 0 ? '+' : '') + c1.diff.toFixed(2) : '—') + '</td>'
+        + '<td>' + fmt(c2.expect) + '</td><td>' + fmt(c2.got) + '</td>'
+        + '<td style="color:' + dc(c2.diff) + '">' + (typeof c2.diff === 'number' ? (c2.diff >= 0 ? '+' : '') + c2.diff.toFixed(2) : '—') + '</td>'
+        + '<td style="color:' + (r.ok ? '#10b981' : '#f43f5e') + ';font-weight:bold">' + (r.ok ? 'PASS' : 'FAIL') + '</td></tr>';
+    }
+    h += '</table>';
+    if (out.error) h += '<div style="margin-top:10px;color:#fda4af">异常: ' + escapeHtml(out.error) + '</div>';
+    box.innerHTML = h;
+    document.body.appendChild(box);
+  }
+  return out;
+}
+
+// URL 触发 —— 放在最后, 确保所有函数与初始渲染都已就绪
+(function () {
+  try {
+    const q = new URLSearchParams(location.search);
+    if (q.get('selftest') === '1') {
+      setTimeout(() => runSelfTest(q.get('quiet') === '1'), 300);
+    }
+  } catch (e) { /* 老浏览器无 URLSearchParams, 忽略 */ }
+})();
 </script>
 </body>
 </html>
