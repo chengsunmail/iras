@@ -15,6 +15,9 @@ h1 { font-size: 24pt; text-align: center; margin-top: 60pt; color: #1a4480; bord
 h2 { font-size: 16pt; color: #1a4480; margin-top: 24pt; border-bottom: 1px solid #1a4480; padding-bottom: 4pt; page-break-after: avoid; }
 h3 { font-size: 13pt; color: #2a5da0; margin-top: 18pt; page-break-after: avoid; }
 h4 { font-size: 11pt; color: #444; margin-top: 14pt; page-break-after: avoid; }
+    /* v1.9.2: h5 用于 I.12 等深层小节, 原先无样式会退到浏览器默认 (小于正文) */
+    h5 { font-size: 10.5pt; color: #555; margin-top: 11pt; margin-bottom: 4pt;
+         font-weight: 600; page-break-after: avoid; }
 .cover { text-align: center; page-break-after: always; margin-top: 100pt; }
 .cover .title { font-size: 36pt; font-weight: bold; color: #1a4480; margin-bottom: 20pt; }
 .cover .subtitle { font-size: 18pt; color: #555; margin-bottom: 60pt; }
@@ -104,10 +107,359 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     body { max-width: none !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
     .iras-content-wrap { box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; background: #fff !important; }
   }
+  body { padding-left: 0 !important; }
+}
+  body { padding-left: 0 !important; }
+}
+  body { padding-left: 0 !important; }
+}
+  body { padding-left: 0 !important; }
+}
+
+/* ══════ v1.9.2 侧边导航 —— 仅屏幕, 打印时完全隐藏 ══════ */
+@media screen {
+  #manualNav {
+    position: fixed; top: 0; left: 0; width: 300px; height: 100vh;
+    overflow-y: auto; background: #0f172a; color: #cbd5e1;
+    border-right: 1px solid #1e293b; z-index: 999;
+    font: 12px/1.5 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    transform: translateX(-100%); transition: transform .22s ease;
+  }
+  body.nav-open #manualNav { transform: translateX(0); }
+  body.nav-open { padding-left: 300px; }
+  body { transition: padding-left .22s ease; }
+
+  /* 头部整体下移, 让开固定在左上角的 ☰ 按钮 (top 12 + 高 38 = 占到 50px).
+     标题与搜索框都在按钮下方, 不会被 z-index 1000 的按钮遮住. */
+  .nvhead { position: sticky; top: 0; background: #0f172a;
+            padding: 58px 14px 10px; border-bottom: 1px solid #1e293b; }
+  .nvhead b { display: block; color: #7dd3fc; font-size: 13px; margin-bottom: 8px; }
+  #nvFilter { width: 100%; box-sizing: border-box; background: #1e293b; border: 1px solid #334155;
+              color: #e2e8f0; border-radius: 6px; padding: 5px 8px; font-size: 12px; }
+  #nvFilter::placeholder { color: #64748b; }
+
+  .nvlist { padding: 6px 0 40px; }
+  #manualNav a { display: block; text-decoration: none; color: #94a3b8;
+                 padding: 4px 14px; border-left: 3px solid transparent; }
+  #manualNav a:hover { background: #1e293b; color: #e2e8f0; }
+  #manualNav a.nv2 { color: #cbd5e1; font-weight: 600; margin-top: 8px; padding-left: 14px; }
+  #manualNav a.nv3 { padding-left: 28px; font-size: 11.5px; }
+  #manualNav a.cur { border-left-color: #22d3ee; background: #164e63; color: #a5f3fc; }
+  #manualNav a.hide { display: none; }
+
+  #navToggle {
+    position: fixed; top: 12px; left: 12px; z-index: 1000;
+    width: 38px; height: 38px; border: 0; border-radius: 8px; cursor: pointer;
+    background: #0f172a; color: #7dd3fc; font-size: 17px; line-height: 1;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  }
+  #navToggle:hover { background: #1e293b; }
+
+  /* 锚点跳转时不被顶部遮挡 */
+  h2[id], h3[id] { scroll-margin-top: 16px; }
+
+  @media (max-width: 900px) {
+    body.nav-open { padding-left: 0; }
+    #manualNav { width: 82vw; }
+  }
+}
+@media print {
+  #manualNav, #navToggle { display: none !important; }
+  body { padding-left: 0 !important; }
+}
 </style>
 
 </head>
 <body>
+<!-- ══════ v1.9.2: 侧边导航 (屏幕专用, 打印时隐藏) ══════ -->
+<button id="navToggle" onclick="document.body.classList.toggle('nav-open')" title="目录 (快捷键 M)">☰</button>
+<nav id="manualNav">
+  <div class="nvhead">
+    <b>iRAS 技术手册 v1.9.2</b>
+    <input id="nvFilter" type="search" placeholder="过滤章节… (/ 聚焦)" autocomplete="off">
+  </div>
+  <div class="nvlist">
+    <a class="nv2" href="#rel_1_0_1_1" title="v1.0 → v1.1: 物理框架重构 + 文献校准">v1.0 → v1.1: 物理框架重构 + 文献校准</a>
+    <a class="nv3" href="#item_A" title="A. 严格分离三个时间尺度">A. 严格分离三个时间尺度</a>
+    <a class="nv3" href="#item_B" title="B. 设备按动力学分类选型">B. 设备按动力学分类选型</a>
+    <a class="nv3" href="#item_C" title="C. 鱼生理耗氧按物种 + 温度自动算">C. 鱼生理耗氧按物种 + 温度自动算</a>
+    <a class="nv3" href="#item_D" title="D. CO₂ 脱气塔独立建模">D. CO₂ 脱气塔独立建模</a>
+    <a class="nv3" href="#item_E" title="E. 大菱鲆密度修正">E. 大菱鲆密度修正</a>
+    <a class="nv3" href="#item_F" title="F. CAPEX 折旧 + 系统体积建模">F. CAPEX 折旧 + 系统体积建模</a>
+    <a class="nv2" href="#rel_1_1_1_2" title="v1.1 → v1.2: 全局气候 + 双节点稳态求解">v1.1 → v1.2: 全局气候 + 双节点稳态求解</a>
+    <a class="nv3" href="#item_G" title="G. 项目级常量管理">G. 项目级常量管理</a>
+    <a class="nv3" href="#item_H" title="H. 双节点稳态求解器">H. 双节点稳态求解器</a>
+    <a class="nv3" href="#item_I" title="I. 围护结构详细建模">I. 围护结构详细建模</a>
+    <a class="nv2" href="#rel_1_2_1_3" title="v1.2 → v1.3: 多模块并联 + 工程化">v1.2 → v1.3: 多模块并联 + 工程化</a>
+    <a class="nv3" href="#item_J" title="J. 模块化与 N+1 备用">J. 模块化与 N+1 备用</a>
+    <a class="nv3" href="#item_K" title="K. 鱼池配置反推">K. 鱼池配置反推</a>
+    <a class="nv3" href="#item_L" title="L. P&amp;ID 工艺图自动生成 (v1.3.x)">L. P&amp;ID 工艺图自动生成 (v1.3.x)</a>
+    <a class="nv3" href="#item_M" title="M. 设备清单导出 (v1.3.x)">M. 设备清单导出 (v1.3.x)</a>
+    <a class="nv3" href="#item_N" title="N. 池深统一数据源 (v1.3.x)">N. 池深统一数据源 (v1.3.x)</a>
+    <a class="nv3" href="#item_O" title="O. 共用车间散热系数 (v1.3.x)">O. 共用车间散热系数 (v1.3.x)</a>
+    <a class="nv3" href="#item_P" title="P. 集水池建模 (v1.3.x)">P. 集水池建模 (v1.3.x)</a>
+    <a class="nv2" href="#rel_1_3_1_4" title="v1.3 → v1.4: 投资财务评价">v1.3 → v1.4: 投资财务评价</a>
+    <a class="nv3" href="#item_Q" title="Q. 8 张标准财务表 + NPV/IRR + 敏感性分析">Q. 8 张标准财务表 + NPV/IRR + 敏感性分析</a>
+    <a class="nv3" href="#item_R" title="R. 关键指标定义对齐国内规范">R. 关键指标定义对齐国内规范</a>
+    <a class="nv3" href="#item_S" title="S. iRAS 整体架构演进">S. iRAS 整体架构演进</a>
+    <a class="nv2" href="#rel_1_4_1_5" title="v1.4 → v1.5: 可研报告生成器">v1.4 → v1.5: 可研报告生成器</a>
+    <a class="nv3" href="#item_T" title="T. 16 章扩展版可研报告自动生成">T. 16 章扩展版可研报告自动生成</a>
+    <a class="nv3" href="#item_U" title="U. 16 章覆盖范围与自动化率">U. 16 章覆盖范围与自动化率</a>
+    <a class="nv3" href="#item_V" title="V. 工艺流程图 + 财务图嵌入">V. 工艺流程图 + 财务图嵌入</a>
+    <a class="nv2" href="#rel_1_5_1_6" title="v1.5 → v1.6: 站级设备 + UI 重构 + 工程逻辑精化">v1.5 → v1.6: 站级设备 + UI 重构 + 工程逻辑精化</a>
+    <a class="nv3" href="#item_W" title="W. 液氧储罐站级化(核心改动)">W. 液氧储罐站级化(核心改动)</a>
+    <a class="nv3" href="#item_X" title="X. UI 整体重构">X. UI 整体重构</a>
+    <a class="nv3" href="#item_Y" title="Y. 工程逻辑精化">Y. 工程逻辑精化</a>
+    <a class="nv3" href="#rel_1_5_1_6_2" title="Z. v1.5 → v1.6 公式订正表">Z. v1.5 → v1.6 公式订正表</a>
+    <a class="nv2" href="#rel_1_6_1_7" title="v1.6 → v1.7: 氧锥拓扑 + K-101 + 系统排水重构 + 全面审计修复">v1.6 → v1.7: 氧锥拓扑 + K-101 + 系统排水重…</a>
+    <a class="nv3" href="#item_A_2" title="A. 氧锥工艺拓扑 mainline / bypass 真实区别对待">A. 氧锥工艺拓扑 mainline / bypass 真实区别对待</a>
+    <a class="nv3" href="#item_B_2" title="B. K-101 鱼池增氧鼓风机 (air 模式专属)">B. K-101 鱼池增氧鼓风机 (air 模式专属)</a>
+    <a class="nv3" href="#item_C_2" title="C. 系统排水重构 (RDF 反冲废水 → 系统排水)">C. 系统排水重构 (RDF 反冲废水 → 系统排水)</a>
+    <a class="nv3" href="#item_D_2" title="D. 全面审计修复 (27 项 bug)">D. 全面审计修复 (27 项 bug)</a>
+    <a class="nv3" href="#item_E_2" title="E. v1.7 验证状态">E. v1.7 验证状态</a>
+    <a class="nv2" href="#rel_1_7_1_9" title="v1.7 → v1.9: 碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复">v1.7 → v1.9: 碳酸盐平衡求解 + o2 物理校准 + …</a>
+    <a class="nv3" href="#item_A_3" title="A. 碳酸盐平衡求解 (v1.9 核心)">A. 碳酸盐平衡求解 (v1.9 核心)</a>
+    <a class="nv3" href="#item_B_3" title="B. 两种 pH 控制策略">B. 两种 pH 控制策略</a>
+    <a class="nv3" href="#item_C_3" title="C. o2 物理校准 (validation memo F1)">C. o2 物理校准 (validation memo F1)</a>
+    <a class="nv3" href="#item_D_3" title="D. CO₂ 公式修正 — 加入硝化产 CO₂ (validation memo F2)">D. CO₂ 公式修正 — 加入硝化产 CO₂ (validati…</a>
+    <a class="nv3" href="#item_E_3" title="E. finance-core.js 零利率 bug 修复">E. finance-core.js 零利率 bug 修复</a>
+    <a class="nv3" href="#item_F_2" title="F. v1.9 验证状态">F. v1.9 验证状态</a>
+    <a class="nv2" href="#rel_1_9_1_9_2" title="v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机">v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + …</a>
+    <a class="nv3" href="#item_A_4" title="A. 液氧消耗口径修正 (v1.9.1)">A. 液氧消耗口径修正 (v1.9.1)</a>
+    <a class="nv3" href="#item_B_4" title="B. 蒸发系数 β 量纲修正 (v1.9.1)">B. 蒸发系数 β 量纲修正 (v1.9.1)</a>
+    <a class="nv3" href="#item_C_4" title="C. 通风量口径修正 (v1.9.2)">C. 通风量口径修正 (v1.9.2)</a>
+    <a class="nv3" href="#item_D_4" title="D. 机械除湿机 (v1.9.2 新增)">D. 机械除湿机 (v1.9.2 新增)</a>
+    <a class="nv3" href="#item_E_4" title="E. 池内耗氧的 TSS 依赖、代谢产热重构与气泡病约束">E. 池内耗氧的 TSS 依赖、代谢产热重构与气泡病约束</a>
+    <a class="nv3" href="#item_F_3" title="F. v1.9.2 成本基线 (1000 t/yr 大西洋鲑, mainline)">F. v1.9.2 成本基线 (1000 t/yr 大西洋鲑, m…</a>
+    <a class="nv3" href="#item_G_2" title="G. mainline vs bypass 拓扑对比（青岛冬）">G. mainline vs bypass 拓扑对比（青岛冬）</a>
+    <a class="nv2" href="#v1_7" title="v1.7 工况成本基线 (1000 t 大西洋三文鱼)">v1.7 工况成本基线 (1000 t 大西洋三文鱼)</a>
+    <a class="nv3" href="#v1_3" title="历史 4 工况成本基线 (v1.3 数据, 沿用)">历史 4 工况成本基线 (v1.3 数据, 沿用)</a>
+    <a class="nv2" href="#h255" title="目录">目录</a>
+    <a class="nv2" href="#ch1" title="第 1 章循环水养殖概述">第 1 章循环水养殖概述</a>
+    <a class="nv3" href="#sec1_1" title="1.1 什么是循环水养殖 (RAS)">1.1 什么是循环水养殖 (RAS)</a>
+    <a class="nv3" href="#sec1_2" title="1.2 RAS 与传统养殖的对比">1.2 RAS 与传统养殖的对比</a>
+    <a class="nv3" href="#sec1_3" title="1.3 RAS 的优势与挑战">1.3 RAS 的优势与挑战</a>
+    <a class="nv3" href="#sec1_4" title="1.4 国内外发展现状">1.4 国内外发展现状</a>
+    <a class="nv3" href="#sec1_5" title="1.5 典型应用场景">1.5 典型应用场景</a>
+    <a class="nv2" href="#ch2" title="第 2 章RAS 工艺流程">第 2 章RAS 工艺流程</a>
+    <a class="nv3" href="#sec2_1" title="2.1 标准 RAS 工艺流程">2.1 标准 RAS 工艺流程</a>
+    <a class="nv3" href="#sec2_2" title="2.2 各处理单元的作用">2.2 各处理单元的作用</a>
+    <a class="nv3" href="#sec2_3" title="2.3 淡水 vs 海水系统差异">2.3 淡水 vs 海水系统差异</a>
+    <a class="nv2" href="#ch3" title="第 3 章水质参数与控制标准">第 3 章水质参数与控制标准</a>
+    <a class="nv3" href="#sec3_1" title="3.1 关键水质参数">3.1 关键水质参数</a>
+    <a class="nv3" href="#sec3_2" title="3.2 各品种耐受范围">3.2 各品种耐受范围</a>
+    <a class="nv3" href="#sec3_3" title="3.3 水质恶化的后果">3.3 水质恶化的后果</a>
+    <a class="nv2" href="#ch4" title="第 4 章氮循环与碳循环">第 4 章氮循环与碳循环</a>
+    <a class="nv3" href="#sec4_1" title="4.1 饲料蛋白到氮的转化">4.1 饲料蛋白到氮的转化</a>
+    <a class="nv3" href="#sec4_2" title="4.2 硝化作用">4.2 硝化作用</a>
+    <a class="nv3" href="#sec4_3" title="4.3 反硝化作用">4.3 反硝化作用</a>
+    <a class="nv3" href="#sec4_4" title="4.4 碱度消耗与回收">4.4 碱度消耗与回收</a>
+    <a class="nv3" href="#sec4_5" title="4.5 碳酸盐平衡: pH / CO₂ 物种分布 / 非离子化氨 v1.9 新增">4.5 碳酸盐平衡: pH / CO₂ 物种分布 / 非离子化氨 …</a>
+    <a class="nv2" href="#ch5" title="第 5 章养殖规模设计">第 5 章养殖规模设计</a>
+    <a class="nv3" href="#sec5_1" title="5.1 Little's Law 与稳态建模">5.1 Little's Law 与稳态建模</a>
+    <a class="nv3" href="#sec5_2" title="5.2 尾数流守恒与损耗率递推">5.2 尾数流守恒与损耗率递推</a>
+    <a class="nv3" href="#sec5_3" title="5.3 投饵量: 三套口径 v1.1 重大修正">5.3 投饵量: 三套口径 v1.1 重大修正</a>
+    <a class="nv2" href="#ch6" title="第 6 章污染物负荷计算">第 6 章污染物负荷计算</a>
+    <a class="nv3" href="#sec6_1" title="6.1 TAN 产生量">6.1 TAN 产生量</a>
+    <a class="nv3" href="#sec6_2" title="6.2 TSS / DOM 产生量">6.2 TSS / DOM 产生量</a>
+    <a class="nv3" href="#sec6_3" title="6.3 O₂ 需求三部分 v1.1 按位置分配">6.3 O₂ 需求三部分 v1.1 按位置分配</a>
+    <a class="nv3" href="#sec6_4" title="6.4 CO₂ 产生量">6.4 CO₂ 产生量</a>
+    <a class="nv2" href="#ch7" title="第 7 章精确循环方程">第 7 章精确循环方程</a>
+    <a class="nv3" href="#sec7_1" title="7.1 质量守恒推导">7.1 质量守恒推导</a>
+    <a class="nv3" href="#sec7_2" title="7.2 总通过率 R">7.2 总通过率 R</a>
+    <a class="nv3" href="#sec7_3" title="7.3 串联 vs 旁路建模">7.3 串联 vs 旁路建模</a>
+    <a class="nv3" href="#sec7_4" title="7.4 闭合验证">7.4 闭合验证</a>
+    <a class="nv3" href="#sec7_5" title="7.5 各参数的 R 计算路径">7.5 各参数的 R 计算路径</a>
+    <a class="nv3" href="#sec7_6" title="7.6 dilution 敏感性 v1.1 重要发现">7.6 dilution 敏感性 v1.1 重要发现</a>
+    <a class="nv2" href="#ch8" title="第 8 章系统体积建模 v1.1 新章 + v1.3.x 增 S-101">第 8 章系统体积建模 v1.1 新章 + v1.3.x 增 S-…</a>
+    <a class="nv3" href="#sec8_1" title="8.1 为什么要建模工艺水体?">8.1 为什么要建模工艺水体?</a>
+    <a class="nv3" href="#sec8_2" title="8.2 V_process 各部分计算公式">8.2 V_process 各部分计算公式</a>
+    <a class="nv3" href="#sec8_3" title="8.3 V_total 与稳态浓度">8.3 V_total 与稳态浓度</a>
+    <a class="nv3" href="#sec8_4" title="8.4 换水率口径 v1.1 改为 V_total">8.4 换水率口径 v1.1 改为 V_total</a>
+    <a class="nv3" href="#sec8_5" title="8.5 三文鱼成鱼 1000t/yr V_process 实例">8.5 三文鱼成鱼 1000t/yr V_process 实例</a>
+    <a class="nv2" href="#ch9" title="第 9 章固液分离 (转鼓微滤机 RDF) v1.7 系统排水重构">第 9 章固液分离 (转鼓微滤机 RDF) v1.7 系统排水重构</a>
+    <a class="nv3" href="#sec9_1" title="9.1 原理">9.1 原理</a>
+    <a class="nv3" href="#sec9_2" title="9.2 设计参数">9.2 设计参数</a>
+    <a class="nv3" href="#sec9_3" title="9.3 计算公式">9.3 计算公式</a>
+    <a class="nv3" href="#sec9_4" title="9.4 系统排水 (v1.7 重构)">9.4 系统排水 (v1.7 重构)</a>
+    <a class="nv3" href="#sec9_5" title="9.5 常见故障与运维">9.5 常见故障与运维</a>
+    <a class="nv2" href="#ch10" title="第 10 章生物过滤 (MBBR 生物滤池)">第 10 章生物过滤 (MBBR 生物滤池)</a>
+    <a class="nv3" href="#sec10_1" title="10.1 硝化原理">10.1 硝化原理</a>
+    <a class="nv3" href="#sec10_2" title="10.2 容积去除率 (VTR) 与温度修正">10.2 容积去除率 (VTR) 与温度修正</a>
+    <a class="nv3" href="#sec10_3" title="10.3 填料体积计算">10.3 填料体积计算</a>
+    <a class="nv3" href="#sec10_4" title="10.4 BF 粗孔曝气 v1.1">10.4 BF 粗孔曝气 v1.1</a>
+    <a class="nv3" href="#sec10_5" title="10.5 启动期管理">10.5 启动期管理</a>
+    <a class="nv3" href="#sec10_6" title="10.6 常见故障">10.6 常见故障</a>
+    <a class="nv2" href="#ch11" title="第 11 章蛋白分离器">第 11 章蛋白分离器</a>
+    <a class="nv3" href="#sec11_1" title="11.1 原理">11.1 原理</a>
+    <a class="nv3" href="#sec11_2" title="11.2 空气 vs 臭氧">11.2 空气 vs 臭氧</a>
+    <a class="nv3" href="#sec11_3" title="11.3 设计计算">11.3 设计计算</a>
+    <a class="nv3" href="#sec11_4" title="11.4 常见故障">11.4 常见故障</a>
+    <a class="nv2" href="#ch12" title="第 12 章反硝化反应器">第 12 章反硝化反应器</a>
+    <a class="nv3" href="#sec12_1" title="12.1 原理">12.1 原理</a>
+    <a class="nv3" href="#sec12_2" title="12.2 设计计算">12.2 设计计算</a>
+    <a class="nv3" href="#sec12_4" title="12.4 换水率、NO₃ 与反硝化的耦合 v1.9.2 新增">12.4 换水率、NO₃ 与反硝化的耦合 v1.9.2 新增</a>
+    <a class="nv3" href="#sec12_3" title="12.3 常见故障">12.3 常见故障</a>
+    <a class="nv2" href="#ch13" title="第 13 章UV 紫外线消毒">第 13 章UV 紫外线消毒</a>
+    <a class="nv3" href="#sec13_1" title="13.1 原理">13.1 原理</a>
+    <a class="nv3" href="#sec13_2" title="13.2 Chick-Watson 模型">13.2 Chick-Watson 模型</a>
+    <a class="nv3" href="#sec13_3" title="13.3 UV 功率公式 v1.1">13.3 UV 功率公式 v1.1</a>
+    <a class="nv3" href="#sec13_4" title="13.4 运维">13.4 运维</a>
+    <a class="nv2" href="#ch14" title="第 14 章高级氧化 (AOP)">第 14 章高级氧化 (AOP)</a>
+    <a class="nv3" href="#sec14_1" title="14.1 原理">14.1 原理</a>
+    <a class="nv3" href="#sec14_2" title="14.2 设计计算">14.2 设计计算</a>
+    <a class="nv3" href="#sec14_3" title="14.3 运维">14.3 运维</a>
+    <a class="nv2" href="#ch15" title="第 15 章增氧与脱气 v1.9.1 液氧双口径 v1.1 大幅修正 + v1.7 氧锥拓扑+K-101">第 15 章增氧与脱气 v1.9.1 液氧双口径 v1.1 大幅修…</a>
+    <a class="nv3" href="#sec15_1" title="15.1 DO 饱和度 (Benson-Krause 1984)">15.1 DO 饱和度 (Benson-Krause 1984)</a>
+    <a class="nv3" href="#sec15_2" title="15.2 纯氧 vs 空气">15.2 纯氧 vs 空气</a>
+    <a class="nv3" href="#sec15_3" title="15.3 鱼池 DO 计算 v1.1">15.3 鱼池 DO 计算 v1.1</a>
+    <a class="nv3" href="#sec15_4" title="15.4 CO₂ 脱气塔 v1.1 新增独立设备">15.4 CO₂ 脱气塔 v1.1 新增独立设备</a>
+    <a class="nv3" href="#sec15_5" title="15.5 氧锥拓扑 mainline vs bypass v1.7 新增">15.5 氧锥拓扑 mainline vs bypass v1.7…</a>
+    <a class="nv3" href="#sec15_6" title="15.6 air 模式增氧 — K-101 鱼池增氧鼓风机 v1.7 新增">15.6 air 模式增氧 — K-101 鱼池增氧鼓风机 v1.…</a>
+    <a class="nv3" href="#sec15_7" title="15.7 液氧消耗量与设备选型的双口径 v1.9.1 新增">15.7 液氧消耗量与设备选型的双口径 v1.9.1 新增</a>
+    <a class="nv3" href="#sec15_8" title="15.8 常见故障">15.8 常见故障</a>
+    <a class="nv2" href="#ch16" title="第 16 章热负荷与温控 v1.2 完全重写">第 16 章热负荷与温控 v1.2 完全重写</a>
+    <a class="nv3" href="#sec16_1" title="16.1 项目级常量管理 (v1.2)">16.1 项目级常量管理 (v1.2)</a>
+    <a class="nv3" href="#sec16_2" title="16.2 补水温差">16.2 补水温差</a>
+    <a class="nv3" href="#sec16_3" title="16.3 板式换热回收">16.3 板式换热回收</a>
+    <a class="nv3" href="#sec16_4" title="16.4 热泵补齐 v1.1 制热/制冷分离">16.4 热泵补齐 v1.1 制热/制冷分离</a>
+    <a class="nv3" href="#sec16_5" title="16.5 双节点稳态求解概述 v1.2">16.5 双节点稳态求解概述 v1.2</a>
+    <a class="nv3" href="#sec16_6" title="16.6 热泵分类型 v1.2">16.6 热泵分类型 v1.2</a>
+    <a class="nv3" href="#sec16_7" title="16.7 工程注意">16.7 工程注意</a>
+    <a class="nv2" href="#ch17" title="第 17 章水泵与管道设计">第 17 章水泵与管道设计</a>
+    <a class="nv3" href="#sec17_1" title="17.1 泵功率公式">17.1 泵功率公式</a>
+    <a class="nv3" href="#sec17_2" title="17.2 iRAS 6 路泵 v1.1 默认">17.2 iRAS 6 路泵 v1.1 默认</a>
+    <a class="nv3" href="#sec17_3" title="17.3 管径选择">17.3 管径选择</a>
+    <a class="nv3" href="#sec17_4" title="17.4 水头损失">17.4 水头损失</a>
+    <a class="nv2" href="#ch18" title="第 18 章电气与控制系统">第 18 章电气与控制系统</a>
+    <a class="nv3" href="#sec18_1" title="18.1 在线水质监测">18.1 在线水质监测</a>
+    <a class="nv3" href="#sec18_2" title="18.2 PLC 控制逻辑">18.2 PLC 控制逻辑</a>
+    <a class="nv3" href="#sec18_3" title="18.3 报警系统">18.3 报警系统</a>
+    <a class="nv2" href="#ch19" title="第 19 章生物安全与消毒策略">第 19 章生物安全与消毒策略</a>
+    <a class="nv3" href="#sec19_1" title="19.1 进水消毒">19.1 进水消毒</a>
+    <a class="nv3" href="#sec19_2" title="19.2 人员与工具">19.2 人员与工具</a>
+    <a class="nv3" href="#sec19_3" title="19.3 隔离与检疫">19.3 隔离与检疫</a>
+    <a class="nv3" href="#sec19_4" title="19.4 日常消毒">19.4 日常消毒</a>
+    <a class="nv2" href="#ch20" title="第 20 章系统启动与调试">第 20 章系统启动与调试</a>
+    <a class="nv3" href="#sec20_1" title="20.1 启动流程">20.1 启动流程</a>
+    <a class="nv3" href="#sec20_2" title="20.2 常见启动问题">20.2 常见启动问题</a>
+    <a class="nv2" href="#ch21" title="第 21 章运行成本">第 21 章运行成本</a>
+    <a class="nv3" href="#sec21_1" title="21.1 成本构成 v1.9.2 两层口径">21.1 成本构成 v1.9.2 两层口径</a>
+    <a class="nv3" href="#sec21_2" title="21.2 峰值 vs 日均双口径">21.2 峰值 vs 日均双口径</a>
+    <a class="nv3" href="#sec21_3" title="21.3 CAPEX 折旧 v1.1 新增">21.3 CAPEX 折旧 v1.1 新增</a>
+    <a class="nv3" href="#sec21_4" title="21.4 综合成本对比 v1.3 含折旧 + 工况">21.4 综合成本对比 v1.3 含折旧 + 工况</a>
+    <a class="nv3" href="#sec21_5" title="21.5 产业对标：Nordic Aqua 宁波象山项目 v1.9.2 新增">21.5 产业对标：Nordic Aqua 宁波象山项目 v1.9…</a>
+    <a class="nv3" href="#audit_fix" title="I. 第三方审计修复（v1.9.2 后期）">I. 第三方审计修复（v1.9.2 后期）</a>
+    <a class="nv3" href="#sec21_6" title="21.6 鳗鲡参数的验证边界 v1.9.2 新增">21.6 鳗鲡参数的验证边界 v1.9.2 新增</a>
+    <a class="nv2" href="#ch22" title="第 22 章投资概算">第 22 章投资概算</a>
+    <a class="nv3" href="#sec22_1" title="22.1 设备直购成本">22.1 设备直购成本</a>
+    <a class="nv3" href="#sec22_2" title="22.2 工程总投资">22.2 工程总投资</a>
+    <a class="nv3" href="#sec22_3" title="22.3 氧锥拓扑对 CAPEX 的影响 v1.7 新增">22.3 氧锥拓扑对 CAPEX 的影响 v1.7 新增</a>
+    <a class="nv2" href="#ch23" title="第 23 章案例: 三文鱼 1000 t/年 v1.7 数据 (mainline / bypass 对比)">第 23 章案例: 三文鱼 1000 t/年 v1.7 数据 (m…</a>
+    <a class="nv3" href="#sec23_1" title="23.1 阶段参数">23.1 阶段参数</a>
+    <a class="nv3" href="#sec23_2" title="23.2 关键计算结果 v1.7 实测">23.2 关键计算结果 v1.7 实测</a>
+    <a class="nv3" href="#sec23_3" title="23.3 综合成本 (Bergen 冬季 + bypass 拓扑, v1.7 默认)">23.3 综合成本 (Bergen 冬季 + bypass 拓扑,…</a>
+    <a class="nv3" href="#sec23_4" title="23.4 工况敏感性分析 (沿用 v1.3 4 工况基线)">23.4 工况敏感性分析 (沿用 v1.3 4 工况基线)</a>
+    <a class="nv3" href="#sec23_5" title="23.5 mainline vs bypass 拓扑详细对比 v1.7 新增">23.5 mainline vs bypass 拓扑详细对比 v1…</a>
+    <a class="nv2" href="#ch24" title="第 24 章案例: 大菱鲆 500 t/年">第 24 章案例: 大菱鲆 500 t/年</a>
+    <a class="nv3" href="#sec24_1" title="24.1 阶段参数">24.1 阶段参数</a>
+    <a class="nv3" href="#sec24_2" title="24.2 关键结果">24.2 关键结果</a>
+    <a class="nv2" href="#ch25" title="第 25 章案例: 南美白对虾 100 t/年">第 25 章案例: 南美白对虾 100 t/年</a>
+    <a class="nv3" href="#sec25_1" title="25.1 清水 RAS vs Biofloc 对比">25.1 清水 RAS vs Biofloc 对比</a>
+    <a class="nv3" href="#sec25_2" title="25.2 阶段参数 v1.1">25.2 阶段参数 v1.1</a>
+    <a class="nv3" href="#sec25_3" title="25.3 关键结果">25.3 关键结果</a>
+    <a class="nv2" href="#ch26" title="第 26 章多模块并联与 N+1 备用v1.3 新章">第 26 章多模块并联与 N+1 备用v1.3 新章</a>
+    <a class="nv3" href="#sec26_1" title="26.1 为什么大型项目要做模块化">26.1 为什么大型项目要做模块化</a>
+    <a class="nv3" href="#sec26_2" title="26.2 iRAS 模块化逻辑">26.2 iRAS 模块化逻辑</a>
+    <a class="nv3" href="#sec26_3" title="26.3 模块内 N+1 备用配置">26.3 模块内 N+1 备用配置</a>
+    <a class="nv3" href="#sec26_4" title="26.4 全场共用站级设备">26.4 全场共用站级设备</a>
+    <a class="nv3" href="#sec26_5" title="26.5 模块化对成本的影响">26.5 模块化对成本的影响</a>
+    <a class="nv2" href="#ch27" title="第 27 章鱼池配置与池深统一v1.3 新章">第 27 章鱼池配置与池深统一v1.3 新章</a>
+    <a class="nv3" href="#sec27_1" title="27.1 鱼池形状与尺寸的工程逻辑">27.1 鱼池形状与尺寸的工程逻辑</a>
+    <a class="nv3" href="#sec27_2" title="27.2 反推算法">27.2 反推算法</a>
+    <a class="nv3" href="#sec27_3" title="27.3 工程合理性自动告警">27.3 工程合理性自动告警</a>
+    <a class="nv3" href="#sec27_4" title="27.4 鱼种推荐池深 (recDepth_m)">27.4 鱼种推荐池深 (recDepth_m)</a>
+    <a class="nv3" href="#sec27_5" title="27.5 池深统一数据源 (v1.3.x)">27.5 池深统一数据源 (v1.3.x)</a>
+    <a class="nv3" href="#sec27_6" title="27.6 实例: 三文鱼成鱼 1000 t/yr">27.6 实例: 三文鱼成鱼 1000 t/yr</a>
+    <a class="nv2" href="#ch28" title="第 28 章全局气候与围护建模 v1.9.2 通风口径v1.2 新章">第 28 章全局气候与围护建模 v1.9.2 通风口径v1.2 新章</a>
+    <a class="nv3" href="#sec28_1" title="28.1 为什么要做项目级常量管理">28.1 为什么要做项目级常量管理</a>
+    <a class="nv3" href="#sec28_2" title="28.2 地区预设">28.2 地区预设</a>
+    <a class="nv3" href="#sec28_3" title="28.3 围护预设">28.3 围护预设</a>
+    <a class="nv3" href="#sec28_4" title="28.4 4 工况对比设计">28.4 4 工况对比设计</a>
+    <a class="nv3" href="#sec28_5" title="28.5 池盖类型(蒸发率系数)">28.5 池盖类型(蒸发率系数)</a>
+    <a class="nv3" href="#sec28_6" title="28.6 通风换气与热回收 v1.9.2 口径重写">28.6 通风换气与热回收 v1.9.2 口径重写</a>
+    <a class="nv2" href="#ch29" title="第 29 章双节点稳态热平衡求解v1.9.2 除湿机 + 阻尼迭代">第 29 章双节点稳态热平衡求解v1.9.2 除湿机 + 阻尼迭代</a>
+    <a class="nv3" href="#sec29_1" title="29.1 v1.1 的简化模型与局限">29.1 v1.1 的简化模型与局限</a>
+    <a class="nv3" href="#sec29_2" title="29.2 双节点稳态方程 v1.6 公式订正">29.2 双节点稳态方程 v1.6 公式订正</a>
+    <a class="nv3" href="#sec29_3" title="29.3 蒸发凝结模型">29.3 蒸发凝结模型</a>
+    <a class="nv3" href="#sec29_4" title="29.4 求解输出">29.4 求解输出</a>
+    <a class="nv3" href="#sec29_5" title="29.5 RH 警告与除湿路径 v1.9.2 修订">29.5 RH 警告与除湿路径 v1.9.2 修订</a>
+    <a class="nv3" href="#sec29_6" title="29.6 热泵分类型">29.6 热泵分类型</a>
+    <a class="nv3" href="#sec29_7" title="29.7 机械除湿机 v1.9.2 新增">29.7 机械除湿机 v1.9.2 新增</a>
+    <a class="nv3" href="#sec29_8" title="29.8 冷凝热耦合与阻尼迭代 v1.9.2 新增">29.8 冷凝热耦合与阻尼迭代 v1.9.2 新增</a>
+    <a class="nv2" href="#ch30" title="第 30 章P&amp;ID 工艺图自动生成v1.3.x 新章">第 30 章P&amp;ID 工艺图自动生成v1.3.x 新章</a>
+    <a class="nv3" href="#sec30_1" title="30.1 P&amp;ID 是什么">30.1 P&amp;ID 是什么</a>
+    <a class="nv3" href="#sec30_2" title="30.2 iRAS 的 P&amp;ID 生成方案">30.2 iRAS 的 P&amp;ID 生成方案</a>
+    <a class="nv3" href="#sec30_3" title="30.3 工艺图布局">30.3 工艺图布局</a>
+    <a class="nv3" href="#sec30_4" title="30.4 LOX 跟随阶段切换 (v1.3.x)">30.4 LOX 跟随阶段切换 (v1.3.x)</a>
+    <a class="nv3" href="#sec30_5" title="30.5 设备表自动生成">30.5 设备表自动生成</a>
+    <a class="nv3" href="#sec30_6" title="30.6 主泵 VFD 联锁示例">30.6 主泵 VFD 联锁示例</a>
+    <a class="nv3" href="#sec30_7" title="30.7 P&amp;ID 导出">30.7 P&amp;ID 导出</a>
+    <a class="nv2" href="#ch31" title="第 31 章设备清单导出v1.3.x 新章">第 31 章设备清单导出v1.3.x 新章</a>
+    <a class="nv3" href="#sec31_1" title="31.1 设备清单的工程用途">31.1 设备清单的工程用途</a>
+    <a class="nv3" href="#sec31_2" title="31.2 iRAS 设备清单结构">31.2 iRAS 设备清单结构</a>
+    <a class="nv3" href="#sec31_3" title="31.3 N+1 备用展开">31.3 N+1 备用展开</a>
+    <a class="nv3" href="#sec31_4" title="31.4 单价与金额">31.4 单价与金额</a>
+    <a class="nv3" href="#sec31_5" title="31.5 单列静设备说明">31.5 单列静设备说明</a>
+    <a class="nv3" href="#sec31_6" title="31.6 数据传递机制 (v1.3.x)">31.6 数据传递机制 (v1.3.x)</a>
+    <a class="nv2" href="#ch32" title="第 32 章4 工况成本对比基线v1.3 新章">第 32 章4 工况成本对比基线v1.3 新章</a>
+    <a class="nv3" href="#sec32_1" title="32.1 为什么要看 4 个工况">32.1 为什么要看 4 个工况</a>
+    <a class="nv3" href="#sec32_2" title="32.2 标准基线(1000 t/yr 三文鱼)">32.2 标准基线(1000 t/yr 三文鱼)</a>
+    <a class="nv3" href="#sec32_3" title="32.3 关键观察">32.3 关键观察</a>
+    <a class="nv3" href="#sec32_4" title="32.4 与文献的对照">32.4 与文献的对照</a>
+    <a class="nv2" href="#ch33" title="第 33 章投资财务评价v1.4 新章">第 33 章投资财务评价v1.4 新章</a>
+    <a class="nv3" href="#sec33_1" title="33.1 为什么需要财务评价">33.1 为什么需要财务评价</a>
+    <a class="nv3" href="#sec33_2" title="33.2 数据流与系统架构">33.2 数据流与系统架构</a>
+    <a class="nv3" href="#sec33_3" title="33.3 用户输入参数 (17 个)">33.3 用户输入参数 (17 个)</a>
+    <a class="nv3" href="#sec33_4" title="33.4 现金流模型">33.4 现金流模型</a>
+    <a class="nv3" href="#sec33_5" title="33.5 IRR 求解算法">33.5 IRR 求解算法</a>
+    <a class="nv3" href="#sec33_6" title="33.6 输出: 8 张标准财务表">33.6 输出: 8 张标准财务表</a>
+    <a class="nv3" href="#sec33_7" title="33.7 关键指标 (6 个 KPI)">33.7 关键指标 (6 个 KPI)</a>
+    <a class="nv3" href="#sec33_8" title="33.8 敏感性分析 (5 因子)">33.8 敏感性分析 (5 因子)</a>
+    <a class="nv3" href="#sec33_9" title="33.9 实例: 1000 t 三文鱼 (青岛冬季工况)">33.9 实例: 1000 t 三文鱼 (青岛冬季工况)</a>
+    <a class="nv3" href="#sec33_10" title="33.10 鱼种横向对比">33.10 鱼种横向对比</a>
+    <a class="nv3" href="#sec33_11" title="33.11 Excel 导出">33.11 Excel 导出</a>
+    <a class="nv3" href="#sec33_12" title="33.12 局限性与未来扩展">33.12 局限性与未来扩展</a>
+    <a class="nv2" href="#ch34" title="第 34 章可研报告生成器v1.5 新章">第 34 章可研报告生成器v1.5 新章</a>
+    <a class="nv3" href="#sec34_1" title="34.1 为什么需要可研报告生成器">34.1 为什么需要可研报告生成器</a>
+    <a class="nv3" href="#sec34_2" title="34.2 关键产品决策">34.2 关键产品决策</a>
+    <a class="nv3" href="#sec34_3" title="34.3 16 章覆盖范围与自动化率">34.3 16 章覆盖范围与自动化率</a>
+    <a class="nv3" href="#sec34_4" title="34.4 数据流与系统架构">34.4 数据流与系统架构</a>
+    <a class="nv3" href="#sec34_5" title="34.5 8 个数据命名空间">34.5 8 个数据命名空间</a>
+    <a class="nv3" href="#sec34_6" title="34.6 嵌入 docx 的 3 张图">34.6 嵌入 docx 的 3 张图</a>
+    <a class="nv3" href="#sec34_7" title="34.7 输出文件示例">34.7 输出文件示例</a>
+    <a class="nv3" href="#sec34_8" title="34.8 局限性与未来扩展">34.8 局限性与未来扩展</a>
+    <a class="nv2" href="#h2258" title="附录 A: 完整符号表">附录 A: 完整符号表</a>
+    <a class="nv2" href="#h2259" title="附录 B: 全局热配置参数表(完整)">附录 B: 全局热配置参数表(完整)</a>
+    <a class="nv2" href="#h2260" title="附录 C: 设备 tag 命名总表">附录 C: 设备 tag 命名总表</a>
+    <a class="nv3" href="#h3261" title="位号编号规则">位号编号规则</a>
+    <a class="nv3" href="#h3262" title="仪表位号">仪表位号</a>
+    <a class="nv2" href="#h2263" title="附录 D: 鱼种参数表">附录 D: 鱼种参数表</a>
+    <a class="nv2" href="#h2264" title="附录 E: 参考文献">附录 E: 参考文献</a>
+    <a class="nv3" href="#v1_0" title="v1.0 引用">v1.0 引用</a>
+    <a class="nv3" href="#v1_1" title="v1.1 新增引用">v1.1 新增引用</a>
+    <a class="nv3" href="#v1_2" title="v1.2 新增引用 (热平衡 + 围护)">v1.2 新增引用 (热平衡 + 围护)</a>
+    <a class="nv3" href="#v1_3_2" title="v1.3 新增引用 (模块化 + 鱼池设计)">v1.3 新增引用 (模块化 + 鱼池设计)</a>
+    <a class="nv3" href="#v1_3_3" title="v1.3.x 新增引用 (P&amp;ID + 工程化)">v1.3.x 新增引用 (P&amp;ID + 工程化)</a>
+    <a class="nv3" href="#v1_4" title="v1.4 新增引用 (投资财务评价)">v1.4 新增引用 (投资财务评价)</a>
+    <a class="nv3" href="#v1_5" title="v1.5 新增引用 (可研报告生成器)">v1.5 新增引用 (可研报告生成器)</a>
+    <a class="nv3" href="#v1_6" title="v1.6 新增引用 (站级设备 + 物理校正)">v1.6 新增引用 (站级设备 + 物理校正)</a>
+    <a class="nv3" href="#v1_7_2" title="v1.7 新增引用 (氧锥拓扑 + 系统排水重构)">v1.7 新增引用 (氧锥拓扑 + 系统排水重构)</a>
+    <a class="nv3" href="#v1_9_1" title="v1.9.1 / v1.9.2 新增引用 (通风口径 + 除湿 + 蒸发系数)">v1.9.1 / v1.9.2 新增引用 (通风口径 + 除湿 +…</a>
+    <a class="nv2" href="#h2275" title="附录 F: 免责声明">附录 F: 免责声明</a>
+  </div>
+</nav>
+
 
 <!-- ===== iRAS 资料库导航条 (仅屏幕) ===== -->
 <div class="iras-topbar">
@@ -137,7 +489,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
   </div>
   <div class="footer">
     海南登登科技咨询有限公司 · 孙程<br>
-    6881509@qq.com · iras.cn · github.com/chengsunmail/iras<br><br>
+    6881509@qq.com · iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras<br><br>
     <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v1.9.2 (2026 年 7 月) 全部内容</span>
   </div>
 </div>
@@ -150,9 +502,9 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + <strong>v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机)</strong> 的全部内容,
 是 RAS 工程设计的完整参考。</p>
 
-<h2 style="margin-top:20pt;">v1.0 → v1.1: 物理框架重构 + 文献校准</h2>
+<h2 style="margin-top:20pt;" id="rel_1_0_1_1">v1.0 → v1.1: 物理框架重构 + 文献校准</h2>
 
-<h3>A. 严格分离三个时间尺度</h3>
+<h3 id="item_A">A. 严格分离三个时间尺度</h3>
 
 <p>v1.0 在 calcStageLoad 中用 feedDesign = feedMax × peakFactor 算所有"日产污染物"。但 feedMax
 已是日峰值, 再乘 1.2-1.5 在量纲上是"日总量再放大", 所有下游负荷被一刀切偏大约 17%。v1.1
@@ -164,7 +516,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 </ul>
 <p>peakFactor 物理意义钉死: 代谢污染物 (TAN/O₂/CO₂) 小时峰值/全日均速率, 默认 1.5 (Timmons &amp; Ebeling 2010 标准)。</p>
 
-<h3>B. 设备按动力学分类选型</h3>
+<h3 id="item_B">B. 设备按动力学分类选型</h3>
 
 <table>
 <tr><th>类别</th><th>设备</th><th>选型基准</th><th>物理理由</th></tr>
@@ -172,7 +524,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <tr><td>快动力学</td><td>鱼池增氧 (液氧)、BF 曝气风机</td><td>小时峰值 × safety</td><td>氧气即时消耗, 投喂 30min 内 DO 可见底</td></tr>
 </table>
 
-<h3>C. 鱼生理耗氧按物种 + 温度自动算</h3>
+<h3 id="item_C">C. 鱼生理耗氧按物种 + 温度自动算</h3>
 
 <p>v1.0 用 0.25 一刀切违背物种特性差异。v1.1 改为按物种 + 温度自动算:</p>
 <div class="formula-block">o2FishFactor = o2BaseFactor × Q10^((tempOpt − 20) / 10)</div>
@@ -188,29 +540,29 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <tr><td>对虾</td><td>0.31</td><td>1.3</td><td>0.40</td><td>Boyd 2018 (Q10 偏低反映高温饱和)</td></tr>
 </table>
 
-<h3>D. CO₂ 脱气塔独立建模</h3>
+<h3 id="item_D">D. CO₂ 脱气塔独立建模</h3>
 
 <p>v1.0 没有 CO₂ 脱气塔模型 (仅在增氧节点扣 70% 写死)。v1.1 作为独立设备建模, 默认参数与 Delta Cooling Towers 工业项目实测对齐: G:L=3, 风压 2.5 kPa, 风机效率 0.60, 单次脱气率 65%。</p>
 
-<h3>E. 大菱鲆密度修正</h3>
+<h3 id="item_E">E. 大菱鲆密度修正</h3>
 
 <p>v1.0 大菱鲆 15/30/40 kg/m³ 偏低 (与莱州东方海洋等循环水项目实测 50-70 kg/m³ 不符)。v1.1 调整为 25/50/60 kg/m³。修正后大菱鲆综合成本从 81.5 元/kg → 48.1 元/kg, 与国家海水鱼产业体系 2019 调查数据 (46.32 元/kg) 偏差仅 +4%。</p>
 
-<h3>F. CAPEX 折旧 + 系统体积建模</h3>
+<h3 id="item_F">F. CAPEX 折旧 + 系统体积建模</h3>
 
 <p>v1.1 设备 8 年 + 土建 20 年分别折旧, 加到日运行成本。引入完整 V_total = V_tank + V_process 建模 (典型 V_process 占 V_tank 的 30-60%)。换水率口径改为 V_total (行业标准 Timmons 2010 / 国家海水鱼体系)。详见第 8 章。</p>
 
 <hr class="section-end">
 
-<h2>v1.1 → v1.2: 全局气候 + 双节点稳态求解</h2>
+<h2 id="rel_1_1_1_2">v1.1 → v1.2: 全局气候 + 双节点稳态求解</h2>
 
-<h3>G. 项目级常量管理</h3>
+<h3 id="item_G">G. 项目级常量管理</h3>
 
 <p>v1.1 把热平衡参数(气温/源水温/U 值/换气率) 放在每个阶段的 proc 字段里, 用户必须在每个阶段重复设置。
 工程现实中这些是<strong>项目级常量</strong>。v1.2 把所有热平衡参数挪到顶部全局配置区
 <code>globalThermalConfig</code>, 作为项目级常量影响所有阶段。新增地区预设(青岛/海南/挪威 Bergen/法罗群岛)、围护预设、4 工况对比(冬/夏/年均)。详见第 28 章。</p>
 
-<h3>H. 双节点稳态求解器</h3>
+<h3 id="item_H">H. 双节点稳态求解器</h3>
 
 <p>v1.1 用单点能量平衡, 忽略车间空气节点。v1.2 改为<strong>双节点 Picard 迭代</strong>同时求解空气热平衡 + 空气湿平衡, 输出 T_room、RH、蒸发率/凝结率、热泵装机。详见第 29 章。</p>
 
@@ -220,48 +572,48 @@ v1.1 在挪威/北方冬季工况(气温 -10°C, 源水 5°C)热泵电费可能�
 v1.2 双节点求解器修正后, 1000 t/yr 三文鱼项目挪威冬季工况综合成本从 v1.1 的 32.5 元/kg 修正到 36.30 元/kg。
 </div>
 
-<h3>I. 围护结构详细建模</h3>
+<h3 id="item_I">I. 围护结构详细建模</h3>
 
 <p>v1.2 引入完整车间围护参数: U_wall / U_roof / U_floor / U_window / windowRatio / airChangeRate / ventHeatRecovery / poolCover。详见第 28 章。</p>
 
 <hr class="section-end">
 
-<h2>v1.2 → v1.3: 多模块并联 + 工程化</h2>
+<h2 id="rel_1_2_1_3">v1.2 → v1.3: 多模块并联 + 工程化</h2>
 
-<h3>J. 模块化与 N+1 备用</h3>
+<h3 id="item_J">J. 模块化与 N+1 备用</h3>
 
 <p>大型项目(&gt;1000 t/yr)拆成多模块并联: 每模块独立循环, 模块间共用液氧站/应急电源/控制中心。每模块内部按容量上限自动配 N+1 备用 (主泵/风机/RDF/UV/热泵)。模块数完全由用户在阶段卡片"🔧 套数" subSystemCount 决定。详见第 26 章。</p>
 
-<h3>K. 鱼池配置反推</h3>
+<h3 id="item_K">K. 鱼池配置反推</h3>
 
 <p>用户给"每套池数 + 池深", 工具按总水体反推单池直径 D = √(4V/πH)。自动检查工程合理性: D &lt; 4m / D &gt; 30m / D &gt; 20m 配 H &lt; 3m 给告警。SPECIES_DB 各鱼种各阶段加入推荐池深 recDepth_m。详见第 27 章。</p>
 
-<h3>L. P&amp;ID 工艺图自动生成 (v1.3.x)</h3>
+<h3 id="item_L">L. P&amp;ID 工艺图自动生成 (v1.3.x)</h3>
 
 <p>独立的 pid.html 查看器, 主页面"📐 输出 P&amp;ID"一键打开, 自动渲染主流串联 + 3 条旁路 + 公用工程 + 仪表泡泡 + 联锁线 + 设备表。LOX 跟随阶段切换。详见第 30 章。</p>
 
-<h3>M. 设备清单导出 (v1.3.x)</h3>
+<h3 id="item_M">M. 设备清单导出 (v1.3.x)</h3>
 
 <p>独立的 equipment.html 页面, 一键导出当前方案完整设备规格表, 含 N+1 备用展开 + 单价 + 合计金额, 支持打印/导出 PDF。详见第 31 章。</p>
 
-<h3>N. 池深统一数据源 (v1.3.x)</h3>
+<h3 id="item_N">N. 池深统一数据源 (v1.3.x)</h3>
 
 <p>v1.3 早期版本中池深有两个独立输入(阶段卡片头 + 热平衡区), 容易混淆。v1.3.x 统一为<strong>一个数据源</strong>:
 stage.poolDepth_m → recDepth_m → proc.poolDepth → 1.5。同时用于池径反推 + 热平衡。详见第 27.5 节。</p>
 
-<h3>O. 共用车间散热系数 (v1.3.x)</h3>
+<h3 id="item_O">O. 共用车间散热系数 (v1.3.x)</h3>
 
 <p>各阶段独立估算的散热相加 × thermalSharingFactor (默认 0.75) = 全场总散热, 反映多阶段共享车间的工程现实(共享外墙节省散热约 25%)。详见第 29.7 节。</p>
 
-<h3>P. 集水池建模 (v1.3.x)</h3>
+<h3 id="item_P">P. 集水池建模 (v1.3.x)</h3>
 
 <p>V_process 加入集水池项 V_sump = clamp(Q/30, 20, 200) m³, P&amp;ID 加入 S-101 标识。</p>
 
 <hr class="section-end">
 
-<h2>v1.3 → v1.4: 投资财务评价</h2>
+<h2 id="rel_1_3_1_4">v1.3 → v1.4: 投资财务评价</h2>
 
-<h3>Q. 8 张标准财务表 + NPV/IRR + 敏感性分析</h3>
+<h3 id="item_Q">Q. 8 张标准财务表 + NPV/IRR + 敏感性分析</h3>
 
 <p>v1.3 输出停在工程概算 (CAPEX 万元 / OPEX 元/kg), 用户拿这个数据再去 Excel 手算财务评价 (NPV/IRR/回收期)
 是当前主要的工作流痛点——一份可研报告里财务评价占 30% 篇幅, 设计院通常要花 1-2 周做完。
@@ -290,7 +642,7 @@ v1.4 加入<strong>独立的投资财务评价页面</strong> (finance.html), �
 工程师管主页, 财务管 finance.html, 同一份方案两人各自迭代。
 </div>
 
-<h3>R. 关键指标定义对齐国内规范</h3>
+<h3 id="item_R">R. 关键指标定义对齐国内规范</h3>
 
 <p>v1.4 财务评价 6 个关键指标的定义全部按国内可研规范:</p>
 
@@ -304,7 +656,7 @@ v1.4 加入<strong>独立的投资财务评价页面</strong> (finance.html), �
 <tr><td>盈亏平衡点 (BEP)</td><td>满产年净利润 = 0 时的产量比例</td><td>&lt; 75% = 安全裕度大</td></tr>
 </table>
 
-<h3>S. iRAS 整体架构演进</h3>
+<h3 id="item_S">S. iRAS 整体架构演进</h3>
 
 <p>从 v1.0 到 v1.5 共 1 年多时间, iRAS 完成了从"单页工程概算"到"完整可研工作流"的演进:</p>
 
@@ -321,9 +673,9 @@ v1.4 加入<strong>独立的投资财务评价页面</strong> (finance.html), �
 
 <hr class="section-end">
 
-<h2>v1.4 → v1.5: 可研报告生成器</h2>
+<h2 id="rel_1_4_1_5">v1.4 → v1.5: 可研报告生成器</h2>
 
-<h3>T. 16 章扩展版可研报告自动生成</h3>
+<h3 id="item_T">T. 16 章扩展版可研报告自动生成</h3>
 
 <p>v1.4 之前的输出层级停在工程数据 (P&amp;ID / 设备清单 / 财务表 Excel), 用户需要把这些数据手动整合到一份 Word 可研报告里。
 一份政府版可研通常 80-150 页, 设计院做一份要花 1-2 个月。v1.5 加入<strong>可研报告生成器</strong> (report.html),
@@ -339,7 +691,7 @@ v1.4 加入<strong>独立的投资财务评价页面</strong> (finance.html), �
 <li><strong>模板内嵌 script 标签</strong> — 保持 iRAS"双击 HTML 即用"的传统</li>
 </ol>
 
-<h3>U. 16 章覆盖范围与自动化率</h3>
+<h3 id="item_U">U. 16 章覆盖范围与自动化率</h3>
 
 <table>
 <tr><th>章</th><th>名称</th><th>iRAS 自动化率</th></tr>
@@ -363,7 +715,7 @@ v1.4 加入<strong>独立的投资财务评价页面</strong> (finance.html), �
 
 <p>加权平均自动化率约 70%, 用户需要补充的主要是项目身份信息 (业主名/地址等 20 字段)、场址自然条件、土建详细设计、消防/环评/安评等专项内容(这些必须由有资质机构出具)。</p>
 
-<h3>V. 工艺流程图 + 财务图嵌入</h3>
+<h3 id="item_V">V. 工艺流程图 + 财务图嵌入</h3>
 
 <p>v1.5 在 docx 中嵌入 3 张自动生成的图:</p>
 
@@ -384,9 +736,9 @@ v1.5 输出"结构化内容", 用户拿到后复制到自己院的模板里, 是
 
 <hr class="section-end">
 
-<h2>v1.5 → v1.6: 站级设备 + UI 重构 + 工程逻辑精化</h2>
+<h2 id="rel_1_5_1_6">v1.5 → v1.6: 站级设备 + UI 重构 + 工程逻辑精化</h2>
 
-<h3>W. 液氧储罐站级化(核心改动)</h3>
+<h3 id="item_W">W. 液氧储罐站级化(核心改动)</h3>
 
 <p>v1.5 之前, 液氧储罐 (V-901) 作为<strong>阶段级设备</strong>计入 calcCapex, 每个阶段独立挂一笔储罐 CAPEX。
 但 RAS 工程实际是<strong>全场单点供应</strong>: 多个阶段共用同一座液氧站, 计 4 次显然错误。
@@ -408,7 +760,7 @@ v1.5 输出"结构化内容", 用户拿到后复制到自己院的模板里, 是
 
 <p>P&amp;ID 图 (V-901) / 设备清单 / 可研报告 全部同步显示规格 + "全场共用"标注。</p>
 
-<h3>X. UI 整体重构</h3>
+<h3 id="item_X">X. UI 整体重构</h3>
 
 <p>v1.6 把 iRAS 主页面从"一长条信息流"重构为<strong>可扫描的工程师视角</strong>:</p>
 
@@ -420,7 +772,7 @@ v1.5 输出"结构化内容", 用户拿到后复制到自己院的模板里, 是
 <li><strong>财务参数独立到顶部</strong> — 售价/电价/年限/折旧/区域系数/规模指数 6 项与设备单价分离 (① 区)</li>
 </ul>
 
-<h3>Y. 工程逻辑精化</h3>
+<h3 id="item_Y">Y. 工程逻辑精化</h3>
 
 <table>
 <tr><th>项目</th><th>v1.5 旧</th><th>v1.6 新</th></tr>
@@ -434,7 +786,7 @@ v1.5 输出"结构化内容", 用户拿到后复制到自己院的模板里, 是
 <tr><td>打印优化</td><td>简单 hide button</td><td>A4 + 1.5cm 边距 + 阶段独立分页 + 灰阶图表</td></tr>
 </table>
 
-<h3>Z. v1.5 → v1.6 公式订正表</h3>
+<h3 id="rel_1_5_1_6_2">Z. v1.5 → v1.6 公式订正表</h3>
 
 <p>v1.5 代码已经修复但本手册之前未同步的几处公式:</p>
 
@@ -457,9 +809,9 @@ UI 重构让多阶段切换效率提升 ~40%, 工程逻辑精化把"工程师早
 
 <hr class="section-end">
 
-<h2>v1.6 → v1.7: 氧锥拓扑 + K-101 + 系统排水重构 + 全面审计修复</h2>
+<h2 id="rel_1_6_1_7">v1.6 → v1.7: 氧锥拓扑 + K-101 + 系统排水重构 + 全面审计修复</h2>
 
-<h3>A. 氧锥工艺拓扑 mainline / bypass 真实区别对待</h3>
+<h3 id="item_A_2">A. 氧锥工艺拓扑 mainline / bypass 真实区别对待</h3>
 
 <p>v1.6 之前, iRAS 在 UI 上已经有"主流路径 / 旁路(节能)"两个选项, 但 <code>calcPumpPowerBreakdown</code> / <code>aerationSpec</code> / OPEX
 完全没区分 — 是<strong>"UI 假承诺"</strong>。v1.7 通过全网调研 (Linde SOLVOX cone / Pentair AES Speece / PR Aqua PPC / Global Seafood Advocate 2019)
@@ -498,7 +850,7 @@ UI 重构让多阶段切换效率提升 ~40%, 工程逻辑精化把"工程师早
   全投资 IRR        14.90%           17.31%            +2.41%
 </div>
 
-<h3>B. K-101 鱼池增氧鼓风机 (air 模式专属)</h3>
+<h3 id="item_B_2">B. K-101 鱼池增氧鼓风机 (air 模式专属)</h3>
 
 <p>v1.7 之前, air 模式 (空气曝气) 只有 K-302 (BF 曝气风机), <strong>缺鱼池主增氧风机</strong>。
 这意味着温水鱼种 (罗非鱼 / 鳗鱼 / 对虾) 的大规模 RAS 设计无法用工具自动生成 — 而这是 80%+ 中国 RAS 项目的实际场景。</p>
@@ -507,7 +859,7 @@ UI 重构让多阶段切换效率提升 ~40%, 工程逻辑精化把"工程师早
 (鱼池主增氧故障即鱼窒息, 必须双机轮换)。P&amp;ID / 设备清单 / 报告章节 / 财务测算 全链路同步, modulePerSpec
 含完整规格 (风量 Nm³/min / 功率 kW / 风压 kPa / 效率 %)。</p>
 
-<h3>C. 系统排水重构 (RDF 反冲废水 → 系统排水)</h3>
+<h3 id="item_C_2">C. 系统排水重构 (RDF 反冲废水 → 系统排水)</h3>
 
 <p>旧版工艺面板"RDF 反冲(%) 2%"是反冲管瞬时分流比, 但 4870 m³/d ÷ V_total = 101%/d <em>物理荒谬</em>
 (远超合理换水率 1-5%/d)。真相: RDF 反冲水绝大部分经污泥沉淀池回循环 (Sharrer 2010 实测 95-98% 清液回流),
@@ -528,7 +880,7 @@ UI 重构让多阶段切换效率提升 ~40%, 工程逻辑精化把"工程师早
 <li>report.html 第 9 章环评章节同步重构</li>
 </ul>
 
-<h3>D. 全面审计修复 (27 项 bug)</h3>
+<h3 id="item_D_2">D. 全面审计修复 (27 项 bug)</h3>
 
 <p>v1.7 发布前进行了一次彻底审计, 覆盖 Level 1 (静态扫描) + Level 2 (jsdom 三工况数值验证) + Level 3 (核心计算函数逐项审查), 共发现并修复 27 项 bug:</p>
 
@@ -549,7 +901,7 @@ UI 重构让多阶段切换效率提升 ~40%, 工程逻辑精化把"工程师早
 <strong>意义</strong>: 这是过去 1 年以上潜伏的关键 bug。报告生成器对用户来说<strong>之前实际不能放心用</strong>, 但用户和作者从未察觉 — 因为报告"看起来正常"。教训: <em>优雅降级机制让 bug 隐藏起来</em>, 生产级工具应该有"严格模式", 缺字段就报错而不是静默跳过。
 </div>
 
-<h3>E. v1.7 验证状态</h3>
+<h3 id="item_E_2">E. v1.7 验证状态</h3>
 
 <table>
 <tr><th>验证维度</th><th>结果</th></tr>
@@ -572,11 +924,11 @@ v1.7 主要意义不在于"加了多少功能", 而在于把工具从"演示原�
 
 <hr class="section-end">
 
-<h2>v1.7 → v1.9: 碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复</h2>
+<h2 id="rel_1_7_1_9">v1.7 → v1.9: 碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复</h2>
 
 <p>v1.8 由英文版团队 (Polarlys Innovation AS) 主导, 引入碳酸盐平衡求解和 o2 物理校准。v1.9 是 NTNU validation memo 全面验证后的稳定版。中文版直接从 v1.7 跳到 v1.9, 与英文版同步。</p>
 
-<h3>A. 碳酸盐平衡求解 (v1.9 核心)</h3>
+<h3 id="item_A_3">A. 碳酸盐平衡求解 (v1.9 核心)</h3>
 
 <p>v1.7 之前 iRAS 只输出"碱度需求" (基于硝化耗碱 7.14 g CaCO₃/g N), <strong>不计算 pH / NH₃ 物种 / 缓冲强度 / 方解石饱和度</strong>。这使得工具:</p>
 <ul>
@@ -605,7 +957,7 @@ v1.7 主要意义不在于"加了多少功能", 而在于把工具从"演示原�
 
 <p>详见<strong>本手册第 4 章 §4.5 碳酸盐平衡</strong>章节。</p>
 
-<h3>B. 两种 pH 控制策略</h3>
+<h3 id="item_B_3">B. 两种 pH 控制策略</h3>
 
 <p>v1.9 在工艺面板新增"pH 控制"下拉, 提供两种模式:</p>
 <ul>
@@ -615,7 +967,7 @@ v1.7 主要意义不在于"加了多少功能", 而在于把工具从"演示原�
 
 <p>大型海水 RAS (如 Atlantic Sapphire / Salmon Evolution) 普遍用"持目标 pH"模式, 精确控 pH = 7.0-7.2 以同时防 NH₃ 毒性 + 防 CaCO₃ 沉积堵塞设备。商业项目实测碱度 237 mg/L CaCO₃ (Good et al. 2018), 显著高于淡水默认 150。</p>
 
-<h3>C. o2 物理校准 (validation memo F1)</h3>
+<h3 id="item_C_3">C. o2 物理校准 (validation memo F1)</h3>
 
 <p>v1.9 修正了一个潜伏的物理建模不一致:</p>
 <ul>
@@ -641,7 +993,7 @@ v1.7 主要意义不在于"加了多少功能", 而在于把工具从"演示原�
 1000 t 三文鱼成鱼期 o2DailyTotal 仍是 1113 kg/d, 综合成本仍是 36.70 元/kg (与 v1.7 完全相同)。
 </div>
 
-<h3>D. CO₂ 公式修正 — 加入硝化产 CO₂ (validation memo F2)</h3>
+<h3 id="item_D_3">D. CO₂ 公式修正 — 加入硝化产 CO₂ (validation memo F2)</h3>
 
 <p>v1.7 之前 co2Daily 公式<strong>只算呼吸 CO₂</strong>:</p>
 <div class="formula-block">
@@ -669,7 +1021,7 @@ co2Daily_v1.9 = o2FishDaily × 1.375 + tanDaily × 6.286
 
 <p>影响: CO₂ 脱气塔规格按循环流量 × G:L 选型 (Summerfelt 2003 / 工程惯例), 不直接随负荷上升, 故 CAPEX 不变。但<strong>稳态鱼池 CO₂ 浓度</strong>会上升, 是 v1.9 引入碳酸模型后能从物理层面捕捉到的关键工况指标。</p>
 
-<h3>E. finance-core.js 零利率 bug 修复</h3>
+<h3 id="item_E_3">E. finance-core.js 零利率 bug 修复</h3>
 
 <p>v1.7 之前 <code>buildLoanSchedule</code> 函数在等额本息分支:</p>
 <div class="formula-block">
@@ -678,7 +1030,7 @@ a = r × (1+r)^n / ((1+r)^n − 1)
 
 <p>当 r = 0 (零利率贷款 / 政策性贴息项目) 时分母为 0, 产生 NaN, IRR 算不出。v1.9 修复: r = 0 时自动降级到等额本金分支 (此时两者数学等价)。这是个边界 case, 多数项目利率 > 0 不受影响。</p>
 
-<h3>F. v1.9 验证状态</h3>
+<h3 id="item_F_2">F. v1.9 验证状态</h3>
 
 <table>
 <tr><th>验证项</th><th>状态</th></tr>
@@ -702,13 +1054,13 @@ v1.9 让 iRAS 从"工程算成本工具"升级为"<strong>工程算成本 + 水�
 
 <hr class="section-end">
 
-<h2>v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机</h2>
+<h2 id="rel_1_9_1_9_2">v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机</h2>
 
 <p>v1.9.1 与 v1.9.2 不是新增功能, 而是<strong>四处物理口径修正</strong>。它们在与英文版 v2.0 对表 (PORTING_NOTES) 和用户实测中暴露,
 共同特征是: <strong>影响运行成本、消耗品采购量与制冷装机, 但不改变任何设备选型结果</strong>。
 所有修正都做了回归验证 — 设备容量计算式逐字未变。</p>
 
-<h3>A. 液氧消耗口径修正 (v1.9.1)</h3>
+<h3 id="item_A_4">A. 液氧消耗口径修正 (v1.9.1)</h3>
 
 <p>v1.9 之前, 液氧采购量沿用 <code>o2Demand</code> 计算, 而该字段是<strong>设备选型口径</strong>, 含两个容量系数:</p>
 
@@ -735,7 +1087,7 @@ o2Demand = o2FishPeakHourly × sAerator / 吸收效率 × 24<br>
 改的是"买多少氧", 不是"配多大设备"。详见 15.7。
 </div>
 
-<h3>B. 蒸发系数 β 量纲修正 (v1.9.1)</h3>
+<h3 id="item_B_4">B. 蒸发系数 β 量纲修正 (v1.9.1)</h3>
 
 <p>v1.9 之前代码注释声称蒸发系数 β 取自 ASHRAE 的 0.045–0.075 m/s — <strong>这是错误出处</strong>。
 ASHRAE / Carrier 的池面蒸发系数确实在 0.045–0.089 这个数值区间, 但它是定义在<strong>蒸气压差</strong>上的英制系数
@@ -756,7 +1108,7 @@ h_c = 4.0 + 6.0 × v_air&nbsp;&nbsp;[W/(m²·K)], v_air 为室内空气流速 (�
 <tr><td>RH = 99% 饱和告警</td><td><strong>消失</strong></td><td>原告警是虚警, 由虚高蒸发率造成</td></tr>
 </table>
 
-<h3>C. 通风量口径修正 (v1.9.2)</h3>
+<h3 id="item_C_4">C. 通风量口径修正 (v1.9.2)</h3>
 
 <p>用户报告了一个反直觉现象: <strong>养殖密度降低, 制冷装机容量反而暴增</strong>。根因是一条纯几何的放大链:</p>
 
@@ -776,13 +1128,13 @@ v1.9.2 把新风量改为按<strong>需求</strong>确定, 不再单纯跟随房
 
 <p>详细推导、CO₂ 系数取值与"为什么除湿不计入新风"见 28.6。</p>
 
-<h3>D. 机械除湿机 (v1.9.2 新增)</h3>
+<h3 id="item_D_4">D. 机械除湿机 (v1.9.2 新增)</h3>
 
 <p>v1.9 之前遇到高湿工况只能建议"加大 ACH", 但湿热气候下通风<strong>不能除湿</strong> (室外比室内还湿), 这条建议是无效的。
 v1.9.2 引入机械除湿机模型 (开关 / 目标 RH / SMER / 冷凝水回收 / 冷凝热去向), 与双节点求解器耦合求解。
 海南夏季实测: RH 从 92% 降到 70%, 除湿机耗电 1365 kWh/d, 但凝结放热从 2152 降到 1222 kWh/d, <strong>总电耗基本持平</strong>。</p>
 
-<h3>E. 池内耗氧的 TSS 依赖、代谢产热重构与气泡病约束</h3>
+<h3 id="item_E_4">E. 池内耗氧的 TSS 依赖、代谢产热重构与气泡病约束</h3>
 
 <h4>E.1 池内耗氧 = 鱼生理 + TSS 依赖的池内异养</h4>
 
@@ -792,7 +1144,8 @@ v1.9.2 引入机械除湿机模型 (开关 / 目标 RH / SMER / 冷凝水回收 
 这部分同样必须由氧锥/液氧供给，不是生物滤池 <code>o2DOMfactor</code> 涵盖的范围。</p>
 
 <div class="formula-block">
-池内耗氧系数 = o2BaseFactor + 0.05 × (TSS_tank − 3.0)&nbsp;&nbsp;&nbsp;[kg O₂/kg 饲料]<br>
+池内耗氧系数 = o2BaseFactor + <strong>0.074</strong> + 0.05 × (TSS_tank − 3.0)&nbsp;&nbsp;&nbsp;[kg O₂/kg 饲料]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 鱼生理 + 基础异养（截距）+ TSS 增量异养（斜率）<br>
 &nbsp;&nbsp;斜率由实测两点定: TSS 3.0 → 0.30；TSS 10–12 → 0.70，k = 0.40/8 = 0.05<br>
 &nbsp;&nbsp;TSS 钳制在 [3.0, 15]，超出实测区间后 held flat
 </div>
@@ -802,15 +1155,15 @@ v1.9.2 引入机械除湿机模型 (开关 / 目标 RH / SMER / 冷凝水回收 
 
 <table>
 <tr><th>微滤机去除率</th><th>成鱼池 TSS</th><th>池内耗氧系数</th><th>液氧年耗</th></tr>
-<tr><td>90%</td><td>3.0</td><td>0.271</td><td>334 t</td></tr>
-<tr><td>默认 75%</td><td>3.4</td><td>0.295</td><td>364 t</td></tr>
-<tr><td>55%</td><td>4.1</td><td>0.340</td><td>420 t</td></tr>
-<tr><td>40%</td><td>5.0</td><td>0.390</td><td><strong>481 t</strong></td></tr>
+<tr><td>90%</td><td>3.0</td><td>0.358</td><td>441 t</td></tr>
+<tr><td>默认 75%</td><td>3.4</td><td>0.382</td><td>471 t</td></tr>
+<tr><td>55%</td><td>4.1</td><td>0.428</td><td>527 t</td></tr>
+<tr><td>40%</td><td>5.0</td><td>0.477</td><td><strong>589 t</strong></td></tr>
 </table>
 
 <div class="update-box">
 <span class="label">📌 工程意义</span><br>
-<strong>固体管理直接决定液氧账单。</strong> 微滤机从 90% 掉到 40%，液氧年耗上升 44%。
+<strong>固体管理直接决定液氧账单。</strong> 微滤机从 90% 掉到 40%，液氧年耗上升 34%（441 → 589 t）。
 这个耦合在 v1.9.2 之前完全不可见——固体管理只影响水质指标，不影响供氧成本。
 </div>
 
@@ -907,18 +1260,18 @@ v1.9.2 改为逐条计算四条出路的当前值、所需值与卡点：</p>
 
 <hr class="section-end">
 
-<h3>F. v1.9.2 成本基线 (1000 t/yr 大西洋鲑, mainline)</h3>
+<h3 id="item_F_3">F. v1.9.2 成本基线 (1000 t/yr 大西洋鲑, mainline)</h3>
 
 <table>
 <tr><th>工况</th><th>气温 / 源水</th><th>OPEX</th><th>折旧</th><th>综合成本</th><th>比电耗</th></tr>
-<tr><td>青岛冬</td><td>-7°C / 4°C</td><td>24.84</td><td>7.82</td><td><strong>32.65</strong></td><td>12.0</td></tr>
-<tr><td>海南冬</td><td>17°C / 22°C</td><td>25.19</td><td>7.83</td><td><strong>33.02</strong></td><td>12.5</td></tr>
-<tr><td>海南夏</td><td>32°C / 27°C</td><td>25.67</td><td>7.86</td><td><strong>33.53</strong></td><td>13.2</td></tr>
-<tr><td>挪威 Bergen 冬</td><td>0°C / 4°C</td><td>24.88</td><td>7.82</td><td><strong>32.70</strong></td><td>12.1</td></tr>
+<tr><td>青岛冬</td><td>-7°C / 4°C</td><td>27.70</td><td>7.93</td><td><strong>35.63</strong></td><td>9.7</td></tr>
+<tr><td>海南冬</td><td>17°C / 22°C</td><td>29.40</td><td>7.99</td><td><strong>37.39</strong></td><td>12.1</td></tr>
+<tr><td>海南夏</td><td>32°C / 27°C</td><td>29.91</td><td>8.04</td><td><strong>37.94</strong></td><td>12.8</td></tr>
+<tr><td>挪威 Bergen 冬</td><td>0°C / 4°C</td><td>27.71</td><td>7.94</td><td><strong>35.65</strong></td><td>9.7</td></tr>
 </table>
 
 <p>单位元/kg 鱼；电 0.7 元/kWh、液氧 1.2 元/kg、饲料 12 元/kg；比电耗单位 kWh/kg·yr。
-年液氧消耗 <strong>364 t</strong>（四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化，与气候无关）。
+年液氧消耗 <strong>473 t</strong>（四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化，与气候无关）。
 本表为<strong>工艺运行成本</strong>口径（v1.9.2 前的旧口径，未含维护/保险/补水/排污）。
 v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，口径定义见 21.1。</p>
 
@@ -927,24 +1280,24 @@ v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，�
 每行按<strong>独立稳态点</strong>评估：设计冬与设计夏两个热工况<strong>均取该行的气温与源水温</strong>，
 目的是隔离气候这一单一变量，使各行可直接横向比较。<br>
 实际项目中热泵装机应按当地<strong>全年包线</strong>（冬夏两端取大）定容，折旧会略高于本表——
-实测差异约 +0.5%（青岛全年包线口径下综合成本 32.69 vs 本表 32.65 元/kg）。
+实测差异约 +0.3%（青岛全年包线口径下工艺运行成本 36.17 vs 本表 36.06 元/kg）。
 做具体项目投资测算时应以工具的实际输出为准，本表仅用于版本间与气候间的对比。
 </div>
 
 <div class="note-box">
 <strong>与 v1.3 老基线的差异</strong><br>
 老表（青岛冬 35.96 / 海南冬 37.70 / 海南夏 40.47 / Bergen 36.30）跨气候跨度 <strong>4.51 元/kg</strong>，
-新基线只有 <strong>0.88 元/kg</strong>。压缩来自蒸发系数量纲修正（凝结放热降 2–2.4 倍）、通风口径改动，
-以及代谢产热改由氧当量导出。气候差异现在几乎全部体现在热泵费上（1.59 → 2.42 元/kg），
+新基线为 <strong>2.31 元/kg</strong>。压缩来自蒸发系数量纲修正（凝结放热降 2–2.4 倍）、通风口径改动，
+以及代谢产热改由氧当量导出。气候差异现在几乎全部体现在热泵费上（<strong>0.29 → 2.53 元/kg</strong>），
 而饲料费 14.80 与泵电费 5.30 跨工况完全不变。<br><br>
-<strong>四工况全部为制冷工况</strong>——气候无关的基础热负荷（鱼呼吸 4053 + 设备产热 20677 = 24730 kWh/d）
+<strong>四工况全部为制冷工况</strong>——气候无关的基础热负荷（池内生物产热 5271 + 设备产热 20677 = 25948 kWh/d）
 远超水侧散热能力，青岛 −7°C 也不例外。水只通过池面耦合到车间空气，而车间被设备产热烘着，
 与室外的冷是隔绝的。这是 RAS 常年需要制冷的结构性原因，不是模型异常。<br><br>
 第 21.4、23.3、23.4、32.2 各节保留 v1.3 / v1.7 当时版本的实测数据作为历史记录，
 数值与本表不同属正常 —— <strong>请以本表为当前基线</strong>。
 </div>
 
-<h3>G. mainline vs bypass 拓扑对比（青岛冬）</h3>
+<h3 id="item_G_2">G. mainline vs bypass 拓扑对比（青岛冬）</h3>
 
 <table>
 <tr><th>对比项</th><th>mainline</th><th>bypass</th><th>差</th></tr>
@@ -952,8 +1305,8 @@ v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，�
 <tr><td>旁路泵 P-602</td><td>0</td><td>92.2 kW</td><td>+92.2 kW</td></tr>
 <tr><td><strong>综合泵功率</strong></td><td>369.0 kW</td><td>350.5 kW</td><td><strong>-18.4 kW</strong></td></tr>
 <tr><td>氧锥规格流量</td><td>10155 m³/h</td><td>1015 m³/h</td><td>缩 10×</td></tr>
-<tr><td>工程总投资</td><td>9296 万元</td><td>7967 万元</td><td><strong>-1329 万元</strong></td></tr>
-<tr><td>综合成本</td><td>32.66 元/kg</td><td>31.51 元/kg</td><td><strong>-1.14 元/kg</strong></td></tr>
+<tr><td>工程总投资</td><td>9433 万元</td><td>8104 万元</td><td><strong>-1329 万元</strong></td></tr>
+<tr><td>综合成本（工艺）</td><td>35.63 元/kg</td><td>33.95 元/kg</td><td><strong>-1.68 元/kg</strong></td></tr>
 </table>
 
 <p>bypass 节能幅度从 v1.7 的 29.8 kW 降到 18.4 kW —— 主泵扬程从 12 m 降到 7 m 后，
@@ -970,7 +1323,7 @@ v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，�
 
 <hr class="section-end">
 
-<h2>v1.7 工况成本基线 (1000 t 大西洋三文鱼)</h2>
+<h2 id="v1_7">v1.7 工况成本基线 (1000 t 大西洋三文鱼)</h2>
 
 <p>对比 mainline 与 bypass 两种氧锥拓扑在挪威 Bergen 气候下的全工况成本:</p>
 
@@ -1005,7 +1358,7 @@ v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，�
 综合成本省 1.29 元/kg + 全投资 IRR 提升 2.4 个百分点 + 静态回收期缩短 0.62 年。
 这与国际主流大型三文鱼 RAS 多采用 side stream 拓扑的工程实际一致 (Linde SOLVOX / PR Aqua PPC / Global Seafood Advocate 2019)。</p>
 
-<h3>历史 4 工况成本基线 (v1.3 数据, 沿用)</h3>
+<h3 id="v1_3">历史 4 工况成本基线 (v1.3 数据, 沿用)</h3>
 
 <table>
 <tr><th>工况</th><th>气温</th><th>源水</th><th>v1.3 综合成本</th><th>对照</th></tr>
@@ -1028,7 +1381,7 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 
 <!-- ============ 目录 ============ -->
 <div class="toc">
-<h2 style="page-break-before: always;">目录</h2>
+<h2 style="page-break-before: always;" id="h255">目录</h2>
 <table>
 <tr><td colspan="2" style="padding-top:10pt;"><strong>版本演进说明</strong> (v1.0 → v1.9.2)</td></tr>
 
@@ -1096,9 +1449,9 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 </div>
 
 <div class="chapter">
-<h2><span class="chapter-num">第 1 章</span>循环水养殖概述</h2>
+<h2 id="ch1"><span class="chapter-num">第 1 章</span>循环水养殖概述</h2>
 
-<h3>1.1 什么是循环水养殖 (RAS)</h3>
+<h3 id="sec1_1">1.1 什么是循环水养殖 (RAS)</h3>
 
 <p>循环水养殖系统 (Recirculating Aquaculture System, RAS) 是一种将养殖用水经过物理、化学和生物处理后循环使用的集约化水产养殖技术。与传统的流水式养殖不同, RAS 仅需补充少量新水 (通常每天换水量 5-15%), 其余 85-95% 的水经处理后循环回用。</p>
 
@@ -1106,7 +1459,7 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 
 <p>一个典型的 RAS 系统由以下核心组件构成: 养殖池 (鱼池/虾池)、固液分离设备 (转鼓微滤机 RDF)、生物过滤器 (MBBR 生物滤池)、消毒设备 (UV 紫外线)、增氧设备 (液氧系统或曝气系统)、以及脱气设备 (CO₂ 脱气塔)。</p>
 
-<h3>1.2 RAS 与传统养殖的对比</h3>
+<h3 id="sec1_2">1.2 RAS 与传统养殖的对比</h3>
 
 <table>
 <tr><th>对比维度</th><th>池塘养殖</th><th>流水式养殖</th><th>RAS 循环水养殖</th></tr>
@@ -1122,7 +1475,7 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 <tr><td>生物安全</td><td>低</td><td>低</td><td>高 (封闭)</td></tr>
 </table>
 
-<h3>1.3 RAS 的优势与挑战</h3>
+<h3 id="sec1_3">1.3 RAS 的优势与挑战</h3>
 
 <h4>优势</h4>
 <ul>
@@ -1143,7 +1496,7 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 <li><strong>BF 启动慢</strong>: 硝化菌群建立需要 4-8 周</li>
 </ul>
 
-<h3>1.4 国内外发展现状</h3>
+<h3 id="sec1_4">1.4 国内外发展现状</h3>
 <ul>
 <li><strong>挪威/苏格兰</strong>: 全球最大的 RAS 三文鱼产业, 单厂年产可达 10,000 吨以上 (Atlantic Sapphire 在迈阿密的工厂规划年产 10 万吨)</li>
 <li><strong>丹麦</strong>: RAS 技术装备出口大国 (AKVA group, Billund Aquaculture)</li>
@@ -1152,7 +1505,7 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 <li><strong>日本</strong>: 鳗鲡 RAS 养殖技术领先</li>
 </ul>
 
-<h3>1.5 典型应用场景</h3>
+<h3 id="sec1_5">1.5 典型应用场景</h3>
 
 <table>
 <tr><th>场景</th><th>典型品种</th><th>密度 kg/m³</th><th>水温 °C</th><th>特点</th></tr>
@@ -1171,9 +1524,9 @@ SUMMARY 路线图已规划 v1.8 用 bypass + v1.7 字段重新生成 4 工况基
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 2 章</span>RAS 工艺流程</h2>
+<h2 id="ch2"><span class="chapter-num">第 2 章</span>RAS 工艺流程</h2>
 
-<h3>2.1 标准 RAS 工艺流程</h3>
+<h3 id="sec2_1">2.1 标准 RAS 工艺流程</h3>
 
 <p>一个标准的 RAS 系统, 水流按以下顺序循环:</p>
 
@@ -1191,7 +1544,7 @@ CO₂ 脱气塔在 v1.1 中作为独立设备建模 (v1.0 隐藏在增氧节点)
 
 <p>在 iRAS 平台中, 上述流程被精确建模为<strong>主流串联 + 旁路并联</strong>的混合模型, 每个处理单元的去除效率独立计算, 沿程浓度逐步递减。</p>
 
-<h3>2.2 各处理单元的作用</h3>
+<h3 id="sec2_2">2.2 各处理单元的作用</h3>
 
 <table>
 <tr><th>处理单元</th><th>去除目标</th><th>原理</th><th>典型效率</th></tr>
@@ -1210,7 +1563,7 @@ CO₂ 脱气塔在 v1.1 中作为独立设备建模 (v1.0 隐藏在增氧节点)
 增氧目标饱和度按鱼种类别推荐: 鲑科 165%, 海水温水鱼 140%, 温水淡水肉食鱼 110-125%, 罗非/对虾 100-115%。
 </div>
 
-<h3>2.3 淡水 vs 海水系统差异</h3>
+<h3 id="sec2_3">2.3 淡水 vs 海水系统差异</h3>
 <ul>
 <li><strong>DO 饱和度下降</strong>: 海水 (30‰, 15°C) 的 DO 饱和度约 8.4 mg/L, 比淡水低 17%</li>
 <li><strong>硝化效率下降</strong>: 盐度抑制硝化菌, 修正系数 f = max(1 − 0.01×S, 0.3)</li>
@@ -1222,9 +1575,9 @@ CO₂ 脱气塔在 v1.1 中作为独立设备建模 (v1.0 隐藏在增氧节点)
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 3 章</span>水质参数与控制标准</h2>
+<h2 id="ch3"><span class="chapter-num">第 3 章</span>水质参数与控制标准</h2>
 
-<h3>3.1 关键水质参数</h3>
+<h3 id="sec3_1">3.1 关键水质参数</h3>
 
 <h4>3.1.1 氨氮 (TAN)</h4>
 <p>TAN 是鱼类蛋白质代谢的主要含氮废物, 通过鳃排出。TAN 在水中以离子态 NH₄ 和分子态 NH₃ 两种形式存在, 其比例受 pH 和温度影响。NH₃ 对鱼有强毒性, pH 越高、温度越高, NH₃ 占比越大。RAS 中 TAN 浓度通常控制在 0.5-2.0 mg/L, NH₃ 应低于 0.02-0.05 mg/L。</p>
@@ -1254,7 +1607,7 @@ DO 阈值改为 max(satRatio × DO_sat, DO_abs) 双判断, 鱼种内置 satRatio
 <h4>3.1.7 溶解有机物 (DOM)</h4>
 <p>包括溶解态的蛋白质、脂肪酸、腐殖酸等。DOM 不能被 RDF 拦截, 也不能被 BF 有效去除, 在闭合循环中会积累, 导致水色发黄、起泡、产生土腥味。蛋白分离器和 AOP 是 DOM 的主要去除手段。</p>
 
-<h3>3.2 各品种耐受范围</h3>
+<h3 id="sec3_2">3.2 各品种耐受范围</h3>
 
 <table class="compact">
 <tr><th>参数</th><th>单位</th><th>三文鱼</th><th>加州鲈/鳜</th><th>罗非</th><th>对虾</th><th>石斑</th><th>大菱鲆</th><th>鳗鲡</th></tr>
@@ -1269,7 +1622,7 @@ DO 阈值改为 max(satRatio × DO_sat, DO_abs) 双判断, 鱼种内置 satRatio
 <tr><td>盐度</td><td>‰</td><td>0→30</td><td>0</td><td>0-15</td><td>5-35</td><td>25-35</td><td>25-35</td><td>0-5</td></tr>
 </table>
 
-<h3>3.3 水质恶化的后果</h3>
+<h3 id="sec3_3">3.3 水质恶化的后果</h3>
 
 <p>RAS 水质管理的核心是"稳定"——参数在安全范围内的波动远比绝对值更危险:</p>
 
@@ -1285,11 +1638,11 @@ DO 阈值改为 max(satRatio × DO_sat, DO_abs) 双判断, 鱼种内置 satRatio
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 4 章</span>氮循环与碳循环</h2>
+<h2 id="ch4"><span class="chapter-num">第 4 章</span>氮循环与碳循环</h2>
 
 <p>理解 RAS 中的氮循环是工艺设计的基础。所有氮素来源于饲料蛋白, 经过一系列生物化学转化, 最终以 N₂ 气体形式离开系统。</p>
 
-<h3>4.1 饲料蛋白到氮的转化</h3>
+<h3 id="sec4_1">4.1 饲料蛋白到氮的转化</h3>
 
 <p>鱼类摄食后, 饲料蛋白被消化吸收, 其中:</p>
 <ul>
@@ -1303,7 +1656,7 @@ DO 阈值改为 max(satRatio × DO_sat, DO_abs) 双判断, 鱼种内置 satRatio
 
 <p>其中 TAN 系数 (tanCoef) 默认 0.092 (Timmons &amp; Ebeling 2010)。海水肉食鱼 tanCoef 略高 (大菱鲆 0.092, 石斑 0.110, 鳜 0.100)。</p>
 
-<h3>4.2 硝化作用</h3>
+<h3 id="sec4_2">4.2 硝化作用</h3>
 
 <p>硝化是 RAS 中最关键的生物过程, 由两类自养菌在有氧条件下完成:</p>
 
@@ -1330,7 +1683,7 @@ NO₂ + 0.5 O₂ → NO₃                (Nitrobacter)<br>
 所以"全部 TAN 都变 NO₃"在工程精度内成立。旧版本 (v1.0-v1.4) 用 × η_bio 是历史 bug, 导致 NO₃ 稳态浓度低估 30%, 反硝化设备容积/甲醇用量偏小。
 </div>
 
-<h3>4.3 反硝化作用</h3>
+<h3 id="sec4_3">4.3 反硝化作用</h3>
 
 <p>反硝化在缺氧条件下, 由异养菌利用外加碳源 (甲醇) 将 NO₃ 还原为 N₂ 气体:</p>
 
@@ -1349,7 +1702,7 @@ NO₂ + 0.5 O₂ → NO₃                (Nitrobacter)<br>
 反硝化进水 NO₃ 取 BF 出口浓度 (P&amp;ID 规范), 不再用鱼池浓度。影响实测约 11.5%。
 </div>
 
-<h3>4.4 碱度消耗与回收</h3>
+<h3 id="sec4_4">4.4 碱度消耗与回收</h3>
 
 <div class="formula-block">
 碱度净消耗 = 硝化消耗 − 反硝化回收 − 换水补偿<br>
@@ -1369,7 +1722,7 @@ NO₂ + 0.5 O₂ → NO₃                (Nitrobacter)<br>
 
 <p>反硝化不仅降低 NO₃, 还能回收碱度、减少 NaHCO₃ 用量。一个设计良好的反硝化支路可以减少 30-50% 的碱度投加量。</p>
 
-<h3>4.5 碳酸盐平衡: pH / CO₂ 物种分布 / 非离子化氨 <span class="tag-new">v1.9 新增</span></h3>
+<h3 id="sec4_5">4.5 碳酸盐平衡: pH / CO₂ 物种分布 / 非离子化氨 <span class="tag-new">v1.9 新增</span></h3>
 
 <p>鱼池 pH 不是一个独立的自由参数 — 它由<strong>碳酸盐系统</strong>确定。总碱度 TA (由 NaHCO₃ 投加维持设定值) 与溶解 CO₂ (来自呼吸 + 硝化产) 一起决定 pH、CO₂ / HCO₃⁻ / CO₃²⁻ 物种分布、非离子化 NH₃ 占比 (剧毒) 以及方解石饱和度 Ω。iRAS v1.9 对每个阶段调用专门的碳酸模块求解此平衡。</p>
 
@@ -1521,11 +1874,11 @@ f<sub>NH3</sub> = [NH₃] / TAN = K_a / (K_a + [H⁺])
 </div>
 
 <div class="chapter">
-<h2><span class="chapter-num">第 5 章</span>养殖规模设计</h2>
+<h2 id="ch5"><span class="chapter-num">第 5 章</span>养殖规模设计</h2>
 
 <p>RAS 工程设计的第一步是从年产量目标反推系统规模。这决定了后续所有水处理设备的选型依据。</p>
 
-<h3>5.1 Little's Law 与稳态建模</h3>
+<h3 id="sec5_1">5.1 Little's Law 与稳态建模</h3>
 
 <p>iRAS 采用<strong>连续错峰养殖模式</strong>建模: 养殖场分批错峰投苗, 使每天都有成鱼出塘。稳态下, 系统内每个阶段同时存在不同大小的鱼群。</p>
 
@@ -1541,7 +1894,7 @@ f<sub>NH3</sub> = [NH₃] / TAN = K_a / (K_a + [H⁺])
 修正了稳态在塘公式, 加入 mortality 衰减: N_steady = N_inflow × (months / 12) × (1 − mort/2)。mortality 修正反映线性死亡假设下的平均尾数 (高 mort 阶段如苗种期偏高 8-11%)。
 </div>
 
-<h3>5.2 尾数流守恒与损耗率递推</h3>
+<h3 id="sec5_2">5.2 尾数流守恒与损耗率递推</h3>
 
 <p>多阶段 RAS 的尾数从最后阶段向前递推, 每一级通过损耗率放大:</p>
 
@@ -1552,7 +1905,7 @@ f<sub>NH3</sub> = [NH₃] / TAN = K_a / (K_a + [H⁺])
 
 <p>损耗率包含死亡、淘汰、逃逸, 苗种期通常最高 (10-30%), 成鱼期最低 (2-5%)。</p>
 
-<h3>5.3 投饵量: 三套口径 <span class="tag-update">v1.1 重大修正</span></h3>
+<h3 id="sec5_3">5.3 投饵量: 三套口径 <span class="tag-update">v1.1 重大修正</span></h3>
 
 <p>v1.0 用 feedDesign = feedMax × peakFactor 算所有"日产污染物", 偏大约 17%。v1.1 严格分离三个时间尺度:</p>
 
@@ -1576,11 +1929,11 @@ f<sub>NH3</sub> = [NH₃] / TAN = K_a / (K_a + [H⁺])
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 6 章</span>污染物负荷计算</h2>
+<h2 id="ch6"><span class="chapter-num">第 6 章</span>污染物负荷计算</h2>
 
 <p>确定了投饵量后, 即可计算各类污染物的日产生量。v1.1 严格区分日量、小时峰值、日均三套字段。</p>
 
-<h3>6.1 TAN 产生量</h3>
+<h3 id="sec6_1">6.1 TAN 产生量</h3>
 
 <div class="formula-block">
 TAN_Daily = feedMax × protein × tanCoef<br>
@@ -1590,14 +1943,14 @@ TAN_DailyAvg = feedAvg × protein × tanCoef
 
 <p>其中 tanCoef 默认 0.092 (Timmons &amp; Ebeling 2010), 海水肉食鱼略高 (0.10-0.11)。</p>
 
-<h3>6.2 TSS / DOM 产生量</h3>
+<h3 id="sec6_2">6.2 TSS / DOM 产生量</h3>
 
 <div class="formula-block">
 TSS_Daily = feedMax × 0.30<br>
 DOM_Daily = feedMax × 0.10
 </div>
 
-<h3>6.3 O₂ 需求三部分 <span class="tag-update">v1.1 按位置分配</span></h3>
+<h3 id="sec6_3">6.3 O₂ 需求三部分 <span class="tag-update">v1.1 按位置分配</span></h3>
 
 <p>v1.1 把鱼生理耗氧按物种 + 温度自动算 (取代 v1.0 的 0.25 一刀切)。</p>
 
@@ -1613,7 +1966,7 @@ DOM_Daily = feedMax × 0.10
 鱼池主增氧 (①) 和 BF 曝气 (②+③) 是<strong>两套独立系统</strong>, 不重叠。v1.0 之前常把三项合并算总量, 然后全部由鱼池增氧供应, 导致 BF 缺氧或鱼池增氧过度设计。
 </div>
 
-<h3>6.4 CO₂ 产生量</h3>
+<h3 id="sec6_4">6.4 CO₂ 产生量</h3>
 
 <div class="formula-block">CO₂_Daily = o2FishDaily × 1.375</div>
 
@@ -1622,11 +1975,11 @@ DOM_Daily = feedMax × 0.10
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 7 章</span>精确循环方程</h2>
+<h2 id="ch7"><span class="chapter-num">第 7 章</span>精确循环方程</h2>
 
 <p>这是 iRAS 的核心计算引擎。传统 RAS 设计常用近似加法公式 C = Δ / Ση 估算稳态浓度, 但当系统包含多个串联和旁路处理单元时, 加法公式会产生显著误差。iRAS 采用<strong>精确乘法循环方程</strong>, 确保质量守恒严格成立。</p>
 
-<h3>7.1 质量守恒推导</h3>
+<h3 id="sec7_1">7.1 质量守恒推导</h3>
 
 <p>考虑一个稳态循环系统: 水从鱼池流出, 经过 n 个处理单元后回到鱼池。每个处理单元有各自的"通过率" (1 − η)。</p>
 
@@ -1650,13 +2003,13 @@ C_out = Δ / (1 − R)         (鱼池出水, 设备选型依据)<br>
 C_in = Δ × R / (1 − R)      (回水, 最低浓度)
 </div>
 
-<h3>7.2 总通过率 R</h3>
+<h3 id="sec7_2">7.2 总通过率 R</h3>
 
 <div class="formula-block">R = Π(1 − η) × (1 − dilution)</div>
 
 <p>R 越小 (总去除率越高), C_out 越低, 水质越好。</p>
 
-<h3>7.3 串联 vs 旁路建模</h3>
+<h3 id="sec7_3">7.3 串联 vs 旁路建模</h3>
 
 <h4>串联通过率 (RDF / BF / CO₂ 脱气)</h4>
 <p>全流量通过, 注意是<strong>乘法</strong>:</p>
@@ -1668,10 +2021,10 @@ C_in = Δ × R / (1 − R)      (回水, 最低浓度)
 <div class="formula-block">系统等效去除率 η_sys = α × η_single = 0.20 × 0.70 = 14%</div>
 <p>物理含义: 80% 的水不经处理 + 20% 的水去除了 70% → 混合后整体去除 14%。</p>
 
-<h3>7.4 闭合验证</h3>
+<h3 id="sec7_4">7.4 闭合验证</h3>
 <p>精确循环方程的优美性质: 沿程浓度递减后, 最终回水浓度恰好等于 C_in。iRAS 在每次计算后内部验证此闭合条件 (误差 = 0)。</p>
 
-<h3>7.5 各参数的 R 计算路径</h3>
+<h3 id="sec7_5">7.5 各参数的 R 计算路径</h3>
 
 <table>
 <tr><th>参数</th><th>处理路径</th><th>R 表达式</th></tr>
@@ -1688,7 +2041,7 @@ C_in = Δ × R / (1 − R)      (回水, 最低浓度)
 AOP DOM 系数: v1.0 误把 90% geosmin 系数当 DOM 去除率, v1.1 用 aopDOMRemoval 默认 5% (可调 5-15%)。
 </div>
 
-<h3>7.6 dilution 敏感性 <span class="tag-update">v1.1 重要发现</span></h3>
+<h3 id="sec7_6">7.6 dilution 敏感性 <span class="tag-update">v1.1 重要发现</span></h3>
 
 <p>dilution 在不同参数中的影响差异巨大:</p>
 
@@ -1708,14 +2061,14 @@ AOP DOM 系数: v1.0 误把 90% geosmin 系数当 DOM 去除率, v1.1 用 aopDOM
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 8 章</span>系统体积建模 <span class="tag-update">v1.1 新章 + v1.3.x 增 S-101</span></h2>
+<h2 id="ch8"><span class="chapter-num">第 8 章</span>系统体积建模 <span class="tag-update">v1.1 新章 + v1.3.x 增 S-101</span></h2>
 
 <div class="update-box">
 <span class="label">📌 v1.1</span>
 本章是 v1.1 全新内容。v1.0 把整个系统简化为"鱼池水体 V_tank", 忽略了工艺水体 (BF/RDF/管路等)。v1.1 引入完整 V_total = V_tank + V_process 建模。v1.3.x 在 V_process 中加入集水池 V_sump。
 </div>
 
-<h3>8.1 为什么要建模工艺水体?</h3>
+<h3 id="sec8_1">8.1 为什么要建模工艺水体?</h3>
 
 <p>传统 RAS 设计常把整个系统简化为"鱼池水体", 忽略了:</p>
 <ul>
@@ -1730,7 +2083,7 @@ AOP DOM 系数: v1.0 误把 90% geosmin 系数当 DOM 去除率, v1.1 用 aopDOM
 
 <p>这些工艺水体合计 V_process 通常占 V_tank 的 30-60%, 是不可忽略的。</p>
 
-<h3>8.2 V_process 各部分计算公式</h3>
+<h3 id="sec8_2">8.2 V_process 各部分计算公式</h3>
 
 <table>
 <tr><th>工艺单元</th><th>计算公式</th><th>物理依据</th></tr>
@@ -1753,7 +2106,7 @@ RAS 体积建模时, BF 池总容积 (含填料 + 水) 才是稳态稀释的有�
 旧版 <code>× 1.3</code> 是经验估计 (假设填料 35% + 水 65%), 但工业上 fillRatio 是设计变量, 应该用代码统一。
 </div>
 
-<h3>8.3 V_total 与稳态浓度</h3>
+<h3 id="sec8_3">8.3 V_total 与稳态浓度</h3>
 
 <p>总系统体积:</p>
 <div class="formula-block">V_total = V_tank + V_process</div>
@@ -1770,7 +2123,7 @@ RAS 体积建模时, BF 池总容积 (含填料 + 水) 才是稳态稀释的有�
 <li>仅靠换水稀释 (无反硝化的 NO₃ 等): dilution 主导, C 按 V_tank/V_total 缩放, 典型下降 35-40%</li>
 </ul>
 
-<h3>8.4 换水率口径 <span class="tag-update">v1.1 改为 V_total</span></h3>
+<h3 id="sec8_4">8.4 换水率口径 <span class="tag-update">v1.1 改为 V_total</span></h3>
 
 <p>用户填的"exchangeDaily 5%/d"在不同口径下含义不同:</p>
 
@@ -1785,7 +2138,7 @@ RAS 体积建模时, BF 池总容积 (含填料 + 水) 才是稳态稀释的有�
 改为 V_total 是物理一致性优先。v1.0 老方案加载到 v1.1 后, 换水量自动 +50% 左右, 仅靠换水稀释的参数 (无反硝化的 NO₃, 无 AOP 的 Geosmin) 浓度自动下降 ~37%。这是物理修正后的真实值, 不是 bug。
 </div>
 
-<h3>8.5 三文鱼成鱼 1000t/yr V_process 实例</h3>
+<h3 id="sec8_5">8.5 三文鱼成鱼 1000t/yr V_process 实例</h3>
 
 <table>
 <tr><th>工艺单元</th><th>体积 (m³)</th></tr>
@@ -1813,13 +2166,13 @@ RAS 体积建模时, BF 池总容积 (含填料 + 水) 才是稳态稀释的有�
 </div>
 
 <div class="chapter">
-<h2><span class="chapter-num">第 9 章</span>固液分离 (转鼓微滤机 RDF) <span class="tag-update">v1.7 系统排水重构</span></h2>
+<h2 id="ch9"><span class="chapter-num">第 9 章</span>固液分离 (转鼓微滤机 RDF) <span class="tag-update">v1.7 系统排水重构</span></h2>
 
-<h3>9.1 原理</h3>
+<h3 id="sec9_1">9.1 原理</h3>
 
 <p>转鼓微滤机 (RDF) 是 RAS 中的第一道防线, 通过 60-90 μm 不锈钢筛网物理拦截水中的悬浮固体。工作原理: 养殖水从转鼓内侧流向外侧, 固体颗粒被拦截。当筛网两侧压差达到设定值时, RDF 内嵌反冲机构自动启动反冲洗 — <strong>v1.7 起反冲泵不再作为独立设备列项</strong>, 因为工程实际中所有商用 RDF (Hydrotech / Faivre 等) 整机出厂均含反冲泵, 反冲水绝大部分经污泥沉淀池回循环 (Sharrer 2010 实测 95-98% 清液回流)。</p>
 
-<h3>9.2 设计参数</h3>
+<h3 id="sec9_2">9.2 设计参数</h3>
 
 <table>
 <tr><th>参数</th><th>典型值</th><th>说明</th></tr>
@@ -1829,14 +2182,14 @@ RAS 体积建模时, BF 池总容积 (含填料 + 水) 才是稳态稀释的有�
 <tr><td>RDF 集水池 HRT</td><td>0.1-5 min</td><td>iRAS v1.6 默认 0.5 min (中位)</td></tr>
 </table>
 
-<h3>9.3 计算公式</h3>
+<h3 id="sec9_3">9.3 计算公式</h3>
 
 <div class="formula-block">
 RDF 处理流量 = 循环流量 × safetyRDF (m³/h)<br>
 RDF 集水池 V = 流量 × rdfHRT_min / 60 (m³)
 </div>
 
-<h3>9.4 系统排水 (v1.7 重构)</h3>
+<h3 id="sec9_4">9.4 系统排水 (v1.7 重构)</h3>
 
 <p>v1.6 之前, iRAS 工艺面板有 "RDF 反冲(%) 2%" 输入, 但 4870 m³/d ÷ V_total = 101%/d <strong>物理荒谬</strong>
 (远超合理换水率 1-5%/d)。问题根源: 把"反冲管瞬时分流比"误当作"穿越系统边界的排水比"。</p>
@@ -1865,7 +2218,7 @@ iRAS 输出的"系统排水 TSS"是<strong>沉淀池入口</strong>浓度 (含�
 工程单独完成, iRAS 边界止于"沉淀池入口"。
 </div>
 
-<h3>9.5 常见故障与运维</h3>
+<h3 id="sec9_5">9.5 常见故障与运维</h3>
 
 <table>
 <tr><th>故障现象</th><th>可能原因</th><th>处理措施</th></tr>
@@ -1880,13 +2233,13 @@ iRAS 输出的"系统排水 TSS"是<strong>沉淀池入口</strong>浓度 (含�
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 10 章</span>生物过滤 (MBBR 生物滤池)</h2>
+<h2 id="ch10"><span class="chapter-num">第 10 章</span>生物过滤 (MBBR 生物滤池)</h2>
 
-<h3>10.1 硝化原理</h3>
+<h3 id="sec10_1">10.1 硝化原理</h3>
 
 <p>MBBR 是 RAS 最关键的处理单元。HDPE 悬浮填料 (比表面积 500-800 m²/m³) 在曝气搅动下悬浮于水中, 表面附着硝化菌群, 将有毒的 TAN 氧化为低毒的 NO₃。硝化是缓慢的自养过程, 菌群建立需 4-8 周。</p>
 
-<h3>10.2 容积去除率 (VTR) 与温度修正</h3>
+<h3 id="sec10_2">10.2 容积去除率 (VTR) 与温度修正</h3>
 
 <div class="formula-block">
 VTR(T, S) = VTR₂₀ × θ<sub>nit</sub><sup>(T−20)</sup> × f<sub>sal</sub><br>
@@ -1951,11 +2304,11 @@ BF 池填料容积 = TAN 负荷 ÷ VTR(T, S)
 造价远高于温水鱼的主要原因。做冷水鱼项目时，BF 池的容积与造价对水温设定特别敏感。
 </div>
 
-<h3>10.3 填料体积计算</h3>
+<h3 id="sec10_3">10.3 填料体积计算</h3>
 
 <div class="formula-block">BF 填料体积 = TAN_Daily × safetyBio / [VTR₂₀ × θ^(T−20) × f_sal]</div>
 
-<h3>10.4 BF 粗孔曝气 <span class="tag-update">v1.1</span></h3>
+<h3 id="sec10_4">10.4 BF 粗孔曝气 <span class="tag-update">v1.1</span></h3>
 
 <div class="formula-block">
 BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
@@ -1968,7 +2321,7 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 风机效率从 0.55 提到 0.60。o2DOMfactor 默认 0.10 (v1.0 偏低 0.05, Boyd 2018 实测)。
 </div>
 
-<h3>10.5 启动期管理</h3>
+<h3 id="sec10_5">10.5 启动期管理</h3>
 
 <p>BF 启动需要 4-8 周, 启动期管理不当会导致 TAN/NO₂ 飙升, 大量死鱼。</p>
 
@@ -1989,7 +2342,7 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 <li>禁止一次满负荷投鱼</li>
 </ul>
 
-<h3>10.6 常见故障</h3>
+<h3 id="sec10_6">10.6 常见故障</h3>
 
 <table>
 <tr><th>故障</th><th>原因</th><th>措施</th></tr>
@@ -2002,13 +2355,13 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 11 章</span>蛋白分离器</h2>
+<h2 id="ch11"><span class="chapter-num">第 11 章</span>蛋白分离器</h2>
 
-<h3>11.1 原理</h3>
+<h3 id="sec11_1">11.1 原理</h3>
 
 <p>蛋白分离器利用泡沫分离原理去除 DOM 和细颗粒 TSS (&lt;30μm)。空气或臭氧以微细气泡注入接触塔, 表面活性有机物吸附在气泡表面, 随泡沫溢出。</p>
 
-<h3>11.2 空气 vs 臭氧</h3>
+<h3 id="sec11_2">11.2 空气 vs 臭氧</h3>
 
 <table>
 <tr><th>参数</th><th>空气模式</th><th>臭氧模式</th></tr>
@@ -2024,7 +2377,7 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 蛋分 TSS 去除率 skimmerTSSEff 开放为可调参数 (默认 40%)。
 </div>
 
-<h3>11.3 设计计算</h3>
+<h3 id="sec11_3">11.3 设计计算</h3>
 
 <div class="formula-block">
 系统等效去除率 = 流量比 × 单次效率 = 0.20 × 0.70 = 14%<br>
@@ -2035,7 +2388,7 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 
 <div class="formula-block">臭氧需求 = feedMax × 0.010 g O₃/g 饲料</div>
 
-<h3>11.4 常见故障</h3>
+<h3 id="sec11_4">11.4 常见故障</h3>
 
 <table>
 <tr><th>故障</th><th>原因</th><th>措施</th></tr>
@@ -2048,15 +2401,15 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 12 章</span>反硝化反应器</h2>
+<h2 id="ch12"><span class="chapter-num">第 12 章</span>反硝化反应器</h2>
 
-<h3>12.1 原理</h3>
+<h3 id="sec12_1">12.1 原理</h3>
 
 <p>在缺氧条件下 (DO &lt; 0.5 mg/L), 异养菌利用甲醇将 NO₃ 还原为 N₂ 气体。这是 RAS 中唯一能真正"去除"氮素的过程。</p>
 
 <div class="formula-block">6 NO₃ + 5 CH₃OH → 3 N₂↑ + 5 CO₂ + 7 H₂O + 6 OH</div>
 
-<h3>12.2 设计计算</h3>
+<h3 id="sec12_2">12.2 设计计算</h3>
 
 <div class="formula-block">
 旁路流量 = 循环流量 × 流量比 (默认 10%)<br>
@@ -2067,7 +2420,85 @@ VDR(T) = VDR₂₀(0.8) × 1.08^(T−20)<br>
 碱度回收 = NO₃去除量 × 3.57 kg CaCO₃/d
 </div>
 
-<h3>12.3 常见故障</h3>
+<h3 id="sec12_4">12.4 换水率、NO₃ 与反硝化的耦合 <span class="tag-new">v1.9.2 新增</span></h3>
+
+<p>反硝化配多大，取决于换水率能带走多少硝酸盐。这两个参数<strong>不能孤立设定</strong>，
+但用户常常只调其中一个，然后对 NO₃ 结果感到意外。本节说明 iRAS 的默认取向。</p>
+
+<h4>12.4.1 iRAS 的换水率是「极致节水」取向</h4>
+
+<p>换水率用 %/日表示不便于横向比较，产业通用口径是<strong>单位投饵补水量</strong>（m³/kg 饲料）。
+iRAS 各鱼种默认值折算如下：</p>
+
+<table>
+<tr><th>鱼种</th><th>换水率 %/d</th><th>单位投饵补水量 m³/kg 饲料</th></tr>
+<tr><td>鳗鲡</td><td>6</td><td><strong>0.055</strong></td></tr>
+<tr><td>罗非鱼</td><td>6</td><td><strong>0.060</strong></td></tr>
+<tr><td>大西洋鲑</td><td>4</td><td><strong>0.092</strong></td></tr>
+<tr><td>大菱鲆</td><td>4</td><td>0.105</td></tr>
+<tr><td>加州鲈</td><td>5</td><td>0.106</td></tr>
+<tr><td>石斑鱼</td><td>6</td><td>0.123</td></tr>
+<tr><td>鳜鱼</td><td>6</td><td>0.165</td></tr>
+<tr><td>对虾</td><td>8</td><td>0.216</td></tr>
+</table>
+
+<table>
+<tr><th>产业口径</th><th>m³/kg 饲料</th></tr>
+<tr><td>极集约 RAS</td><td>0.1 – 0.3</td></tr>
+<tr><td>常规商业 RAS</td><td>0.3 – 1.0</td></tr>
+<tr><td>半流水</td><td>&gt; 3</td></tr>
+</table>
+
+<div class="note-box">
+iRAS 的默认值<strong>全部压在产业下沿</strong>，鳗鲡、罗非鱼、大西洋鲑三个鱼种甚至低于极集约 RAS 的下限。
+这是<strong>刻意的设计取向</strong>，不是缺陷——国内 RAS 项目普遍以节水为核心卖点，
+在缺水地区、内陆项目、或有严格排放限制的场址，节水本身就是立项理由。
+</div>
+
+<h4>12.4.2 代价：硝酸盐排不出去</h4>
+
+<p>稳态下 NO₃ 的去除只有两条路：<strong>反硝化</strong>与<strong>换水稀释</strong>。补水强度低意味着后者几乎不起作用。</p>
+
+<div class="formula-block">
+无反硝化时：NO₃-N ≈ 日产氮量 ÷ (系统水体 × 日换水率)
+</div>
+
+<p>以 1000 t/yr 大西洋鲑成鱼期为例（系统水体 5178 m³、TAN 日产 82.8 kg/d）：</p>
+
+<table>
+<tr><th>反硝化旁路比例</th><th>反硝化流量 m³/h</th><th>稳态 NO₃-N mg/L</th></tr>
+<tr><td>0%（不设反硝化）</td><td>0</td><td><strong>414</strong></td></tr>
+<tr><td>0.5%</td><td>51</td><td>70.2</td></tr>
+<tr><td>1%</td><td>102</td><td>38.5</td></tr>
+<tr><td><strong>2%（v1.9.2 默认）</strong></td><td><strong>203</strong></td><td><strong>20.2</strong></td></tr>
+<tr><td>3%</td><td>305</td><td>13.7</td></tr>
+<tr><td>10%（v1.9.2 前的旧默认）</td><td>1015</td><td>4.2</td></tr>
+</table>
+
+<div class="warning-box">
+<span class="label">⚠ 在 iRAS 的默认换水率下，反硝化不是可选项而是必需项</span><br>
+把 <code>denitriFlowPct</code> 调到 0 时模型给出的 NO₃-N 414 mg/L <strong>是真实后果，不是算错</strong>。
+产业上「无反硝化 RAS」通常只有 50–150 mg/L，是因为它们的补水强度高 3–10 倍——
+用换水把硝酸盐冲走，而不是用反硝化把它还原掉。<br><br>
+<strong>两条路线的取舍</strong>：节水路线省水费与尾水处理费，但必须投反硝化（增加 CAPEX、甲醇消耗，
+且缺氧反应器控制不当会产 H₂S）；高换水路线设备简单，但水费、尾水处理与补水加热能耗都上去了。
+iRAS 默认走前者，做具体项目时应按场址的水资源与排放条件重新权衡。
+</div>
+
+<h4>12.4.3 旧默认 10% 为何改成 2%</h4>
+
+<p>v1.9.2 之前 <code>denitriFlowPct</code> 默认 10%，对应稳态 NO₃-N 仅 4.2 mg/L。三点问题：</p>
+
+<ul>
+<li><strong>4.2 mg/L 是饮用水级别，不是养殖水。</strong>商业鲑鱼 RAS 普遍 50–150，配了反硝化的也多在 20–60。</li>
+<li><strong>反应器规模不现实。</strong>10% 旁路对应 1015 m³/h（主循环流量的十分之一），按 HRT 1–2 h 需 1000–2000 m³ 填料。</li>
+<li><strong>反硝化是有风险的单元。</strong>缺氧反应器控制不好会产 H₂S（Atlantic Sapphire 有过教训），
+工程上倾向<strong>小比例、可旁通</strong>而非大流量常开。</li>
+</ul>
+
+<p>改为 2% 后对应反应器 203 m³/h、NO₃-N 20.2 mg/L，落在「配了反硝化的 RAS」的合理区间。</p>
+
+<h3 id="sec12_3">12.3 常见故障</h3>
 
 <table>
 <tr><th>故障</th><th>原因</th><th>措施</th></tr>
@@ -2081,13 +2512,13 @@ VDR(T) = VDR₂₀(0.8) × 1.08^(T−20)<br>
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 13 章</span>UV 紫外线消毒</h2>
+<h2 id="ch13"><span class="chapter-num">第 13 章</span>UV 紫外线消毒</h2>
 
-<h3>13.1 原理</h3>
+<h3 id="sec13_1">13.1 原理</h3>
 
 <p>UV-C (254 nm) 穿透微生物细胞壁, 破坏 DNA 胸腺嘧啶二聚体, 使其丧失复制能力。优点: 无化学残留, 不改变水质, 杀菌快。</p>
 
-<h3>13.2 Chick-Watson 模型</h3>
+<h3 id="sec13_2">13.2 Chick-Watson 模型</h3>
 
 <div class="formula-block">灭活率 = 1 − exp(−k × D)</div>
 
@@ -2099,7 +2530,7 @@ VDR(T) = VDR₂₀(0.8) × 1.08^(T−20)<br>
 <tr><td>水霉孢子</td><td>~0.30</td><td>99.999%</td><td>20-30 mJ/cm²</td></tr>
 </table>
 
-<h3>13.3 UV 功率公式 <span class="tag-update">v1.1</span></h3>
+<h3 id="sec13_3">13.3 UV 功率公式 <span class="tag-update">v1.1</span></h3>
 
 <div class="formula-block">UV 功率 (W) = 处理流量 × UV 剂量 × 0.85 × safetyUV</div>
 
@@ -2108,7 +2539,7 @@ VDR(T) = VDR₂₀(0.8) × 1.08^(T−20)<br>
 系数从 0.75 改为 0.85 (USEPA UVDGM 中位); safetyUV 是设备额定功率裕度 (灯管老化), 不是剂量增加。
 </div>
 
-<h3>13.4 运维</h3>
+<h3 id="sec13_4">13.4 运维</h3>
 <p>① 灯管运行时间计数器记录, 寿命 8000-12000h;<br>
 ② 石英套管每月用稀盐酸擦拭除垢;<br>
 ③ UV 前 TSS &lt; 10 mg/L 才能保证效果。</p>
@@ -2116,13 +2547,13 @@ VDR(T) = VDR₂₀(0.8) × 1.08^(T−20)<br>
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 14 章</span>高级氧化 (AOP)</h2>
+<h2 id="ch14"><span class="chapter-num">第 14 章</span>高级氧化 (AOP)</h2>
 
-<h3>14.1 原理</h3>
+<h3 id="sec14_1">14.1 原理</h3>
 
 <p>臭氧 + UV 协同产生羟基自由基 (·OH), 氧化分解 geosmin 和 2-MIB (土腥味物质, ng/L 级)。单独臭氧或 UV 效果有限, 协同效率 80-95%。</p>
 
-<h3>14.2 设计计算</h3>
+<h3 id="sec14_2">14.2 设计计算</h3>
 
 <div class="formula-block">
 旁路流量 = 循环流量 × 5%<br>
@@ -2144,21 +2575,21 @@ AOP 容积 = 旁路流量 (m³/h) × HRT (min) / 60 (m³)
 AOP DOM 系数: aopDOMRemoval 默认 5% (可调 5-15%), v1.0 误把 90% geosmin 系数当 DOM 去除率。
 </div>
 
-<h3>14.3 运维</h3>
+<h3 id="sec14_3">14.3 运维</h3>
 <p>① AOP 出水必须经活性炭或 UV 消除残留臭氧再回主流;<br>
 ② 不是所有 RAS 都需要 AOP——仅品种对土腥味敏感时才需要。</p>
 </div>
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 15 章</span>增氧与脱气 <span class="tag-update">v1.9.1 液氧双口径</span> <span class="tag-update">v1.1 大幅修正 + v1.7 氧锥拓扑+K-101</span></h2>
+<h2 id="ch15"><span class="chapter-num">第 15 章</span>增氧与脱气 <span class="tag-update">v1.9.1 液氧双口径</span> <span class="tag-update">v1.1 大幅修正 + v1.7 氧锥拓扑+K-101</span></h2>
 
 <div class="update-box">
 <span class="label">📌 v1.1</span>
 本章是 v1.1 重点更新, 特别是 CO₂ 脱气塔由 v1.0 的"扣 70% 写死"升级为 v1.1 的独立设备模型。
 </div>
 
-<h3>15.1 DO 饱和度 (Benson-Krause 1984)</h3>
+<h3 id="sec15_1">15.1 DO 饱和度 (Benson-Krause 1984)</h3>
 
 <div class="formula-block">DO_sat = exp(−139.34411 + 1.575701e5/Tk − 6.642308e7/Tk² + ...)</div>
 
@@ -2173,7 +2604,7 @@ AOP DOM 系数: aopDOMRemoval 默认 5% (可调 5-15%), v1.0 误把 90% geosmin 
 <tr><td>30</td><td>7.56</td><td>6.41</td><td>-18%</td></tr>
 </table>
 
-<h3>15.2 纯氧 vs 空气</h3>
+<h3 id="sec15_2">15.2 纯氧 vs 空气</h3>
 
 <table>
 <tr><th>参数</th><th>纯氧 (液氧+锥形塔)</th><th>空气 (罗茨风机+微孔盘)</th></tr>
@@ -2188,7 +2619,7 @@ AOP DOM 系数: aopDOMRemoval 默认 5% (可调 5-15%), v1.0 误把 90% geosmin 
 DO 目标饱和度按鱼种推荐: 鲑 165%, 海水温水 140%, 温水淡水 110-125%, 罗非/对虾 100-115%。
 </div>
 
-<h3>15.3 鱼池 DO 计算 <span class="tag-update">v1.1</span></h3>
+<h3 id="sec15_3">15.3 鱼池 DO 计算 <span class="tag-update">v1.1</span></h3>
 
 <div class="formula-block">
 鱼池出水 DO = DO_sat × satTarget% − deltaDO_peak<br>
@@ -2197,7 +2628,7 @@ deltaDO_peak = o2FishPeakHourly / flowM3h × 1000 (mg/L)
 
 <p>v1.1 用<strong>小时峰值</strong>评估 DO 降幅 (而不是 v1.0 的日均), 反映投喂后代谢尖峰。</p>
 
-<h3>15.4 CO₂ 脱气塔 <span class="tag-update">v1.1 新增独立设备</span></h3>
+<h3 id="sec15_4">15.4 CO₂ 脱气塔 <span class="tag-update">v1.1 新增独立设备</span></h3>
 
 <p>CO₂ 脱气塔在 v1.1 作为独立设备建模。v1.0 没有此模型 (仅在增氧节点扣 70% 写死, 不存在独立的塔/风机/CAPEX/OPEX)。v1.1 用户首次看到此设备会有独立的设备投资和运行成本——这是新增的成本项, 不是"修正"。</p>
 
@@ -2242,7 +2673,7 @@ deltaDO_peak = o2FishPeakHourly / flowM3h × 1000 (mg/L)
 代码一直是对的, 仅手册书写错误。
 </div>
 
-<h3>15.5 氧锥拓扑 mainline vs bypass <span class="tag-new">v1.7 新增</span></h3>
+<h3 id="sec15_5">15.5 氧锥拓扑 mainline vs bypass <span class="tag-new">v1.7 新增</span></h3>
 
 <p>v1.6 之前 iRAS 在 UI 上已经有"主流路径 / 旁路(节能)"两个选项, 但 <code>calcPumpPowerBreakdown</code> / <code>aerationSpec</code> / OPEX
 完全没区分 — 是"UI 假承诺"。v1.7 通过全网调研 (Linde SOLVOX cone / Pentair AES Speece / PR Aqua PPC / Global Seafood Advocate 2019)
@@ -2305,7 +2736,7 @@ P_bypass (kW) = Q_bypass × ρ × g × o2BypassPumpHead_m / (3.6 × 10⁶ × o2B
   全投资 IRR      14.90%             17.31%   (+2.41%)
 </div>
 
-<h3>15.6 air 模式增氧 — K-101 鱼池增氧鼓风机 <span class="tag-new">v1.7 新增</span></h3>
+<h3 id="sec15_6">15.6 air 模式增氧 — K-101 鱼池增氧鼓风机 <span class="tag-new">v1.7 新增</span></h3>
 
 <p>v1.7 之前 air 模式 (空气曝气) 只有 K-302 (BF 曝气风机), <strong>缺鱼池主增氧风机</strong>。
 温水鱼种 (罗非鱼 / 鳗鱼 / 对虾) 的大规模 RAS 设计无法用工具自动生成 — 而这是 80%+ 中国 RAS 项目的实际场景。</p>
@@ -2329,7 +2760,7 @@ P_bypass (kW) = Q_bypass × ρ × g × o2BypassPumpHead_m / (3.6 × 10⁶ × o2B
 
 <p>K-101 加入 modulePerSpec (与 K-302 同口径 1+1 备), P&amp;ID / 设备清单 / 报告章节 / 财务测算 全链路同步。</p>
 
-<h3>15.7 液氧消耗量与设备选型的双口径 <span class="tag-new">v1.9.1 新增</span></h3>
+<h3 id="sec15_7">15.7 液氧消耗量与设备选型的双口径 <span class="tag-new">v1.9.1 新增</span></h3>
 
 <p>液氧在 iRAS 里有<strong>两个不能混用的口径</strong>。这是 v1.9.1 修正的核心, 也是 RAS 工程里一个普遍被忽略的概念错误。</p>
 
@@ -2390,7 +2821,7 @@ v1.9.1 后这两个约束分别由两个口径给出 — 蒸发器按 <code>o2Pe
 <code>o2ConsumptionDailyAvg × 储备天数</code> 选。合并成单一口径必然会在其中一侧过度设计。
 </div>
 
-<h3>15.8 常见故障</h3>
+<h3 id="sec15_8">15.8 常见故障</h3>
 
 <table>
 <tr><th>故障</th><th>原因</th><th>措施</th></tr>
@@ -2405,40 +2836,40 @@ v1.9.1 后这两个约束分别由两个口径给出 — 蒸发器按 <code>o2Pe
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 16 章</span>热负荷与温控 <span class="tag-update">v1.2 完全重写</span></h2>
+<h2 id="ch16"><span class="chapter-num">第 16 章</span>热负荷与温控 <span class="tag-update">v1.2 完全重写</span></h2>
 
 <div class="update-box">
 <span class="label">📌 v1.2 重写</span>
 v1.1 用单点能量平衡估算热泵负荷, 忽略车间空气节点。v1.2 引入<strong>双节点 Picard 迭代</strong>同时求解空气热平衡 + 空气湿平衡。本章给出基础理论框架, 详细求解过程见第 29 章。
 </div>
 
-<h3>16.1 项目级常量管理 (v1.2)</h3>
+<h3 id="sec16_1">16.1 项目级常量管理 (v1.2)</h3>
 
 <p>v1.1 把热平衡参数(气温/源水温/U 值/换气率)放在每个阶段的 proc 字段里, 用户必须在每个阶段重复设置。
 v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConfig</code>(项目级常量影响所有阶段)。具体参数表见第 28 章和附录 B。</p>
 
-<h3>16.2 补水温差</h3>
+<h3 id="sec16_2">16.2 补水温差</h3>
 
 <div class="formula-block">
 补水量 = V_total × 日换水率 (m³/d) [v1.1: V_total 口径]<br>
 热负荷 = V × 1000 × 4.18 × ΔT / 3600 (kWh/d)
 </div>
 
-<h3>16.3 板式换热回收</h3>
+<h3 id="sec16_3">16.3 板式换热回收</h3>
 
 <div class="formula-block">
 换热后温度 = T_source + η_HX × (T_target − T_source)<br>
 η_HX = 75% (iRAS 默认)
 </div>
 
-<h3>16.4 热泵补齐 <span class="tag-update">v1.1 制热/制冷分离</span></h3>
+<h3 id="sec16_4">16.4 热泵补齐 <span class="tag-update">v1.1 制热/制冷分离</span></h3>
 
 <div class="update-box">
 <span class="label">📌 v1.1</span>
 制热 COP_heat 默认 4.0, 制冷 COP_cool 默认 3.0 (v1.0 一刀切 3.5)。热带降温场景下 v1.0 电费低估 30-40%。
 </div>
 
-<h3>16.5 双节点稳态求解概述 <span class="tag-update">v1.2</span></h3>
+<h3 id="sec16_5">16.5 双节点稳态求解概述 <span class="tag-update">v1.2</span></h3>
 
 <p>v1.1 假设池热散到一个无限大"室外", 实际上车间空气会被池水加热到比室外高 5-12°C, 导致池散热小于"对室外气温散热"; 同时湿度积累让蒸发率下降。v1.2 引入双节点稳态:</p>
 
@@ -2471,7 +2902,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 旧手册写在空气节点是 v1.2 推导笔误, 代码一直把 λ 项放在水节点的能量平衡里 (正确)。
 </div>
 
-<h3>16.6 热泵分类型 <span class="tag-update">v1.2</span></h3>
+<h3 id="sec16_6">16.6 热泵分类型 <span class="tag-update">v1.2</span></h3>
 
 <table>
 <tr><th>类型</th><th>COP_heat</th><th>COP_cool</th><th>源温</th><th>适用</th></tr>
@@ -2481,7 +2912,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 <tr><td>海水开式 seawater_open</td><td>4.5-5.5</td><td>3.5-4.5</td><td>T_seawater</td><td>沿海/海上养殖, 钛板换热</td></tr>
 </table>
 
-<h3>16.7 工程注意</h3>
+<h3 id="sec16_7">16.7 工程注意</h3>
 
 <ul>
 <li><strong>北方冬季</strong>: 源水 5-10°C, 热带鱼种 (罗非鱼 28°C) 温差 20°C, 热泵电费可能超过增氧</li>
@@ -2494,13 +2925,13 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 17 章</span>水泵与管道设计</h2>
+<h2 id="ch17"><span class="chapter-num">第 17 章</span>水泵与管道设计</h2>
 
-<h3>17.1 泵功率公式</h3>
+<h3 id="sec17_1">17.1 泵功率公式</h3>
 
 <div class="formula-block">P (kW) = 9.81 × Q (m³/h) × H (m) / (3600 × η)</div>
 
-<h3>17.2 iRAS 6 路泵 <span class="tag-update">v1.1 默认</span></h3>
+<h3 id="sec17_2">17.2 iRAS 6 路泵 <span class="tag-update">v1.1 默认</span></h3>
 
 <table>
 <tr><th>泵</th><th>流量</th><th>默认扬程 m</th><th>默认效率</th><th>说明</th></tr>
@@ -2514,7 +2945,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 
 <p>主循环泵功率通常占全场电费 30-40%, 是最大单一用电设备。变频泵可节能 15-25%。</p>
 
-<h3>17.3 管径选择</h3>
+<h3 id="sec17_3">17.3 管径选择</h3>
 
 <table>
 <tr><th>管道类型</th><th>推荐流速 m/s</th><th>说明</th></tr>
@@ -2526,7 +2957,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 
 <div class="formula-block">管径 D = √(4Q / πv)    Q=m³/s, v=m/s, D=m</div>
 
-<h3>17.4 水头损失</h3>
+<h3 id="sec17_4">17.4 水头损失</h3>
 
 <table>
 <tr><th>组成</th><th>典型值</th><th>说明</th></tr>
@@ -2540,9 +2971,9 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 18 章</span>电气与控制系统</h2>
+<h2 id="ch18"><span class="chapter-num">第 18 章</span>电气与控制系统</h2>
 
-<h3>18.1 在线水质监测</h3>
+<h3 id="sec18_1">18.1 在线水质监测</h3>
 
 <table>
 <tr><th>参数</th><th>传感器</th><th>精度</th><th>价格</th><th>位置</th></tr>
@@ -2554,7 +2985,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 <tr><td>液位</td><td>超声波</td><td>±1 cm</td><td>1,000-3,000</td><td>鱼池/集水井</td></tr>
 </table>
 
-<h3>18.2 PLC 控制逻辑</h3>
+<h3 id="sec18_2">18.2 PLC 控制逻辑</h3>
 
 <ul>
 <li>主循环泵: 变频 + PID 液位/流量</li>
@@ -2566,7 +2997,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 <li>补水: 液位触发</li>
 </ul>
 
-<h3>18.3 报警系统</h3>
+<h3 id="sec18_3">18.3 报警系统</h3>
 
 <table>
 <tr><th>报警项</th><th>阈值</th><th>响应</th></tr>
@@ -2584,32 +3015,32 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 19 章</span>生物安全与消毒策略</h2>
+<h2 id="ch19"><span class="chapter-num">第 19 章</span>生物安全与消毒策略</h2>
 
 <p>RAS 的封闭特性天然具有高生物安全性, 但一旦病原体进入会因循环水快速传播。"防进来"比"治病"更重要。新建项目应在投产前建立完整的生物安全 SOP。</p>
 
-<h3>19.1 进水消毒</h3>
+<h3 id="sec19_1">19.1 进水消毒</h3>
 <ul>
 <li>新水源消毒后再进入系统 (UV 60 mJ/cm² 或臭氧 0.5 mg/L 残留 5 min)</li>
 <li>井水相对安全; 河水/海水风险高, 需多级处理</li>
 <li>补水管路与养殖水路物理隔离, 防虹吸</li>
 </ul>
 
-<h3>19.2 人员与工具</h3>
+<h3 id="sec19_2">19.2 人员与工具</h3>
 <ul>
 <li>换工作服+靴子, 经消毒脚池 (200 ppm 次氯酸钠)</li>
 <li>不同阶段工具不混用, 颜色编码</li>
 <li>饲料间与车间隔离</li>
 </ul>
 
-<h3>19.3 隔离与检疫</h3>
+<h3 id="sec19_3">19.3 隔离与检疫</h3>
 <ul>
 <li>新购鱼苗隔离观察 2-4 周</li>
 <li>隔离池独立水处理系统</li>
 <li>病鱼立即隔离, 病死鱼深埋或焚烧</li>
 </ul>
 
-<h3>19.4 日常消毒</h3>
+<h3 id="sec19_4">19.4 日常消毒</h3>
 
 <table>
 <tr><th>对象</th><th>消毒剂</th><th>浓度/方法</th><th>频率</th></tr>
@@ -2623,11 +3054,11 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 20 章</span>系统启动与调试</h2>
+<h2 id="ch20"><span class="chapter-num">第 20 章</span>系统启动与调试</h2>
 
 <p>新建 RAS 满负荷需要 8-12 周。急于满负荷投鱼是新手最常犯错误——BF 处理能力是逐步建立的, 超过 BF 能力 = TAN 暴涨 = 大量死鱼。</p>
 
-<h3>20.1 启动流程</h3>
+<h3 id="sec20_1">20.1 启动流程</h3>
 
 <table>
 <tr><th>阶段</th><th>时间</th><th>操作</th><th>关键指标</th></tr>
@@ -2639,7 +3070,7 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 <tr><td>满负荷</td><td>第 12+ 周</td><td>正常生产</td><td>TAN&lt;1, NO₂&lt;0.3, DO&gt;6</td></tr>
 </table>
 
-<h3>20.2 常见启动问题</h3>
+<h3 id="sec20_2">20.2 常见启动问题</h3>
 
 <table>
 <tr><th>问题</th><th>原因</th><th>措施</th></tr>
@@ -2659,9 +3090,9 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 </div>
 
 <div class="chapter">
-<h2><span class="chapter-num">第 21 章</span>运行成本</h2>
+<h2 id="ch21"><span class="chapter-num">第 21 章</span>运行成本</h2>
 
-<h3>21.1 成本构成 <span class="tag-update">v1.9.2 两层口径</span></h3>
+<h3 id="sec21_1">21.1 成本构成 <span class="tag-update">v1.9.2 两层口径</span></h3>
 
 <div class="warning-box">
 <span class="label">⚠ 先看这里：iRAS 算的是什么成本</span><br>
@@ -2773,7 +3204,7 @@ v1.9.2 起改为<strong>两层输出</strong>：
 <p>两者的<strong>绝对额可能反而接近</strong>——低造价换来高维护率，这是国产化方案在全生命周期上需要正视的权衡，
 而不是单看 CAPEX 就能下结论的。</p>
 
-<h3>21.2 峰值 vs 日均双口径</h3>
+<h3 id="sec21_2">21.2 峰值 vs 日均双口径</h3>
 
 <ul>
 <li><strong>峰值工况</strong>: 基于 feedMax (= biomass × feedRate)</li>
@@ -2797,7 +3228,7 @@ OPEX 中的化学品/臭氧消耗在年均工况下按 feedRatio (= feedAvg/feed
 是 v1.9 的代码实现偏离了手册。详见 15.7。
 </div>
 
-<h3>21.3 CAPEX 折旧 <span class="tag-update">v1.1 新增</span></h3>
+<h3 id="sec21_3">21.3 CAPEX 折旧 <span class="tag-update">v1.1 新增</span></h3>
 
 <p>v1.1 引入双年限折旧:</p>
 <ul>
@@ -2810,9 +3241,9 @@ OPEX 中的化学品/臭氧消耗在年均工况下按 feedRatio (= feedAvg/feed
 日折旧 = 年折旧 / 365 (自动加到 totalAvg/totalMax)
 </div>
 
-<h3>21.4 综合成本对比 <span class="tag-update">v1.3 含折旧 + 工况</span></h3>
+<h3 id="sec21_4">21.4 综合成本对比 <span class="tag-update">v1.3 含折旧 + 工况</span></h3>
 
-<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 32.65 / 海南冬 33.02 / 海南夏 33.53 / Bergen 冬 32.70 元/kg。</div>
+<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 35.63 / 海南冬 37.39 / 海南夏 37.94 / Bergen 冬 35.65 元/kg（工艺运行成本口径）。</div>
 
 <p>1000 t/yr 三文鱼基准, 4 工况下综合成本对比(v1.3):</p>
 
@@ -2845,7 +3276,7 @@ v1.9.2 已补齐维护/保险/补水/排污（工艺侧）与苗种/人工/管�
 
 
 <div class="chapter">
-<h3>21.5 产业对标：Nordic Aqua 宁波象山项目 <span class="tag-new">v1.9.2 新增</span></h3>
+<h3 id="sec21_5">21.5 产业对标：Nordic Aqua 宁波象山项目 <span class="tag-new">v1.9.2 新增</span></h3>
 
 <p>这是目前唯一一个<strong>中国本土、商业规模、公开披露财务数据</strong>的大西洋鲑 RAS 项目，
 对国内做可研的人参考价值最高。数据取自 Nordic Aqua Partners AS（Euronext Growth，代码 NOAP）
@@ -2948,7 +3379,308 @@ v1.9.2 已补齐维护/保险/补水/排污（工艺侧）与苗种/人工/管�
 引用时请注意区分「披露值」与「推算值」。
 </div>
 
-<h3>21.6 鳗鲡参数的验证边界 <span class="tag-new">v1.9.2 新增</span></h3>
+<h3 id="audit_fix">I. 第三方审计修复（v1.9.2 后期）</h3>
+
+<p>v1.9.2 主体完成后接受了一轮第三方代码审计，共修复 <strong>8 项缺陷</strong>，
+并新增自然冷却路径与自检入口。本节记录这些改动，因为其中数项会改变计算结果。</p>
+
+<h4 id="audit_I_1">I.1 P1：o2FishFactor 回写污染 <span class="tag-new">严重</span></h4>
+
+<p>UI 会把自动算出的 <code>o2FishFactor</code> <strong>回写进输入框的 value</strong>，
+而读取端判断「用户是否手填」的依据是 <code>value === ''</code>。
+v1.9.2 之前两者是幂等的（该字段就是纯生理值，写回再读出仍是同一个数）。</p>
+
+<p>但 v1.9.2 把它的语义改成了<strong>池内总耗氧系数</strong>（= 生理值 + TSS 依赖附加），
+幂等性被打破：回写含附加的值 → 用户碰任一工艺参数 → 该值被当作「手填的纯生理值」读回 →
+再叠一次 TSS 附加。</p>
+
+<div class="warning-box">
+实测三文鱼成鱼期：池内耗氧 553.8 → 598.2 → 643.2 kg/d，<strong>每操作一次 +8%，可无限累积</strong>，
+且不再随水温/鱼种更新。高 TSS 工况（微滤 30% + 关蛋分 + 换水 2%）单次即 +42%。
+液氧采购、CO₂ 脱气塔选型、代谢产热三项会同时错。
+</div>
+
+<p><strong>修法</strong>：自动值改走 <code>placeholder</code>，不再写 <code>value</code>。
+自动值与用户手填值在数据结构上彻底分开 —— <code>value</code> 保持为空即永远走自动公式，
+除非用户真的键入数字。这样无论该字段的语义将来怎么变，都不会再出现回写污染。</p>
+
+<h4 id="audit_I_2">I.2 P2：生物滤池节点氮不守恒</h4>
+
+<div class="formula-block">
+旧: NO₃<sub>out</sub> = NO₃<sub>in</sub> + TAN<sub>in</sub> × 1.0<br>
+新: NO₃<sub>out</sub> = NO₃<sub>in</sub> + TAN<sub>in</sub> × η<sub>bio</sub>
+</div>
+
+<p>同一节点里 TAN 只去除 η，NO₃ 却按 100% 增加 —— 单节点凭空多出 (1−η)×TAN<sub>in</sub> 的氮。
+（「稳态下 TAN 几乎全部硝化」这层意思已由独立的 <code>no3PerCycle</code> 表达，不应在沿程节点上再算一遍。）</p>
+
+<div class="warning-box">
+默认工况偏差仅约 3%，但低 η 时失控：<code>biofilterTAN=0</code> 且换水=0 时，
+旧式给出反硝化进水 NO₃ = 115.7 mg/L（应为 4.25），进而使碱度回收 &gt; 硝化消耗，
+<strong>NaHCO₃ 投加量被算成 0</strong> —— 模型给出「不用加碱」的危险结论，而实际 pH 会崩。
+修复后同工况 NaHCO₃ 为 604 kg/d。
+</div>
+
+<h4 id="audit_I_3">I.3 P3：热泵按电功率计价</h4>
+
+<p><code>heatPumpKWh</code> 是<strong>耗电量</strong>（= 热负荷 ÷ COP）；用它除以利用小时得到的是<strong>电功率</strong>，
+而国内冷水机组／空气源热泵的报价惯例是<strong>元/kW 制冷（制热）量</strong>，
+<code>EQUIP_PRICES_DEFAULTS.heatPump</code> 的 2000 元/kW 正是这个口径。</p>
+
+<p>（反推校核：若按电功率理解，等效制冷量单价仅约 580 元/kW，与市场不符。）
+旧实现按电功率计价，使热泵 CAPEX 缩到约 1/COP。UI 上「热泵 xx kW」工程师也必然当制冷量读，口径必须一致。
+修复后综合成本 +0.27~0.70 元/kg，设备清单与单价单位均标注为「kW 制冷/制热量」「元/kW(热)」。</p>
+
+<h4 id="audit_I_4">I.4 P3：CO₂ 产量两个口径</h4>
+
+<p>通风新风量按 CO₂ 反算时固定用文献常数 500 g/kg 饲料，
+而同一模型的 <code>load.co2Daily</code> 是自算的（呼吸 RQ≈1 + 硝化产 CO₂）。
+两者相差 <strong>34%–117%</strong>（鲑鱼 671、大菱鲆 749、石斑 861、鳗鲡 1084 g/kg 饲料），
+且差异随鱼种、水温、池内 TSS 变化。已改为优先取模型自算值，老数据回退到 500。</p>
+
+<h4 id="audit_I_5">I.5 P3：发散被静默钳制 → 显式告警</h4>
+
+<p>稳态解 C<sub>out</sub> = Δ/(1−R) 只在 R &lt; 1 时成立。当某污染物<strong>无有效去除路径</strong>
+（η=0 且换水=0）时 R → 1，浓度随时间线性发散、无稳态；
+而 <code>Math.max(1−R, 0.001)</code> 只是防除零，却把发散变成一个<strong>看起来精确的有限值</strong>
+（如 TAN 339.89 mg/L）。</p>
+
+<p>v1.9.2 新增 <code>divergent</code> 检测（R ≥ 0.999），UI 显式告警
+「该污染物没有稳态解，相关浓度均不可信」，而非静默给数。</p>
+
+<h4 id="audit_I_6">I.6 P3：生物滤池去除率与接触时间校核</h4>
+
+<p><code>biofilterTAN</code>（单次通过去除率 η，决定池内浓度）与 <code>VTR₂₀/θ</code>
+（容积速率，决定填料容积）是<strong>两套独立参数</strong>，模型不校验其自洽性。
+注意 <code>bioVolume</code> 本就是从 <code>tanDaily</code> 与 VTR 反算的，故
+bioVolume × VTR ≡ tanDaily × sBio 恒成立，校核它没有意义。</p>
+
+<p>真正的隐患是：η 受<strong>接触时间</strong>约束，而接触时间由填料容积与过滤流量决定。
+用户可以填 η=95% 却配一个空床停留时间只有几十秒的 BF。新增 EBCT 校核：</p>
+
+<table>
+<tr><th>空床接触时间 EBCT</th><th>单级经验可达 η</th></tr>
+<tr><td>&lt; 1 min</td><td>约 55%</td></tr>
+<tr><td>1–2 min</td><td>约 70%</td></tr>
+<tr><td>2–5 min</td><td>约 85%</td></tr>
+<tr><td>&gt; 5 min</td><td>约 92%</td></tr>
+</table>
+
+<p>判据留了较大余量 —— 单次去除率还强烈依赖<strong>进水 TAN 浓度</strong>：
+低浓度下反应处于一级动力学区，同样 EBCT 可达更高的百分比去除率。
+iRAS 默认 70% + EBCT≈2.4 min 是国内常见配置，不报警；90%／95% 才告警。</p>
+
+<h4 id="audit_I_7">I.7 P4：空场 NaN 污染</h4>
+
+<p>产量输入框被清空（<code>yieldTons=0</code>）是必然出现的中间态 —— 用户改产量时必然先清空。
+此时 biomass=0，<code>feedAvg/biomass</code> = 0/0 = NaN，并沿
+load → sim.alk → naHCO₃ 成本 → totalAvg → 管理费 → 企业全成本 一路污染，
+最终使全场汇总、成本卡片、财务评价<strong>全部显示 NaN 且无任何提示</strong>。
+已在源头（比值计算）与两处出口（碱度、成本）做有限性兜底。</p>
+
+<h4 id="audit_I_8">I.8 方案 JSON 导入的 DOM-XSS</h4>
+
+<p>方案 JSON 导入路径会把 <code>stage.name</code>、鱼种名等<strong>完全来自文件</strong>的字符串
+直接拼进 <code>innerHTML</code>，无转义。构造恶意 name 即可在本站源上执行脚本，
+读取或篡改 localStorage 里的全部方案数据。而「设计院之间互发方案 JSON」正是本工具的预期用法，
+故这不是理论风险。已新增 <code>escapeHtml()</code> 并修复 6 处注入点。</p>
+
+<h4 id="audit_I_9">I.9 新增：自然冷却路径</h4>
+
+<p>旧模型在<strong>任何</strong>需要制冷的工况下都走机械压缩制冷，COP 封顶 3.45。
+但 RAS 是常年制冷型负荷，而冬季室外 −7°C 时完全可以用干冷器／板换直接把热排给室外空气或冷源水
+—— 压缩机不启动，只跑风机和泵，能效比可达 15–30。</p>
+
+<div class="formula-block">
+判定: 制冷工况 且（冷源温度 + 逼近温差）&lt; 目标水温<br>
+&nbsp;&nbsp;冷源: 空气源取 T<sub>air</sub>；水/海水/地源取对应源温<br>
+&nbsp;&nbsp;逼近温差 <code>freeCoolingApproach_K</code> 默认 6 K（干冷器 5–8，板换 2–3）<br>
+&nbsp;&nbsp;能效比 <code>freeCoolingEER</code> 默认 20
+</div>
+
+<table>
+<tr><th>工况</th><th>气温</th><th>自然冷却</th><th>COP</th><th>热泵电耗 kWh/d</th></tr>
+<tr><td>青岛冬</td><td>−7 °C</td><td>✅</td><td>20.00</td><td>634</td></tr>
+<tr><td>Bergen 冬</td><td>0 °C</td><td>✅</td><td>20.00</td><td>646</td></tr>
+<tr><td>海南冬</td><td>17 °C</td><td>否</td><td>3.45</td><td>4272</td></tr>
+<tr><td>海南夏</td><td>32 °C</td><td>否</td><td>3.11</td><td>5118</td></tr>
+</table>
+
+<p>寒冷气候热泵费从 1.68 降至 <strong>0.29 元/kg</strong>，比电耗 12.2 → 10.2 kWh/kg。
+<strong>跨气候成本差由 0.99 拉大到 1.83 元/kg</strong> ——
+寒冷气候本就该因免费制冷而占优势，旧模型把这个优势完全抹掉了。</p>
+
+<p><strong>未做部分</strong>：部分自然冷却。冷源温度接近但不足时，实际可做预冷 + 压缩机补足；
+本模型按「全有或全无」处理（保守，达不到判定就全走机械制冷）。
+CAPEX 不额外计 —— 自然冷却复用热泵已有的排热侧，热泵仍按最不利工况（通常夏季）定容。</p>
+
+<h4 id="audit_I_1">I.10 新增：自检入口</h4>
+
+<p>访问 <code>index.html?selftest=1</code> 会跑 11 个固定工况并与内置基线比对。</p>
+
+<div class="warning-box">
+<span class="label">⚠ 为什么需要它</span><br>
+本轮审计发现：此前对外发布的四工况基线（32.65 元/kg）是用一份<strong>外部测试脚本</strong>跑出来的，
+而该脚本写于成本模型扩展之前，调 <code>calcCostEstimate</code> 时少传三个参数 —— 它算的是旧口径。
+这个数被写进主页面、本手册、README 三处对外发布，直到第三方审计才发现，误差 3.41 元/kg。<br><br>
+<strong>根因不是某个公式错，而是「验证路径与产品路径不是同一条」。</strong><br><br>
+因此自检的唯一设计约束是：<strong>必须调用真实的 <code>recomputeAll()</code>、读真实的
+<code>lastResults.summary</code>，不得重新实现任何计算管线</strong>。基线值也全部来自这条路径的实测。
+</div>
+
+<p>改动模型后若自检报 FAIL，先确认是否为有意的修改；若是，需同步更新
+<code>SELFTEST_BASELINE</code> 与三处文档，避免再次出现文档与代码脱节。</p>
+
+<h4 id="audit_I_12">I.12 复审轮次的追加修复</h4>
+
+<p>上述修复完成后又接受了一轮<strong>复审验证</strong>（对修复版逐行 diff、重建复算环境、
+对 8 项缺陷逐条设计用例复跑）。复审确认 6 项完整修复、1 项半修复、1 项记录在案，
+但发现<strong>一个由「修了一半」造成的新问题，量级比原缺陷更大</strong>。</p>
+
+<h5>① 热泵装机口径分裂（复审 P0，严重）</h5>
+
+<p>I.3 修复热泵计价时<strong>只改了 CAPEX，其余三处消费点没跟上</strong>，
+导致同一台热泵在页面上出现 <strong>4 个数</strong>（三文鱼成鱼期）：</p>
+
+<table>
+<tr><th>出现位置</th><th>原公式</th><th>值</th></tr>
+<tr><td>热平衡卡片「装机容量」</td><td>heatPumpKWh / 16（电功率、当前工况、无共用系数）</td><td>40 kW</td></tr>
+<tr><td>工况对比表「装机」</td><td>各工况 heatPumpKWh / 16</td><td>冬 40 / 夏 321 kW</td></tr>
+<tr><td>设备清单 / N+1 模块化 / P&amp;ID</td><td>max(冬,夏) <strong>电</strong> / 22 × 0.75</td><td>175 kW</td></tr>
+<tr><td>CAPEX 计价</td><td>max(冬,夏) <strong>热</strong> / 22 × 0.75</td><td>545 kW</td></tr>
+</table>
+
+<p>最大与最小差 <strong>13.6 倍</strong>。<code>/16</code> vs <code>/22</code> 的分歧是 v1.5 遗留（当时只改了一处），
+电功率 vs 热功率是 I.3 修复引入的新分歧——而 I.3 的注释自己写的就是「口径必须一致」。</p>
+
+<div class="warning-box">
+<span class="label">⚠ 自然冷却让这件事更糟</span><br>
+冬季 <code>heatPumpKWh</code> 被 EER=20 压掉一个数量级，于是<strong>设备清单的定容工况从冬悄悄切到夏</strong>，
+而 CAPEX 那边因为用热功率、冬夏都没变——<strong>两条链的主导工况都不一样了</strong>。
+对出图与报价的杀伤力比原来「CAPEX 少算 3 倍」更大。
+</div>
+
+<p><strong>修法</strong>：抽出统一函数 <code>hpInstalledKwOf()</code> / <code>hpThermalKWh()</code>，
+四处全部改用<strong>热功率（制冷/制热量）÷ 22 h</strong>，并在自检中加入断言
+「设备清单热泵 kW == CAPEX 热泵 kW」，防止再次分裂。</p>
+
+<h5>② 零流量时水质链仍冒 NaN（复审 P1）</h5>
+
+<p>I.7 的空场防护只清干净了成本链，<strong>沿程水质节点仍为 NaN</strong>：
+<code>flowM3h = 0 → cyclesPerDay = 0 → tanPerCycle = 0/0</code>。
+而水质面板的格式化函数是 <code>(typeof n === 'number' ? n.toFixed(d) : n)</code>——
+<strong>NaN 也是 number</strong>，于是界面上最显眼的那块面板直接显示「NaN mg/L」。
+成本卡片干净了，反而更容易让人以为只是水质模块出错。</p>
+
+<p>已在 <code>simulateWaterQualityProcess</code> 入口加零流量短路，返回全 0 骨架并置 <code>emptyFarm: true</code>。</p>
+
+<div class="note-box">
+修复过程中踩到两个连带问题，值得记录：<br>
+· 骨架里把 pH / Ω / β 置为 <code>null</code>，但渲染层守卫是 <code>st.pH !== undefined</code>——
+<strong>null 通过守卫后 .toFixed() 直接抛异常</strong>，整个 renderFlow 崩掉。改为<strong>省略字段</strong>。<br>
+· 下游用 <code>sim.skimmer ? sim.skimmer.ozoneDemand : 0</code> 取值，对象存在但字段缺失得到 undefined，
+参与加法即 NaN。骨架必须把下游会读的字段<strong>补全为 0</strong>，而不只是给个空对象。
+</div>
+
+<h5>③ 硝化通量与去除率 η 完全解耦</h5>
+
+<div class="formula-block">
+旧: NO₃ 产生量 = TAN 产生量 × 1.0，硝化量 = TAN 日产量（<strong>都与 η 无关</strong>）<br>
+新: 硝化量 = TAN 产生量 − 换水排出量，NO₃ 产生量 = 硝化量
+</div>
+
+<p>稳态物料守恒：TAN 产生 = TAN 硝化 + TAN 随换水排出。正常工况下池内 TAN &lt; 1 mg/L，
+换水排出可忽略，硝化量 ≈ 100% 产生量——旧式成立。
+但 η 很低时 TAN 浓度飙升，换水带走的份额不再可忽略：</p>
+
+<table>
+<tr><th>η_bio</th><th>池 TAN mg/L</th><th>稳态 NO₃-N</th><th>NaHCO₃ kg/d</th><th>换水带走 TAN kg/d</th></tr>
+<tr><td>70%</td><td>0.49</td><td>20.2</td><td>582</td><td>0.1</td></tr>
+<tr><td>30%</td><td>1.13</td><td>20.1</td><td>581</td><td>0.2</td></tr>
+<tr><td>5%</td><td>6.69</td><td>19.9</td><td>572</td><td>1.4</td></tr>
+<tr><td><strong>0%</strong></td><td>414</td><td><strong>0.0</strong></td><td><strong>0</strong></td><td><strong>82.8（全部）</strong></td></tr>
+</table>
+
+<p>旧式在 η=0 时<strong>一边报告 TAN 发散、一边照常按全量产 NO₃ 并消耗全额碱度</strong>——
+没有硝化菌却在硝化。修复后 TAN 日产 82.8 kg/d 全部经换水排出，NO₃ 产生量与碱度消耗同步归零。</p>
+
+<p><strong>边界处理</strong>：η=0 <em>且</em> 换水=0 时 TAN 本身发散，此时 <code>tanOut</code> 是钳制产物、
+换水导出项又恒为 0，公式会退化回「全量硝化」。已将 NO₃ 一并标记为随 TAN 发散，碱度侧同步，
+由发散告警统一提示「相关浓度均不可信」。</p>
+
+<h5>④ 防除零下限 0.001（v1.0 起的老缺陷）</h5>
+
+<div class="formula-block">
+C<sub>out</sub> = Δ / max(1 − R, <strike>0.001</strike> → 1e-9)
+</div>
+
+<p><code>0.001</code> 看似无害的防除零，实际是<strong>「单次循环去除率下限 0.1%」</strong>。
+而单次稀释率 = 日换水率 ÷ 日循环次数：典型工况（5178 m³ 水体 / 10155 m³·h⁻¹ → 47 次/日、换水 4%/d）
+只有 <strong>0.085%</strong>，<strong>本来就低于该下限</strong>。</p>
+
+<table>
+<tr><th>换水率 %/d</th><th>单次稀释</th><th>旧式 NO₃-N</th><th>理论值</th></tr>
+<tr><td>1%</td><td>0.000205</td><td>339.9</td><td>1657</td></tr>
+<tr><td>2%</td><td>0.000410</td><td>339.9</td><td>829</td></tr>
+<tr><td>4%（默认）</td><td>0.000820</td><td>339.9</td><td>414</td></tr>
+<tr><td>6%</td><td>0.001231</td><td>276.2 ✅</td><td>276.2</td></tr>
+<tr><td>10%</td><td>0.002051</td><td>165.7 ✅</td><td>165.7</td></tr>
+</table>
+
+<p>换水率 ≤ 约 4.8%/d 时被硬钳成同一个值、<strong>完全不响应换水率</strong>，而 iRAS 默认换水率正是 4%。
+影响的是<strong>只靠换水去除的组分</strong>（旁路小时的 NO₃、无 AOP 时的 geosmin）；
+TAN 有 BF（70%）、TSS 有微滤机（75%），单次去除率远高于 0.1%，碰不到下限——这也是它藏了这么久的原因。</p>
+
+<div class="warning-box">
+<span class="label">⚠ 一个值得记的连锁</span><br>
+I.5 的发散检测最初把阈值设为 <code>R ≥ 0.999</code>，这些被钳制的工况全被标成「无稳态解」。
+表面上是「模型诚实地告警了」，<strong>实际是用一个错误的告警盖住了一个错误的数</strong>。
+把阈值改到 <code>1 − 1e-9</code>（真正的发散只在完全无去除路径时出现，此时 R 恰为 1）后告警消失，
+数值错误才暴露出来。<strong>过于宽松的告警阈值比没有告警更危险</strong>——它让人以为问题已被发现并处理。
+</div>
+
+<h5>⑤ 其余追加项</h5>
+
+<table>
+<tr><th>项</th><th>处理</th></tr>
+<tr><td>NH₃ 着色阈值写死 25 μg/L</td><td>改为<strong>按鱼种取值</strong>（鲑科 12.5 / 大菱鲆 20 / 石斑 30 / 加州鲈·鳜·对虾 50 / 鳗鲡 60 / 罗非 100）。原值对冷水鲑科偏松一倍、对温水种偏严 2–4 倍，而同一个 tooltip 自己写着「三文鱼 12.5、温水鱼 50–100」</td></tr>
+<tr><td>方解石饱和指数 Ω 无告警</td><td>新增欠饱和告警（Ω &lt; 1 警告、&lt; 0.6 严重）。实测四个海水鱼种 Ω 全部 0.37–0.78，均欠饱和——长期<strong>溶蚀混凝土池体与砂浆</strong>、不利于甲壳类蜕壳与贝类钙化，是海水 RAS 的真实关切</td></tr>
+<tr><td>自然冷却无 UI 露出</td><td>热平衡卡片与工况对比表加 ❄️ 标记；三个参数（启用/逼近温差/EER）接入围护区，UI/读取/载入/监听全链路贯通（原先只在 PROCESS_DEFAULTS，等于硬编码）</td></tr>
+<tr><td>标题成本未标工况</td><td>头条数字旁标注 <code>[设计冬工况]</code>。自然冷却使<strong>设计冬变成全年最省</strong>（35.63 / 年均约 37.4 / 设计夏 37.94），不标注读者易当年均值</td></tr>
+<tr><td>EBCT 校核的 fallback 是死代码</td><td><code>stageFarm.flowM3h</code> 字段不存在，改 <code>load.flowM3h</code></td></tr>
+</table>
+
+<h5>⑥ 自检增补不变量断言</h5>
+
+<p>复审指出：11 条基线全是 golden-master（硬编码期望值），<strong>只能锁行为、不能发现系统性错误</strong>——
+一个常数错了它会安静地一直通过。这次审计的 8 项缺陷里只有 1 项能被原形式的自检抓到。</p>
+
+<p>已补两类<strong>不依赖「当前值是对的」这个前提</strong>的断言：</p>
+
+<ul>
+<li><strong>口径一致</strong>：热泵装机在 CAPEX / 设备清单 / 模块化三处必须同值（容差 1%）——正是①那类问题的通用捕手</li>
+<li><strong>边界有限性</strong>：遍历 <code>load</code>/<code>thermal</code>/<code>eq</code>/<code>capex</code>/<code>cost</code>
+与全部沿程水质节点的<strong>每一个数值字段</strong>，不得出现 NaN/Infinity——正是②那类问题的通用捕手</li>
+</ul>
+
+<p>外加三个边界工况（<code>yieldTons</code> = 0 / 0.001 / 100000），只跑断言不比对数值。
+<strong>这套断言加上当场就抓出了②的 5 个 NaN 字段</strong>，修完才转 PASS。</p>
+
+<div class="note-box">
+本轮修复过程中作者自身又踩了三次坑（<code>const</code> 暂时性死区、删变量未查引用、补丁静默未写入），
+<strong>三次都是自检抓到的</strong>——表现为「全部工况返回 0」或「XX is not defined」。
+没有自检的话这三个都会带到浏览器才发现，其中「常量未定义」在无头环境还会被 try/catch 吞掉，更难查。
+</div>
+
+<h4 id="audit_I_1">I.11 记录未修</h4>
+
+<table>
+<tr><th>项</th><th>原因</th></tr>
+<tr><td>CDN 无 SRI</td><td><code>cdn.tailwindcss.com</code> 是运行时编译，内容随访问变化，<strong>无稳定 hash 可做 SRI</strong>；内联需构建步骤，与「单文件双击即用」定位冲突。已在 index.html 头部写明风险与建议方案（内联 Tailwind 产物 + chart.js，一并解决 SRI／FOUC／离线三个问题），属部署决策</td></tr>
+<tr><td>抽出 engine.js + 单元测试</td><td>这是根治「验证脚本与模型脱节」的唯一办法，但属重构。核心 13 个计算函数中 12 个已是纯函数（零 DOM 引用），依赖的模块级标识符仅 14 个，其中 8 个是常量表 —— 抽取难度不大，主要障碍是 5 个可变全局（<code>stagesState</code> 等）。建议在浏览器实测通过、代码稳定后，以自检为金标准再做</td></tr>
+</table>
+
+<h3 id="sec21_6">21.6 鳗鲡参数的验证边界 <span class="tag-new">v1.9.2 新增</span></h3>
 
 <p>鳗鲡是本工具内置鱼种中<strong>参数不确定性最大</strong>的一个，v1.9.2 对其做了整体重做。
 本节说明哪些参数有据可查、哪些查不到，供做鳗鲡项目的使用者判断可信边界。</p>
@@ -3008,9 +3740,9 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 <strong>必须按品种与当年实际行情覆盖默认值，不能沿用内置值做投资决策。</strong>
 </div>
 
-<h2><span class="chapter-num">第 22 章</span>投资概算</h2>
+<h2 id="ch22"><span class="chapter-num">第 22 章</span>投资概算</h2>
 
-<h3>22.1 设备直购成本</h3>
+<h3 id="sec22_1">22.1 设备直购成本</h3>
 
 <table>
 <tr><th>设备</th><th>计价单位</th><th>默认单价</th><th>推荐范围</th></tr>
@@ -3031,7 +3763,7 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 <tr><td>板式换热器</td><td>元/m²</td><td>1,200</td><td>800-2,000</td></tr>
 </table>
 
-<h3>22.2 工程总投资</h3>
+<h3 id="sec22_2">22.2 工程总投资</h3>
 
 <div class="formula-block">
 工程总投资 = 设备直购 × 放大系数<br>
@@ -3042,7 +3774,7 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 
 <p>概算精度约 ±40%, 实际造价以厂商报价为准。iRAS 投资概算用于项目可行性初判, 不能替代正式造价。</p>
 
-<h3>22.3 氧锥拓扑对 CAPEX 的影响 <span class="tag-new">v1.7 新增</span></h3>
+<h3 id="sec22_3">22.3 氧锥拓扑对 CAPEX 的影响 <span class="tag-new">v1.7 新增</span></h3>
 
 <p>v1.7 引入氧锥拓扑 mainline / bypass 区别建模, 对 CAPEX 有显著影响 (1000 t 大西洋三文鱼实测):</p>
 
@@ -3071,11 +3803,11 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 </div>
 
 <div class="chapter">
-<h2><span class="chapter-num">第 23 章</span>案例: 三文鱼 1000 t/年 <span class="tag-update">v1.7 数据 (mainline / bypass 对比)</span></h2>
+<h2 id="ch23"><span class="chapter-num">第 23 章</span>案例: 三文鱼 1000 t/年 <span class="tag-update">v1.7 数据 (mainline / bypass 对比)</span></h2>
 
 <p>本案例使用 iRAS v1.7 默认的大西洋三文鱼参数, 演示完整计算并对比两种氧锥拓扑。<strong>气候选用挪威 Bergen 冬季工况</strong> (T_air=0°C, T_source=4°C, T_target=15°C), 这是工程实际三文鱼项目最具代表性的气候。</p>
 
-<h3>23.1 阶段参数</h3>
+<h3 id="sec23_1">23.1 阶段参数</h3>
 
 <table class="compact">
 <tr><th>参数</th><th>苗种</th><th>幼鱼</th><th>中鱼</th><th>成鱼</th></tr>
@@ -3095,7 +3827,7 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 <tr><td>subSystemCount <span class="tag-new">v1.3</span></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
 </table>
 
-<h3>23.2 关键计算结果 <span class="tag-update">v1.7 实测</span></h3>
+<h3 id="sec23_2">23.2 关键计算结果 <span class="tag-update">v1.7 实测</span></h3>
 
 <table class="compact">
 <tr><th>项目</th><th>苗种</th><th>幼鱼</th><th>中鱼</th><th>成鱼</th><th>全场</th></tr>
@@ -3121,7 +3853,7 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 peakHourly 69.56 kg/h" 是本案例三个关键指标, 与 SUMMARY 参考 <strong>100% 吻合</strong>。
 </div>
 
-<h3>23.3 综合成本 (Bergen 冬季 + bypass 拓扑, v1.7 默认)</h3>
+<h3 id="sec23_3">23.3 综合成本 (Bergen 冬季 + bypass 拓扑, v1.7 默认)</h3>
 
 <p>下表是 v1.7 工具实际输出值 (jsdom 跑测,默认气候即挪威 Bergen 冬季, 默认价格电 0.7 元/kWh / 液氧 1.2 元/kg / 饲料按各阶段单价):</p>
 
@@ -3147,7 +3879,7 @@ iRAS 36.70 + 软成本 ~16 元/kg ≈ 53 元/kg，与挪威 Salmon Evolution 目
 bypass 拓扑可省 1.29 元/kg, 主要来自 CAPEX 节省 → 折旧降低。这个综合成本与 v1.3 历史四工况基线 (Bergen 36.30 元/kg) 完美吻合 ✓
 </div>
 
-<h3>23.4 工况敏感性分析 (沿用 v1.3 4 工况基线)</h3>
+<h3 id="sec23_4">23.4 工况敏感性分析 (沿用 v1.3 4 工况基线)</h3>
 
 <table>
 <tr><th>工况</th><th>OPEX 元/kg</th><th>综合 元/kg</th><th>差异原因</th></tr>
@@ -3165,7 +3897,7 @@ bypass 拓扑可省 1.29 元/kg, 主要来自 CAPEX 节省 → 折旧降低。�
 
 <p>关键观察: 三文鱼养殖目标水温 12-15°C, 海南夏季气温 32°C, 制冷温差 17-20°C, 制冷电费暴增。<strong>不建议在海南养三文鱼</strong>。挪威成本接近青岛, 长期运行更优。</p>
 
-<h3>23.5 mainline vs bypass 拓扑详细对比 <span class="tag-new">v1.7 新增</span></h3>
+<h3 id="sec23_5">23.5 mainline vs bypass 拓扑详细对比 <span class="tag-new">v1.7 新增</span></h3>
 
 <p>1000 t 大西洋三文鱼成鱼期 (Q=10155 m³/h, V_total ≈ 5183 m³, 4 模块) 在 Bergen 冬季工况下的两种拓扑全工况对比:</p>
 
@@ -3207,14 +3939,14 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 24 章</span>案例: 大菱鲆 500 t/年</h2>
+<h2 id="ch24"><span class="chapter-num">第 24 章</span>案例: 大菱鲆 500 t/年</h2>
 
 <div class="update-box">
 <span class="label">📌 v1.1 修正</span>
 大菱鲆密度 v1.1 修正 (15/30/40 → 25/50/60 kg/m³), 与莱州东方海洋等循环水项目实测一致。
 </div>
 
-<h3>24.1 阶段参数</h3>
+<h3 id="sec24_1">24.1 阶段参数</h3>
 
 <table class="compact">
 <tr><th>参数</th><th>苗种</th><th>中鱼</th><th>成鱼</th></tr>
@@ -3234,7 +3966,7 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 
 <p>大菱鲆是底栖鱼, 水深保持在 1m 以内, 主要靠底面积容纳生物量。</p>
 
-<h3>24.2 关键结果</h3>
+<h3 id="sec24_2">24.2 关键结果</h3>
 
 <table>
 <tr><th>项目</th><th>数值</th><th>对照</th></tr>
@@ -3251,9 +3983,9 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 
 
 <div class="chapter">
-<h2><span class="chapter-num">第 25 章</span>案例: 南美白对虾 100 t/年</h2>
+<h2 id="ch25"><span class="chapter-num">第 25 章</span>案例: 南美白对虾 100 t/年</h2>
 
-<h3>25.1 清水 RAS vs Biofloc 对比</h3>
+<h3 id="sec25_1">25.1 清水 RAS vs Biofloc 对比</h3>
 
 <table>
 <tr><th>对比维度</th><th>清水 RAS</th><th>Biofloc (BFT)</th></tr>
@@ -3268,7 +4000,7 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 <tr><td>iRAS 支持</td><td>✓</td><td>✗</td></tr>
 </table>
 
-<h3>25.2 阶段参数 <span class="tag-update">v1.1</span></h3>
+<h3 id="sec25_2">25.2 阶段参数 <span class="tag-update">v1.1</span></h3>
 
 <table class="compact">
 <tr><th>参数</th><th>苗种</th><th>养成前期</th><th>养成后期</th></tr>
@@ -3291,7 +4023,7 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 对虾 Q10 设为 1.3 (而非鱼类 2.0), 反映高温(30°C)代谢饱和。o2FishFactor 0.40 与 Boyd 2018 实测一致。
 </div>
 
-<h3>25.3 关键结果</h3>
+<h3 id="sec25_3">25.3 关键结果</h3>
 
 <table>
 <tr><th>项目</th><th>数值</th></tr>
@@ -3314,9 +4046,9 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 
 <!-- 第 26 章 模块化 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 26 章</span>多模块并联与 N+1 备用<span class="tag-new">v1.3 新章</span></h2>
+<h2 id="ch26"><span class="chapter-num">第 26 章</span>多模块并联与 N+1 备用<span class="tag-new">v1.3 新章</span></h2>
 
-<h3>26.1 为什么大型项目要做模块化</h3>
+<h3 id="sec26_1">26.1 为什么大型项目要做模块化</h3>
 
 <p>对于年产量 &gt; 1000 t/yr 的大型 RAS 项目, 工程上不会建一个超大的循环系统, 而是拆成多个模块并联。原因:</p>
 
@@ -3338,7 +4070,7 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 <tr><td>&gt; 5000 t/yr</td><td>5+ 套</td><td>1000+ t/yr/模块</td></tr>
 </table>
 
-<h3>26.2 iRAS 模块化逻辑</h3>
+<h3 id="sec26_2">26.2 iRAS 模块化逻辑</h3>
 
 <p>v1.3.x 中, 每个阶段的模块数完全由用户决定。在阶段卡片头部"🔧 套数" <code>subSystemCount</code>输入(默认 1, 范围 1-10):</p>
 
@@ -3358,7 +4090,7 @@ numModules = stage.subSystemCount<br>
 
 <p>这种"阶段递增"的配置反映了大型 RAS 的实际工程: 苗种期对单一系统依赖性高, 成鱼期产量大需要分散风险。</p>
 
-<h3>26.3 模块内 N+1 备用配置</h3>
+<h3 id="sec26_3">26.3 模块内 N+1 备用配置</h3>
 
 <p>每个模块内部按以下规则配置备用:</p>
 
@@ -3374,7 +4106,7 @@ numModules = stage.subSystemCount<br>
 <tr><td>O3 发生器 G-901</td><td>50 kW</td><td>ceil(O3 功率 / 50)</td><td>+1 台备用</td></tr>
 </table>
 
-<h3>26.4 全场共用站级设备</h3>
+<h3 id="sec26_4">26.4 全场共用站级设备</h3>
 
 <p>不按模块拆分, 全场共用 1 套(站级设备):</p>
 
@@ -3386,7 +4118,7 @@ numModules = stage.subSystemCount<br>
 <tr><td>UPS</td><td>1 套(PLC + 传感器 + 关键阀门)</td><td>10-30 分钟续航</td></tr>
 </table>
 
-<h3>26.5 模块化对成本的影响</h3>
+<h3 id="sec26_5">26.5 模块化对成本的影响</h3>
 
 <p>模块化的<strong>设备成本变化</strong>: 单台机组容量变小 → 单价(元/kW)略升, 但数量增加 → 总成本基本不变(±5%)。
 真正的成本影响来自<strong>备用机组数</strong>: 4 个模块各配 N+1 备用, 比 1 个大模块配 N+1 备用多备 3 台。
@@ -3403,9 +4135,9 @@ numModules = stage.subSystemCount<br>
 
 <!-- 第 27 章 鱼池配置 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 27 章</span>鱼池配置与池深统一<span class="tag-new">v1.3 新章</span></h2>
+<h2 id="ch27"><span class="chapter-num">第 27 章</span>鱼池配置与池深统一<span class="tag-new">v1.3 新章</span></h2>
 
-<h3>27.1 鱼池形状与尺寸的工程逻辑</h3>
+<h3 id="sec27_1">27.1 鱼池形状与尺寸的工程逻辑</h3>
 
 <p>RAS 鱼池设计常见形状: 圆形(Cornell 双流式)/ 八角 / 方形带圆角。圆形最常见, 因为:</p>
 <ul>
@@ -3422,7 +4154,7 @@ numModules = stage.subSystemCount<br>
 <li><strong>容积 V</strong>: 单池 50-3000 m³</li>
 </ul>
 
-<h3>27.2 反推算法</h3>
+<h3 id="sec27_2">27.2 反推算法</h3>
 
 <p>给定阶段总水体 V_tank、每套池数 poolsPerSet、套数 numModules, 反推单池直径:</p>
 
@@ -3433,7 +4165,7 @@ numModules = stage.subSystemCount<br>
 高径比 = H / D
 </div>
 
-<h3>27.3 工程合理性自动告警</h3>
+<h3 id="sec27_3">27.3 工程合理性自动告警</h3>
 
 <p>iRAS 在反推后自动检查工程合理性, 给出建议:</p>
 
@@ -3445,7 +4177,7 @@ numModules = stage.subSystemCount<br>
 <tr><td>poolsPerSet = 1</td><td>每套仅 1 池, 无主备/检修轮替, 工程惯例 ≥ 2</td></tr>
 </table>
 
-<h3>27.4 鱼种推荐池深 (recDepth_m)</h3>
+<h3 id="sec27_4">27.4 鱼种推荐池深 (recDepth_m)</h3>
 
 <p>v1.3 在 SPECIES_DB 各鱼种各阶段加入推荐池深字段。这反映不同鱼种的生物学特性和工程惯例:</p>
 
@@ -3462,7 +4194,7 @@ numModules = stage.subSystemCount<br>
 
 <p>用户可在阶段卡片头部"🐟 每套 X 池 × Y m 深"调整 Y 值, 默认填入鱼种推荐值。</p>
 
-<h3>27.5 池深统一数据源 (v1.3.x)</h3>
+<h3 id="sec27_5">27.5 池深统一数据源 (v1.3.x)</h3>
 
 <p>v1.3 早期版本中, 池深有<strong>两个独立输入</strong>:</p>
 <ol>
@@ -3484,7 +4216,7 @@ v1.3.x 统一为<strong>一个数据源</strong>:</p>
 <p>同时删除了热平衡区的"池水深"输入, UI 上只在阶段卡片头部出现一次。同步更新加载老方案 JSON 的逻辑:
 若老方案缺 recDepth_m, 加载时从 SPECIES_DB 按阶段名/index 自动补充, 保证池径反推和热平衡用同一个推荐值。</p>
 
-<h3>27.6 实例: 三文鱼成鱼 1000 t/yr</h3>
+<h3 id="sec27_6">27.6 实例: 三文鱼成鱼 1000 t/yr</h3>
 
 <p>给定参数:</p>
 <ul>
@@ -3507,9 +4239,9 @@ v1.3.x 统一为<strong>一个数据源</strong>:</p>
 
 <!-- 第 28 章 全局气候 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 28 章</span>全局气候与围护建模 <span class="tag-update">v1.9.2 通风口径</span><span class="tag-new">v1.2 新章</span></h2>
+<h2 id="ch28"><span class="chapter-num">第 28 章</span>全局气候与围护建模 <span class="tag-update">v1.9.2 通风口径</span><span class="tag-new">v1.2 新章</span></h2>
 
-<h3>28.1 为什么要做项目级常量管理</h3>
+<h3 id="sec28_1">28.1 为什么要做项目级常量管理</h3>
 
 <p>v1.1 把热平衡参数放在每个阶段的 proc 字段里。同一个项目有 4 个阶段, 用户必须在 4 个阶段重复设置:</p>
 <ul>
@@ -3523,7 +4255,7 @@ v1.3.x 统一为<strong>一个数据源</strong>:</p>
 <p>这些是<strong>项目级常量</strong>(同一个厂房无论养什么阶段都是同一份)。
 v1.2 把它们挪到顶部全局配置区 <code>globalThermalConfig</code>, 一处设置, 所有阶段使用。</p>
 
-<h3>28.2 地区预设</h3>
+<h3 id="sec28_2">28.2 地区预设</h3>
 
 <p>v1.2 提供常见地区的气候预设, 选择后自动填入气温/源水温/RH 设计值:</p>
 
@@ -3539,7 +4271,7 @@ v1.2 把它们挪到顶部全局配置区 <code>globalThermalConfig</code>, 一�
 
 <p>用户选地区后仍可微调任何参数。</p>
 
-<h3>28.3 围护预设</h3>
+<h3 id="sec28_3">28.3 围护预设</h3>
 
 <table>
 <tr><th>预设</th><th>U_wall</th><th>U_roof</th><th>U_floor</th><th>U_window</th><th>说明</th></tr>
@@ -3548,7 +4280,7 @@ v1.2 把它们挪到顶部全局配置区 <code>globalThermalConfig</code>, 一�
 <tr><td>简易厂房</td><td>2.0</td><td>1.5</td><td>1.5</td><td>5.0</td><td>钢板单层, 单层玻璃</td></tr>
 </table>
 
-<h3>28.4 4 工况对比设计</h3>
+<h3 id="sec28_4">28.4 4 工况对比设计</h3>
 
 <p>v1.2 引入<strong>3 工况对比</strong>(可扩展为更多), 每次计算同时跑:</p>
 
@@ -3562,7 +4294,7 @@ v1.2 把它们挪到顶部全局配置区 <code>globalThermalConfig</code>, 一�
 <p>当前选中的工况(<code>thermalScenario</code>)用于主显示, 其他工况结果在阶段卡片底部以对比表呈现。
 热泵装机容量取冬/夏极值的较大者(装机定容)。</p>
 
-<h3>28.5 池盖类型(蒸发率系数)</h3>
+<h3 id="sec28_5">28.5 池盖类型(蒸发率系数)</h3>
 
 <p>池盖直接影响蒸发率, 是热平衡的关键变量:</p>
 
@@ -3575,7 +4307,7 @@ v1.2 把它们挪到顶部全局配置区 <code>globalThermalConfig</code>, 一�
 
 <p>蒸发是潜热(2257 kJ/kg @100°C, 2502 kJ/kg @0°C), 是冬季最大的散热项之一。密闭池盖能省 20-40% 的暖气电费。</p>
 
-<h3>28.6 通风换气与热回收 <span class="tag-update">v1.9.2 口径重写</span></h3>
+<h3 id="sec28_6">28.6 通风换气与热回收 <span class="tag-update">v1.9.2 口径重写</span></h3>
 
 <h4>28.6.1 通风要解决三件事</h4>
 
@@ -3674,9 +4406,9 @@ ACH_eff = V_vent / V_room&nbsp;&nbsp;<span style="color:#888">← v1.9.2: 由 ma
 
 <!-- 第 29 章 双节点稳态 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 29 章</span>双节点稳态热平衡求解<span class="tag-update">v1.9.2 除湿机 + 阻尼迭代</span></h2>
+<h2 id="ch29"><span class="chapter-num">第 29 章</span>双节点稳态热平衡求解<span class="tag-update">v1.9.2 除湿机 + 阻尼迭代</span></h2>
 
-<h3>29.1 v1.1 的简化模型与局限</h3>
+<h3 id="sec29_1">29.1 v1.1 的简化模型与局限</h3>
 
 <p>v1.1 的热平衡是单点能量平衡: 给定 T_w(目标水温)和 T_air(室外气温), 直接算补水加热量 + 池散热量 + 鱼代谢热 + 设备产热, 平衡后给热泵装机。
 这个模型<strong>忽略了车间空气节点</strong>, 默认池的热散到一个无限大的"室外"。问题在于:</p>
@@ -3688,7 +4420,7 @@ ACH_eff = V_vent / V_room&nbsp;&nbsp;<span style="color:#888">← v1.9.2: 由 ma
 <li>夏季制冷时, 池水比车间空气冷, 空气会向池散热(反向)</li>
 </ul>
 
-<h3>29.2 双节点稳态方程 <span class="tag-update">v1.6 公式订正</span></h3>
+<h3 id="sec29_2">29.2 双节点稳态方程 <span class="tag-update">v1.6 公式订正</span></h3>
 
 <p>v1.2 引入双节点稳态求解器, 联立水节点能量、空气节点显热、空气节点湿度三个平衡:</p>
 
@@ -3743,7 +4475,7 @@ v1.6 把手册 16.5 节和 29.2 节统一改为与代码一致的写法 — <str
 <li>典型 1 次闭式解即可收敛(v1.2 闭式解已替代迭代,强通风/高湿度场景仍可用 Picard)</li>
 </ol>
 
-<h3>29.3 蒸发凝结模型</h3>
+<h3 id="sec29_3">29.3 蒸发凝结模型</h3>
 
 <p>蒸发率 m_evap 用<strong>Lewis 传热传质类比</strong>简化。同一个系数有面积口径与体积口径两种写法,
 差一个空气密度, <strong>混用是量纲错误的常见来源</strong>, 这里两种都给出:</p>
@@ -3800,7 +4532,7 @@ V_condense_recovery = |m_evap| × A_water × 86400 / 1000  (m³/d)<br>
 V_makeup_actual = V_makeup − V_condense_recovery
 </div>
 
-<h3>29.4 求解输出</h3>
+<h3 id="sec29_4">29.4 求解输出</h3>
 
 <p>双节点求解器输出:</p>
 
@@ -3828,7 +4560,7 @@ V_makeup_actual = V_makeup − V_condense_recovery
 <tr><td>iterCount / converged <span class="tag-new">v1.9.2</span></td><td>外层阻尼迭代次数与收敛标志</td><td>1-12 / true</td></tr>
 </table>
 
-<h3>29.5 RH 警告与除湿路径 <span class="tag-update">v1.9.2 修订</span></h3>
+<h3 id="sec29_5">29.5 RH 警告与除湿路径 <span class="tag-update">v1.9.2 修订</span></h3>
 
 <p>当车间 RH &gt; 85% 时应加除湿措施 (否则结构件腐蚀、电气故障、霉菌)。iRAS 在 RH 接近饱和时给出醒目提示。
 四条可选路径, <strong>但它们的有效性强烈依赖气候</strong>:</p>
@@ -3848,7 +4580,7 @@ v1.9 及更早版本把"增加 ACH"列为首选建议, <strong>这在湿热气�
 v1.9.2 起除湿改由机械除湿机承担, 新风只负责空气质量 (详见 28.6.4)。
 </div>
 
-<h3>29.6 热泵分类型</h3>
+<h3 id="sec29_6">29.6 热泵分类型</h3>
 
 <p>v1.2 拆出 4 种热泵, 各自的 COP 和源温模型:</p>
 
@@ -3862,7 +4594,7 @@ v1.9.2 起除湿改由机械除湿机承担, 新风只负责空气质量 (详见
 
 <p>不同热泵类型的源温和 COP 在 globalThermalConfig 中可独立设置。</p>
 
-<h3>29.7 机械除湿机 <span class="tag-new">v1.9.2 新增</span></h3>
+<h3 id="sec29_7">29.7 机械除湿机 <span class="tag-new">v1.9.2 新增</span></h3>
 
 <h4>29.7.1 为什么需要独立建模</h4>
 
@@ -3934,7 +4666,7 @@ v1.9.2 首版实现完全没有处理这股热量 (隐含假设排至室外), �
 而不是被一个 RH 告警吓住, 或者反过来对高湿度的长期代价毫无概念。
 </div>
 
-<h3>29.8 冷凝热耦合与阻尼迭代 <span class="tag-new">v1.9.2 新增</span></h3>
+<h3 id="sec29_8">29.8 冷凝热耦合与阻尼迭代 <span class="tag-new">v1.9.2 新增</span></h3>
 
 <h4>29.8.1 耦合链与振荡</h4>
 
@@ -3975,9 +4707,9 @@ T_room = 30.2°C、除湿量 2012 kg/d。</p>
 
 <!-- 第 30 章 P&ID -->
 <div class="chapter">
-<h2><span class="chapter-num">第 30 章</span>P&amp;ID 工艺图自动生成<span class="tag-new">v1.3.x 新章</span></h2>
+<h2 id="ch30"><span class="chapter-num">第 30 章</span>P&amp;ID 工艺图自动生成<span class="tag-new">v1.3.x 新章</span></h2>
 
-<h3>30.1 P&amp;ID 是什么</h3>
+<h3 id="sec30_1">30.1 P&amp;ID 是什么</h3>
 
 <p>P&amp;ID(Piping &amp; Instrumentation Diagram, 工艺管道仪表流程图)是化工/环保工程的核心设计文档,
 描述工艺单元、管道连接、流向、关键仪表和控制逻辑。一份完整的 P&amp;ID 应包含:</p>
@@ -3990,7 +4722,7 @@ T_room = 30.2°C、除湿量 2012 kg/d。</p>
 <li>图框(项目名/设计阶段/图号/版本)</li>
 </ul>
 
-<h3>30.2 iRAS 的 P&amp;ID 生成方案</h3>
+<h3 id="sec30_2">30.2 iRAS 的 P&amp;ID 生成方案</h3>
 
 <p>v1.3.x 提供独立 P&amp;ID 查看器 <code>pid.html</code>, 主页面"📐 输出 P&amp;ID"按钮一键打开。
 数据流:</p>
@@ -4001,7 +4733,7 @@ T_room = 30.2°C、除湿量 2012 kg/d。</p>
 <li>主页面再次点击时, 通过 postMessage 通知已打开的窗口刷新</li>
 </ol>
 
-<h3>30.3 工艺图布局</h3>
+<h3 id="sec30_3">30.3 工艺图布局</h3>
 
 <p>v1.3.x P&amp;ID 采用<strong>两层布局</strong>:</p>
 
@@ -4031,14 +4763,14 @@ T-101 鱼池 → F-201 微滤 → B-301 MBBR → C-501 CO₂ 脱气 → S-101 �
 <li>P-202 RDF 反冲泵 → 反冲水接 F-201</li>
 </ul>
 
-<h3>30.4 LOX 跟随阶段切换 (v1.3.x)</h3>
+<h3 id="sec30_4">30.4 LOX 跟随阶段切换 (v1.3.x)</h3>
 
 <p>v1.3 早期版本中, LOX 储罐显示的氧耗是<strong>全场总和</strong> (summary.totalLOXKgD), 不论用户切换到哪个阶段都不变。
 v1.3.x 修复为<strong>当前阶段氧耗</strong> (stage.load.o2DailyTotal), 切换阶段时同步更新。</p>
 
 <p>右上角元数据"全场氧耗"保持不变(那本来就是全场总和的语义, 用于储罐选型)。</p>
 
-<h3>30.5 设备表自动生成</h3>
+<h3 id="sec30_5">30.5 设备表自动生成</h3>
 
 <p>P&amp;ID 底部自动生成设备表, 含 tag/中文名/规格/数量列表:</p>
 
@@ -4058,7 +4790,7 @@ v1.3.x 修复为<strong>当前阶段氧耗</strong> (stage.load.o2DailyTotal), �
 <tr><td>X-901</td><td>AOP 高级氧化(公用工程)</td><td>α 5%, V 17 m³</td></tr>
 </table>
 
-<h3>30.6 主泵 VFD 联锁示例</h3>
+<h3 id="sec30_6">30.6 主泵 VFD 联锁示例</h3>
 
 <p>主泵 P-101 由鱼池 DO-101 通过 PID 闭环控制 VFD 频率, 维持鱼池 DO ≥ 鱼种最低饱和度 × DO_sat。
 联锁线在 P&amp;ID 中表示为<strong>虚线箭头从 DO-101 指向 P-101_VFD</strong>。</p>
@@ -4072,7 +4804,7 @@ v1.3.x 修复为<strong>当前阶段氧耗</strong> (stage.load.o2DailyTotal), �
 <li>DO-601 (氧锥出口 DO) → 液氧流量阀(纯氧流量 PID)</li>
 </ul>
 
-<h3>30.7 P&amp;ID 导出</h3>
+<h3 id="sec30_7">30.7 P&amp;ID 导出</h3>
 
 <p>pid.html 支持<strong>SVG 直接打印</strong>(浏览器 Ctrl+P → 保存 PDF) 或<strong>SVG 文件下载</strong>(右键保存)。
 SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基础。</p>
@@ -4080,9 +4812,9 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 
 <!-- 第 31 章 设备清单 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 31 章</span>设备清单导出<span class="tag-new">v1.3.x 新章</span></h2>
+<h2 id="ch31"><span class="chapter-num">第 31 章</span>设备清单导出<span class="tag-new">v1.3.x 新章</span></h2>
 
-<h3>31.1 设备清单的工程用途</h3>
+<h3 id="sec31_1">31.1 设备清单的工程用途</h3>
 
 <p>设备清单是工程设计的核心交付物之一, 用于:</p>
 <ul>
@@ -4092,7 +4824,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <li>运维基础(备件采购、维修参考)</li>
 </ul>
 
-<h3>31.2 iRAS 设备清单结构</h3>
+<h3 id="sec31_2">31.2 iRAS 设备清单结构</h3>
 
 <p>v1.3.x 提供独立设备清单页面 <code>equipment.html</code>, 主页面"📋 导出设备清单"按钮一键打开。结构:</p>
 
@@ -4112,7 +4844,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <li><strong>全场合计</strong>(所有阶段加和)</li>
 </ol>
 
-<h3>31.3 N+1 备用展开</h3>
+<h3 id="sec31_3">31.3 N+1 备用展开</h3>
 
 <p>清单中每个设备按"主用 + 备用"展开。例如成鱼期 4 模块, 每模块主泵需要 P-101 75 kW × 2 台, 加 1 台备用:</p>
 
@@ -4126,7 +4858,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <tr><td>全场</td><td>P-101 主泵 合计</td><td>75 kW</td><td>12 台(8 主 + 4 备)</td></tr>
 </table>
 
-<h3>31.4 单价与金额</h3>
+<h3 id="sec31_4">31.4 单价与金额</h3>
 
 <p>设备单价在主页面"单价配置"区设置, equipment.html 自动读取并计算:</p>
 
@@ -4138,7 +4870,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 
 <p>放大系数 2.2 涵盖管道阀件 / 电气仪表 / 自控 / 安装调试 / 土建厂房 / 设计监理(详见第 22 章)。</p>
 
-<h3>31.5 单列静设备说明</h3>
+<h3 id="sec31_5">31.5 单列静设备说明</h3>
 
 <p>某些设备虽然容积大、价值高, 但<strong>不需要 N+1 备用</strong>, 而是<strong>单列 + 旁路阀</strong>设计。例如:</p>
 
@@ -4153,7 +4885,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 
 <p>设备清单上这些标识为"1 套 (单列 + 旁路阀)", 不展开成多份。</p>
 
-<h3>31.6 数据传递机制 (v1.3.x)</h3>
+<h3 id="sec31_6">31.6 数据传递机制 (v1.3.x)</h3>
 
 <p>主页面和 equipment.html 之间的数据通过 localStorage 共享(<code>iRAS_equipmentExport</code> key), 跨 tab 同步:</p>
 
@@ -4170,9 +4902,9 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 
 <!-- 第 32 章 4 工况成本基线 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 32 章</span>4 工况成本对比基线<span class="tag-new">v1.3 新章</span></h2>
+<h2 id="ch32"><span class="chapter-num">第 32 章</span>4 工况成本对比基线<span class="tag-new">v1.3 新章</span></h2>
 
-<h3>32.1 为什么要看 4 个工况</h3>
+<h3 id="sec32_1">32.1 为什么要看 4 个工况</h3>
 
 <p>RAS 项目选址决定了气候/水温, 不同地区的成本差异巨大。v1.3 提供 4 个典型工况的标准化对比, 帮助:</p>
 <ul>
@@ -4182,9 +4914,9 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <li>融资评估: 给出综合成本范围</li>
 </ul>
 
-<h3>32.2 标准基线(1000 t/yr 三文鱼)</h3>
+<h3 id="sec32_2">32.2 标准基线(1000 t/yr 三文鱼)</h3>
 
-<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 32.65 / 海南冬 33.02 / 海南夏 33.53 / Bergen 冬 32.70 元/kg。</div>
+<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 35.63 / 海南冬 37.39 / 海南夏 37.94 / Bergen 冬 35.65 元/kg（工艺运行成本口径）。</div>
 
 <p>使用 v1.3 默认参数, 4 工况下综合成本(含 CAPEX 折旧, 不含人工/苗种):</p>
 
@@ -4196,7 +4928,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <tr><td>挪威 Bergen 设计冬</td><td>0°C / 4°C</td><td>22.7</td><td>13.6</td><td>36.30</td></tr>
 </table>
 
-<h3>32.3 关键观察</h3>
+<h3 id="sec32_3">32.3 关键观察</h3>
 
 <ol>
 <li><strong>挪威成本接近青岛</strong>: 挪威冬季气温比青岛温和(0°C vs -7°C), 但源水温度都是 4°C 左右,
@@ -4207,7 +4939,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <li><strong>OPEX 差异主要在热泵</strong>: 4 工况 OPEX 差异 4.5 元/kg, 其中热泵成本占 3-3.5 元/kg。</li>
 </ol>
 
-<h3>32.4 与文献的对照</h3>
+<h3 id="sec32_4">32.4 与文献的对照</h3>
 
 <table>
 <tr><th>文献来源</th><th>项目</th><th>综合成本 元/kg</th><th>iRAS 偏差</th></tr>
@@ -4223,9 +4955,9 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 
 <!-- 第 33 章 投资财务评价 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 33 章</span>投资财务评价<span class="tag-new">v1.4 新章</span></h2>
+<h2 id="ch33"><span class="chapter-num">第 33 章</span>投资财务评价<span class="tag-new">v1.4 新章</span></h2>
 
-<h3>33.1 为什么需要财务评价</h3>
+<h3 id="sec33_1">33.1 为什么需要财务评价</h3>
 
 <p>iRAS v1.3 之前的输出停在<strong>工程概算</strong>: CAPEX 万元 / 年 OPEX 万元 / 综合成本元/kg。
 对于设计院做<strong>可研报告</strong>、业主做<strong>投资决策</strong>、银行做<strong>贷款评审</strong>来说, 这些数据只是起点——
@@ -4243,7 +4975,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 <p>v1.3 之前用户必须自己导出数据到 Excel, 手算这些指标, 一份可研里财务评价部分通常占 30% 篇幅,
 设计院做一份要花 1-2 周。v1.4 加入<strong>独立的投资财务评价页面</strong> (finance.html), 把这部分自动化, 把 1-2 周压缩到几小时。</p>
 
-<h3>33.2 数据流与系统架构</h3>
+<h3 id="sec33_2">33.2 数据流与系统架构</h3>
 
 <p>finance.html 是个独立页面, 与主页面通过 localStorage 数据共享:</p>
 
@@ -4292,7 +5024,7 @@ annualOpexForFinance = annualOpex − 维护费 + 苗种费
 使用旧方案数据做财务评价时须注意此差异。
 </div>
 
-<h3>33.3 用户输入参数 (17 个)</h3>
+<h3 id="sec33_3">33.3 用户输入参数 (17 个)</h3>
 
 <p>用户在 finance.html 顶部填写 17 个财务参数, 分 3 组:</p>
 
@@ -4320,7 +5052,7 @@ annualOpexForFinance = annualOpex − 维护费 + 苗种费
 <tr><td>📊</td><td>人工成本 (万元/年)</td><td><strong>由主页面导出</strong></td><td><span class="tag-update">v1.9.2</span> 主页面按<strong>定员 × 人均年成本</strong>计算（定员 = max(最小班组, 年产量 ÷ 劳动生产率)，三个参数在主页面 UI 可调，默认 8 人 / 60 t·人⁻¹·yr⁻¹ / 15 万元）。旧版用写死的阶梯函数（5 万元/人·年口径），与主页面相差 1.1-2 倍，会使同一份可研的成本表与财务章出现两个人工成本。老版本主页面未导出时回退到阶梯函数</td></tr>
 </table>
 
-<h3>33.4 现金流模型</h3>
+<h3 id="sec33_4">33.4 现金流模型</h3>
 
 <p>财务评价的核心是<strong>逐年现金流</strong>。每年有 4 类现金流入流出:</p>
 
@@ -4359,7 +5091,7 @@ v1.5 起拆分计算: 残值 = totalCapexEquip × 5% + totalCapexCivil × 20%。
 对千吨级三文鱼项目, 旧公式低估末年残值约 8-12%, 即 NPV 偏低 0.3-0.5 个百分点(对回收期/IRR 影响小)。
 </div>
 
-<h3>33.5 IRR 求解算法</h3>
+<h3 id="sec33_5">33.5 IRR 求解算法</h3>
 
 <p>IRR (Internal Rate of Return) 是让 NPV = 0 的折现率:</p>
 
@@ -4379,7 +5111,7 @@ IRR_(n+1) = IRR_n − f(IRR_n) / f'(IRR_n)<br>
 <p>当 Newton-Raphson 发散(典型场景: 多重 IRR 解或符号变化异常),自动切换到<strong>二分法</strong>兜底:
 在 [-0.5, 5.0] 区间求 NPV=0 的根。两种算法配合, 能稳定处理常见的 RAS 项目现金流。</p>
 
-<h3>33.6 输出: 8 张标准财务表</h3>
+<h3 id="sec33_6">33.6 输出: 8 张标准财务表</h3>
 
 <p>遵循国家发改委《建设项目可行性研究报告编制规范》要求:</p>
 
@@ -4395,7 +5127,7 @@ IRR_(n+1) = IRR_n − f(IRR_n) / f'(IRR_n)<br>
 <tr><td>8</td><td>敏感性分析</td><td>5 因子各 ±20% 对 IRR 影响, 按摆动排序</td></tr>
 </table>
 
-<h3>33.7 关键指标 (6 个 KPI)</h3>
+<h3 id="sec33_7">33.7 关键指标 (6 个 KPI)</h3>
 
 <table>
 <tr><th>指标</th><th>定义</th><th>判断标准</th></tr>
@@ -4407,7 +5139,7 @@ IRR_(n+1) = IRR_n − f(IRR_n) / f'(IRR_n)<br>
 <tr><td>盈亏平衡点 (BEP)</td><td>满产年净利润 = 0 时的产量比例</td><td>&lt; 75% 满产 → 安全裕度大</td></tr>
 </table>
 
-<h3>33.8 敏感性分析 (5 因子)</h3>
+<h3 id="sec33_8">33.8 敏感性分析 (5 因子)</h3>
 
 <p>对项目 IRR 进行单因子敏感性分析, 5 个常用因子:</p>
 
@@ -4434,11 +5166,11 @@ v1.5 改为<strong>从实际 OPEX 占比动态读取</strong>: <code>share_feed 
 <p>结果按 IRR 摆动从大到小排序, 自动绘制 <strong>Tornado 图</strong> (横向条形图)。
 设计院通常拿这张图给业主看"这个项目的最大风险因子是什么"——RAS 项目<strong>永远是售价</strong>。</p>
 
-<h3>33.9 实例: 1000 t 三文鱼 (青岛冬季工况)</h3>
+<h3 id="sec33_9">33.9 实例: 1000 t 三文鱼 (青岛冬季工况)</h3>
 
 <div class="note-box">
 <strong>⚠ 下表为 v1.3 参数下的历史算例</strong>，保留作为方法演示。
-v1.9.2 参数下同工况实测：工艺运行成本 <strong>36.65 元/kg</strong>、企业全成本 <strong>41.61 元/kg</strong>、定员 17 人；
+v1.9.2 参数下同工况实测：工艺运行成本 <strong>35.60 元/kg</strong>、企业全成本 <strong>40.49 元/kg</strong>、定员 17 人；
 售价 60 元/kg 时<strong>全投资 IRR 17.94%、自有资金 IRR 26.73%、NPV 8221 万元、静态回收期 5.41 年</strong>。<br><br>
 作为对照，鳗鲡 200 t（美洲鳗、售价 110 元/kg）在同一套参数下为
 <strong>全投资 IRR 8.59%、NPV 仅 81 万元、静态回收期 9.10 年</strong>——刚过折现率门槛。
@@ -4479,7 +5211,7 @@ v1.9.2 参数下同工况实测：工艺运行成本 <strong>36.65 元/kg</stron
 而是建成后市场价格波动让财务模型崩溃。
 </div>
 
-<h3>33.10 鱼种横向对比</h3>
+<h3 id="sec33_10">33.10 鱼种横向对比</h3>
 
 <p>用同样的 1000 t 规模, 不同鱼种和价格:</p>
 
@@ -4494,7 +5226,7 @@ v1.9.2 参数下同工况实测：工艺运行成本 <strong>36.65 元/kg</stron
 <p>这张表能直接告诉投资人: <strong>不要用 RAS 养罗非鱼</strong> — 不是技术问题, 是经济问题。
 RAS 适合<strong>高单价 (&gt; 40 元/kg) + 集约化要求高 (海水/北方/特殊品种)</strong>的鱼种。</p>
 
-<h3>33.11 Excel 导出</h3>
+<h3 id="sec33_11">33.11 Excel 导出</h3>
 
 <p>finance.html 用 SheetJS 库 (CDN 加载) 实现一键导出 Excel, 输出 7 个工作表:</p>
 
@@ -4520,7 +5252,7 @@ RAS 适合<strong>高单价 (&gt; 40 元/kg) + 集约化要求高 (海水/北方
 SheetJS 库通过 CDN 加载, 网络不通时 Excel 导出失败, finance.html 会弹窗提示用户改用打印 (Ctrl+P → 保存为 PDF)。
 </div>
 
-<h3>33.12 局限性与未来扩展</h3>
+<h3 id="sec33_12">33.12 局限性与未来扩展</h3>
 
 <p>v1.4 财务评价的<strong>当前局限</strong>:</p>
 
@@ -4550,9 +5282,9 @@ SheetJS 库通过 CDN 加载, 网络不通时 Excel 导出失败, finance.html �
 
 <!-- 第 34 章 可研报告生成器 -->
 <div class="chapter">
-<h2><span class="chapter-num">第 34 章</span>可研报告生成器<span class="tag-new">v1.5 新章</span></h2>
+<h2 id="ch34"><span class="chapter-num">第 34 章</span>可研报告生成器<span class="tag-new">v1.5 新章</span></h2>
 
-<h3>34.1 为什么需要可研报告生成器</h3>
+<h3 id="sec34_1">34.1 为什么需要可研报告生成器</h3>
 
 <p>v1.4 之前的 iRAS 输出层级是工程数据(P&amp;ID + 设备清单 + 财务评价 Excel), 用户拿到这些数据后还需要手动整合到 Word 可研报告里。
 这是 RAS 项目从"概念"到"立项"过程中的<strong>最大手工劳动</strong>:</p>
@@ -4568,7 +5300,7 @@ SheetJS 库通过 CDN 加载, 网络不通时 Excel 导出失败, finance.html �
 设计院拿到后只需补充项目身份、场址自然条件、土建详细设计等"必须人工填写"的内容即可。
 预期能把可研撰写时间从 <strong>1-2 个月压缩到 1-2 周</strong>。</p>
 
-<h3>34.2 关键产品决策</h3>
+<h3 id="sec34_2">34.2 关键产品决策</h3>
 
 <p>v1.5 在设计阶段做了 10 个产品决策, 每个决策都直接影响实现方式:</p>
 
@@ -4602,7 +5334,7 @@ v1.5 输出"结构化内容", 用户拿到后复制到自己院的模板里, 是
 <br>模板 + 条件分支虽然文字略呆板, 但<strong>确定性</strong>和<strong>可追溯性</strong>是可研的核心要求。
 </div>
 
-<h3>34.3 16 章覆盖范围与自动化率</h3>
+<h3 id="sec34_3">34.3 16 章覆盖范围与自动化率</h3>
 
 <p>v1.5 覆盖发改委可研编制规范的扩展 16 章。各章自动化率(数据来自 iRAS 自动填充的比例):</p>
 
@@ -4628,7 +5360,7 @@ v1.5 输出"结构化内容", 用户拿到后复制到自己院的模板里, 是
 
 <p>加权平均自动化率约 <strong>70%</strong>, 用户需要补充的主要是: 项目身份(20 字段)、场址自然条件、土建详细设计、消防/环评/安评等专项内容(后三者必须由有资质机构出具)。</p>
 
-<h3>34.4 数据流与系统架构</h3>
+<h3 id="sec34_4">34.4 数据流与系统架构</h3>
 
 <div class="formula-block">
 主页面 calculateAll → lastResults.summary 写入财务汇总<br>
@@ -4650,7 +5382,7 @@ SVG 图(工艺流程/Tornado/累计 CF)→ Canvas → PNG → ImageRun<br>
 docx.Packer.toBlob() → 用户下载 .docx
 </div>
 
-<h3>34.5 8 个数据命名空间</h3>
+<h3 id="sec34_5">34.5 8 个数据命名空间</h3>
 
 <p>模板里所有变量按以下命名空间组织:</p>
 
@@ -4666,7 +5398,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <tr><td><code>{{ meta }}</code></td><td>报告元信息</td><td>生成时间/iRAS 版本/模板版本</td></tr>
 </table>
 
-<h3>34.6 嵌入 docx 的 3 张图</h3>
+<h3 id="sec34_6">34.6 嵌入 docx 的 3 张图</h3>
 
 <table>
 <tr><th>图</th><th>位置</th><th>内容</th></tr>
@@ -4677,7 +5409,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 
 <p>图表生成路径: 浏览器侧 SVG → Canvas → PNG → docx ImageRun。中文字体使用系统 SimHei/Microsoft YaHei, 高清 2× DPR 渲染。</p>
 
-<h3>34.7 输出文件示例</h3>
+<h3 id="sec34_7">34.7 输出文件示例</h3>
 
 <p>三文鱼 1000 t/年项目, 用 v1.5 生成的可研报告大致规格:</p>
 
@@ -4692,7 +5424,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <tr><td>页数(Word 默认排版)</td><td>约 60-80 页</td></tr>
 </table>
 
-<h3>34.8 局限性与未来扩展</h3>
+<h3 id="sec34_8">34.8 局限性与未来扩展</h3>
 
 <p>v1.5 当前局限:</p>
 
@@ -4726,7 +5458,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 </div>
 
 <div class="chapter">
-<h2>附录 A: 完整符号表</h2>
+<h2 id="h2258">附录 A: 完整符号表</h2>
 
 <p>本附录列出 iRAS 所有版本 (v1.0 → v1.7) 使用的全部符号。</p>
 
@@ -4837,7 +5569,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 </div>
 
 <div class="chapter">
-<h2>附录 B: 全局热配置参数表(完整)</h2>
+<h2 id="h2259">附录 B: 全局热配置参数表(完整)</h2>
 
 <p>iRAS 全局热配置(globalThermalConfig)字段一览 (含 v1.9.2 新增的通风与除湿参数):</p>
 
@@ -4892,7 +5624,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 </div>
 
 <div class="chapter">
-<h2>附录 C: 设备 tag 命名总表</h2>
+<h2 id="h2260">附录 C: 设备 tag 命名总表</h2>
 
 <p>iRAS 完全采用 ISA-5.1 规范 tag 命名(字母+数字), 字母含义:</p>
 
@@ -4915,13 +5647,13 @@ docx.Packer.toBlob() → 用户下载 .docx
 <tr><td>M</td><td>Mixer 混合点 / 管段配件 <span class="tag-new">v1.7</span></td><td>M-601 bypass 模式氧锥旁路混合点 (T 接头)</td></tr>
 </table>
 
-<h3>位号编号规则</h3>
+<h3 id="h3261">位号编号规则</h3>
 <ul>
 <li>百位代表设备组(1=鱼池, 2=过滤, 3=生物处理, 4=消毒, 5=脱气, 6=增氧, 7=蛋分, 8=反硝化/温控, 9=高级处理/公用)</li>
 <li>十位+个位代表组内序号(01=主设备, 02-09=辅助/支路)</li>
 </ul>
 
-<h3>仪表位号</h3>
+<h3 id="h3262">仪表位号</h3>
 <table class="compact">
 <tr><th>tag 前缀</th><th>类型</th><th>示例</th></tr>
 <tr><td>DO</td><td>溶解氧</td><td>DO-101 鱼池 DO 探头</td></tr>
@@ -4935,7 +5667,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 </div>
 
 <div class="chapter">
-<h2>附录 D: 鱼种参数表</h2>
+<h2 id="h2263">附录 D: 鱼种参数表</h2>
 
 <p>iRAS 内置 9 个物种 (含 custom), 这里展示主要 4 种, 完整见软件。</p>
 
@@ -4960,9 +5692,9 @@ docx.Packer.toBlob() → 用户下载 .docx
 </div>
 
 <div class="chapter">
-<h2>附录 E: 参考文献</h2>
+<h2 id="h2264">附录 E: 参考文献</h2>
 
-<h3>v1.0 引用</h3>
+<h3 id="v1_0">v1.0 引用</h3>
 <ol>
 <li>Timmons, M.B., Ebeling, J.M. (2010). Recirculating Aquaculture, 2nd ed. Cayuga Aqua Ventures.</li>
 <li>Sharma, B., Ahlert, R.C. (1977). Nitrification and nitrogen removal. Water Research, 11(10).</li>
@@ -4976,7 +5708,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>Colt, J. (2006). Water quality in reuse systems. Aquacultural Engineering, 34(3).</li>
 </ol>
 
-<h3>v1.1 新增引用</h3>
+<h3 id="v1_1">v1.1 新增引用</h3>
 <ol start="11">
 <li>Boyd, C.E. (2018). Oxygen Demand of Aquaculture Feeds. Responsible Seafood Advocate.</li>
 <li>Davidson, J. et al. (2014). Atlantic salmon performance in RAS. USDA FWI.</li>
@@ -4991,7 +5723,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>Hansa Engineering. CO₂ Stripping Column Internals. RVT Process Equipment.</li>
 </ol>
 
-<h3>v1.2 新增引用 (热平衡 + 围护)</h3>
+<h3 id="v1_2">v1.2 新增引用 (热平衡 + 围护)</h3>
 <ol start="22">
 <li>ASHRAE Handbook (2021). HVAC Applications, Chapter 22: Animal Environments.</li>
 <li>Lewis, W.K. (1922). The evaporation of a liquid into a gas. ASME, 44.</li>
@@ -5001,7 +5733,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>Mota, V.C. et al. (2019). The effects of carbon dioxide on growth performance, welfare, and health of Atlantic salmon post-smolt in RAS. Aquaculture, 498: 578-586.</li>
 </ol>
 
-<h3>v1.3 新增引用 (模块化 + 鱼池设计)</h3>
+<h3 id="v1_3_2">v1.3 新增引用 (模块化 + 鱼池设计)</h3>
 <ol start="28">
 <li>Cornell University. Twin Drain Tank Design Guidelines (Cornell dual-drain RAS).</li>
 <li>Timmons, M.B. &amp; Summerfelt, S.T. (2007). Pilot-scale evaluation of dual drain rectangular and circular tanks. Aquacultural Engineering.</li>
@@ -5011,7 +5743,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>Stolt Sea Farm (2024). Sustainability Report - Production Capacity Distribution.</li>
 </ol>
 
-<h3>v1.3.x 新增引用 (P&amp;ID + 工程化)</h3>
+<h3 id="v1_3_3">v1.3.x 新增引用 (P&amp;ID + 工程化)</h3>
 <ol start="34">
 <li>ISA-5.1 (2009). Instrumentation Symbols and Identification.</li>
 <li>ANSI/ISA-5.4. Instrument Loop Diagrams.</li>
@@ -5019,7 +5751,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>API RP 14E. Design and Installation of Offshore Production Platform Piping Systems.</li>
 </ol>
 
-<h3>v1.4 新增引用 (投资财务评价)</h3>
+<h3 id="v1_4">v1.4 新增引用 (投资财务评价)</h3>
 <ol start="38">
 <li>国家发展和改革委员会、住房和城乡建设部 (2006). 建设项目经济评价方法与参数 (第三版). 中国计划出版社.</li>
 <li>国家发改委 (2002). 投资项目可行性研究指南.</li>
@@ -5029,7 +5761,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>SheetJS Community Edition (2024). xlsx.full.min.js — Spreadsheet Data Toolkit. https://sheetjs.com</li>
 </ol>
 
-<h3>v1.5 新增引用 (可研报告生成器)</h3>
+<h3 id="v1_5">v1.5 新增引用 (可研报告生成器)</h3>
 <ol start="44">
 <li>国家发改委 (2017). 政府投资项目可行性研究报告编制深度规定 (2017 年发改投资规〔2017〕1638 号).</li>
 <li>建设部 (2007). 投资项目可行性研究指南 (试用版).</li>
@@ -5037,7 +5769,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>docx.js (Dolan Miu, 2018-2024). Easily generate .docx files with JS/TS. https://docx.js.org/</li>
 </ol>
 
-<h3>v1.6 新增引用 (站级设备 + 物理校正)</h3>
+<h3 id="v1_6">v1.6 新增引用 (站级设备 + 物理校正)</h3>
 <ol start="48">
 <li>Mateju, V. et al. (1992). Biological water denitrification - A review. Enzyme and Microbial Technology, 14(3): 170-183. (反硝化碱度回收 2.5-3.0 g CaCO₃/g N 工程实测)</li>
 <li>Henze, M. et al. (1991). Activated Sludge Model No. 1. IAWPRC Scientific and Technical Report No. 1.</li>
@@ -5049,7 +5781,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>Drønen, K. (2021). Atlantic salmon land-based RAS in Norway: V_process/V_total benchmark.</li>
 </ol>
 
-<h3>v1.7 新增引用 (氧锥拓扑 + 系统排水重构)</h3>
+<h3 id="v1_7_2">v1.7 新增引用 (氧锥拓扑 + 系统排水重构)</h3>
 <ol start="56">
 <li>Linde Gas (2020). SOLVOX cone 60 / 110 oxygenation system. Technical datasheet. (氧锥操作压力 3.0-3.8 bar, side stream 拓扑)</li>
 <li>Pentair AES (2021). Speece Cone Oxygenation: Engineering Design Manual. (玻璃钢锥操作压力 10-21 psi)</li>
@@ -5061,7 +5793,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <li>Gonçalves, A.A., Gagnon, G.A. (2011). Ozone application in recirculating aquaculture system: an overview. Ozone: Science &amp; Engineering, 33(5): 345-367.</li>
 </ol>
 
-<h3>v1.9.1 / v1.9.2 新增引用 (通风口径 + 除湿 + 蒸发系数)</h3>
+<h3 id="v1_9_1">v1.9.1 / v1.9.2 新增引用 (通风口径 + 除湿 + 蒸发系数)</h3>
 <ol start="64">
 <li>Terjesen, B.F. et al. (2013). Design, dimensioning, and performance of a research facility for studies on the requirements of fish in RAS environments. Aquacultural Engineering, 54: 49-63. (大西洋鲑 CO₂ 产量 409 g/kg 饲料)</li>
 <li>Vinci, B.J. et al. (2004). Carbon dioxide control in intensive aquaculture: design tool development. Aquacultural Engineering. (smolt 阶段 CO₂ 产量 550 g/kg 饲料)</li>
@@ -5081,7 +5813,7 @@ v1.9.1 起改按 Lewis 类比 (文献 69) 推导。本手册第 29.3 节自 v1.2
 </div>
 
 <div class="chapter">
-<h2>附录 F: 免责声明</h2>
+<h2 id="h2275">附录 F: 免责声明</h2>
 
 <p>本工具(iRAS)和本手册的计算结果仅供工程概算参考。</p>
 
@@ -5116,9 +5848,67 @@ v1.2 双节点稳态求解器虽经文献校准, 但实际车间空气温湿度�
 
 <p style="margin-top: 30pt; text-align: center; font-size: 10pt; color: #666;">
 © 2026 海南登登科技咨询有限公司 · 孙程<br>
-iras.cn · github.com/chengsunmail/iras · 6881509@qq.com<br>
+iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras · 6881509@qq.com<br>
 本手册整合 iRAS v1.0 → v1.5 全部内容 · 完整版
 </p>
 </div>
 
+
+<script>
+/* v1.9.2 手册导航: 当前位置高亮 · 过滤 · 快捷键. 纯屏幕功能, 不影响打印与正文. */
+(function () {
+  var nav = document.getElementById('manualNav');
+  if (!nav) return;
+  var links = [].slice.call(nav.querySelectorAll('a'));
+  var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+
+  // 当前章节高亮 (取视口上方最近的一个标题)
+  var ticking = false;
+  function sync() {
+    ticking = false;
+    var best = -1;
+    for (var i = 0; i < targets.length; i++) {
+      var el = targets[i];
+      if (!el) continue;
+      if (el.getBoundingClientRect().top <= 80) best = i; else break;
+    }
+    links.forEach(function (a, i) { a.classList.toggle('cur', i === best); });
+    if (best >= 0) {
+      var a = links[best], r = a.getBoundingClientRect(), nr = nav.getBoundingClientRect();
+      if (r.top < nr.top + 60 || r.bottom > nr.bottom - 20) {
+        a.scrollIntoView({ block: 'center' });
+      }
+    }
+  }
+  addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(sync); }
+  }, { passive: true });
+
+  // 过滤
+  var f = document.getElementById('nvFilter');
+  if (f) f.addEventListener('input', function () {
+    var q = f.value.trim().toLowerCase();
+    links.forEach(function (a) {
+      a.classList.toggle('hide', !!q && (a.title || a.textContent).toLowerCase().indexOf(q) < 0);
+    });
+  });
+
+  // 快捷键: M 开关目录, / 聚焦过滤框, Esc 关闭
+  // 绑在 document 而非 window: 更可靠地捕获按键 (window 在部分嵌入场景收不到)
+  document.addEventListener('keydown', function (e) {
+    var t = e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') {
+      if (e.key === 'Escape') { f.value = ''; f.dispatchEvent(new Event('input')); f.blur(); }
+      return;
+    }
+    if (e.key === 'm' || e.key === 'M') { document.body.classList.toggle('nav-open'); }
+    else if (e.key === '/') { e.preventDefault(); document.body.classList.add('nav-open'); f && f.focus(); }
+    else if (e.key === 'Escape') { document.body.classList.remove('nav-open'); }
+  });
+
+  // 宽屏默认展开
+  if (innerWidth >= 1280) document.body.classList.add('nav-open');
+  sync();
+})();
+</script>
 </body></html>
