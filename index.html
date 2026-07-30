@@ -32,8 +32,8 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.9.2</title>
-<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 新增碳酸盐平衡求解 (pH/NH3/方解石饱和度), 物理建模对照 PyCO2SYS 验证; v1.9.1 修正液氧消耗口径与蒸发系数量纲; v1.9.2 修正通风量口径、新增机械除湿机, 并修正泵功率口径 (轴功率 vs 电功率) 与扬程默认值。1000t 三文鱼综合成本 35.63 元/kg (工艺运行成本) / 40.52 元/kg (企业全成本), 青岛冬工况。">
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v1.9.3</title>
+<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 碳酸盐平衡求解 (pH/NH3/方解石饱和度, 对照 PyCO2SYS 验证); v1.9.1-v1.9.2 修正液氧/蒸发/通风/泵功率口径, 新增机械除湿机; v1.9.3 自然冷却改为容量判据 (支持部分自然冷却) 与年均工况 24 点数值积分。1000t 三文鱼综合成本 37.53 元/kg (工艺运行成本) / 42.52 元/kg (企业全成本), 青岛冬工况。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
 <meta name="googlebot" content="index,follow">
@@ -46,17 +46,17 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.9.2">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v1.9.3">
 <meta property="og:description" content="覆盖工艺设计→P&ID→设备清单→投资概算→16 章可研报告完整工作流。AGPL v3 永久免费。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.9.2">
+<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v1.9.3">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.9.2">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v1.9.3">
 <meta name="twitter:description" content="循环水养殖 / 工厂化养殖工程设计开源工具。AGPL v3 永久免费。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
@@ -76,8 +76,9 @@
   "applicationCategory": "EngineeringApplication",
   "applicationSubCategory": "Aquaculture Engineering Design",
   "operatingSystem": "Any (Web Browser)",
-  "softwareVersion": "1.9.2",
+  "softwareVersion": "1.9.3",
   "datePublished": "2026-06-28",
+  "dateModified": "2026-07-30",
   "inLanguage": "zh-CN",
   "license": "https://www.gnu.org/licenses/agpl-3.0.html",
   "offers": {
@@ -274,6 +275,18 @@
   }
   .proc-grid[data-aeration-mode="o2"][data-o2-topology="bypass"] [data-o2-topo-mainline] input,
   .proc-grid[data-aeration-mode="o2"][data-o2-topology="bypass"] [data-o2-topo-mainline] select {
+    cursor: not-allowed;
+    background: #1f2937;
+  }
+  /* v1.9.3: 自然冷却关闭时, 其【专属】参数灰显 —— 沿用上面 aerationMode 的 data-* 约定。
+     ⚠ 只含 设计温差 与 EER。年化振幅 k 【不在此列】: 24 点年化积分无条件运行
+     (Q_load 本身随季节变), 故开关关闭时 k 仍然影响结果, 灰显它会误导。 */
+  [data-free-cooling="0"] [data-fc-only] {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  [data-free-cooling="0"] [data-fc-only] input,
+  [data-free-cooling="0"] [data-fc-only] select {
     cursor: not-allowed;
     background: #1f2937;
   }
@@ -905,7 +918,7 @@
       <!-- 第二行: 详细参数 (默认折叠) -->
       <details class="border-t border-slate-700/40 pt-2">
         <summary class="text-[10px] text-slate-400 cursor-pointer hover:text-slate-200">▸ 详细参数 (温度/RH/U 值/ACH/池盖/建筑尺寸 — 选预设后自动填, 可微调)</summary>
-        <div class="mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+        <div class="mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-xs" id="globalThermalDetailGrid" data-free-cooling="1">
           <div><label class="text-[10px] text-slate-400" title="冬季设计日室外气温 °C (98% 保证率)">冬室外T(°C)</label><input id="g_T_air_design_winter" type="number" step="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="夏季设计日室外气温 °C (2% 保证率)">夏室外T(°C)</label><input id="g_T_air_design_summer" type="number" step="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="年均室外气温 °C (用于 annual 工况 + 地温估算)">年均室外T(°C)</label><input id="g_T_air_annual" type="number" step="1" class="input-ind !py-1 !text-xs"></div>
@@ -929,8 +942,9 @@
           <div><label class="text-[10px] text-slate-400" title="除湿机冷凝器排热去向 — 对制冷负荷影响很大.&#10;排热量 = 移除潜热 + 压缩机功, 通常是凝结放热的数倍.&#10;• 排至室外: 独立风冷机组, 不影响车间 (默认)&#10;• 排入车间: 移动式/吊装式除湿机, 车间显著升温, 制冷负荷大增&#10;• 热回收给水: 高端机组, 冬季可省加热">冷凝热去向</label><select id="g_dehumHeatDest" class="input-ind !py-1 !text-xs"><option value="outdoor">排至室外</option><option value="indoor">排入车间</option><option value="water">热回收给水</option></select></div>
           <div><label class="text-[10px] text-slate-400" title="除湿机冷凝水是否回收作补水.&#10;冷凝水是蒸馏水级别 (硬度/盐度接近 0), 回收可减少补水量与补水加热能耗.&#10;不回收的情形: 车间空气含尘/含药雾, 或无回收管路.">冷凝水回收</label><select id="g_dehumCondRecovery" class="input-ind !py-1 !text-xs"><option value="1">回收作补水</option><option value="0">直接排放</option></select></div>
           <div><label class="text-[10px] text-slate-400" title="自然冷却 (free cooling)&#10;制冷工况下, 若【冷源温度 + 逼近温差】低于目标水温,&#10;可直接用干冷器/板换把热排给室外空气或冷源水, 压缩机不启动 ——&#10;只跑风机与泵, 能效比可达 15-30 而非机械制冷的 3-3.5。&#10;&#10;RAS 是常年制冷型负荷, 冬季这条路径能省下绝大部分热泵电耗。&#10;关闭则强制全部走机械压缩制冷 (保守)。">自然冷却</label><select id="g_freeCooling" class="input-ind !py-1 !text-xs"><option value="1">启用</option><option value="0">关闭 (强制机械制冷)</option></select></div>
-          <div><label class="text-[10px] text-slate-400" title="自然冷却逼近温差 K&#10;冷源温度需比目标水温低多少才判定可用。&#10;干冷器对环境 5-10 K;再串一级板换 +2-3 K。&#10;实际总逼近常在 8-13 K, 默认 6 偏乐观但在寒冷气候下余量大、不影响判定;&#10;过渡季 (年均气温接近水温) 附近敏感, 保守可调到 8-10。">逼近温差 K</label><input id="g_fcApproach" type="number" value="6" step="1" min="0" max="20" class="input-ind !py-1 !text-xs"></div>
-          <div><label class="text-[10px] text-slate-400" title="自然冷却能效比 EER&#10;仅风机 + 循环泵的耗电, 无压缩机。&#10;干冷器方案 15-25, 板换 + 冷源水方案可更高。&#10;⚠ 注意: 本模型【不额外计 CAPEX】, 假设复用热泵已有排热侧。&#10;实际带集成自然冷却的机组比普通机组贵 15-30% (多一组干冷盘管 + 三通阀 + 控制),&#10;只有项目本来就有开式冷却塔/干冷器时才真是零成本旁通。">自然冷却 EER</label><input id="g_fcEER" type="number" value="20" step="1" min="2" max="50" class="input-ind !py-1 !text-xs"></div>
+          <div data-fc-only><label class="text-[10px] text-slate-400" title="自然冷却设计温差 K (v1.9.3 换代)&#10;含义: 自然冷却【单独扛满设计负荷】所需的冷源-水温差。&#10;不是开关阈值 —— 温差不足时按比例做部分自然冷却, 压缩机补足余量。&#10;&#10;它是换热链的串联损失, 链条越长、末端介质越差则越大:&#10;  空气源(干冷器) 板换 2-3 + 干冷器对空气 5-10 = 8-13 K&#10;  水/开式海水    钛板换 2-3 (双屏障再 +2-3)  = 3-6 K&#10;  地源          板换 2 + 埋管对土壤 3-5    = 5-7 K&#10;&#10;留空 = 按热泵热源自动取 (空气 11 / 水·海水 4 / 地源 6)。&#10;填错几 K 只会让曲线挪一小段, 不再是成本悬崖。">设计温差 K</label><input id="g_fcDesignDT" type="number" value="" placeholder="自动" step="0.5" min="0" max="30" class="input-ind !py-1 !text-xs"></div>
+          <div><label class="text-[10px] text-slate-400" title="年化正弦振幅折减 k (仅空气源)&#10;年均工况把逐时温度近似为正弦 T = T̄ + A·cos(θ), A = k·(夏−冬)/2。&#10;设计冬/夏是百分位极值而非正弦峰值, 故需折减:&#10;  青岛实测月均约 0.5-25.5°C (振幅 12.5), 而 (32+7)/2 = 19.5 → k ≈ 0.65&#10;水/海水/地源年振幅小且平滑, 固定 k = 1 (不受此参数影响)。&#10;&#10;⚠ 单一正弦只含季节项, 不含昼夜与天气过程。T̄ 落在斜坡拐点附近时,&#10;  实际方差会把年化贡献率拉向 0.5 —— 此处为已知建模缺口。">年化振幅 k</label><input id="g_fcAnnualK" type="number" value="0.65" step="0.05" min="0.2" max="1" class="input-ind !py-1 !text-xs"></div>
+          <div data-fc-only><label class="text-[10px] text-slate-400" title="自然冷却能效比 EER&#10;仅风机 + 循环泵的耗电, 无压缩机。&#10;干冷器方案 15-25, 板换 + 冷源水方案可更高。&#10;⚠ 注意: 本模型【不额外计 CAPEX】, 假设复用热泵已有排热侧。&#10;实际带集成自然冷却的机组比普通机组贵 15-30% (多一组干冷盘管 + 三通阀 + 控制),&#10;只有项目本来就有开式冷却塔/干冷器时才真是零成本旁通。">自然冷却 EER</label><input id="g_fcEER" type="number" value="20" step="1" min="2" max="50" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="泵电机效率 (0.5-1.0).&#10;泵功率公式 9.81·Q·H/(3600·η泵) 算的是【轴功率】, 不含电机效率.&#10;电耗 = 轴功率 / 电机效率; 电机损失进车间空气.&#10;600 kW 级 IE3 电机 0.95-0.97; 小功率电机 0.85-0.90.&#10;湿式/潜水电机填 1.0 (损失直接进水).">电机效率</label><input id="g_motorEta" type="number" step="0.01" min="0.5" max="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="轴功率中耗散进被泵送水体的比例 (0.5-1.0).&#10;水力功 + 泵内损失几乎全部进水, 仅轴承/密封/泵壳散热进空气.&#10;典型 0.97-0.99.&#10;⚠ 此值不是电机效率 —— 调低会虚增车间得热, 把 T_room 顶穿钳位并人为压低 RH.">泵热进水比例</label><input id="g_pumpHeatRatio" type="number" step="0.01" min="0.5" max="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="排风热回收效率 0-0.85. 国内多为 0; 北欧 0.7-0.85">热回收</label><input id="g_ventHeatRecovery" type="number" step="0.05" min="0" max="0.85" class="input-ind !py-1 !text-xs"></div>
@@ -1094,7 +1108,7 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> v1.9.2 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> v1.9.3 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -1120,7 +1134,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: v1.9.2 · 发布日期: 2026-07-18</div>
+          <div>版本: v1.9.3 · 发布日期: 2026-07-30</div>
           <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -1190,8 +1204,10 @@
       <h2 class="text-lg font-bold text-cyan-400 mb-2">目录</h2>
       <div class="grid grid-cols-2 gap-1 text-xs">
         <a href="#help-1" class="text-cyan-300 hover:text-cyan-100">1. 软件概述</a>
-        <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (76 项)</a>
-        <a href="#help-changelog-v19" class="text-emerald-300 hover:text-emerald-100 font-bold">📌 v1.9 升级说明 (最新)</a>
+        <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (89 项)</a>
+        <a href="#help-changelog-v193" class="text-amber-300 hover:text-amber-100 font-bold">📌 v1.9.3 升级说明 (最新)</a>
+        <a href="#help-changelog-v192" class="text-cyan-300 hover:text-cyan-100">📌 v1.9.2 升级说明</a>
+        <a href="#help-changelog-v19" class="text-emerald-300 hover:text-emerald-100">📌 v1.9 升级说明</a>
         <a href="#help-changelog-v17" class="text-rose-300 hover:text-rose-100 font-bold">📌 v1.7 升级说明</a>
         <a href="#help-changelog-v15" class="text-orange-300 hover:text-orange-100 font-bold">📌 v1.5 升级说明</a>
         <a href="#help-changelog-v14" class="text-yellow-300 hover:text-yellow-100 font-bold">📌 v1.4 升级说明</a>
@@ -1249,11 +1265,95 @@
         <li><b>16 章可行性研究报告 (v1.5)</b>: 按发改委 2017 编制规范输出 <strong>.docx 格式可研报告</strong>, 含工艺流程图 + 累计现金流 + Tornado 敏感性嵌入</li>
       </ul>
 
-      <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010, Millero 2010, Clegg & Whitfield 1995 等) 和工业实测数据 (Atlantic Sapphire, Nordic Aqua 宁波, Salmon Evolution, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="/library/manual.html" target="_blank" class="text-cyan-300 underline">v1.9 技术手册附录 E</a> (40+ 篇核心文献)。</p>
+      <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010, Millero 2010, Clegg & Whitfield 1995 等) 和工业实测数据 (Atlantic Sapphire, Nordic Aqua 宁波, Salmon Evolution, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="/library/manual.html" target="_blank" class="text-cyan-300 underline">技术手册附录 E</a> (40+ 篇核心文献)。</p>
 
       <p class="mt-2 text-slate-400 text-sm">v1.9 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 国内服务器 <a href="http://iras.dengdengtech.cn/" class="text-cyan-300 underline">iras.dengdengtech.cn</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">github.com/chengsunmail/iras</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
 
       <p class="mt-3 text-xs text-slate-500">本工具不替代正式的环境影响评价 / 安全评价 / 节能评价 / 施工图详细设计, 仅用于工程概算阶段 (精度 ±40%)。详见技术手册附录 F 完整免责声明。</p>
+    </section>
+
+    <!-- v1.9.3 升级说明 -->
+    <section id="help-changelog-v193" class="mt-6">
+      <h2 class="text-xl font-bold text-amber-400 border-b border-amber-700/50 pb-2">📌 v1.9.3 升级说明 (2026-07-30) — 基线对齐 · 验证自动化</h2>
+
+      <p class="mt-3 text-slate-400 text-sm">本版<strong>不改动任何计算模型</strong> —— <code>?selftest=1</code> 的 14 项基线逐位不变。全部改动是把<strong>对外发布的数字与真实产品路径对齐</strong>, 并把验证过程固化成可自动运行的测试。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">A. 四工况成本基线对齐</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.9.2 发布的四工况表 (青岛冬 35.63 / 海南冬 37.39 / 海南夏 37.94 / Bergen 35.65) <strong>无法用产品路径复现</strong>: 试过「冬夏同温」「只覆盖冬」「不动 RH」三种气候口径, 全部对不上。判定为<strong>成本模型两层化之前的旧脚本残留</strong>。现按真实 <code>recomputeAll()</code> 重测并替换 (index / 技术手册 / README 三处同步)。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>设备选型完全未变</strong> —— mainline/bypass 对照里主泵 369.0 / 258.3 kW、旁路泵 92.2 kW、综合泵功率 369.0 / 350.5 kW 与旧表逐位一致, 差异只出现在成本与投资两栏。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">B. 口径混排澄清</h3>
+      <p class="mt-2 text-slate-400 text-sm"><code>SELFTEST_BASELINE</code> 的 11 个数值工况本身<strong>混了两种气候口径</strong>: 4 个大西洋鲑工况带 <code>climate</code> 覆盖 (冬夏同温的<strong>隔离口径</strong>), 其余 7 个鱼种不带 (走 <strong>UI 默认气候</strong>)。README 曾把这 11 个数放在同一个「青岛冬」表头下, 同一鱼种两口径差 0.1–0.5 元/kg。数字是对的, 表头已补注说明。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">C. 无头测试套件</h3>
+      <p class="mt-2 text-slate-400 text-sm">新增 <code>tests/</code>: <code>npm test</code> 一条命令跑<strong>十三项</strong> —— 内置自检 (14 工况 × 4 个受检字段 + 两类不变量 + 面板渲染)、存/取方案 roundtrip、下游页面数据链路、部分自然冷却与年化、热工况组合稳健性 (648 次调用)、年化振幅校准锁定、参数杠杆与反悬崖、自然冷却开关反馈、用电汇总闭合性。全部通过真实 <code>recomputeAll()</code> 取数, 注入的 CDN 桩只覆盖渲染层。可直接挂 CI。另有 <code>gen_baseline.js</code> 由产品路径生成文档表格 —— <strong>基线表今后应粘贴它的输出, 不要手抄</strong>, 手抄正是本轮全部旧数的来源。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">D. 部分自然冷却与年化年平均 (P1 + P2)</h3>
+      <p class="mt-2 text-slate-400 text-sm"><strong>问题不是"逼近温差取几 K", 而是判据"非 0 即 1"。</strong> 旧判据 <code>冷源温度 + 逼近温差 &lt; 目标水温</code> 一旦跨过, EER 从 3.45 跳到 20、Q 从 0 跳到全量, <strong>两个量同时跳变</strong> —— 阈值附近出现 5.8 倍的成本悬崖, 几 K 的假设差就能翻出 1 元/kg 级的结果差。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>P1: 换成容量判据。</strong> <code>Q_fc = min(K_fc·ΔT_avail, Q_load)</code> —— <code>Q ∝ ΔT</code> 是精确的而非线性化 (由 ε-NTU: 流量固定时 ε 为常数)。EER 随温差衰减 (风机满转、寄生功率固定, 换到的热变少)。等效 COP: <code>1/COP_eff = (1−g)/COP_cool + g/EER_d</code>。<strong>经济截止点自动涌现且恰好连续</strong>: 截止处 <code>EER_fc = COP_cool</code>, 两条路径边际成本相等, 故 <code>E</code> 两侧完全相等 —— 悬崖不是被磨平, 是不存在了, 且无需为它引入任何参数。</p>
+      <p class="mt-2 text-slate-400 text-sm">参数 <code>逼近温差</code> 换为 <code>设计温差</code>: 语义从"悬崖位置"变为"自然冷却单独扛满设计负荷所需的温差"。它是<strong>换热链串联损失</strong>, 链条越长、末端介质换热系数越差则越大 —— 空气源 (板换 2-3 + 干冷器对空气 5-10) = 8-13 K;水/开式海水 (钛板换 2-3) = 3-6 K;地源 5-7 K。UI 留空即按热源自动取 (空气 11 / 水·海水 4 / 地源 6)。<strong>填错几 K 只会让曲线挪一小段。</strong></p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>P2: 年均工况改为对真实模型做 24 点数值积分。</strong> 自然冷却本质是"全年有多少小时可用", 而阈值函数在均值处取值 ≠ 函数的均值 (Jensen) —— 旧模型切设计冬则判定全年可用 (高估), 切年均则判定全年不可用 (低估), <strong>真值在中间而单点永远给不出</strong>。现按现有三个温度点拟合正弦 <code>T = T̄ + A·cos θ</code>, 对 T_air 与 T_source 用各自振幅、同相位摆动, 逐点跑真实热平衡再平均。</p>
+      <div class="mt-3 overflow-x-auto">
+      <table class="text-xs text-slate-300 w-full">
+      <tr class="text-amber-300 border-b border-slate-700"><th class="text-left py-1 pr-3">地区</th><th class="text-left py-1 pr-3">热源</th><th class="text-right py-1 pr-3">设计冬</th><th class="text-right py-1 pr-3">年均</th><th class="text-right py-1 pr-3">设计夏</th><th class="text-right py-1 pr-3">年化贡献率</th><th class="text-right py-1 pr-3">年化 COP</th></tr>
+      <tr><td class="py-1 pr-3">挪威 Tromsø</td><td class="py-1 pr-3">开式海水</td><td class="text-right py-1 pr-3">37.62</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.64</td><td class="text-right py-1 pr-3">37.67</td><td class="text-right py-1 pr-3">98%</td><td class="text-right py-1 pr-3">18.14</td></tr>
+      <tr><td class="py-1 pr-3">挪威 Bergen</td><td class="py-1 pr-3">开式海水</td><td class="text-right py-1 pr-3">37.66</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.95</td><td class="text-right py-1 pr-3">39.07</td><td class="text-right py-1 pr-3">73%</td><td class="text-right py-1 pr-3">7.82</td></tr>
+      <tr><td class="py-1 pr-3">智利 Puerto Montt</td><td class="py-1 pr-3">开式海水</td><td class="text-right py-1 pr-3">37.67</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">38.13</td><td class="text-right py-1 pr-3">39.07</td><td class="text-right py-1 pr-3">59%</td><td class="text-right py-1 pr-3">5.95</td></tr>
+      <tr><td class="py-1 pr-3">加拿大 Halifax</td><td class="py-1 pr-3">开式海水</td><td class="text-right py-1 pr-3">37.69</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">38.20</td><td class="text-right py-1 pr-3">39.42</td><td class="text-right py-1 pr-3">65%</td><td class="text-right py-1 pr-3">5.85</td></tr>
+      <tr><td class="py-1 pr-3">青岛</td><td class="py-1 pr-3">空气源</td><td class="text-right py-1 pr-3">37.75</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">38.54</td><td class="text-right py-1 pr-3">39.35</td><td class="text-right py-1 pr-3">35%</td><td class="text-right py-1 pr-3">4.64</td></tr>
+      <tr><td class="py-1 pr-3">上海</td><td class="py-1 pr-3">空气源</td><td class="text-right py-1 pr-3">37.80</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">38.81</td><td class="text-right py-1 pr-3">39.54</td><td class="text-right py-1 pr-3">19%</td><td class="text-right py-1 pr-3">3.93</td></tr>
+      <tr><td class="py-1 pr-3">三亚</td><td class="py-1 pr-3">开式海水</td><td class="text-right py-1 pr-3">39.62</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">39.98</td><td class="text-right py-1 pr-3">40.42</td><td class="text-right py-1 pr-3">0%</td><td class="text-right py-1 pr-3">2.30</td></tr>
+      <tr><td class="py-1 pr-3">Doha</td><td class="py-1 pr-3">水源</td><td class="text-right py-1 pr-3">39.24</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">39.68</td><td class="text-right py-1 pr-3">40.26</td><td class="text-right py-1 pr-3">0%</td><td class="text-right py-1 pr-3">2.68</td></tr>
+      </table>
+      </div>
+      <p class="mt-2 text-slate-400 text-sm">元/kg, 1000 t 大西洋鲑, 工艺运行成本。<strong>注意一个反直觉的反转</strong>: 直觉上青岛 −7°C 的冬天该是自然冷却之王, 但<strong>年度账上稳定的 9°C 海水赢两倍以上</strong> (Bergen 73% vs 青岛 35%) —— 因为海水<strong>全年都冷</strong>, 而青岛的空气只冷一段时间。旧模型给不出这个结论, 它只会说两地设计冬都是 COP 20.00。<strong>年化改变的是选址与冷源方案的排序, 不只是把数字调准。</strong></p>
+      <p class="mt-2 text-xs text-slate-500">✅ 振幅校准已核验: 敏感性实测表明 ḡ 的主导不确定性<strong>只有季节振幅 A 一个量</strong>, 而 A 已对多个独立气候常值来源核验 —— 青岛空气 模型 12.7 vs 实测 12.1-13.1;Bergen 海水 4.5 vs 4.0-5.25;Halifax 海水 8.5 vs 8.2-8.9, <strong>三处全部落在实测区间内</strong>。其余 5 个区域仅作合理性判断。校准已由 <code>t7</code> 锁死。<br>⚠ 剩余缺口: ① 昼夜与天气过程未计 —— <strong>已降级为二阶</strong>: A 钉死后 ḡ 对 σ (1→6 K) 的剩余敏感性仅 <strong>0.1-2.2 pp</strong> (A 未钉死时为 8.4-17.7 pp);② RH 按年均值恒定 —— <strong>实测为三阶, 不予实现</strong>: RH 季节数据本已在各区域预设里 (振幅 −2.5~+9.0 pp, 夏湿/夏干两种相位都有), 24 点积分只是没用它。按预设振幅摆动后年化热泵电耗仅变 <strong>−0.07%~+0.30%</strong>, 振幅翻倍也只 −0.15%~+0.60% —— RH 只作用于蒸发/潜热通路, 而净排热由恒定内热主导;③ 闭式解保留为诊断量, 它对贡献率是<strong>精确</strong>的, 但因未计 Q 与冷源温度的相关性, 能耗偏乐观 1-7% —— 这正是改用数值积分的原因。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>P1 核心主张已验证 —— 参数杠杆确实被压平。</strong> ΔT_design 在全合理区间内扫描: Bergen 海水 2→6 K 成本极差仅 <strong>0.35</strong> 元/kg (P1 之前 6→10 K 就 +1.20), 青岛空气 6→16 K 极差 <strong>0.20</strong>;单位 K 杠杆由 0.30 降至 0.087 / 0.02, <strong>约降一个数量级</strong>。EER_design 12→30 (2.5 倍) 极差 0.11-0.22。<strong>设计冬工况极差为 0.0000</strong> —— ΔT_avail 全区间远超 ΔT_design, 贡献率恒为 1, 这正是 14 项基线中性的根据。反悬崖指标: 扫描中最大单步跳变仅占总极差 <strong>30-31%</strong> (阈值判据会接近 100%), 已由 <code>t8</code> 锁死。</p>
+      <p class="mt-2 text-xs text-slate-500">✅ 自检 14 项基线<strong>逐位不变</strong>: 四工况全是空气源且 ΔT_avail 远超 ΔT_design, 落在饱和区。最紧的是 Bergen 设计冬苗种期 (x = 12/11 = 1.09), <strong>余量仅 9%</strong> —— 将来上调空气源设计温差会让 <code>salmon_bergen_w</code> FAIL, 那是【预期行为】, 说明该基线确实压在全量自然冷却的边界上, 应同步复核而非直接改基线。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">E. 比电耗与热泵电费: 补出口, 纳入自检</h3>
+      <p class="mt-2 text-slate-400 text-sm">比电耗 (kWh/kg·yr) 与热泵电费 (元/kg) 是对外发布的核心指标, 但 <code>summary</code> 里<strong>此前没有对应字段</strong> —— 页面上的 <code>kwhPerKgYr</code> 只是热泵单项且分阶段。因此这两个数进不了 <code>SELFTEST_BASELINE</code>、<strong>无法自检</strong>, 至今只是"碰巧还对着"。本版补上 <code>kwhPerKg</code> / <code>elecCostPerKg</code> / <code>hpCostPerKg</code> / <code>pumpShareOfElec</code> / <code>loxTonsPerYear</code> 五个出口, 并把前两者写入全部 11 条数值基线。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>纳入后立刻发现旧发布值偏高</strong>: 比电耗 9.7 → <strong>9.51</strong>, 热泵电费 0.29 → <strong>0.21</strong> (差 28%)。根因是旧手推口径对<strong>臭氧与 BF 风机取了峰值</strong>, 而年成本按 <code>totalAvg × 365</code> 计算 —— 产品路径的均值口径才与成本模型自洽。四工况表的比电耗列已按产品出口更新。液氧年耗 471 t 经核对本就正确。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>为什么不在汇总层手列 kWh 清单</strong>: ① <strong>增氧可能是电</strong> —— <code>aerationMode==='air'</code> 时是主风机电费, 纯氧时才是液氧;旧手推完全漏了这一项, 只因大西洋鲑走纯氧才碰巧对上。② 臭氧、BF 风机、增氧都有峰/均之分。故电量在<strong>成本函数内部、紧挨 <code>totalAvg</code> 那一行</strong>计算, 复用它已用的成本项再除以电价 —— 口径天然一致, 且可与 <code>totalAvg</code> 逐项肉眼对照, 将来新增用电项漏加即可发现。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ v1.9.2 变更日志里"热泵费 1.68 → 0.29 元/kg"的叙述<strong>保留原样</strong>: 那是历史记述, 而 1.68 那一侧对应的旧代码已不存在、无法测量。改成 0.21 会让该叙述一半真一半编。当前值以本节与基线为准。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">F. 备用设备计入设备投资</h3>
+      <p class="mt-2 text-slate-400 text-sm">模型一直按 <strong>N+1</strong> 给每个模块配备用 (<code>applyModularization</code>), 设备清单也把备用台数展开成「N 台+1 备 ×M 模块」, 但 <code>calcCapex</code> 是<strong>按工艺容量</strong>计价的 (元/kW、元/(m³/h)) —— <strong>备机只选型、不花钱</strong>。实证: 把「套数」由 1 改到 5, 备用台数随之变化而设备直购恒为 4360 万。同一方案里「清单说 2 台、投资按 1 台算」。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>冗余系数 = 实际装机 / 工艺需求</strong>。不能用 (N+备)/N —— 它对 N+1 备用正确, 但对<strong>超配并联失效</strong>: UV 是 2×75% 并联 (装机 = 需求 ×1.5) 而备用数为 0, (N+备)/N 会算成 1.00, 于是实际装 150% 却只按 100% 计价。这是 v1.3 就存在、因从未按装机量计价而一直未暴露的漏算, 本版一并修正 (+35 万)。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>臭氧发生器改 2×50% 并联</strong>: 原为 1+1, 而臭氧四个阶段的 N 恒为 1, 意味着 100% 冗余 —— 成鱼期单台 286 万、备机等额, 单项就占备用增量的 48%。臭氧停机不像主泵那样 15-30 min 致鱼窒息, 多数项目按「可短时降容」处理。改为 2×50% 后装机 = 需求, 不额外增加投资, 任一台故障仍维持 50% 氧化能力。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>新增加药计量泵条目</strong>: 此前有 1+1 备用规格却<strong>没有 CAPEX 条目</strong>。按台计价 5000 元/台 (国产液压隔膜 + 耐腐泵头到场价;按 kW 计价会差一个数量级)。全场 8 台共 4 万, 对成本无实质影响, 价值在消除「清单有台数、投资 0 台」的矛盾。<strong>补 CO₂ 脱气塔风机</strong>的模块化规格 (环路内转动设备, 此前无规格故无备用)。</p>
+      <div class="mt-3 overflow-x-auto"><table class="text-xs text-slate-300 w-full">
+      <tr class="text-amber-300 border-b border-slate-700"><th class="text-left py-1 pr-3">阶段</th><th class="text-right py-1 pr-3">备用增量</th><th class="text-left py-1 pr-3">主泵/RDF/热泵/臭氧 的 N</th></tr>
+      <tr><td class="py-1 pr-3">苗种期</td><td class="text-right py-1 pr-3">33.4 万</td><td class="py-1 pr-3">1 / 1 / 1 / 2</td></tr>
+      <tr><td class="py-1 pr-3">幼鱼期</td><td class="text-right py-1 pr-3">121.3 万</td><td class="py-1 pr-3">1 / 2 / 1 / 2</td></tr>
+      <tr><td class="py-1 pr-3">中鱼期</td><td class="text-right py-1 pr-3">182.5 万</td><td class="py-1 pr-3">2 / 3 / 2 / 2</td></tr>
+      <tr><td class="py-1 pr-3">成鱼期</td><td class="text-right py-1 pr-3">288.8 万</td><td class="py-1 pr-3">2 / 4 / 3 / 2</td></tr>
+      <tr class="border-t border-slate-700"><td class="py-1 pr-3 font-bold">全场</td><td class="text-right py-1 pr-3 font-bold text-amber-300">626 万</td><td class="py-1 pr-3">N 随规模增长 → 冗余系数由 ×2.00 降至 ×1.25</td></tr>
+      </table></div>
+      <p class="mt-2 text-slate-400 text-sm">备机与主机同样乘 ×2.2 工程放大系数 (<strong>安装备用</strong>: 管路阀门电气全通, 可自动切换)。结果: 设备直购 4360 → 4986 万, 折旧 8.07 → 9.14 元/kg, <strong>工艺运行成本 35.74 → 37.33 元/kg</strong>。全部 11 条数值基线与三份文档的成本数字已同步重算。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ 实现要点: <code>items[].qty</code> 保持<strong>工艺容量</strong>不变 —— 自检的不变量断言拿 CAPEX 热泵 qty 与 <code>hpInstalledKwOf</code> 统一公式比对, 把备用乘进 qty 会让该断言失败。冗余系数只作用于 <code>cost</code>, 另存 <code>spareRatio</code> / <code>costRun</code> 供追溯。<br>⚠ 已知未含备用: <strong>机械除湿机</strong> (全场设备, 不在模块环路内, 本版仅确认不配模块内备机, 未移入站级 —— 实测其分区选型不构成重复计算, 且移动不改变任何数字)。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">G. 第三轮外部审计修复 (P0 / P1 / P2)</h3>
+      <p class="mt-2 text-slate-400 text-sm"><strong>P0 · 渲染层口径分歧</strong>: 工况对比表用 <code>heatPumpKWh / 16</code> (电耗÷16h), 而正上方热平衡卡片用 <code>热功率 ÷ 22h</code> —— <strong>同屏两个数差 14 倍</strong> (38 vs 548 kW)。自然冷却把冬季电耗压掉一个数量级后尤为离谱。<strong>数据层的不变量断言抓不到</strong>: <code>sCap</code> 是渲染层局部变量, 不落任何数据结构。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>P0 · 防除零 clamp 推翻经济截止判据</strong>: <code>Math.min(0.999, COP_cool/EER)</code> 在 EER &lt; COP_cool 时把「自然冷却永不经济」硬拉成「几乎总经济」。实测 <strong>EER=1 时电耗 6277 vs 关闭自然冷却 1819 —— 多耗 3.45 倍</strong>, 且无任何提示 (EER=2 多耗 1.72×, EER=3 多耗 1.15×, EER=3.45 恰好相等)。改为 <code>x ≥ 1 直接置 g = 0</code>;EER 钳到 [1, 60] (此前无上界, 填 1e6 得电耗 0)。界面新增一档提示「自然冷却不经济 (EER ≤ 机械制冷 COP, 已自动改走机械制冷)」。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>P1 · 热泵漏出 SPARE_MAP</strong>: <code>modulePerSpec.heatPump</code> 有 <code>sparesCount=1</code>, 设备清单与 P&amp;ID 都按 N+1 展开, 唯独 CAPEX 按 N 计价 —— 是备用政策下唯一不一致的转动设备。<strong>P1 · 年均基线缺失</strong>: 11 条数值工况全跑设计冬, 而 4 条大西洋鲑用冬夏同温的隔离口径 ⇒ 年振幅为 0、24 点积分退化成单点, <strong>该核心路径在内置自检里一次都没被执行</strong>。已新增 <code>salmon_qingdao_annual</code>, 自检 14 → <strong>15 项</strong>。<strong>P2</strong>: 氧锥旁路泵补进支路泵冗余数组 (bypass 拓扑下占该项 46%)。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">H. 数值钳制 (clamp) 普查</h3>
+      <p class="mt-2 text-slate-400 text-sm">本项目两次栽在 <code>Math.max/min(…, 常数)</code> 上, 且<strong>两次都是外部发现的</strong>: <code>Math.max(1−R, 0.001)</code> 在默认换水率 4% 就在触发, 使 NO₃ 完全不响应换水率 (v1.0 起的静默错误);<code>Math.min(0.999, …)</code> 见上。<strong>这类错误不产生 NaN、不越界、不让基线 FAIL</strong> —— 现有三类断言结构上无能为力。</p>
+      <p class="mt-2 text-slate-400 text-sm">故引入<strong>扰动测试</strong>: 把常数改到「不可能生效」的值, 比对全场输出指纹。指纹变了 = 该 clamp 正在生效 → 人工判定是物理边界还是静默改写。采用<strong>分组二分</strong>: 126 项候选只用 38 次 jsdom (逐个跑需 128 次)。<strong>结论: 4 处正在生效, 逐条判定后全部为有意设计</strong> —— 集水池容积区间 20/200 m³、BF 风机日均负荷比下限 0.5、自然冷却贡献率封顶 1。最令人担心的 COP 下限 1.5/1.8/2.0、蒸发系数 β 区间、RH 域, <strong>在正常工况下全部不触发</strong>。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ 覆盖边界: 指纹只覆盖三文鱼+罗非鱼、设计冬+年均, <strong>只在极端参数下才越界的 clamp 会漏</strong>;A 类 (常数 0/1) 65 项未测。全表见 <code>CLAMP_INVENTORY.md</code>, 哨兵 <code>t11</code> 秒级检出「新增了没人测过的 clamp」。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">I. 热泵装机: 收敛到单一出口</h3>
+      <p class="mt-2 text-slate-400 text-sm">审计建议「让装机 kW 只有一个 formatter 出口」。普查后发现消费点<strong>不是 4 个而是 5 个</strong>, 第五个更隐蔽: <code>summary.totalHeatPumpCapacityKw</code> 用<strong>电耗 ÷ 小时数</strong>而非<strong>热功率 ÷ 小时数</strong>, 实测<strong>青岛 36.6 vs 统一公式 997.3 kW —— 差 27 倍</strong>, 且它进导出载荷与下游页面。另发现利用小时的解析逻辑<strong>被复制了 4 份</strong> (复制即分叉隐患)。已抽出 <code>hpUtilHoursOf()</code> 唯一出口, <code>summary</code> 改用 <code>hpInstalledKwOf</code>。新增 <code>t12</code> 三层断言, 其中一层<strong>直接读渲染出的 DOM 文本</strong> —— 这一层正是原断言的盲区。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">J. 水质告警: NH₃ 按鱼种 + Ω 方解石</h3>
+      <p class="mt-2 text-slate-400 text-sm"><strong>NH₃ 着色阈值</strong>: 鱼种限值表 <code>NH3_LIMIT_UG_L</code> 早已存在 (鲑 12.5 / 大菱鲆 20 / 石斑 30 / 鲈·鳜·虾 50 / 鳗 60 / 罗非 100 μg/L), 同一行 tooltip 也写着「三文鱼 12.5」, 但<strong>判据写死 25 μg/L</strong> —— 最敏感的鲑科用了 2× 宽松阈值。改为三档: 超限值红 / 超半限值黄 / 其余绿。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>方解石饱和度 Ω</strong>: 此前<strong>界面上完全没有显示</strong> —— 不是缺告警, 是连数字都看不到 (它已算出并进导出载荷)。现补一行并按 &lt;0.8 危险 / &lt;1.0 警戒着色。实测<strong>海水鱼种几乎全程欠饱和</strong>: 三文鱼 0.45–0.58、大菱鲆 0.37–0.56、对虾 0.78–1.29 (仅苗种期达标)。这是模型算出的真实状态 —— 高密度 RAS 中 CO₂ 累积压低 pH、CO₃²⁻ 占比骤降。<strong>工程后果: Ω &lt; 1 时水对碳酸钙不饱和, 持续溶蚀混凝土池体与水泥基砂浆</strong>。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ 蒸发计入补水 (审计 P3 第三项) <strong>经实测后决定不做</strong>: 蒸发仅占补水 0.06%–0.32% (青岛 1.48 / Doha 0.92 / 三亚 0.29 m³·d⁻¹ vs 补水 461), 折算成本 &lt; 0.001 元/kg, 而改动会使 12 条基线与三份文档数字再重算一遍。⚠ 该结论依赖<strong>默认 poolCover=partial 且换水率 5%/d</strong>;敞开池面 + 干热气候 + 低换水率时占比会显著上升。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">K. 已修: 上述盲区</h3>
+      <p class="mt-2 text-slate-400 text-sm"><strong>比电耗与热泵电费没有产品出口</strong> —— <code>summary</code> 里没有对应字段 (页面上的 <code>kwhPerKgYr</code> 只是热泵单项、且是分阶段的), 因此进不了 <code>SELFTEST_BASELINE</code>, 无法自检。它们现在只是碰巧还对着。建议下一版补 <code>kwhPerKg</code> / <code>hpCostPerKg</code> 两个字段并纳入基线。</p>
+      <p class="mt-2 text-xs text-slate-500">附: 年化基准是 <strong>365 天而非 stageDays</strong> —— 各生活阶段在场内全年并行运行。按 stageDays 串行累加会把比电耗低估 2.3 倍 (4.2 vs 9.7 kWh/kg), 已用年液氧 471 t 反查确认。</p>
     </section>
 
     <!-- v1.9.2 升级说明 -->
@@ -1285,13 +1385,13 @@
       <div class="mt-2 overflow-x-auto">
       <table class="text-xs text-slate-300 w-full">
         <tr class="text-cyan-300 border-b border-slate-700"><th class="text-left py-1 pr-3">工况</th><th class="text-left py-1 pr-3">气温/源水</th><th class="text-right py-1 pr-3">OPEX</th><th class="text-right py-1 pr-3">折旧</th><th class="text-right py-1 pr-3">综合成本</th><th class="text-right py-1 pr-3">比电耗</th></tr>
-        <tr><td class="py-1 pr-3">青岛冬</td><td class="py-1 pr-3">-7°C / 4°C</td><td class="text-right py-1 pr-3">27.70</td><td class="text-right py-1 pr-3">7.93</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">35.63</td><td class="text-right py-1 pr-3">9.7</td></tr>
-        <tr><td class="py-1 pr-3">海南冬</td><td class="py-1 pr-3">17°C / 22°C</td><td class="text-right py-1 pr-3">29.40</td><td class="text-right py-1 pr-3">7.99</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.39</td><td class="text-right py-1 pr-3">12.1</td></tr>
-        <tr><td class="py-1 pr-3">海南夏</td><td class="py-1 pr-3">32°C / 27°C</td><td class="text-right py-1 pr-3">29.91</td><td class="text-right py-1 pr-3">8.04</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.94</td><td class="text-right py-1 pr-3">12.8</td></tr>
-        <tr><td class="py-1 pr-3">挪威 Bergen 冬</td><td class="py-1 pr-3">0°C / 4°C</td><td class="text-right py-1 pr-3">27.71</td><td class="text-right py-1 pr-3">7.94</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">35.65</td><td class="text-right py-1 pr-3">9.7</td></tr>
+        <tr><td class="py-1 pr-3">青岛冬</td><td class="py-1 pr-3">-7°C / 4°C</td><td class="text-right py-1 pr-3">28.26</td><td class="text-right py-1 pr-3">9.27</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.53</td><td class="text-right py-1 pr-3">9.5</td></tr>
+        <tr><td class="py-1 pr-3">海南冬</td><td class="py-1 pr-3">17°C / 22°C</td><td class="text-right py-1 pr-3">29.57</td><td class="text-right py-1 pr-3">9.37</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">38.94</td><td class="text-right py-1 pr-3">11.9</td></tr>
+        <tr><td class="py-1 pr-3">海南夏</td><td class="py-1 pr-3">32°C / 27°C</td><td class="text-right py-1 pr-3">29.95</td><td class="text-right py-1 pr-3">9.43</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">39.39</td><td class="text-right py-1 pr-3">12.6</td></tr>
+        <tr><td class="py-1 pr-3">挪威 Bergen 冬</td><td class="py-1 pr-3">0°C / 4°C</td><td class="text-right py-1 pr-3">28.27</td><td class="text-right py-1 pr-3">9.28</td><td class="text-right py-1 pr-3 text-emerald-300 font-bold">37.55</td><td class="text-right py-1 pr-3">9.5</td></tr>
       </table>
       </div>
-      <p class="mt-2 text-slate-400 text-sm">单位元/kg 鱼, 电 0.7 元/kWh / 液氧 1.2 元/kg / 饲料 12 元/kg。比电耗单位 kWh/kg·yr。年液氧消耗 <strong>473 t</strong> (四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化, 与气候无关)。<br><span class="text-slate-500">方法学: 每行按<strong>独立稳态点</strong>评估 —— 设计冬 / 设计夏两个热工况均取该行的气温与源水温, 以隔离气候单一变量。实际项目中热泵装机应按当地全年包线 (冬夏两端) 定容, 折旧会略高于本表 (实测约 +0.5%)。</span></p>
+      <p class="mt-2 text-slate-400 text-sm">单位元/kg 鱼, 电 0.7 元/kWh / 液氧 1.2 元/kg / 饲料 12 元/kg。比电耗单位 kWh/kg·yr。年液氧消耗 <strong>471 t</strong> (四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化, 与气候无关)。<br><span class="text-slate-500">方法学: 每行按<strong>独立稳态点</strong>评估 —— 设计冬 / 设计夏两个热工况均取该行的气温与源水温, 以隔离气候单一变量。实际项目中热泵装机应按当地全年包线 (冬夏两端) 定容, 折旧会略高于本表 (实测约 +0.5%)。</span></p>
       <p class="mt-2 text-slate-400 text-sm"><strong>与 v1.3 老基线的差异</strong>: 老表 (青岛冬 35.96 / 海南冬 37.70 / 海南夏 40.47 / Bergen 36.30) 跨气候跨度 4.51 元/kg, 新基线为 <strong>2.31 元/kg</strong>。压缩来自 B 项蒸发系数量纲修正 (凝结放热降 2-2.4 倍)、C 项通风口径, 以及 H 项代谢产热改由氧当量导出 —— 气候差异现在几乎全部体现在热泵费上 (<strong>0.29 → 2.53 元/kg</strong>), 饲料费 14.80 与泵电费 5.30 跨工况不变。<br><strong>四工况全部为制冷工况</strong>: 气候无关的基础热负荷 (池内生物产热 5271 + 设备产热 20677 = 25948 kWh/d) 远超水侧散热能力, 青岛 -7°C 也不例外 —— 这是 RAS 常年需要制冷的结构性原因, 不是模型异常。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">H. 第三方审计修复 + 自然冷却 + 自检</h3>
@@ -1305,7 +1405,7 @@
       <strong>空场 NaN 污染</strong> (清空产量输入框即触发, 全场汇总显示 NaN 且无提示) ·
       <strong>方案 JSON 导入 DOM-XSS</strong>。
       新增<strong>自然冷却</strong>路径 (冬季室外低温直接排热, 压缩机不启动, 寒冷气候热泵费 1.68 → 0.29 元/kg)
-      与 <strong>?selftest=1 自检入口</strong> (11 个工况走真实 recomputeAll 路径比对基线)。
+      与 <strong>?selftest=1 自检入口</strong> (14 个工况走真实 recomputeAll 路径: 11 个数值工况 + 3 个边界工况)。
       详见技术手册「版本演进 → I. 第三方审计修复」。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">I. mainline vs bypass (青岛冬)</h3>
@@ -1316,8 +1416,8 @@
         <tr><td class="py-1 pr-3">旁路泵 P-602</td><td class="text-right py-1 pr-3">0</td><td class="text-right py-1 pr-3">92.2 kW</td><td class="text-right py-1 pr-3">+92.2</td></tr>
         <tr><td class="py-1 pr-3">综合泵功率</td><td class="text-right py-1 pr-3">369.0 kW</td><td class="text-right py-1 pr-3">350.5 kW</td><td class="text-right py-1 pr-3 text-emerald-300">-18.4</td></tr>
         <tr><td class="py-1 pr-3">氧锥流量</td><td class="text-right py-1 pr-3">10155 m³/h</td><td class="text-right py-1 pr-3">1015 m³/h</td><td class="text-right py-1 pr-3">缩 10×</td></tr>
-        <tr><td class="py-1 pr-3">工程总投资</td><td class="text-right py-1 pr-3">9433 万</td><td class="text-right py-1 pr-3">8104 万</td><td class="text-right py-1 pr-3 text-emerald-300">-1329 万</td></tr>
-        <tr><td class="py-1 pr-3">综合成本(工艺)</td><td class="text-right py-1 pr-3">35.63</td><td class="text-right py-1 pr-3">33.95</td><td class="text-right py-1 pr-3 text-emerald-300">-1.68 元/kg</td></tr>
+        <tr><td class="py-1 pr-3">工程总投资</td><td class="text-right py-1 pr-3">11026 万</td><td class="text-right py-1 pr-3">9771 万</td><td class="text-right py-1 pr-3 text-emerald-300">-1255 万</td></tr>
+        <tr><td class="py-1 pr-3">综合成本(工艺)</td><td class="text-right py-1 pr-3">37.53</td><td class="text-right py-1 pr-3">35.94</td><td class="text-right py-1 pr-3 text-emerald-300">-1.59 元/kg</td></tr>
       </table>
       </div>
       <p class="mt-2 text-slate-400 text-sm">bypass 节能幅度从 v1.7 的 29.8 kW 降到 18.4 kW —— 主泵扬程降低后, "旁路让主泵不过锥"这个优势的绝对值随之变小; 但 CAPEX 节省 (氧锥按小流量定价) 基本不变, 仍是 bypass 的主要收益来源。</p>
@@ -2911,6 +3011,42 @@
 <td class="py-1 pr-3 text-slate-300">照明/控制柜/备用/仪表等本套 RAS 杂项电耗</td>
 <td class="py-1 text-slate-400 text-[11px]">小规模 20-50, 中规模 50-100, 大规模 100-200</td>
 </tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">freeCoolingEnabled</td>
+<td class="py-1 pr-3 text-slate-200">自然冷却开关</td>
+<td class="py-1 pr-3 text-slate-400">开关</td>
+<td class="py-1 pr-3 text-emerald-300/90">true</td>
+<td class="py-1 pr-3 text-slate-400">true/false</td>
+<td class="py-1 pr-3 text-slate-300">制冷工况下允许用干冷器/板换直接排热, 压缩机旁通。关闭则强制全部走机械压缩制冷</td>
+<td class="py-1 text-slate-400 text-[11px]">仅在冷源温度高于目标水温的暖区无实际影响 (界面会提示不可用原因)</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">fcDesignDT_K</td>
+<td class="py-1 pr-3 text-slate-200">自然冷却设计温差</td>
+<td class="py-1 pr-3 text-slate-400">K</td>
+<td class="py-1 pr-3 text-emerald-300/90">留空=自动</td>
+<td class="py-1 pr-3 text-slate-400">0-30</td>
+<td class="py-1 pr-3 text-slate-300">自然冷却<b>单独扛满设计负荷</b>所需的冷源-水温差。不是开关阈值 —— 温差不足时按比例做部分自然冷却</td>
+<td class="py-1 text-slate-400 text-[11px]">留空按热源自动取: 空气 11 / 水·海水 4 / 地源 6。填错几 K 只让曲线挪一小段</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">fcAnnualK_air</td>
+<td class="py-1 pr-3 text-slate-200">年化振幅折减 k</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.65</td>
+<td class="py-1 pr-3 text-slate-400">0.2-1.5</td>
+<td class="py-1 pr-3 text-slate-300">年均工况把逐时温度近似为正弦 T = T̄ + A·cos θ, A = k·(夏−冬)/2。仅作用于空气源</td>
+<td class="py-1 text-slate-400 text-[11px]">设计冬/夏是百分位极值而非正弦峰值故需折减;水/海水/地源固定 k=1</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">freeCoolingEER</td>
+<td class="py-1 pr-3 text-slate-200">自然冷却能效比</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-emerald-300/90">20</td>
+<td class="py-1 pr-3 text-slate-400">2-50</td>
+<td class="py-1 pr-3 text-slate-300">设计点能效比, 仅含冷源侧风机与循环泵的<b>增量</b>功率 (不含工艺侧循环泵, 后者已在泵电耗内)</td>
+<td class="py-1 text-slate-400 text-[11px]">干冷器方案 15-25;板换+冷源水方案可更高</td>
+</tr>
 </tbody></table>
   </div>
   <h3 class="mt-6 font-bold text-cyan-300 text-base">参数变量优先级（生效顺序）</h3>
@@ -3250,8 +3386,8 @@
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
-  version: '1.9.2',
-  releaseDate: '2026-07-18',
+  version: '1.9.3',
+  releaseDate: '2026-07-30',
   author: '孙程',
   email: '6881509@qq.com',
   company: '海南登登科技咨询有限公司',
@@ -3603,17 +3739,40 @@ const PROCESS_DEFAULTS = {
   //   完全可以用干冷器/板换直接把热排给室外空气或冷源水 —— 压缩机不启动, 只跑风机和泵.
   //   实际能效比 (EER) 可达 15-30, 而不是 3.45. 旧模型在寒冷气候下高估热泵电耗约 5-8 倍.
   //
-  //   【判定】制冷工况下, 若 冷源温度 + 逼近温差 < 目标水温, 即可全自然冷却.
-  //     冷源: 空气源热泵取 T_air; 水/海水/地源取对应源温.
-  //     逼近温差: 干冷器 5-8 K (取 6); 板换 2-3 K —— 统一用 freeCoolingApproach_K.
-  //   【部分自然冷却】未做. 冷源温度接近但不足时, 实际可做预冷 + 压缩机补足,
-  //     本模型按"全有或全无"处理 (保守: 达不到判定就全走机械制冷).
+  //   【v1.9.3 判据换代: 阈值 → 容量】
+  //     旧判据「冷源温度 + 逼近温差 < 目标水温」是阈值型: 一旦跨过, EER 从 3.45 跳到 20、
+  //     Q 从 0 跳到全量, 两个量同时跳变 → 阈值附近出现 5.8 倍的成本悬崖,
+  //     几 K 的假设差就能翻出 1 元/kg 级的结果差. 这是"全有或全无"的根本缺陷.
   //
-  //   【CAPEX】不额外计 —— 自然冷却复用热泵已有的换热排热侧, 只是压缩机旁通.
-  //     热泵仍按最不利工况 (通常夏季) 定容, 故装机不变、只省电.
+  //     新判据用换热【容量】: Q_fc = min(K_fc · ΔT_avail, Q_load).
+  //     Q ∝ ΔT 是精确的而非线性化 —— 由 ε-NTU: Q = ε·C_min·ΔT_in, 流量固定时
+  //     NTU 与 C_r 固定, 故 ε 是常数.
+  //     以 fcDesignDT_K 标定: 自然冷却单独扛满设计负荷所需的温差 (K_fc = Q_design / ΔT_design).
+  //     该参数从"悬崖位置"变成"换热能力刻度" —— 填错几 K 只是曲线挪一小段.
+  //
+  //   【EER 随 ΔT 衰减】容量受限时风机仍满转, 寄生功率固定而换到的热变少:
+  //     EER_fc = EER_design · min(ΔT_avail/ΔT_design, 1).
+  //     计量边界: EER_fc 只算冷源侧【增量】寄生功率 (风机/冷源泵),
+  //     不含工艺侧循环泵 —— 后者已在 pumpKwhDaily, 且板换工艺侧阻力已计入
+  //     mainPumpHead 的「UV/板换 0.5-2 m」预算. 不划这条线会双重计数 (量级达百 kW).
+  //
+  //   【经济截止点自动涌现, 且恰好连续】仅当 EER_fc > COP_cool 才值得开风机.
+  //     在截止点 EER_fc = COP_cool, 于是
+  //       E = Q_fc/COP_cool + (Q−Q_fc)/COP_cool = Q/COP_cool
+  //     两侧完全相等 —— 悬崖不是被磨平, 是不存在了 (切换点正是两条路径边际成本相等处).
+  //     故无需为截止点引入任何参数.
+  //
+  //   【等效 COP】1/COP_eff = (1−g)/COP_cool + g/EER_design,  g ∈ [0,1] 为归一化节省率.
+  //     g=0 → COP_cool; g=1 → EER_design. 下游 heatPumpKWh = Q/COP 无需改动.
+  //
+  //   【CAPEX】仍不额外计, 且【装机不受影响】—— heatPumpThermalKWh = Q_pump_load 与 g 无关,
+  //     热泵按最不利工况 (夏季, 此时自然冷却本就不可用) 定容. 只省电, 不缩机.
   freeCoolingEnabled: true,        // 是否允许自然冷却
-  freeCoolingApproach_K: 6,        // 逼近温差 K (干冷器 5-8, 板换 2-3)
-  freeCoolingEER: 20,              // 自然冷却能效比 (仅风机+泵, 15-30)
+  fcDesignDT_K: null,              // 设计温差 K (null = 按热泵热源自动, 见 FC_DESIGN_DT_BY_SOURCE)
+  fcAnnualK_air: 0.65,             // 年化正弦振幅折减 (仅空气源, 见 fcGbarSinusoid)
+  freeCoolingEER: 20,              // 设计点能效比 (仅冷源侧风机+泵的增量功率)
+  // ⚠ freeCoolingApproach_K 已废弃 (v1.9.2 阈值判据遗留). 语义已变,
+  //   老方案里该字段会被忽略而非迁移 —— 沿用旧数值会误导.
   o2TssRefMgL: 3.0,                // 基准 TSS (mg/L), 截距的参照点
   o2TssBaseHetero: 0.074,          // kg O₂/kg 饲料 — 基准 TSS 下的基础异养耗氧 (截距)
   o2TssSlope: 0.05,                // kg O₂/(kg 饲料·mg/L TSS) — 超出基准 TSS 后的增量 (斜率)
@@ -4072,6 +4231,14 @@ const EQUIP_PRICES_DEFAULTS = {
   degas:     { label: '脱气塔',            unit: '元/m²',      price: 20000,  lo: 15000,hi: 30000 },
   mainPump:  { label: '主循环泵+变频',     unit: '元/kW',      price: 3500,   lo: 2500, hi: 5000  },
   branchPump:{ label: '支路泵 (各)',       unit: '元/kW',      price: 3000,   lo: 2000, hi: 4000  },
+  // v1.9.3: 加药计量泵【按台计价】—— 计量泵按 kW 计价会差一个数量级
+  //   (0.5 kW × 3000 元/kW = 1500 元, 而实际耐腐计量泵是万元级)
+  //   市场行情: 国产机械隔膜 800-3000 元/台;液压隔膜 (国产高端) 3000-8000;
+  //   进口或特殊材质 (316L/哈氏合金/衬氟) 5000-20000。
+  //   取 5000: 国产液压隔膜 + 耐腐泵头 + 自带控制器的到场价。
+  //   甲醇需防爆电机、NaHCO₃ 需耐碱泵头, 均落在区间上沿。
+  //   安装与管路由 ×2.2 工程放大系数覆盖, 此处只计设备到场价。
+  dosingPump:{ label: '加药计量泵 (每台)',  unit: '元/台',      price: 5000,   lo: 2000, hi: 15000 },
   blower:    { label: '罗茨风机',          unit: '元/kW',      price: 4000,   lo: 3000, hi: 6000  },
   o2tower:   { label: '液氧增氧塔',        unit: '元/(m³/h)',  price: 350,    lo: 200,  hi: 500   },
   // v1.6: 液氧储罐已挪到 ③ 节"站级设备"区 (siteEquipConfig.oxygenTank), 用户可在那里调规格/数量/单价
@@ -4479,7 +4646,146 @@ function calcFlowAndConcentration(load, density, turnover) {
                    = 'design_summer': 装机最热工况
                    = 'annual':        年度能耗均值
    ============================================================================ */
+/* ============================================================================
+   v1.9.3: 自然冷却设计温差的冷源默认值 + 年化闭式解
+   ============================================================================
+   【设计温差 = 换热链串联损失】链条越长、末端介质换热系数越差, 所需温差越大:
+
+     空气源 (干冷器)  工艺水 → 板换 2-3 K → 乙二醇环路 → 干冷器对空气 5-10 K   → 8-13 K
+     水 / 开式海水    工艺水 → 钛板换 2-3 K → 冷源水 (双屏障再 +2-3)            → 3-6 K
+     地源            板换 2 K + 埋管对土壤 3-5 K                              → 5-7 K
+
+   空气侧温差大, 因为空气 ρ·cp 小, 同样热量需巨大风量, 受风机功率约束;
+   水-水板换换热系数高一两个数量级, 1-3 K 即可实现。
+
+   反推自校验 (1000 t 鲑鱼, Q_load ≈ 1081 kW):
+     开式海水 允许温升 2.5 K → 371 m³/h, C_min=432 kW/K, ε=0.8 → K_fc=346 → ΔT_design=3.1 K
+     干冷器   空气温升 8 K → 40 万 m³/h, C_min=135 kW/K, ε=0.7 → K_fc=94.5 → ΔT_design=11.4 K
+   寄生功率同样吻合: 干冷器 风机 34.5 + 乙二醇泵 14.5 ≈ 49 kW → EER 22 (手册 15-25);
+   海水 泵 21.7 kW → EER 50 (手册"板换+冷源水方案可更高").
+
+   ⚠ 空气源取 11 而非 11.4: Bergen 设计冬苗种期 (T_target 12, T_air 0) 的 ΔT_avail = 12,
+     x = 12/11 = 1.09 > 1 仍为全量自然冷却, 保持 SELFTEST_BASELINE 中性。
+     余量仅 9% —— 若将来上调此值, 自检 salmon_bergen_w 会 FAIL, 那是【预期行为】,
+     说明该基线确实压在全量自然冷却的边界上, 应同步复核而非直接改基线。
+   ========================================================================== */
+const FC_DESIGN_DT_BY_SOURCE = Object.freeze({
+  air: 11, water: 4, seawater_open: 4, ground: 6
+});
+const FC_DESIGN_DT_FALLBACK = 11;
+
+/* 正弦年化: g 是钳位斜坡, 对正弦温度分布取期望有闭式解。
+   ------------------------------------------------------------------
+   g(T) = clamp((T_hi − T)/(T_hi − T_lo), 0, 1) 可用 layer-cake 拆成阈值积分:
+     g(T) = 1/(T_hi−T_lo) · ∫_{T_lo}^{T_hi} 1{T ≤ τ} dτ
+   ⇒ ḡ = 1/(T_hi−T_lo) · ∫ F(τ) dτ,  F = 温度累积分布
+
+   T = T̄ + A·cos θ (θ 均匀) ⇒ F(τ) = 1 − arccos(u)/π,  u = (τ−T̄)/A
+   Φ = ∫F du = u − [u·arccos u − √(1−u²)]/π
+     u ≥ 1  → Φ = u    (F ≡ 1)
+     u ≤ −1 → Φ = 0    (F ≡ 0)
+   ⇒ ḡ = [Φ(u_hi) − Φ(u_lo)] / (u_hi − u_lo)
+
+   两次 arccos、两次 sqrt, 无迭代、无逐时循环、无新增气象数据。
+
+   ⚠ 已知建模缺口 (刻意留在此处而非静默):
+     ① 振幅折减 k: 设计冬/夏是百分位极值而非正弦峰值。青岛实测月均约 0.5-25.5°C
+        (振幅 12.5), 而 (32+7)/2 = 19.5 ⇒ k ≈ 0.65。海水年振幅小且平滑, k = 1。
+     ② 单一正弦只含季节项, 不含昼夜与天气过程 (空气逐时 σ 另有 3-4 K)。
+        对饱和函数, T̄ 落在斜坡中段时方差基本不改 ḡ, 但落在拐点附近会把 ḡ 拉向 0.5。
+        水源冷源日变化可忽略, 正弦近乎精确 —— 又一条水源更易算准的理由。
+     ③ Q_load 与冷源温度【负相关】(天冷时围护/补水散热增加 → 需排净热变小),
+        故 E[Q·g] < E[Q]·E[g]。本实现按 annual 点的 Q 计算, 属二阶偏差但符号确定。
+        交叉校验办法: 用正弦生成 12 个月温度点各跑一次真实 calcThermalLoad 再加权。 */
+function fcPhiSinusoid(u) {
+  if (!(isFinite(u))) return 0;
+  if (u <= -1) return 0;
+  if (u >= 1) return u;
+  return u - (u * Math.acos(u) - Math.sqrt(Math.max(0, 1 - u * u))) / Math.PI;
+}
+
+function fcGbarSinusoid(T_lo, T_hi, T_bar, A) {
+  if (!(T_hi > T_lo)) return 0;
+  const point = Math.max(0, Math.min(1, (T_hi - T_bar) / (T_hi - T_lo)));
+  if (!(A > 1e-9) || !isFinite(A)) return point;          // 无年振幅 → 退回单点
+  const uLo = (T_lo - T_bar) / A, uHi = (T_hi - T_bar) / A;
+  if (!(uHi > uLo)) return point;
+  const g = (fcPhiSinusoid(uHi) - fcPhiSinusoid(uLo)) / (uHi - uLo);
+  return isFinite(g) ? Math.max(0, Math.min(1, g)) : point;
+}
+
+/* ============================================================================
+   v1.9.3 (P2): 年化包装 —— annual 工况改为对真实模型做 12 点数值积分
+   ============================================================================
+   为什么不能只用闭式解:
+     闭式 ḡ 假定 Q_load 恒定, 只对 g 取期望。但 Q_load 随冷源温度同向变化
+     (天冷 → 围护/通风/补水散热增加 → 需排的净热变小), 与比能耗正相关,
+     故 E[Q·f] > E[Q]·E[f] —— 闭式解【系统性偏乐观】。
+   交叉校验实测偏差: 青岛 −4.1% / Bergen −4.6% / 上海 −4.7% / 智利 −3.2%,
+     超过 3% 阈值 ⇒ 不是二阶效应, 必须显式积分。
+   性能: 单次点函数 0.009 ms, 每阶段多 23 次 ⇒ 整场增量 0.9 ms, 可忽略。
+
+   积分方式: 中点法 24 点 (半月步长), T_air 与 T_source 用【各自振幅、同相位】
+     同步摆动 (两者都由季节驱动, 夏季同时达峰) ——
+       T_air(m)    = T̄_air    + A_air·cos θ_m,   A_air = k_air·(夏−冬)/2
+       T_source(m) = T̄_source + A_src·cos θ_m,   A_src = 1.0·(夏−冬)/2
+     即使 freeCoolingEnabled=false 也要积分 —— Q_load 本身就随季节变。
+
+   ⚠ 仍未处理: RH 按 RH_annual 恒定 (季节相位与温度不严格同步);
+     单一正弦不含昼夜与天气过程 (空气逐时 σ 另有 3-4 K)。
+   ⚠ CAPEX 不受影响: hpInstalledKwOf 只读 thermalScenarios 的 design_winter /
+     design_summer, 从不读 annual (已核实)。
+   ========================================================================== */
+//   点数取 24 (半月步长): 实测 Ē 相对 360 点的误差, N=12 为 −1.24%~+1.03%,
+//     N=24 降到 0.15% 以内。g 是钳位函数, 12 点在拐点附近求积误差可达 3%,
+//     与本次要修的 4% 相关性效应同量级 —— 故不能停在 12。
+//     成本: 单次点函数 0.009 ms × 24 × 阶段数 ≈ 0.9 ms, 仍可忽略。
+//   附: 闭式 ḡ 与收敛数值 ḡ 【完全相等】(青岛 0.3826 vs 0.3826) ——
+//     闭式解对 ḡ 是精确的, 它唯一漏掉的是 Q_load 与冷源温度的相关性。
+const FC_ANNUAL_POINTS = 24;
+
 function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
+  const base = calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq);
+  if ((proc.thermalScenario || 'design_winter') !== 'annual' || proc._fcAnnualPoint) return base;
+  const A_air = base.fcAnnualA_air || 0, A_src = base.fcAnnualA_src || 0;
+  if (!(A_air > 1e-9) && !(A_src > 1e-9)) return base;      // 无年振幅 → 单点即年均
+  const T_air0 = base.T_air, T_src0 = base.T_source;
+  if (!isFinite(T_air0) || !isFinite(T_src0)) return base;
+
+  let sE = 0, sQ = 0, sG = 0, n = 0;
+  for (let m = 0; m < FC_ANNUAL_POINTS; m++) {
+    const c = Math.cos(2 * Math.PI * (m + 0.5) / FC_ANNUAL_POINTS);
+    const p = Object.assign({}, proc, {
+      _fcAnnualPoint: true,                                 // 子调用按【点】求解
+      T_air_annual: T_air0 + A_air * c,
+      T_source_annual: T_src0 + A_src * c
+    });
+    const t = calcThermalLoadPoint(flowData, p, stage, V_systemTotal, load, eq);
+    if (!t || !isFinite(t.heatPumpKWh) || !isFinite(t.Q_pump_load)) continue;
+    sE += t.heatPumpKWh; sQ += t.Q_pump_load; sG += (t.fcFraction || 0); n++;
+  }
+  if (n === 0) return base;
+
+  const Ebar = sE / n, Qbar = sQ / n, Gbar = sG / n;
+  return Object.assign({}, base, {
+    heatPumpKWh: Ebar,
+    Q_pump_load: Qbar,
+    // 年均热负荷. 不影响 CAPEX (装机只看设计冬/夏), 但保持 Q = COP × E 自洽
+    heatPumpThermalKWh: Qbar,
+    COP: (Ebar > 1e-12) ? (Qbar / Ebar) : base.COP,
+    fcCOPeff: (base.pumpDirection === 'cool' && Ebar > 1e-12) ? (Qbar / Ebar) : base.fcCOPeff,
+    fcFraction: Gbar,
+    fcAnnualGbar: Gbar,
+    freeCoolingAvailable: Gbar > 0,
+    fcAnnualMethod: 'numeric' + FC_ANNUAL_POINTS,
+    fcAnnualPoints: n,
+    // 闭式解留作诊断与快速近似基准 (偏乐观, 见上方说明)
+    fcAnnualGbarClosed: base.fcAnnualGbar,
+    fcAnnualEClosed: base.heatPumpKWh
+  });
+}
+
+function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
   // ============ 0. 工况选择 (v1.2: 设计冬/设计夏/年均) ============
   const region = CLIMATE_REGIONS[proc.climateRegion] || CLIMATE_REGIONS.custom;
   const scenario = proc.thermalScenario || 'design_winter';
@@ -4500,6 +4806,11 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
     RH       = (proc.RH_annual != null) ? proc.RH_annual / 100 : region.RH_a / 100;
   }
   RH = Math.max(0.1, Math.min(0.99, RH));
+  // v1.9.3: 年化振幅需要冬/夏两端, 与【当前工况】无关, 故在分支外单独读一次
+  const _ampAirW = (proc.T_air_design_winter != null)    ? proc.T_air_design_winter    : region.T_air_w;
+  const _ampAirS = (proc.T_air_design_summer != null)    ? proc.T_air_design_summer    : region.T_air_s;
+  const _ampSrcW = (proc.T_source_design_winter != null) ? proc.T_source_design_winter : region.T_src_w;
+  const _ampSrcS = (proc.T_source_design_summer != null) ? proc.T_source_design_summer : region.T_src_s;
   const T_target = stage.tempOpt;
   const dT_total = T_target - T_source;
   const mode = dT_total > 0.5 ? '升温' : (dT_total < -0.5 ? '降温' : '维持');
@@ -4889,16 +5200,61 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
   const COP_cool_corr = correctedCOP('cool', hpType, T_hp_source, COP_nom_cool);
   let COP = pumpDirection === 'heat' ? COP_heat_corr : (pumpDirection === 'cool' ? COP_cool_corr : 1);
 
-  // v1.9.2 (审计 P3): 自然冷却判定 —— 见 PROCESS_DEFAULTS.freeCoolingEnabled 处的完整说明
-  const _fcOn       = (proc.freeCoolingEnabled !== false);
-  const _fcApproach = (proc.freeCoolingApproach_K != null) ? proc.freeCoolingApproach_K : 6;
-  const _fcEER      = Math.max((proc.freeCoolingEER != null) ? proc.freeCoolingEER : 20, 1);
-  // 冷源温度: 与热泵热源同源 (空气源→室外空气, 水/海水/地源→对应源温)
-  const _fcSink     = T_hp_source;
-  const freeCoolingAvailable = _fcOn
-    && pumpDirection === 'cool'
-    && (_fcSink + _fcApproach) < T_target;
-  if (freeCoolingAvailable) COP = _fcEER;   // 压缩机旁通, 只跑风机/泵
+  // v1.9.3 (P1/P2): 部分自然冷却 + 年化 —— 见 PROCESS_DEFAULTS 与 fcGbarSinusoid 处的完整推导
+  const _fcOn    = (proc.freeCoolingEnabled !== false);
+  // v1.9.3 (第三轮审计 P0): EER 钳到 [1, 60]。此前无上界, 填 1e6 会得出电耗 0 且不告警。
+  const _fcEERd  = Math.max(1, Math.min(60, (proc.freeCoolingEER != null) ? proc.freeCoolingEER : 20));
+  // 设计温差: 用户填了就用 (UI 留空 = 自动), 否则按热泵热源类型取
+  const _fcDTin  = proc.fcDesignDT_K;
+  const _fcDT    = (_fcDTin != null && isFinite(_fcDTin) && _fcDTin > 0)
+    ? _fcDTin
+    : ((FC_DESIGN_DT_BY_SOURCE[hpType] != null) ? FC_DESIGN_DT_BY_SOURCE[hpType]
+                                                : FC_DESIGN_DT_FALLBACK);
+  // 冷源温度: 与热泵热源同源 (空气源→室外空气, 水/海水/地源→对应源温).
+  //   两者解耦 (如"海水源热泵 + 干冷器自然冷却") 属 P3, 未做.
+  const _fcSink  = T_hp_source;
+  // 热侧取目标水温: 回水温升 ΔT_loop = Q/(ṁ·cp) 实测仅约 0.09 K, 可忽略
+  /* 经济截止 x_c = COP_cool / EER_fc(设计点)。
+     ⚠ 第三轮审计 P0: 原写法 Math.min(0.999, …) 会在 EER < COP_cool 时把 x_c 硬拉回 0.999。
+       此时物理含义应是「自然冷却永远不经济 ⇒ g = 0」, 但被钳后 T_hi 与 T_lo 塌成同值,
+       冷源足够低时 g 仍 = 1 —— 实测 EER=1 电耗 6277 vs 关闭 1819, 【多耗 3.45 倍】且无提示。
+       这与本项目自己挖出的 Math.max(1-R, 0.001) 同类: 为数值安全加的钳制越过了物理有效域。
+     修法: x_c >= 1 → 直接不经济 (下面的 _fcHiT > _fcLoT 守卫会让 g 保持 0);
+           否则才 clamp 到 0.999 防分母为零。 */
+  const _fcXcRaw = Math.max(0, COP_cool_corr / _fcEERd);
+  const _fcUneconomic = !(_fcXcRaw < 1);          // EER ≤ COP_cool → 开风机不如开压缩机
+  const _fcXc    = _fcUneconomic ? 1 : Math.min(0.999, _fcXcRaw);
+  const _fcLoT   = T_target - _fcDT;              // 冷源低于此: 可扛满负荷 (g=1)
+  const _fcHiT   = T_target - _fcXc * _fcDT;      // 冷源高于此: 开风机不经济 (g=0)
+  // 年振幅【无条件】计算: 外层年化包装需要它来摆动温度, 而 Q_load 随季节变化
+  //   与是否启用自然冷却无关 (即使 freeCoolingEnabled=false 也要积分)
+  // k 是【对百分位极值的折减】, 物理上不应 >1; 夹到 [0,1.5] 以容忍导入的异常方案
+  const _kAir = Math.max(0, Math.min(1.5,
+    (proc.fcAnnualK_air != null && isFinite(proc.fcAnnualK_air)) ? proc.fcAnnualK_air : 0.65));
+  // 振幅再夹到 40 K: 地球上任何气候的年正弦半振幅都远小于此。
+  //   不夹的话 (如误填 k=50) 子点温度会摆到几百度, 拖垮 COP 温度修正而不报错 ——
+  //   T6 扫描正是这样抓到的: 病态 k=50 使年化等效 COP 掉到 1.41。
+  const _fcAclamp = (v) => (isFinite(v) ? Math.max(0, Math.min(40, Math.abs(v))) : 0);
+  const fcAnnualA_air = _fcAclamp(_kAir * (_ampAirS - _ampAirW) / 2);
+  const fcAnnualA_src = _fcAclamp((_ampSrcS - _ampSrcW) / 2);   // 水温年振幅平滑, k=1
+  const fcAnnualA = (hpType === 'air') ? fcAnnualA_air : fcAnnualA_src;
+  let fcFraction = 0, fcAnnualGbar = null;
+  if (_fcOn && !_fcUneconomic && pumpDirection === 'cool' && _fcDT > 0 && _fcHiT > _fcLoT) {
+    if (scenario === 'annual' && !proc._fcAnnualPoint) {
+      // 闭式解: 供外层包装做诊断对照, 也是无振幅时的退化路径
+      fcAnnualGbar = fcGbarSinusoid(_fcLoT, _fcHiT, _fcSink, fcAnnualA);
+      fcFraction = fcAnnualGbar;
+    } else {
+      fcFraction = Math.max(0, Math.min(1, (_fcHiT - _fcSink) / (_fcHiT - _fcLoT)));
+    }
+  }
+  if (!isFinite(fcFraction)) fcFraction = 0;
+  const freeCoolingAvailable = fcFraction > 0;    // 保持布尔语义 (自检 _diag 与 UI 依赖)
+  // 等效 COP: 1/COP_eff = (1−g)/COP_cool + g/EER_d.  g=0→COP_cool, g=1→EER_d
+  if (pumpDirection === 'cool' && fcFraction > 0) {
+    const _inv = (1 - fcFraction) / Math.max(COP_cool_corr, 0.5) + fcFraction / _fcEERd;
+    if (_inv > 0 && isFinite(_inv)) COP = 1 / _inv;
+  }
 
   const heatPumpKWh = Q_pump_load / Math.max(COP, 0.5);   // kWh/d 【耗电量】
   // v1.9.2 修复 (审计 P3): 热泵选型必须用【热功率】而非电功率.
@@ -4917,7 +5273,14 @@ function calcThermalLoad(flowData, proc, stage, V_systemTotal, load, eq) {
     Q_total_raw: Q_makeup_raw,
     Q_recovered, Q_after_hx: Q_makeup,
     heatPumpKWh, heatPumpThermalKWh, hxEff: hxEff*100,
-    freeCoolingAvailable, freeCoolingSinkT: _fcSink, freeCoolingApproach: _fcApproach,
+    freeCoolingAvailable, freeCoolingSinkT: _fcSink,
+    // v1.9.3 (P1/P2): 部分自然冷却与年化的可观测量
+    fcFraction, fcDesignDT: _fcDT, fcEER_design: _fcEERd, fcCutoffX: _fcXc,
+    fcUneconomic: _fcUneconomic,   // v1.9.3: EER ≤ COP_cool, 自然冷却永不经济
+    fcLoT: _fcLoT, fcHiT: _fcHiT, fcAnnualA, fcAnnualGbar,
+    fcEnabled: _fcOn,        // v1.9.3: 开关本身的状态, 供 UI 区分"已关闭"与"开启但不可用"
+    fcAnnualA_air, fcAnnualA_src, fcAnnualMethod: 'closed',
+    fcCOPeff: (pumpDirection === 'cool') ? COP : null,
     COP, COP_heat: COP_heat_corr, COP_cool: COP_cool_corr,
     direction, pumpDirection,
     Q_metab_basal, Q_metab_feed, Q_metab,
@@ -5949,6 +6312,10 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   const V_aerator   = isAir ? 0 : Q * 0.5 / 60;                       // 纯氧锥 HRT 30s
   // v1.3.x: 集水池 (S-101) — 鱼池重力流汇集 → 主泵吸入端
   // 设计: V_sump = clamp(Q_main / 30, 20, 200) m³  (HRT ≈ 2 min @ 设计流量, 工程下限 20 m³, 上限 200 m³)
+  //   ⚠ 该 clamp 的【两端都在正常工况下生效】(扰动测试证实): 苗种期流量小走下限 20,
+  //     成鱼期流量大走上限 200。这是【有意的工程选型区间】, 不是防除零 ——
+  //     下限 20 m³ 保证泵吸入端有足够正压与停电缓冲;上限 200 m³ 防止集水池过大占地并延长污泥停留。
+  //     若改动这两个常数, 系统总水量随之变化 → 全部稀释与浓度计算受影响, 需重锁基线。
   // 工程定位: 缓冲池底污泥沉降 + 主泵吸入正压 + 短时停电缓冲, 不参与稀释主反应器但参与系统总水量
   const V_sump      = Math.min(200, Math.max(20, Q / 30));            // m³
   const V_pipes     = Vtank * 0.05;                                   // 管路+缓冲池, V_tank 5%
@@ -6127,6 +6494,12 @@ function applyModularization(eq, stage, stageFarm, proc) {
   if (modTankAirBlowerKw > 0) {
     modulePerSpec.tankAirBlower = configure('鱼池增氧鼓风机', modTankAirBlowerKw, BLOWER_UNIT_KW, true, { sparing: '1+1' });
   }
+  // v1.9.3: CO₂ 脱气塔风机 —— 环路内 24h 运行的转动设备, 与 BF 风机同口径配 1+1。
+  //   此前没有模块化规格, 因而设备清单不显示备用、CAPEX 也不计备用。
+  const modCo2BlowerKw = ((eq.co2StripperSpec && eq.co2StripperSpec.blowerKw) || 0) * modShare;
+  if (modCo2BlowerKw > 0) {
+    modulePerSpec.co2Blower = configure('CO₂ 脱气塔风机', modCo2BlowerKw, BLOWER_UNIT_KW, true, { sparing: '1+1' });
+  }
   if (modUvBranchPumpKw > 0) {
     modulePerSpec.uvBranchPump = configure('UV 支路泵', modUvBranchPumpKw, BRANCH_PUMP_UNIT_KW, true, { sparing: '1+1' });
   }
@@ -6144,7 +6517,16 @@ function applyModularization(eq, stage, stageFarm, proc) {
     modulePerSpec.o2BypassPump = configure('氧锥旁路泵', modO2BypassPumpKw, BRANCH_PUMP_UNIT_KW, true, { sparing: '1+1' });
   }
   if (modOzoneGenKw > 0) {
-    modulePerSpec.ozoneGenerator = configure('臭氧发生器', modOzoneGenKw, OZONE_GEN_UNIT_KW, true, { sparing: '1+1' });
+    // v1.9.3: 由 1+1 备用改为 2×50% 并联 (与 UV 的 2×75% 同一思路)。
+    //   臭氧停机不像主泵那样 15-30 min 致鱼窒息, 多数项目按"可短时降容"处理,
+    //   不为其单配一台整机备用 (成鱼期单台 286 万, 备机等额)。
+    //   2×50%: 装机 = 100% 需求, 不额外增加投资;任一台故障仍维持 50% 氧化能力。
+    modulePerSpec.ozoneGenerator = {
+      label: '臭氧发生器', totalKw: modOzoneGenKw, perUnitKw: modOzoneGenKw * 0.5,
+      N: 2, sparesCount: 0, totalCount: 2,
+      installedKw: modOzoneGenKw,          // 2 × 50% = 100%, 无超配
+      sparing: '2×50% 并联 (任一故障维持 50% 氧化能力)'
+    };
   }
   // 加药泵 - 反硝化启用时需要甲醇加药
   if ((eq.methanolDemand || 0) > 0) {
@@ -6778,7 +7160,10 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
   // 增氧费用: 空气曝气 → 主风机电费; 纯氧 → 液氧费用 (只含鱼虾生理部分)
   let aerationCostMax, aerationCostAvg, aerationLabel;
   let o2KgDailyMax = 0, o2KgDailyAvg = 0;       // v1.6: 液氧 kg/d, 用于显示
+  // v1.9.3: 增氧费用【可能是电也可能是液氧】, 全场比电耗必须区分, 否则空气曝气鱼种会漏算
+  let aerationIsElec = false;
   if (proc.aerationMode === 'air') {
+    aerationIsElec = true;
     // v1.1.2: 用 aerationSpec.blowerPowerKw (数值字段) 替代 parseFloat 字符串
     const blowerKW = (eq.aerationSpec && eq.aerationSpec.blowerPowerKw) || 0;
     aerationCostMax = blowerKW * 24 * elecPrice;
@@ -6805,6 +7190,10 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
   const bfBlowerKwhDaily = bfBlowerKw * 24;
   const bfBlowerCostDaily = bfBlowerKwhDaily * elecPrice;
   // BF 日均按硝化负荷比例调整
+  //   ⚠ 下限 0.5 在正常工况下【正在生效】(扰动测试证实), 不是防除零:
+  //     物理含义是硝化菌群需维持【基础曝气】—— 即便投饵量很低 (如分级/停料期),
+  //     生物膜供氧与流化也不能低于设计工况的一半, 否则菌群活性衰退、恢复期以天计。
+  //     该下限直接影响 BF 风机电费 (进入对外发布的比电耗), 改动需重锁基线。
   const bfLoadRatio = Math.max(0.5, load.o2BFDailyAvg / Math.max(load.o2BFDaily, 1));
   const bfBlowerCostAvg = bfBlowerCostDaily * bfLoadRatio;
 
@@ -6899,6 +7288,27 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
   const totalMax = feedCostMax + aerationCostMax + bfBlowerCostDaily + powerDailyMax + methanolCostDaily + naHCO3CostDaily + thermalCostDaily + dehumCostDaily + ozoneCostDaily + co2BlowerCostDaily + depDaily + processExtraDaily;
   const totalAvg = feedCostAvg + aerationCostAvg + bfBlowerCostAvg + powerDailyAvg + methanolCostAvgDaily + naHCO3CostAvgDaily + thermalCostDaily + dehumCostDaily + ozoneCostAvgDaily + co2BlowerCostDaily + depDaily + processExtraDaily;
 
+  /* v1.9.3: 全场用电汇总 (均值口径, 与 totalAvg 同口径)
+     ------------------------------------------------------------------
+     直接取 totalAvg 里【属于电】的那几项再除以电价 —— 不另列 kWh 清单。
+     与上一行逐项对照即可核对:
+       feedCostAvg          饲料      ✗ 非电
+       aerationCostAvg      增氧      ✓ 仅 air 模式 (纯氧时是液氧, 非电)
+       bfBlowerCostAvg      BF 风机   ✓
+       powerDailyAvg        泵+UV+杂项 ✓
+       methanol / naHCO3    药剂      ✗ 非电
+       thermalCostDaily     热泵      ✓
+       dehumCostDaily       除湿机     ✓
+       ozoneCostAvgDaily    臭氧      ✓
+       co2BlowerCostDaily   脱气风机   ✓
+       depDaily             折旧      ✗ 非电
+       processExtraDaily    维护/保险/补水/排污 ✗ 非电
+     将来新增用电项时, 只要与上一行对照就能发现这里漏加。 */
+  const elecCostAvgDaily = (aerationIsElec ? aerationCostAvg : 0)
+    + bfBlowerCostAvg + powerDailyAvg + thermalCostDaily + dehumCostDaily
+    + ozoneCostAvgDaily + co2BlowerCostDaily;
+  const elecKwhAvgDaily = (elecPrice > 0) ? elecCostAvgDaily / elecPrice : 0;
+
   // 企业侧汇总: 工艺运行成本 + 苗种 + 人工 + 管理费
   const enterpriseExtraBase = seedCostDaily + laborCostDaily;
   const overheadMax = (totalMax + enterpriseExtraBase) * _gp('overheadRate', 5.0) / 100;
@@ -6935,6 +7345,9 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
     co2BlowerCostMax: co2BlowerCostDaily, co2BlowerKw, co2BlowerKWh,
     thermalKWh: heatPumpKWh, ozoneKWh,
     pumpKwhDaily, uvLampKwhDaily, miscKwhDaily,
+    // v1.9.3: 全场用电 (均值口径) —— 供 summary 汇总出比电耗
+    elecCostAvgDaily: _finC(elecCostAvgDaily), elecKwhAvgDaily: _finC(elecKwhAvgDaily),
+    aerationIsElec,
     totalMax: _finC(totalMax),
     feedCostAvg, aerationCostAvg,
     pumpCostAvg: pumpCostDaily, uvLampCostAvg: uvLampCostDaily, miscCostAvg: miscCostDaily,
@@ -7003,11 +7416,21 @@ function hpThermalKWh(sc) {
   return (sc.heatPumpKWh || 0) * Math.max(sc.COP || sc.cop || 1, 0.5);
 }
 /** 全场热泵装机 kW (制冷/制热量口径) = max(设计冬, 设计夏) 热负荷 / 利用小时 × 车间共用系数 */
+/* v1.9.3: 热泵利用小时的【唯一】解析出口。
+   此前这段 `Math.max(8, Math.min(24, …))` 被复制了 4 份 (L7403/7543/8816/10334) ——
+   复制即分叉隐患: 任何一份改了钳制区间, 其余三份不会跟。
+   钳制区间 [8, 24] 的含义: 热泵日利用不可能少于 8h (选型过大失去意义),
+   也不可能超过 24h (物理上限)。默认 22h 预留 2h 除霜/维护窗口。 */
+function hpUtilHoursOf() {
+  const v = (typeof globalThermalConfig !== 'undefined' && globalThermalConfig
+             && globalThermalConfig.heatPumpUtilHours != null)
+    ? globalThermalConfig.heatPumpUtilHours : HP_UTIL_HOURS_DEFAULT;
+  return Math.max(8, Math.min(24, v));
+}
+
 function hpInstalledKwOf(sim, sharingFactor) {
   const sf = (sharingFactor != null) ? sharingFactor : 1;
-  const h = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
-    ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
-    : HP_UTIL_HOURS_DEFAULT;
+  const h = hpUtilHoursOf();
   if (sim && sim.thermalScenarios && sim.thermalScenarios.design_winter && sim.thermalScenarios.design_summer) {
     return Math.max(hpThermalKWh(sim.thermalScenarios.design_winter),
                     hpThermalKWh(sim.thermalScenarios.design_summer)) / h * sf;
@@ -7145,9 +7568,7 @@ function calcCapex(eq, sim, flowData, eqPrices) {
       // 取冬/夏极值较大者 × sharingFactor / hpUtilHours, 不乘 N+1 系数
       const sharingFactor = (globalThermalConfig && globalThermalConfig.thermalSharingFactor != null)
         ? globalThermalConfig.thermalSharingFactor : 0.75;
-      const hpUtilHours = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
-        ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
-        : HP_UTIL_FALLBACK;
+      const hpUtilHours = hpUtilHoursOf();   // v1.9.3: 唯一出口 (原为第 3 份复制)
       // v1.9.2 修复 (审计 P3): 用【热功率】(制冷/制热量) 定容, 不用电功率.
       //   单价 2000 元/kW 是"元/kW 制冷(热)量"口径; 旧实现传电功率, CAPEX 缩到约 1/COP.
       //   heatPumpThermalKWh = Q_pump_load (kWh/d 热负荷); 老版本 sim 无此字段时回退,
@@ -7215,6 +7636,88 @@ function calcCapex(eq, sim, flowData, eqPrices) {
   const scaleExponent = Math.max(eqPrices.scaleExponent != null ? eqPrices.scaleExponent : 0.10, 0);
   const yieldTons = Math.max(eqPrices.yieldTons || scaleRefSize, 1);
   const scaleFactor = scaleExponent === 0 ? 1.0 : Math.pow(scaleRefSize / yieldTons, scaleExponent);
+  /* ══════ v1.9.3: 备用设备计入投资 ══════
+     模型已按 N+1 给每个模块配备用 (applyModularization), 设备清单也展开了备用台数,
+     但此前 CAPEX 只按工艺容量计价 —— 备机只选型、不花钱。此处统一补上。
+
+     做法: cost = 工艺容量 × 单价 × (N + 备用) / N
+       · qty 保持【工艺容量】不变 —— 自检不变量断言依赖它, 且规格标注应反映工艺能力
+       · 冗余系数只作用于 cost, 另存 spareRatio / costRun 供追溯
+       · 备机与主机同样乘 ×2.2 工程放大系数 (安装备用: 管路阀门电气全通, 可自动切换)
+
+     新增带备用的设备时, 只需在 SPARE_MAP 加一行, 不必改各处 add() 调用。 */
+  const _mps = (eq.modular && eq.modular.modulePerSpec) || {};
+  const _mods = Math.max(1, (eq.modular && eq.modular.numModules) || 1);
+  /* 冗余系数 = 实际装机 / 工艺需求。
+     ⚠ 不能用 (N+备)/N —— 它对 N+1 备用正确, 但【对超配并联失效】:
+       UV 是 2×75% 并联 (installedKw = 总量 × 1.5) 而 sparesCount = 0,
+       (N+备)/N 会算成 1.00, 于是实际装 150% 却只按 100% 计价。
+     installed/total 对 N+1 备用与超配并联两种形式都成立。 */
+  const _redun = (keys) => {
+    let need = 0, inst = 0;
+    (Array.isArray(keys) ? keys : [keys]).forEach(k => {
+      const o = _mps[k];
+      if (!o) return;
+      const t = Number.isFinite(o.totalKw) ? o.totalKw : o.totalFlow;
+      const g = Number.isFinite(o.installedKw) ? o.installedKw : o.installedFlow;
+      if (Number.isFinite(t) && t > 0 && Number.isFinite(g) && g > 0) { need += t; inst += g; }
+    });
+    return need > 0 ? inst / need : 1;
+  };
+  const SPARE_MAP = {
+    '转鼓微滤机 (RDF)':      'rdf',
+    'UV 消毒器':             'uv',              // 2×75% 并联, sparesCount=0 → 系数 1.0
+    '臭氧发生器':            'ozoneGenerator',
+    '脱气塔风机':            'co2Blower',
+    '主循环泵+变频':         'mainPump',
+    '鱼池增氧鼓风机 K-101':  'tankAirBlower',   // 仅空气曝气模式存在
+    'BF曝气风机(粗孔)':      'bfBlower',
+    // v1.9.3 (第三轮审计 P1): 热泵此前【漏在 SPARE_MAP 外】——
+    //   modulePerSpec.heatPump 有 sparesCount=1, 设备清单与 P&ID 都按 N+1 展开,
+    //   唯独 CAPEX 按 N 计价, 是本版新政策下唯一不一致的转动设备。
+    '空气源热泵':            'heatPump',
+    // v1.9.3 (第三轮审计 P2): CAPEX 的「支路泵合计」含氧锥旁路泵, 此前漏列。
+    //   bypass 拓扑下旁路泵占该项 46%, 当前两边恰好都是 1+1 故无数值误差 ——
+    //   但那是巧合, 一旦某条支路拆成 2+1, 46% 权重就会套上错误系数。
+    '支路泵合计':            ['uvBranchPump', 'denitriBranchPump', 'aopBranchPump',
+                              'skimmerBranchPump', 'o2BypassPump'],
+  };
+  let _spareExtra = 0;
+  items.forEach(it => {
+    const keys = SPARE_MAP[it.name];
+    if (!keys) return;
+    const r = _redun(keys);
+    if (!(r > 1) || !Number.isFinite(it.cost)) return;
+    it.costRun = it.cost;                 // 仅运行设备
+    it.spareRatio = r;
+    it.cost = it.cost * r;                // 含备用
+    it.spec = it.spec + ` · 含备用 ×${r.toFixed(2)}`;
+    _spareExtra += it.costRun * (r - 1);
+  });
+
+  /* v1.9.3: 加药计量泵 —— 此前有 1+1 备用规格却【没有 CAPEX 条目】,
+     清单里有台数、投资里 0 台。按台计价 (计量泵与流量无关, 按 kW 计价会差一个数量级)。 */
+  const _dosePrice = eqPrices.dosingPump;
+  if (Number.isFinite(_dosePrice) && _dosePrice > 0) {
+    let dRun = 0, dAll = 0;
+    ['methanolDosing', 'naHCO3Dosing'].forEach(k => {
+      const o = _mps[k];
+      if (o && o.N > 0) { dRun += o.N * _mods; dAll += (o.N + (o.sparesCount || 0)) * _mods; }
+    });
+    if (dRun > 0) {
+      const cRun = dRun * _dosePrice;
+      items.push({
+        name: '加药计量泵', spec: `${dRun} 台运行 + ${dAll - dRun} 台备用`, unit: '台',
+        qty: dRun, unitPrice: _dosePrice,
+        costRun: cRun, spareRatio: dRun > 0 ? dAll / dRun : 1, cost: dAll * _dosePrice
+      });
+      total += dAll * _dosePrice;
+      _spareExtra += (dAll - dRun) * _dosePrice;
+    }
+  }
+
+  total += _spareExtra;
+
   // 综合: 设备直购 × 工程放大 × 地区 × 规模
   const totalRegional = total * regionFactor * scaleFactor;
   const totalProject = total * factor * regionFactor * scaleFactor;
@@ -7230,6 +7733,7 @@ function calcCapex(eq, sim, flowData, eqPrices) {
 
   return {
     items, total, factor, totalProject,
+    spareExtra: _spareExtra,        // v1.9.3: 其中备用设备贡献 (未乘系数的设备直购口径)
     regionFactor, scaleFactor, scaleRefSize, scaleExponent,    // v1.1: 暴露给 UI
     depYearsEquip, depYearsCivil,
     depEquipAnnual, depCivilAnnual, depAnnual, depDaily
@@ -8106,7 +8610,8 @@ function renderFlow(idx, sim) {
           <div class="param-row flex justify-between py-0.5" title="DO 阈值 ${(sim.DO_threshold||WATER_LIMITS.tankDO_min).toFixed(2)} mg/L = max(绝对下限 ${WATER_LIMITS.tankDO_min}, 饱和度 × 鱼种内置比例)"><span class="text-slate-400">DO</span><span class="${st.DO<(sim.DO_threshold||WATER_LIMITS.tankDO_min)?'badge-danger':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.DO,1)}</span></div>
           <div class="param-row flex justify-between py-0.5" title="CO₂ 阈值 ${sim.CO2_threshold||WATER_LIMITS.tankCO2_max_freshwater} mg/L (淡水 20 / 海水 15, 按盐度判定)"><span class="text-slate-400">CO₂</span><span class="${st.CO2>(sim.CO2_threshold||WATER_LIMITS.tankCO2_max_freshwater)?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.CO2,1)}</span></div>
           ${st.pH!==undefined?`<div class="param-row flex justify-between py-0.5" title="稳态 pH (free/浓度标度), 来自碳酸盐平衡: 碱度 + CO₂.${st.beta!==undefined?` 缓冲强度 β≈${st.beta.toFixed(0)} mg/L CaCO₃ per pH (越大越稳定).`:''}"><span class="text-slate-400">pH</span><span class="${st.pH<6.5?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.pH,2)}</span></div>`:''}
-          ${st.NH3_N!==undefined?`<div class="param-row flex justify-between py-0.5" title="非离子化 NH₃-N (剧毒). 占 TAN 比例 fNH3 = ${st.fNH3!==undefined?(st.fNH3*100).toFixed(2):'-'}%, 随 pH 和 T 急剧上升. 鱼种长期上限: 三文鱼 12.5 μg/L, 温水鱼 50-100 μg/L"><span class="text-slate-400">NH₃-N</span><span class="${st.NH3_N>0.025?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.NH3_N*1000,1)} μg/L</span></div>`:''}
+          ${st.NH3_N!==undefined?`<div class="param-row flex justify-between py-0.5" title="非离子化 NH₃-N (剧毒). 占 TAN 比例 fNH3 = ${st.fNH3!==undefined?(st.fNH3*100).toFixed(2):'-'}%, 随 pH 和 T 急剧上升.&#10;鱼种长期上限: 三文鱼 12.5 / 大菱鲆 20 / 石斑 30 / 加州鲈·鳜·对虾 50 / 鳗鲡 60 / 罗非 100 μg/L.&#10;v1.9.3: 着色按【当前鱼种】限值三档 —— 超限值红, 超半限值黄, 其余绿 (此前写死 25 μg/L, 使最敏感的鲑科用了 2× 宽松阈值)"><span class="text-slate-400">NH₃-N</span><span class="${(function(){var lim=(typeof NH3_LIMIT_UG_L!=='undefined'&&NH3_LIMIT_UG_L[currentSpecies]!=null)?NH3_LIMIT_UG_L[currentSpecies]:25;var v=st.NH3_N*1000;return v>lim?'badge-danger':(v>lim*0.5?'badge-warn':'badge-ok');})()} px-1.5 rounded font-mono">${fmt(st.NH3_N*1000,1)} μg/L</span></div>`:''}
+          ${(st.omega!==undefined && st.omega!==null && isFinite(st.omega))?`<div class="param-row flex justify-between py-0.5" title="方解石饱和度 Ω (仅海水/半咸水; 淡水不适用).&#10;Ω = [Ca²⁺][CO₃²⁻] / Ksp(方解石).&#10;Ω &lt; 1 表示水对碳酸钙【不饱和】, 会持续溶蚀混凝土池体与水泥基砂浆 (长期导致池壁起砂、露筋), 对贝类/甲壳类还影响钙化.&#10;RAS 中 Ω 偏低的主因: 高密度养殖 CO₂ 累积压低 pH → CO₃²⁻ 占比骤降.&#10;对策: 提高碱度 / 强化脱气 / 投加碳酸盐.&#10;v1.9.3 新增显示 —— 此前该值已算出并进导出载荷, 但界面上看不到."><span class="text-slate-400">Ω 方解石</span><span class="${st.omega<0.8?'badge-danger':(st.omega<1?'badge-warn':'badge-ok')} px-1.5 rounded font-mono">${fmt(st.omega,2)}${st.omega<1?' 欠饱和':''}</span></div>`:''}
           ${(st.alkRequired!==undefined && st.pHMode)?`<div class="param-row flex justify-between py-0.5" title="持目标 pH 模式: 在稳态 CO₂ 下维持 pH=${st.pHTarget!==undefined?st.pHTarget.toFixed(1):''} 所需的碱度设定值. NaHCO₃ 投加速率主要由硝化驱动 (不受 pH 模式影响)."><span class="text-slate-400">碱度需</span><span class="${(st.alkRequired>600||st.alkRequired<=10)?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.alkRequired,0)}</span></div>`:''}
         </div>
       </div>
@@ -8303,7 +8808,29 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
     </svg>`;
 
   // === 湿空气状态卡 + 热泵卡 ===
-  const pumpDirText = t.pumpDirection === 'cool' ? '🥶 排热(制冷)' : (t.pumpDirection === 'heat' ? '🔥 加热(制热)' : '— 无需');
+  let pumpDirText = t.pumpDirection === 'cool' ? '🥶 排热(制冷)' : (t.pumpDirection === 'heat' ? '🔥 加热(制热)' : '— 无需');
+  /* v1.9.3: 自然冷却状态必须【三态可见】, 不能只在生效时说话。
+     此前只在贡献率>0 时追加文字, 等于 0 时一个字都不说 —— 用户拨动开关看不到任何回应,
+     无法区分"因不可用而无效"和"坏了" (正是用户报告的现象)。
+     现在: 生效 → 贡献率; 关闭 → 明说已关闭; 开启但不可用 → 给出冷源温度与截止温度。 */
+  if (t.pumpDirection === 'cool') {
+    const _fp = Math.round((t.fcFraction || 0) * 100);
+    if ((t.fcFraction || 0) > 0) {
+      pumpDirText += (_fp >= 100) ? ' ❄️ 自然冷却全量'
+        : ((t.scenario === 'annual') ? ` ❄️ 年化自然冷却 ${_fp}%` : ` ❄️ 部分自然冷却 ${_fp}%`);
+    } else if (t.fcEnabled === false) {
+      pumpDirText += ' · 自然冷却已关闭 (强制机械制冷)';
+    } else if (t.fcUneconomic) {
+      // v1.9.3 (审计 P0): EER ≤ 机械制冷 COP —— 开风机比开压缩机还费电, 模型已自动不启用
+      pumpDirText += ` · 自然冷却不经济 (EER ${(t.fcEER_design || 0).toFixed(1)}`
+        + ` ≤ 机械制冷 COP ${(t.COP_cool || 0).toFixed(2)}, 已自动改走机械制冷)`;
+    } else if (t.freeCoolingSinkT != null && t.fcHiT != null
+               && isFinite(t.freeCoolingSinkT) && isFinite(t.fcHiT)) {
+      // 截止温度 = 目标水温 − x_c·设计温差, 即"开风机仍比开压缩机省"的临界冷源温度
+      pumpDirText += ` · 自然冷却不可用 (冷源 ${t.freeCoolingSinkT.toFixed(1)}°C,`
+        + ` 需低于 ${t.fcHiT.toFixed(1)}°C)`;
+    }
+  }
   const pumpDirColor = t.pumpDirection === 'cool' ? '#60a5fa' : (t.pumpDirection === 'heat' ? '#f87171' : '#94a3b8');
   const rhWarn = (t.RH_room||0) >= 95;
   const condenseAlert = (t.m_condense_kg_d||0) > 100;
@@ -8313,8 +8840,7 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
   //   旧式用 heatPumpKWh(电耗)/16, 与另外三处口径都不同, 同一台机出现 4 个数、最大差 13.6 倍.
   //   这里显示的是【当前工况】的装机需求 (不含冬夏取大与车间共用系数),
   //   与设备清单的全场装机不同 —— 标签已注明, 供判断本工况热负荷用.
-  const hpUtilH = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
-    ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours)) : HP_UTIL_HOURS_DEFAULT;
+  const hpUtilH = hpUtilHoursOf();   // v1.9.3: 唯一出口
   const hpCapacityKw = hpThermalKWh(t) / hpUtilH;
   // 比电耗: 该阶段年通过量为分母 (不是该阶段稳态量)
   //   如果 stageFarm.yearGrowth 不可用 (legacy 调用), fallback 用 biomass × 12 / 周期
@@ -8358,7 +8884,7 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
         <div class="font-bold" style="color:${pumpDirColor}">${(t.heatPumpKWh||0).toFixed(0)} kWh/d</div>
         <div class="text-[9px] text-slate-500">COP=${(t.COP||0).toFixed(2)}</div>
       </div>
-      <div class="metric-chip px-2 py-1.5" style="border-color:${pumpDirColor}50" title="装机容量 (kW): 设计日 24h 电耗 / 16h 利用. 决定热泵选型 + CAPEX">
+      <div class="metric-chip px-2 py-1.5" style="border-color:${pumpDirColor}50" title="装机容量 (kW): 热功率 ÷ 热泵利用小时数 (hpUtilH). 决定热泵选型 + CAPEX">
         <div class="text-[10px] text-slate-400">⚙️ 装机容量</div>
         <div class="font-bold" style="color:${pumpDirColor}">${hpCapacityKw.toFixed(0)} kW</div>
         <div class="text-[9px] text-slate-500">投资约 ${(hpCapacityKw * 2000 / 10000).toFixed(0)} 万</div>
@@ -8414,7 +8940,11 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
     const cols = ['design_winter', 'design_summer', 'annual'].map(scen => {
       const s = scenarios[scen];
       if (!s) return '';
-      const sCap = (s.heatPumpKWh || 0) / 16;
+      // v1.9.3 (第三轮审计 P0): 与热平衡卡片统一到 hpInstalledKwOf 的同一口径。
+  //   原为 (s.heatPumpKWh || 0) / 16 —— 电耗 ÷ 16h, 与正上方卡片的「热功率 ÷ 22h」不是一回事,
+  //   同屏两个数差 14 倍 (548 vs 38 kW)。自然冷却把冬季电耗压掉一个数量级后尤为离谱。
+  //   ⚠ 数据层不变量断言抓不到这类分歧: sCap 是渲染层局部变量, 不落任何数据结构。
+  const sCap = hpThermalKWh(s) / hpUtilH;
       const sAnnual = (s.heatPumpKWh || 0) * 365;
       const sKWhPerKg = yg > 0 ? sAnnual / yg : 0;
       const sCostAnnual = sAnnual * elecPrice;
@@ -9827,9 +10357,7 @@ function recomputeAll() {
         ? globalThermalConfig.thermalSharingFactor
         : 0.75;
       // 装机时数 (用户可在 globalThermalConfig.heatPumpUtilHours 调, 默认 22h)
-      const hpUtilHours = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
-        ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
-        : 22;
+      const hpUtilHours = hpUtilHoursOf();   // v1.9.3: 唯一出口 (原为第 4 份复制)
       // v1.9.2 (复审 P0): 改用与 CAPEX 同一口径 —— 热功率 (制冷/制热量), 见 hpInstalledKwOf
       const peakHpKw = hpInstalledKwOf(sim, sharingFactor);
       // 冬/夏分量仅供 UI 展示定容依据 (同为热功率口径)
@@ -10074,6 +10602,9 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   let totalEnterpriseAvg = 0, totalMaintAvg = 0, totalSeedAvg = 0, totalLaborAvg = 0, headcountFarm = 0;
   let totalCapexEquip = 0, totalCapexProject = 0;
   let totalDepAnnual = 0;
+  // v1.9.3: 全场用电汇总 (均值口径), 供比电耗出口
+  let totalElecKWhDaily = 0, totalElecCostDaily = 0;
+  let totalLoxKgDaily = 0;                  // v1.9.3: 液氧年耗, 同属已发布但无出口
   // v1.2: 全场热泵电耗汇总 (用于显示热泵成本占比和比电耗)
   let totalThermalKWhDaily_indep = 0;       // 各阶段独立估算之和 (未应用共用系数)
   let totalThermalCostDaily_indep = 0;
@@ -10082,6 +10613,9 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   results.forEach(r => {
     if (r) {
       totalCostAvg += r.cost.totalAvg;
+    totalElecKWhDaily  += (r.cost.elecKwhAvgDaily || 0);
+    totalElecCostDaily += (r.cost.elecCostAvgDaily || 0);
+    totalLoxKgDaily    += (r.cost.o2KgDailyAvg || 0);
     totalEnterpriseAvg += (r.cost.seedCostDaily||0) + (r.cost.laborCostDaily||0) + (r.cost.overheadAvg||0);
     // v1.9.2: 供财务模块去重用 —— 维护费在 finance-core 里由 repairRate 另算, 需从基数中剔除;
     //   苗种费 finance-core 没有对应项, 需显式并入, 否则财务评价会漏算 (鳗鲡等品种可占 40%+)
@@ -10100,13 +10634,15 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
         // v1.9.2: 除湿机电耗与热泵同属"热平衡电耗", 一并汇总
         totalThermalKWhDaily_indep += (t.heatPumpKWh || 0) + (t.dehumKWhPerDay || 0);
         totalThermalCostDaily_indep += ((t.heatPumpKWh || 0) + (t.dehumKWhPerDay || 0)) * ((prices && prices.elecPrice) || 0.7);
-        // 装机容量 (v1.5 Bug 7): 用全局可配置 heatPumpUtilHours, 不再硬编码 /16
-        if ((t.heatPumpKWh || 0) > 0) {
-          const hpUtilHours = (globalThermalConfig && globalThermalConfig.heatPumpUtilHours != null)
-            ? Math.max(8, Math.min(24, globalThermalConfig.heatPumpUtilHours))
-            : 22;
-          totalHeatPumpCapacityKw_indep += (t.heatPumpKWh || 0) / hpUtilHours;
-        }
+        /* 装机容量: v1.9.3 改用与设备清单 / CAPEX 同源的 hpInstalledKwOf。
+           ⚠ 原写法是 (t.heatPumpKWh) / hpUtilHours —— 【电耗 ÷ 小时数】,
+             而另外四个消费点用的是【热功率 ÷ 小时数】, 两者不是一回事。
+             实测青岛 36.6 kW vs 统一公式 997.3 kW, 差 27 倍;自然冷却把冬季电耗
+             压掉一个数量级后偏差进一步放大。该字段进 summary → 导出载荷 → 下游页面,
+             而不变量断言的比对范围里从来没有它 (只比 capex.items[].qty 与 modulePerSpec)。
+           注: hpInstalledKwOf 内部已乘共用系数, 故此处传 1, 由下面统一乘 sharingFactor,
+             以保持"各阶段独立估算之和 → 再乘共用系数"的既有结构。 */
+        totalHeatPumpCapacityKw_indep += hpInstalledKwOf(r.sim, 1);
       }
     }
   });
@@ -10169,6 +10705,16 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   const annualThermalCost = totalThermalCostDaily * 365;
   const thermalCostShare = annualCost > 0 ? annualThermalCost / annualCost * 100 : 0;
   const thermalKWhPerKg = yieldTons > 0 ? totalThermalKWhDaily * 365 / (yieldTons * 1000) : 0;
+  /* v1.9.3: 全场综合比电耗与热泵电费 —— 此前对外发布但【无产品出口, 无法自检】
+     年化基准是 365 天: 各生活阶段在场内全年并行运行, 不是串行走完一批。
+     (按 stageDays 串行累加会把比电耗低估约 2.3 倍 —— 已用年液氧 471 t 反查确认。) */
+  const _kg = yieldTons * 1000;
+  const kwhPerKg      = _kg > 0 ? totalElecKWhDaily  * 365 / _kg : 0;   // kWh/kg·yr 全场综合
+  const elecCostPerKg = _kg > 0 ? totalElecCostDaily * 365 / _kg : 0;   // 元/kg 全场电费
+  const hpCostPerKg   = _kg > 0 ? totalThermalCostDaily * 365 / _kg : 0;// 元/kg 热泵(含除湿)电费
+  const pumpShareOfElec = totalElecKWhDaily > 0
+    ? (results || []).reduce(function (a, r) { return a + ((r && r.cost && r.cost.pumpKwhDaily) || 0); }, 0)
+      / totalElecKWhDaily : 0;
 
   // v1.4: 把财务汇总值写回 lastResults, 供 buildPIDExport / finance.html 使用
   if (lastResults) {
@@ -10198,6 +10744,13 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
       annualThermalCost,
       thermalCostShare,
       thermalKWhPerKg,
+      // v1.9.3: 补出口 —— 这三个数此前对外发布却进不了 SELFTEST_BASELINE
+      totalElecKWhDaily,    // 全场日用电 (kWh/d, 均值口径)
+      kwhPerKg,             // 全场综合比电耗 (kWh/kg·yr)
+      elecCostPerKg,        // 全场电费 (元/kg)
+      hpCostPerKg,          // 热泵+除湿电费 (元/kg)
+      pumpShareOfElec,      // 泵占全场用电比例 (0-1)
+      loxTonsPerYear: totalLoxKgDaily * 365 / 1000,   // 液氧年耗 (t/yr, 均值口径)
       sharingFactor         // 共用车间散热系数
     };
   }
@@ -10210,7 +10763,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
       const thermalShareIcon = thermalCostShare > 10 ? '⚠️ ' : '';
       // v1.9.2 (复审 P2): 标注当前热工况.
       //   默认 thermalScenario='design_winter', 而自然冷却使【设计冬成为全年最省的工况】
-      //   (青岛冬 35.63 / 年均约 37.4 / 设计夏 37.94 元/kg).
+      //   (青岛冬 35.59 / 年均约 36.9 / 设计夏 37.37 元/kg).
       //   不标注的话读者容易把设计冬的数当成年均值, 高估项目经济性.
       const _scLabel = ({ design_winter: '设计冬', design_summer: '设计夏', annual: '年均' })
                        [globalThermalConfig.thermalScenario] || globalThermalConfig.thermalScenario;
@@ -11205,6 +11758,15 @@ function showV11UpgradeNotice() {
 /* ============================================================================
    v1.2: 全局气候 + 围护 + 热泵配置 (顶部 ① 区)
    ============================================================================ */
+/* v1.9.3: 把自然冷却开关状态同步到容器的 data-free-cooling 属性, 驱动 CSS 灰显。
+   只影响展示, 不参与计算 —— 计算侧一律以 globalThermalConfig.freeCoolingEnabled 为准。 */
+function syncFreeCoolingUIState() {
+  const grid = document.getElementById('globalThermalDetailGrid');
+  const sw = document.getElementById('g_freeCooling');
+  if (!grid || !sw) return;
+  grid.setAttribute('data-free-cooling', (String(sw.value) === '0') ? '0' : '1');
+}
+
 function initGlobalThermalUI() {
   // 填充地区下拉
   const regionSel = document.getElementById('globalClimateRegion');
@@ -11250,8 +11812,13 @@ function initGlobalThermalUI() {
   if (dcr) dcr.value = (globalThermalConfig.dehumCondRecovery === false) ? '0' : '1';
   const fce = document.getElementById('g_freeCooling');
   if (fce) fce.value = (globalThermalConfig.freeCoolingEnabled === false) ? '0' : '1';
-  const fca = document.getElementById('g_fcApproach');
-  if (fca && globalThermalConfig.freeCoolingApproach_K != null) fca.value = globalThermalConfig.freeCoolingApproach_K;
+  syncFreeCoolingUIState();     // v1.9.3: 同步灰显状态 (含载入方案后)
+  // v1.9.3: 设计温差留空 = 自动 (按热源), 故只在用户确有值时回填, 不写自动值 ——
+  //   与 o2FishFactor 的 placeholder 模式一致: 自动值与手填值在数据结构上分离, 不会互相污染
+  const fcd = document.getElementById('g_fcDesignDT');
+  if (fcd) fcd.value = (globalThermalConfig.fcDesignDT_K != null) ? globalThermalConfig.fcDesignDT_K : '';
+  const fck = document.getElementById('g_fcAnnualK');
+  if (fck && globalThermalConfig.fcAnnualK_air != null) fck.value = globalThermalConfig.fcAnnualK_air;
   const fcr = document.getElementById('g_fcEER');
   if (fcr && globalThermalConfig.freeCoolingEER != null) fcr.value = globalThermalConfig.freeCoolingEER;
 }
@@ -11270,7 +11837,14 @@ function readGlobalThermalConfig() {
   // v1.9.2 (复审 P2): 自然冷却三参数接入 UI —— 原先只在 PROCESS_DEFAULTS,
   //   靠 ensureStageProc 合并回来, 行为稳定但用户改不了, 等于硬编码.
   globalThermalConfig.freeCoolingEnabled   = getStr('g_freeCooling', '1') !== '0';
-  globalThermalConfig.freeCoolingApproach_K = getNum('g_fcApproach', 6);
+  // v1.9.3: 留空 → null (交由 FC_DESIGN_DT_BY_SOURCE 按热源自动取), 不落默认数字
+  (function () {
+    const el = document.getElementById('g_fcDesignDT');
+    const raw = el ? String(el.value).trim() : '';
+    const v = parseFloat(raw);
+    globalThermalConfig.fcDesignDT_K = (raw !== '' && Number.isFinite(v) && v > 0) ? v : null;
+  })();
+  globalThermalConfig.fcAnnualK_air = getNum('g_fcAnnualK', 0.65);
   globalThermalConfig.freeCoolingEER        = getNum('g_fcEER', 20);
   globalThermalConfig.climateRegion = getStr('globalClimateRegion', 'china_qingdao');
   globalThermalConfig.thermalScenario = getStr('globalThermalScenario', 'design_winter');
@@ -11378,9 +11952,16 @@ function bindGlobalThermalEvents() {
     'g_co2IndoorLimit_ppm','g_degasserExhaustIndoorFrac',
     'g_dehumEnabled','g_dehumTargetRH','g_dehumSMER','g_dehumHeatDest','g_dehumCondRecovery',
     // v1.9.2 (复审 P2): 自然冷却三参数
-    'g_freeCooling','g_fcApproach','g_fcEER',
+    'g_freeCooling','g_fcDesignDT','g_fcEER','g_fcAnnualK',
     'g_motorEta','g_pumpHeatRatio',
     'g_buildingArea_user','g_buildingHeight','g_thermalSharingFactor'];
+  // v1.9.3: 开关拨动时同步灰显 (与下面的重算监听并行, 互不影响)
+  const _fcSw = document.getElementById('g_freeCooling');
+  if (_fcSw) {
+    ['input', 'change'].forEach(function (ev) {
+      _fcSw.addEventListener(ev, syncFreeCoolingUIState);
+    });
+  }
   detailIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -11844,7 +12425,8 @@ if (location.search.includes('test=1')) {
 }
 
 /* ============================================================================
-   v1.9.2 自检 (Self-test)  —— 访问 index.html?selftest=1 触发
+   自检 (Self-test)  —— 访问 index.html?selftest=1 触发
+     v1.9.2 引入;v1.9.3 增加两个受检字段 (kwhPerKg / hpCostPerKg) 并改为动态列展示
    ============================================================================
    【为什么需要它】
    v1.9.2 审计发现: 对外发布的四工况基线 (32.65 元/kg) 是用一份【外部测试脚本】
@@ -11865,30 +12447,39 @@ if (location.search.includes('test=1')) {
    ========================================================================== */
 const SELFTEST_BASELINE = [
   // 四工况 (1000 t 大西洋鲑, mainline). 数值 = 工艺运行成本 / 企业全成本 元/kg
+  // v1.9.3: 新增 kwhPerKg (全场综合比电耗 kWh/kg·yr) 与 hpCostPerKg (热泵+除湿电费 元/kg)。
+  //   这两个数此前【对外发布却无产品出口】, 进不了基线、无法自检, 只是碰巧还对着。
+  //   纳入后实测发现旧发布值偏高: 比电耗 9.7 → 9.51, 热泵费 0.29 → 0.21 (差 28%)。
+  //   根因: 旧手推口径对臭氧/BF 风机取了【峰值】, 而年成本按 totalAvg × 365 算 ——
+  //   产品路径的均值口径才与成本模型自洽。
+  { id: 'salmon_qingdao_annual', species: 'salmon', yieldTons: 1000,
+    climate: { thermalScenario: 'annual' },
+    expect: { costPerKg: 38.54, fullCostPerKg: 43.59, kwhPerKg: 11.01, hpCostPerKg: 1 } },
+
   { id: 'salmon_qingdao_w',  species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: -7, T_source_design_winter: 4,
                T_air_design_summer: -7, T_source_design_summer: 4, RH_winter: 60 },
-    expect: { costPerKg: 35.6, fullCostPerKg: 40.49 } },
+    expect: { costPerKg: 37.53, fullCostPerKg: 42.52, kwhPerKg: 9.51, hpCostPerKg: 0.21 } },
   { id: 'salmon_hainan_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 17, T_source_design_winter: 22,
                T_air_design_summer: 17, T_source_design_summer: 22, RH_winter: 78 },
-    expect: { costPerKg: 36.96, fullCostPerKg: 41.94 } },
+    expect: { costPerKg: 38.94, fullCostPerKg: 44.02, kwhPerKg: 11.92, hpCostPerKg: 1.47 } },
   { id: 'salmon_hainan_s',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 32, T_source_design_winter: 27,
                T_air_design_summer: 32, T_source_design_summer: 27, RH_winter: 78 },
-    expect: { costPerKg: 37.37, fullCostPerKg: 42.38 } },
+    expect: { costPerKg: 39.39, fullCostPerKg: 44.49, kwhPerKg: 12.59, hpCostPerKg: 1.83 } },
   { id: 'salmon_bergen_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 0, T_source_design_winter: 4,
                T_air_design_summer: 0, T_source_design_summer: 4, RH_winter: 75 },
-    expect: { costPerKg: 35.62, fullCostPerKg: 40.51 } },
+    expect: { costPerKg: 37.55, fullCostPerKg: 42.54, kwhPerKg: 9.52, hpCostPerKg: 0.21 } },
   // 各鱼种 (默认气候 = 青岛, 走 UI 默认值)
-  { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000, expect: { costPerKg: 27.48, fullCostPerKg: 31.95 } },
-  { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,  expect: { costPerKg: 47.6, fullCostPerKg: 57.32 } },
-  { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,  expect: { costPerKg: 38.92, fullCostPerKg: 48.3 } },
-  { id: 'bass_300',      species: 'bass',     yieldTons: 300,  expect: { costPerKg: 40.08, fullCostPerKg: 46.71 } },
-  { id: 'eel_200',       species: 'eel',      yieldTons: 200,  expect: { costPerKg: 48.42, fullCostPerKg: 103.73 } },
-  { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,  expect: { costPerKg: 51.59, fullCostPerKg: 63.06 } },
-  { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,  expect: { costPerKg: 41.49, fullCostPerKg: 58.11 } },
+  { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000, expect: { costPerKg: 29.08, fullCostPerKg: 33.63, kwhPerKg: 7.84, hpCostPerKg: 0.15 } },
+  { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,  expect: { costPerKg: 50.75, fullCostPerKg: 60.64, kwhPerKg: 11.6, hpCostPerKg: 0.09 } },
+  { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,  expect: { costPerKg: 41.4, fullCostPerKg: 50.91, kwhPerKg: 10.17, hpCostPerKg: 0.14 } },
+  { id: 'bass_300',      species: 'bass',     yieldTons: 300,  expect: { costPerKg: 43.8, fullCostPerKg: 50.62, kwhPerKg: 10.14, hpCostPerKg: 0.14 } },
+  { id: 'eel_200',       species: 'eel',      yieldTons: 200,  expect: { costPerKg: 51.07, fullCostPerKg: 106.52, kwhPerKg: 6.36, hpCostPerKg: 0.14 } },
+  { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,  expect: { costPerKg: 54.97, fullCostPerKg: 66.61, kwhPerKg: 12.7, hpCostPerKg: 0.11 } },
+  { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,  expect: { costPerKg: 46.66, fullCostPerKg: 63.54, kwhPerKg: 13.88, hpCostPerKg: 0.49 } },
   // ── 边界工况: 只跑不变量断言 (不比对数值), 用于捕捉 NaN/Infinity 与口径漂移 ──
   { id: 'edge_yield_0',   species: 'salmon', yieldTons: 0,      expect: {} },
   { id: 'edge_yield_tiny',species: 'salmon', yieldTons: 0.001,  expect: {} },
@@ -11896,6 +12487,22 @@ const SELFTEST_BASELINE = [
 ];
 
 const SELFTEST_TOL = 0.02;   // 元/kg. 容差取 0.02 —— 大于浮点噪声, 小于任何有意义的口径变化
+
+/* v1.9.3: 自检受检字段的展示元数据。
+   新增受检字段时【只需在此加一行】, 面板与 console.table 会自动多出一列 ——
+   此前列是写死的, 导致 kwhPerKg / hpCostPerKg 被比对却不被显示。 */
+const SELFTEST_FIELDS = [
+  { key: 'costPerKg',     label: '工艺',   unit: '元/kg' },
+  { key: 'fullCostPerKg', label: '全成本', unit: '元/kg' },
+  { key: 'kwhPerKg',      label: '比电耗', unit: 'kWh/kg·yr' },
+  { key: 'hpCostPerKg',   label: '热泵费', unit: '元/kg' },
+];
+/* 只保留【本次结果里真的出现过】的字段, 避免为空列占版面 */
+function selftestActiveFields(results) {
+  return SELFTEST_FIELDS.filter(function (f) {
+    return (results || []).some(function (r) { return r && r[f.key] != null; });
+  });
+}
 
 function runSelfTest(quiet) {
   const out = { pass: 0, fail: 0, results: [], startedAt: new Date().toISOString() };
@@ -12034,14 +12641,26 @@ function runSelfTest(quiet) {
   const tag = out.fail === 0 ? '✅ 全部通过' : ('❌ ' + out.fail + ' 项失败');
   console.log('%c[iRAS 自检] ' + tag + '  (' + out.pass + '/' + (out.pass + out.fail) + ')',
               'font-weight:bold;color:' + (out.fail ? '#f43f5e' : '#10b981'));
-  console.table(out.results.map(r => ({
-    工况: r.id,
-    '工艺 期望': r.costPerKg ? r.costPerKg.expect : '',
-    '工艺 实测': r.costPerKg ? (typeof r.costPerKg.got === 'number' ? r.costPerKg.got.toFixed(2) : r.costPerKg.got) : '',
-    '全成本 期望': r.fullCostPerKg ? r.fullCostPerKg.expect : '',
-    '全成本 实测': r.fullCostPerKg ? (typeof r.fullCostPerKg.got === 'number' ? r.fullCostPerKg.got.toFixed(2) : r.fullCostPerKg.got) : '',
-    判定: r.ok ? 'PASS' : 'FAIL',
-  })));
+  // v1.9.3: 列按实际受检字段动态生成 —— 新增字段自动出现
+  const _sfActive = selftestActiveFields(out.results);
+  console.table(out.results.map(function (r) {
+    const row = { 工况: r.id };
+    _sfActive.forEach(function (f) {
+      const c = r[f.key];
+      row[f.label + ' 期望'] = c ? c.expect : '';
+      row[f.label + ' 实测'] = (c && typeof c.got === 'number') ? +c.got.toFixed(3) : (c ? c.got : '');
+    });
+    row['判定'] = r.ok ? 'PASS' : 'FAIL';
+    if (r.invariants && r.invariants.length) row['不变量'] = r.invariants.length + ' 项失败';
+    return row;
+  }));
+  // 不变量失败原因单独打全 (console.table 会截断长文本)
+  out.results.forEach(function (r) {
+    if (r.invariants && r.invariants.length) {
+      console.warn('[iRAS 自检] ' + r.id + ' 不变量断言失败:');
+      r.invariants.forEach(function (m) { console.warn('    • ' + m); });
+    }
+  });
   if (out.error) console.error('[iRAS 自检] 异常:', out.error);
   window.__iRAS_selftest = out;
 
@@ -12057,22 +12676,33 @@ function runSelfTest(quiet) {
       + 'border:0;border-radius:6px;padding:6px 14px;cursor:pointer">关闭</button></div>'
       + '<div style="font-size:11px;color:#94a3b8;margin-bottom:10px">'
       + '本自检调用真实的 recomputeAll() 与 lastResults.summary，不重新实现任何计算管线。<br>'
-      + '基线值来自 v1.9.2 审计修复后的实测；容差 ±' + SELFTEST_TOL + ' 元/kg。'
+      + '受检字段：' + _sfActive.map(function (f) { return f.label + ' (' + f.unit + ')'; }).join('、')
+      + '；每项容差 ±' + SELFTEST_TOL + '（绝对值，单位随该字段）。<br>'
+      + '另有两类<b>不变量断言</b>（热泵装机三处口径一致 / 全场无 NaN·Infinity），失败原因见下表末列与控制台。<br>'
       + '若有 FAIL，说明模型行为已改变 —— 请确认是有意的修改，并同步更新 SELFTEST_BASELINE 与三份文档。'
-      + '</div><table style="width:100%;border-collapse:collapse"><tr style="color:#94a3b8;text-align:left">'
-      + '<th style="padding:4px 8px">工况</th><th>工艺 期望</th><th>实测</th><th>Δ</th>'
-      + '<th>全成本 期望</th><th>实测</th><th>Δ</th><th>判定</th></tr>';
+      + '</div><table style="width:100%;border-collapse:collapse;font-size:12px">'
+      + '<tr style="color:#94a3b8;text-align:left"><th style="padding:4px 8px">工况</th>'
+      + _sfActive.map(function (f) {
+          return '<th title="' + f.unit + '">' + f.label + '<br><span style="font-weight:400;color:#64748b">'
+            + '期望→实测 / Δ</span></th>'; }).join('')
+      + '<th>判定</th><th>不变量</th></tr>';
     for (const r of out.results) {
-      const c1 = r.costPerKg || {}, c2 = r.fullCostPerKg || {};
-      const fmt = (x) => (typeof x === 'number' && isFinite(x)) ? x.toFixed(2) : String(x);
+      const fmt = (x) => (typeof x === 'number' && isFinite(x)) ? x.toFixed(2) : (x == null ? '—' : String(x));
       const dc = (d) => (typeof d === 'number' && isFinite(d) && Math.abs(d) > SELFTEST_TOL) ? '#f43f5e' : '#64748b';
       h += '<tr style="border-top:1px solid #1e293b">'
-        + '<td style="padding:4px 8px">' + r.id + '</td>'
-        + '<td>' + fmt(c1.expect) + '</td><td>' + fmt(c1.got) + '</td>'
-        + '<td style="color:' + dc(c1.diff) + '">' + (typeof c1.diff === 'number' ? (c1.diff >= 0 ? '+' : '') + c1.diff.toFixed(2) : '—') + '</td>'
-        + '<td>' + fmt(c2.expect) + '</td><td>' + fmt(c2.got) + '</td>'
-        + '<td style="color:' + dc(c2.diff) + '">' + (typeof c2.diff === 'number' ? (c2.diff >= 0 ? '+' : '') + c2.diff.toFixed(2) : '—') + '</td>'
-        + '<td style="color:' + (r.ok ? '#10b981' : '#f43f5e') + ';font-weight:bold">' + (r.ok ? 'PASS' : 'FAIL') + '</td></tr>';
+        + '<td style="padding:4px 8px">' + r.id + '</td>';
+      _sfActive.forEach(function (f) {
+        const c = r[f.key];
+        if (!c) { h += '<td style="color:#475569">—</td>'; return; }
+        h += '<td>' + fmt(c.expect) + '→' + fmt(c.got)
+          + ' <span style="color:' + dc(c.diff) + '">'
+          + (typeof c.diff === 'number' && isFinite(c.diff) ? ((c.diff >= 0 ? '+' : '') + c.diff.toFixed(2)) : '—')
+          + '</span></td>';
+      });
+      h += '<td style="color:' + (r.ok ? '#10b981' : '#f43f5e') + ';font-weight:bold">' + (r.ok ? 'PASS' : 'FAIL') + '</td>'
+        + '<td style="color:#fda4af;font-size:11px">'
+        + ((r.invariants && r.invariants.length) ? r.invariants.map(escapeHtml).join('<br>') : '')
+        + '</td></tr>';
     }
     h += '</table>';
     if (out.error) h += '<div style="margin-top:10px;color:#fda4af">异常: ' + escapeHtml(out.error) + '</div>';
