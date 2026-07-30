@@ -2,12 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>iRAS 技术手册 v1.9.2 完整版</title>
+<title>iRAS 技术手册 v1.9.3 完整版</title>
 <style>
 @page {
   size: A4;
   margin: 2.5cm 2cm 2.5cm 2cm;
-  @top-center { content: "iRAS · RAS 工程设计技术手册 v1.9.2 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
+  @top-center { content: "iRAS · RAS 工程设计技术手册 v1.9.3 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
   @bottom-right { content: "第 " counter(page) " 页 / 共 " counter(pages) " 页"; font-size: 9pt; color: #666; }
 }
 body { font-family: 'Noto Sans CJK SC', sans-serif; font-size: 10.5pt; line-height: 1.5; color: #222; }
@@ -189,7 +189,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <button id="navToggle" onclick="document.body.classList.toggle('nav-open')" title="目录 (快捷键 M)">☰</button>
 <nav id="manualNav">
   <div class="nvhead">
-    <b>iRAS 技术手册 v1.9.2</b>
+    <b>iRAS 技术手册 v1.9.3</b>
     <input id="nvFilter" type="search" placeholder="过滤章节… (/ 聚焦)" autocomplete="off">
   </div>
   <div class="nvlist">
@@ -238,6 +238,18 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     <a class="nv3" href="#item_D_3" title="D. CO₂ 公式修正 — 加入硝化产 CO₂ (validation memo F2)">D. CO₂ 公式修正 — 加入硝化产 CO₂ (validati…</a>
     <a class="nv3" href="#item_E_3" title="E. finance-core.js 零利率 bug 修复">E. finance-core.js 零利率 bug 修复</a>
     <a class="nv3" href="#item_F_2" title="F. v1.9 验证状态">F. v1.9 验证状态</a>
+    <a class="nv2" href="#rel_1_9_2_1_9_3" title="v1.9.2 → v1.9.3: 基线对齐与验证自动化">v1.9.2 → v1.9.3: 基线对齐与验证自动化</a>
+    <a class="nv3" href="#item_v193_A" title="A. 四工况基线为何要改">A. 四工况基线为何要改</a>
+    <a class="nv3" href="#item_v193_B" title="B. 自检基线本身混了两种气候口径">B. 自检基线本身混了两种气候口径</a>
+    <a class="nv3" href="#item_v193_C" title="C. 无头测试套件">C. 无头测试套件</a>
+    <a class="nv3" href="#item_v193_D" title="D. 部分自然冷却与年化年平均 (P1 + P2)">D. 部分自然冷却与年化年平均 (P1 + P2)</a>
+    <a class="nv3" href="#item_v193_E" title="E. 比电耗与热泵电费: 补出口, 纳入自检">E. 比电耗与热泵电费: 补出口, 纳入自检</a>
+    <a class="nv3" href="#item_v193_F" title="F. 备用设备计入设备投资">F. 备用设备计入设备投资</a>
+    <a class="nv3" href="#item_v193_G" title="G. 第三轮外部审计修复 (P0/P1/P2)">G. 第三轮外部审计修复 (P0/P1/P2)</a>
+    <a class="nv3" href="#item_v193_H" title="H. 数值钳制 (clamp) 普查">H. 数值钳制 (clamp) 普查</a>
+    <a class="nv3" href="#item_v193_I" title="I. 热泵装机: 收敛到单一出口">I. 热泵装机: 收敛到单一出口</a>
+    <a class="nv3" href="#item_v193_J" title="J. 水质告警: NH₃ 按鱼种 + Ω 方解石">J. 水质告警: NH₃ 按鱼种 + Ω 方解石</a>
+    <a class="nv3" href="#item_v193_K" title="K. 已修: 上述盲区">K. 已修: 上述盲区</a>
     <a class="nv2" href="#rel_1_9_1_9_2" title="v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机">v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + …</a>
     <a class="nv3" href="#item_A_4" title="A. 液氧消耗口径修正 (v1.9.1)">A. 液氧消耗口径修正 (v1.9.1)</a>
     <a class="nv3" href="#item_B_4" title="B. 蒸发系数 β 量纲修正 (v1.9.1)">B. 蒸发系数 β 量纲修正 (v1.9.1)</a>
@@ -575,25 +587,26 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <div class="cover">
   <div style="font-size:14pt; color:#666; margin-bottom:8pt;">iRAS</div>
   <div class="title">循环水养殖系统 (RAS)<br>工程设计技术手册</div>
-  <div class="subtitle">完整版 · v1.9.2</div>
-  <div class="version">版本: v1.9.2 · 2026 年 7 月</div>
+  <div class="subtitle">完整版 · v1.9.3</div>
+  <div class="version">版本: v1.9.3 · 2026 年 7 月</div>
   <div style="font-size:11pt; color:#666; margin-top:20pt;">
     物理框架重构 · 文献校准 · 工业实测对齐<br>
     全局气候 + 围护 · 多模块并联 · P&amp;ID 自动生成 · 投资财务评价<br>
     可研报告生成 · 站级设备 · UI 重构 · 工程逻辑精化<br>
     氧锥拓扑建模 · 系统排水重构 · 全面审计修复<br>
-    <strong>碳酸盐平衡 · 液氧消耗口径 · 蒸发系数量纲 · 通风口径 · 机械除湿机</strong>
+    碳酸盐平衡 · 液氧消耗口径 · 蒸发系数量纲 · 通风口径 · 机械除湿机<br>
+    <strong>部分自然冷却 · 年均工况数值积分 · 比电耗与热泵电费出口 · 无头测试套件</strong>
   </div>
   <div class="footer">
     海南登登科技咨询有限公司 · 孙程<br>
     6881509@qq.com · iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras<br><br>
-    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v1.9.2 (2026 年 7 月) 全部内容</span>
+    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v1.9.3 (2026 年 7 月) 全部内容</span>
   </div>
 </div>
 
 <!-- ============ 版本演进说明 ============ -->
 <div class="chapter">
-<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v1.9.2)</h1>
+<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v1.9.3)</h1>
 
 <p>iRAS 项目从 2026 年初首发以来, 经历了 8 次重大版本升级, 每次都基于公开文献或工业项目实测数据校准, 不是经验调整。
 本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + <strong>v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机)</strong> 的全部内容,
@@ -1151,6 +1164,440 @@ v1.9 让 iRAS 从"工程算成本工具"升级为"<strong>工程算成本 + 水�
 
 <hr class="section-end">
 
+<h2 id="rel_1_9_2_1_9_3">v1.9.2 → v1.9.3: 基线对齐与验证自动化</h2>
+
+<p>本版<strong>不改动任何计算模型</strong>。<code>?selftest=1</code> 的 14 项基线逐位不变,
+设备选型亦逐位不变 (mainline/bypass 对照的主泵 369.0 / 258.3 kW、旁路泵 92.2 kW 与旧表一致)。
+改动集中在两件事: 把对外发布的数字与真实产品路径对齐, 以及把验证过程固化成可自动运行的测试。</p>
+
+<h3 id="item_v193_A">A. 四工况基线为何要改</h3>
+
+<p>v1.9.2 发布的四工况表无法用产品路径复现。尝试过三种气候口径:</p>
+
+<table>
+<tr><th>口径</th><th>青岛冬</th><th>海南冬</th><th>海南夏</th><th>Bergen</th></tr>
+<tr><td>① 冬夏都取该行温度 (自检所用)</td><td>35.59</td><td>36.95</td><td>37.37</td><td>35.61</td></tr>
+<tr><td>② 只覆盖冬、夏留 UI 默认</td><td>35.74</td><td>37.00</td><td>37.37</td><td>35.75</td></tr>
+<tr><td>③ 只覆盖冬、不动 RH</td><td>35.74</td><td>36.99</td><td>37.33</td><td>35.75</td></tr>
+<tr><td><strong>v1.9.2 已发布</strong></td><td><strong>35.63</strong></td><td><strong>37.39</strong></td><td><strong>37.94</strong></td><td><strong>35.65</strong></td></tr>
+</table>
+
+<p>三种口径全部对不上, 判定为<strong>成本模型两层化之前的旧脚本残留</strong>。
+现按口径 ① 重测并替换。这与 v1.9.2 审计发现的 32.65 元/kg 问题<strong>同源</strong> ——
+根因都是「验证路径与产品路径不是同一条」, 只是这次残留在文档侧而非代码侧。</p>
+
+<h3 id="item_v193_B">B. 自检基线本身混了两种气候口径</h3>
+
+<p><code>SELFTEST_BASELINE</code> 的 11 个数值工况里, 4 个大西洋鲑工况带 <code>climate</code> 覆盖
+(冬夏同温的<strong>隔离口径</strong>, 用于隔离气候单一变量), 其余 7 个鱼种不带覆盖
+(走 <strong>UI 默认气候</strong>: 设计冬 −7/4、设计夏 32/24)。两种口径对同一鱼种相差 0.1–0.5 元/kg。
+数值本身没错, 但<strong>引用时必须注明是哪一种</strong>。</p>
+
+<h3 id="item_v193_C">C. 无头测试套件</h3>
+
+<p>新增 <code>tests/</code> 目录，<code>npm test</code>（等价于 <code>node tests/run_all.js</code>）一条命令跑<strong>十三项</strong>，任一失败则非零退出，可直接挂 CI：</p>
+
+<table>
+<tr><th>脚本</th><th>覆盖</th><th>判定</th></tr>
+<tr><td><code>t1_selftest.js</code></td><td>内置 <code>?selftest=1</code></td><td>14 工况全 PASS（4 个受检字段）+ 两类不变量断言 + 面板渲染断言</td></tr>
+<tr><td><code>t2_roundtrip.js</code></td><td>存/取方案</td><td>改 65 个数值控件后 <code>summary</code> 全字段零漂移</td></tr>
+<tr><td><code>t3_downstream.js</code></td><td>下游页面数据链路</td><td>导出载荷与 finance / report 渲染文本均无 NaN</td></tr>
+<tr><td><code>t5_partial_freecooling.js</code></td><td>部分自然冷却 + 年化</td><td>连续性收敛判据、截止点等值、两端极限、闭式解 vs 360 点、Jensen 方向、边界有限性</td></tr>
+<tr><td><code>t6_thermal_scan.js</code></td><td>热工况稳健性</td><td>8 鱼种 × 9 气候 × 3 工况 = 648 次调用 + 14 组病态参数，无 NaN / 越界</td></tr>
+<tr><td><code>t7_amplitude_calibration.js</code></td><td>年化振幅校准锁定</td><td>季节振幅锁在实测气候常值区间；锁 k / 积分点数 / 按热源设计温差</td></tr>
+<tr><td><code>t8_leverage_bounds.js</code></td><td>参数杠杆 + 反悬崖</td><td>合理区间内成本极差不超上界；单步跳变 ≤ 总极差 45%</td></tr>
+<tr><td><code>t9_fc_switch_feedback.js</code></td><td>自然冷却开关反馈</td><td>三态文字齐全；灰显范围仅限专属参数</td></tr>
+<tr><td><code>t10_elec_closure.js</code></td><td>用电汇总闭合性</td><td><code>totalAvg == 电 + 非电</code>；覆盖空气曝气路径</td></tr>
+</table>
+
+<p>耗时约 2–3 分钟（<code>t8</code> 要做约 25 次全场重算）。CI 单步超时请设到 5 分钟以上，或 <code>SKIP_SLOW=1 node tests/run_all.js</code> 跳过最慢两项。</p>
+
+<p>全部通过真实 <code>recomputeAll()</code> 取数, 注入的 CDN 桩<strong>只覆盖渲染层</strong>。
+另有 <code>gen_baseline.js</code> 由产品路径生成文档表格 ——
+<strong>基线表今后应粘贴它的输出</strong>, 手抄正是本轮全部旧数的唯一来源。</p>
+
+<h3 id="item_v193_D">D. 部分自然冷却与年化年平均（P1 + P2）</h3>
+
+<p><strong>主要矛盾不是「逼近温差取几 K」, 而是判据「非 0 即 1」。</strong>
+旧判据 <code>冷源温度 + 逼近温差 &lt; 目标水温</code> 一旦跨过, EER 从 3.45 跳到 20、Q 从 0 跳到全量,
+两个量同时跳变 —— 阈值附近出现 <strong>5.8 倍</strong>的成本悬崖, 几 K 的假设差就能翻出 1 元/kg 级的差异。</p>
+
+<h4>P1 容量判据</h4>
+
+<pre>ΔT_avail = T_target − T_冷源
+Q_fc     = min(K_fc · ΔT_avail, Q_load)        K_fc = Q_design / ΔT_design
+EER_fc   = EER_design · min(ΔT_avail/ΔT_design, 1)
+1/COP_eff = (1−g)/COP_cool + g/EER_design      g = clamp((T_hi−T_冷源)/(T_hi−T_lo), 0, 1)</pre>
+
+<p><code>Q ∝ ΔT</code> 是<strong>精确</strong>的而非线性化近似 —— 由 ε-NTU: <code>Q = ε·C_min·ΔT_in</code>,
+流量固定时 NTU 与 C_r 固定, 故 ε 为常数。</p>
+
+<p>EER 随温差衰减的物理: 容量受限时风机仍满转, 寄生功率固定而换到的热变少。
+<strong>计量边界</strong>: EER 只算冷源侧<strong>增量</strong>寄生功率 (风机 / 冷源泵), 不含工艺侧循环泵 ——
+后者已在 <code>pumpKwhDaily</code>, 且板换工艺侧阻力已计入主泵扬程的「UV/板换 0.5–2 m」预算。
+不划这条线会双重计数, 量级达百 kW。</p>
+
+<p><strong>经济截止点自动涌现, 且恰好连续。</strong> 仅当 <code>EER_fc &gt; COP_cool</code> 才值得开风机;
+而在截止点 <code>EER_fc = COP_cool</code>, 于是
+<code>E = Q_fc/COP_cool + (Q−Q_fc)/COP_cool = Q/COP_cool</code> ——
+两侧完全相等。<strong>悬崖不是被磨平, 是不存在了</strong>, 因为切换点正是两条路径边际成本相等之处。
+故无需为截止点引入任何参数。</p>
+
+<p>参数 <code>freeCoolingApproach_K</code> 换为 <code>fcDesignDT_K</code>, 语义由「悬崖位置」变为
+「自然冷却单独扛满设计负荷所需的温差」。它是<strong>换热链的串联损失</strong>:</p>
+
+<table>
+<tr><th>冷源</th><th>换热链</th><th>总温差</th></tr>
+<tr><td>空气源（干冷器）</td><td>工艺水 → 板换 2–3 K → 乙二醇环路 → 干冷器对空气 5–10 K</td><td>8–13 K</td></tr>
+<tr><td>水 / 开式海水</td><td>工艺水 → 钛板换 2–3 K → 冷源水（双屏障再 +2–3）</td><td>3–6 K</td></tr>
+<tr><td>地源</td><td>板换 2 K + 埋管对土壤 3–5 K</td><td>5–7 K</td></tr>
+</table>
+
+<p>空气侧温差大, 因为空气 ρ·cp 小、同样热量需巨大风量, 受风机功率约束;
+水-水板换换热系数高一两个数量级, 1–3 K 即可实现。
+反推自校验 (1000 t 鲑鱼, Q_load ≈ 1081 kW): 开式海水得 3.1 K、干冷器得 11.4 K,
+寄生功率对应 EER 50 与 22 —— 与手册区间吻合。
+UI 留空即按热源自动取 (空气 11 / 水·海水 4 / 地源 6)。</p>
+
+<h4>P2 年平均: 24 点数值积分</h4>
+
+<p>自然冷却本质是「全年有多少小时可用」, 而<strong>阈值函数在均值处取值 ≠ 函数的均值</strong>（Jensen 不等式）。
+旧模型切设计冬 → 判定全年可用（系统性高估）; 切年均 → 判定全年不可用（系统性低估）;
+<strong>真值在中间, 而单点评估永远给不出中间值</strong>。</p>
+
+<p>不引入新气象数据 —— 用现有三个温度点拟合正弦 <code>T = T̄ + A·cos θ</code>,
+<code>A = k·(夏−冬)/2</code>, 对 T_air 与 T_source 用<strong>各自振幅、同相位</strong>摆动
+（两者都由季节驱动, 夏季同时达峰）, 逐点跑真实热平衡再平均。</p>
+
+<p>闭式解亦有解析形式并保留为诊断量:
+<code>ḡ = [Φ(u_hi) − Φ(u_lo)]/(u_hi − u_lo)</code>,
+<code>Φ(u) = u − [u·arccos u − √(1−u²)]/π</code>。
+实测<strong>闭式解对贡献率是精确的</strong>（青岛 0.3826 vs 收敛数值 0.3826）,
+但<strong>能耗偏乐观 1–7%</strong> —— 因为它假定 Q_load 恒定, 而 Q_load 与冷源温度同向变化、
+与比能耗正相关, 故 <code>E[Q·f] &gt; E[Q]·E[f]</code>。这正是改用数值积分的原因。</p>
+
+<p>点数取 24（半月步长）: 实测 Ē 相对 360 点的误差, N=12 为 −1.24%~+1.03%, N=24 降到 0.15% 以内。
+g 是钳位函数, 12 点在拐点附近求积误差可达 3%, 与要修的相关性效应同量级, 故不能停在 12。
+成本: 单次点函数 0.009 ms × 24 × 阶段数 ≈ 0.9 ms, 可忽略。</p>
+
+<h4>三工况对照（1000 t 大西洋鲑, 工艺运行成本 元/kg）</h4>
+
+<table>
+<tr><th>地区</th><th>热源</th><th>设计冬</th><th>年均</th><th>设计夏</th><th>年化贡献率</th><th>年化 COP</th></tr>
+<tr><td>挪威 Tromsø</td><td>开式海水</td><td>37.62</td><td><strong>37.64</strong></td><td>37.67</td><td>98%</td><td>18.14</td></tr>
+<tr><td>挪威 Bergen</td><td>开式海水</td><td>37.66</td><td><strong>37.95</strong></td><td>39.07</td><td>73%</td><td>7.82</td></tr>
+<tr><td>智利 Puerto Montt</td><td>开式海水</td><td>37.67</td><td><strong>38.13</strong></td><td>39.07</td><td>59%</td><td>5.95</td></tr>
+<tr><td>加拿大 Halifax</td><td>开式海水</td><td>37.69</td><td><strong>38.20</strong></td><td>39.42</td><td>65%</td><td>5.85</td></tr>
+<tr><td>青岛</td><td>空气源</td><td>37.75</td><td><strong>38.54</strong></td><td>39.35</td><td>35%</td><td>4.64</td></tr>
+<tr><td>上海</td><td>空气源</td><td>37.80</td><td><strong>38.81</strong></td><td>39.54</td><td>19%</td><td>3.93</td></tr>
+<tr><td>三亚</td><td>开式海水</td><td>39.62</td><td><strong>39.98</strong></td><td>40.42</td><td>0%</td><td>2.30</td></tr>
+<tr><td>Doha</td><td>水源</td><td>39.24</td><td><strong>39.68</strong></td><td>40.26</td><td>0%</td><td>2.68</td></tr>
+</table>
+
+<div class="note-box"><strong>一个反直觉的反转</strong>：直觉上青岛 −7°C 的冬天该是自然冷却之王，
+但<strong>年度账上稳定的 9°C 海水赢两倍以上</strong>（Bergen 73% vs 青岛 35%）——
+因为海水<strong>全年都冷</strong>，而青岛的空气只冷一段时间。<br>
+旧模型给不出这个结论，它只会说两地设计冬都是 COP 20.00。
+<strong>年化改变的是选址与冷源方案的排序，不只是把数字调准。</strong><br>
+另一条结构性观察：二值化恰好在<strong>最稳定的冷源上误差最小</strong>（海水、地源），
+在<strong>摆动最大的空气上误差最大</strong>——而空气源正是国内项目的主流选择。</div>
+
+<h4>已知缺口（刻意标注, 未修）</h4>
+
+<ol>
+<li><s>振幅折减 k 待标定</s> → <strong>已核验, 无需改动</strong>。
+敏感性实测表明, ḡ 的主导不确定性<strong>只有季节振幅 A 一个量</strong>;
+而 A 已对多个独立气候常值来源核验:
+青岛空气 模型 12.7 vs 实测 12.1–13.1（ERA5 长期月均 1月约1.4°C / 8月约25.6°C）;
+Bergen 海水 4.5 vs 4.0–5.25（海温 3月5.5 / 8月15°C）;
+Halifax 海水 8.5 vs 8.2–8.9（海温 2月0.8 / 8月17.1°C, 年均8.1–9.0）。
+<strong>三处全部落在实测区间内。</strong> 其余 5 个区域仅作合理性判断, 尚未独立核验。
+校准已由 <code>t7_amplitude_calibration.js</code> 锁死 ——
+日后改动 k 或区域温度预设会在该测试响亮失败。</li>
+<li><s>昼夜与天气过程未计</s> → <strong>降级为二阶</strong>。
+实测: A 由实测月均钉死后, ḡ 对短期噪声 σ（1→6 K）的剩余敏感性仅 <strong>0.1–2.2 pp</strong>
+（A 未钉死时为 8.4–17.7 pp）。<strong>忽略昼夜变化是有依据的, 不是将就。</strong><br>
+附一条否定结果: 曾尝试改用「季节正弦 ⊗ 短期噪声, 振幅由设计冬=1% 分位反解」的两尺度参数化,
+以消掉 k。结果 ḡ 对 σ 的敏感性达 8.4–17.7 pp、对百分位定义 p 达 6.2–13.6 pp ——
+<strong>新参数化自身的不确定度比它要修的偏差还大, 且把一个参数变成两个</strong>。故不采用。</li>
+<li><s>RH 按年均值恒定</s> → <strong>实测为三阶, 不予实现</strong>。
+RH 的季节数据<strong>本已在各区域预设里</strong>（振幅 −2.5~+9.0 pp，且两种相位都有：
+青岛/上海/三亚 夏湿同相，Bergen/Tromsø/智利 夏干反相），24 点积分只是没用它。
+按预设振幅摆动 RH 后，年化热泵电耗变化仅 <strong>−0.07%~+0.30%</strong>；
+即使振幅<strong>翻倍</strong>也只有 −0.15%~+0.60%。
+原因：RH 只作用于蒸发/潜热通路，而净排热由恒定内热主导（泵 + 代谢约 25948 kWh/d）。
+0.3% 远低于本模型自身的精度等级，实现它属过度工程。</li>
+<li><strong>P1 核心主张已验证 —— 参数杠杆确实被压平。</strong><br>
+ΔT_design 全合理区间扫描：Bergen 海水 2→6 K 成本极差仅 <strong>0.35 元/kg</strong>
+（P1 之前 6→10 K 就 +1.20），青岛空气 6→16 K 极差 <strong>0.20</strong>；
+单位 K 杠杆由 0.30 元/kg 降至 0.087（Bergen）/ 0.02（青岛），<strong>约降一个数量级</strong>。
+EER_design 12→30（2.5 倍）极差 0.11–0.22。
+<strong>设计冬工况极差为 0.0000</strong>——ΔT_avail 全区间远超 ΔT_design、贡献率恒为 1，
+这正是 14 项基线中性的根据。<br>
+反悬崖指标：扫描中最大单步跳变仅占总极差 <strong>30–31%</strong>（阈值判据会接近 100%）。
+已由 <code>t8_leverage_bounds.js</code> 锁死——谁把阈值判据改回去，它会立刻失败。</li>
+<li>自然冷却冷源与热泵冷源仍绑死（<code>_fcSink = T_hp_source</code>）。
+实际常见「海水源热泵 + 干冷器自然冷却」或反之, 应为两个独立选项 —— 属 P3。</li>
+<li>蒸发冷的冷源应为<strong>湿球</strong>而非干球（干热气候是量级差别）—— 属 P3。</li>
+<li>热侧温度用目标水温: 实测回水温升 ΔT_loop = Q/(ṁ·cp) 仅约 <strong>0.09 K</strong>, 可忽略,
+故此项<strong>无需再改</strong>。</li>
+</ol>
+
+<div class="note-box"><strong>✅ 自检 14 项基线逐位不变</strong>：四工况全是空气源, 且 ΔT_avail 远超设计温差, 落在饱和区。<br>
+最紧的是 Bergen 设计冬苗种期（目标 12°C、气温 0°C, x = 12/11 = 1.09）,
+<strong>余量仅 9%</strong>。将来上调空气源设计温差会让 <code>salmon_bergen_w</code> FAIL ——
+那是<strong>预期行为</strong>, 说明该基线确实压在全量自然冷却的边界上, 应同步复核而非直接改基线。</div>
+
+<hr class="section-end">
+
+<h3 id="item_v193_E">E. 比电耗与热泵电费：补出口，纳入自检</h3>
+
+<p>比电耗（kWh/kg·yr）与热泵电费（元/kg）是对外发布的核心指标，但 <code>summary</code> 里
+<strong>此前没有对应字段</strong>——页面上的 <code>kwhPerKgYr</code> 只是热泵单项且分阶段。
+因此这两个数进不了 <code>SELFTEST_BASELINE</code>、<strong>无法自检</strong>，至今只是「碰巧还对着」。
+这是当时唯一一处<strong>对外数字完全没有护栏</strong>的地方。</p>
+
+<p>本版补上五个出口：<code>kwhPerKg</code>（全场综合比电耗）、<code>elecCostPerKg</code>、
+<code>hpCostPerKg</code>（热泵+除湿电费）、<code>pumpShareOfElec</code>、<code>loxTonsPerYear</code>，
+并把前两者写入全部 11 条数值基线。</p>
+
+<h4>纳入后立刻发现旧发布值偏高</h4>
+
+<table>
+<tr><th>指标</th><th>旧发布值</th><th>产品出口实测</th><th>差</th></tr>
+<tr><td>比电耗（青岛冬）</td><td>9.7</td><td><strong>9.51</strong></td><td>−2%</td></tr>
+<tr><td>热泵电费（青岛冬）</td><td>0.29</td><td><strong>0.21</strong></td><td><strong>−28%</strong></td></tr>
+<tr><td>液氧年耗</td><td>473 t</td><td>471 t</td><td>核对无误</td></tr>
+</table>
+
+<p>根因：旧手推口径对<strong>臭氧与 BF 风机取了峰值</strong>，而年成本按 <code>totalAvg × 365</code> 计算。
+产品路径的均值口径才与成本模型自洽。四工况表的比电耗列已按产品出口更新
+（9.5 / 11.9 / 12.6 / 9.5），泵占电 <strong>57–75%</strong>。</p>
+
+<h4>为什么不在汇总层手列 kWh 清单</h4>
+
+<ol>
+<li><strong>增氧可能是电。</strong> <code>aerationMode === 'air'</code> 时增氧费用是主风机电费，
+纯氧时才是液氧。旧手推<strong>完全漏了这一项</strong>——只因大西洋鲑走纯氧才碰巧对上 9.7，
+换成空气曝气的鱼种就是错的。</li>
+<li><strong>臭氧、BF 风机、增氧都有峰/均之分</strong>
+（<code>ozoneCostAvgDaily = ozoneCostDaily × feedRatio</code>）。</li>
+</ol>
+
+<p>故电量在<strong>成本函数内部、紧挨 <code>totalAvg</code> 那一行</strong>计算，
+复用它已经用的成本项再除以电价：口径天然一致，且可与 <code>totalAvg</code> 逐项肉眼对照——
+将来新增用电项若在这里漏加，对照即可发现。<code>tests/gen_baseline.js</code> 里那份
+重复手推实现也已删除，统一到产品出口。</p>
+
+<div class="note-box">⚠ v1.9.2 变更日志里「热泵费 1.68 → 0.29 元/kg」的叙述<strong>保留原样</strong>：
+那是历史记述，而 1.68 那一侧对应的旧代码已不存在、无法测量，
+改成 0.21 会让该叙述一半真一半编。当前值以本节与基线为准。</div>
+
+<h3 id="item_v193_F">F. 备用设备计入设备投资</h3>
+
+<p>模型一直按 <strong>N+1</strong> 给每个模块配备用（<code>applyModularization</code>），设备清单也把备用台数展开成
+「N 台+1 备 ×M 模块」，但 <code>calcCapex</code> 是<strong>按工艺容量</strong>计价的（元/kW、元/(m³/h)）——
+<strong>备机只选型、不花钱</strong>。实证：把「套数」由 1 改到 5，备用台数随之变化而设备直购恒为 4360 万。</p>
+
+<h4>冗余系数 = 实际装机 / 工艺需求</h4>
+
+<p>不能用 <code>(N+备)/N</code>——它对 N+1 备用正确，但<strong>对超配并联失效</strong>：
+UV 是 2×75% 并联（<code>installedKw = 需求 × 1.5</code>）而 <code>sparesCount = 0</code>，
+<code>(N+备)/N</code> 会算成 1.00，于是实际装 150% 却只按 100% 计价。
+这是 v1.3 就存在、因从未按装机量计价而一直未暴露的漏算，本版一并修正（+35 万）。</p>
+
+<h4>臭氧发生器改 2×50% 并联</h4>
+
+<p>原为 1+1，而臭氧四个阶段的 N 恒为 1，意味着 100% 冗余——成鱼期单台 286 万、备机等额，
+单项就占备用增量的 48%。臭氧停机不像主泵那样 15–30 min 致鱼窒息，多数项目按「可短时降容」处理。
+改为 2×50% 后装机 = 需求，不额外增加投资，任一台故障仍维持 50% 氧化能力。</p>
+
+<h4>分阶段明细</h4>
+
+<table>
+<tr><th>阶段</th><th>备用增量</th><th>主泵 / RDF / 热泵 / 臭氧 的 N</th><th>说明</th></tr>
+<tr><td>苗种期</td><td>33.4 万</td><td>1 / 1 / 1 / 2</td><td>规模小，多数设备 N=1 → 冗余 ×2.00</td></tr>
+<tr><td>幼鱼期</td><td>121.3 万</td><td>1 / 2 / 1 / 2</td><td>RDF 已可拆 2 台 → ×1.50</td></tr>
+<tr><td>中鱼期</td><td>182.5 万</td><td>2 / 3 / 2 / 2</td><td>—</td></tr>
+<tr><td>成鱼期</td><td>288.8 万</td><td>2 / 4 / 3 / 2</td><td>RDF ×1.25，冗余摊得最薄</td></tr>
+<tr><td><strong>全场</strong></td><td><strong>626 万</strong></td><td>—</td><td><strong>N 随规模增长 → 冗余系数由 ×2.00 降至 ×1.25</strong></td></tr>
+</table>
+
+<p>备机与主机同样乘 ×2.2 工程放大系数（<strong>安装备用</strong>：管路阀门电气全通，可自动切换）。
+结果：设备直购 4360 → 4986 万，折旧 8.07 → 9.14 元/kg，
+<strong>工艺运行成本 35.74 → 37.33 元/kg</strong>。</p>
+
+<p>同时<strong>新增加药计量泵 CAPEX 条目</strong>（此前有 1+1 备用规格却无计价条目，
+按台计价 5000 元/台；按 kW 计价会差一个数量级），
+并<strong>补 CO₂ 脱气塔风机</strong>的模块化规格（环路内转动设备，此前无规格故无备用）。
+鱼池增氧鼓风机 K-101 原本就有 1+1（仅空气曝气模式生成），本版只做计价映射。</p>
+
+<div class="note-box">⚠ <strong>实现要点</strong>：<code>items[].qty</code> 保持<strong>工艺容量</strong>不变——
+自检的不变量断言拿 CAPEX 热泵 qty 与 <code>hpInstalledKwOf</code> 统一公式比对，
+把备用乘进 qty 会让该断言失败。冗余系数只作用于 <code>cost</code>，
+另存 <code>spareRatio</code> / <code>costRun</code> 供追溯。<br>
+⚠ <strong>已知未含备用</strong>：机械除湿机属全场设备、不在模块环路内，
+本版仅确认其不配模块内备机，未移入站级——实测其分区选型<strong>不构成重复计算</strong>
+（各阶段 qty 各不相同且已乘共用车间系数 0.75），且因除湿需求只在夏季出现，
+<code>Σmax(冬,夏)</code> 恒等于 <code>max(Σ冬,Σ夏)</code>，移动不改变任何数字。</div>
+
+<h3 id="item_v193_G">G. 第三轮外部审计修复（P0 / P1 / P2）</h3>
+
+<h4>P0 · 渲染层口径分歧</h4>
+<p>工况对比表用 <code>heatPumpKWh / 16</code>（电耗÷16h），而正上方热平衡卡片用
+<code>热功率 ÷ 22h</code>——<strong>同屏两个数差 14 倍</strong>（38 vs 548 kW）。
+<strong>数据层的不变量断言抓不到</strong>：<code>sCap</code> 是渲染层局部变量，不落任何数据结构。
+这条通用教训催生了 I 节的单一出口改造。</p>
+
+<h4>P0 · 防除零 clamp 推翻经济截止判据</h4>
+<p><code>Math.min(0.999, COP_cool/EER)</code> 在 EER &lt; COP_cool 时，把「自然冷却永不经济」
+硬拉成「几乎总经济」。实测：</p>
+<table>
+<tr><th>freeCoolingEER</th><th>修前电耗 kWh/d</th><th>修后</th><th>关闭自然冷却</th></tr>
+<tr><td>1</td><td>6277（<strong>多耗 3.45×</strong>）</td><td>1819</td><td>1819</td></tr>
+<tr><td>2</td><td>3138（多耗 1.72×）</td><td>1819</td><td>1819</td></tr>
+<tr><td>3</td><td>2092（多耗 1.15×）</td><td>1819</td><td>1819</td></tr>
+<tr><td>3.45</td><td colspan="3">恰好等于机械制冷 COP，两侧相等</td></tr>
+</table>
+<p>改为 <code>x ≥ 1 直接置 g = 0</code>；<code>freeCoolingEER</code> 钳到 [1, 60]
+（此前无上界，填 1e6 得电耗 0 且不告警）。界面新增一档提示
+「自然冷却不经济（EER ≤ 机械制冷 COP，已自动改走机械制冷）」——<strong>开关不该静默失效</strong>。</p>
+
+<h4>P1 · 热泵漏出 SPARE_MAP</h4>
+<p><code>modulePerSpec.heatPump</code> 有 <code>sparesCount=1</code>，设备清单与 P&amp;ID 都按 N+1 展开，
+唯独 CAPEX 按 N 计价——是备用政策下唯一不一致的转动设备。备用增量 626 → <strong>725 万</strong>。</p>
+
+<h4>P1 · 年均工况基线缺失</h4>
+<p>11 条数值工况全跑设计冬；而 4 条大西洋鲑用<strong>冬夏同温的隔离口径</strong>
+（<code>T_air_design_winter = T_air_design_summer</code>）⇒ 年振幅 = 0、24 点积分退化成单点。
+<strong>结果：<code>FC_ANNUAL_POINTS = 24</code> 这条核心路径在内置自检里一次都没被真正执行。</strong>
+已新增 <code>salmon_qingdao_annual</code>（不带温度覆盖，冬夏有真实温差），自检 14 → <strong>15 项</strong>。</p>
+
+<p><strong>P2</strong>：CAPEX 的「支路泵合计」含氧锥旁路泵，但冗余映射只列了另外四条支路。
+bypass 拓扑下旁路泵占该项 <strong>46%</strong>，当前两边恰好都是 1+1 故无数值误差——
+但那是巧合，一旦某条支路拆成 2+1，46% 权重就会套上错误系数。已补。</p>
+
+<hr class="section-end">
+
+<h3 id="item_v193_H">H. 数值钳制（clamp）普查</h3>
+
+<p>本项目两次栽在 <code>Math.max/min(…, 常数)</code> 上，<strong>两次都是外部审计发现的</strong>：</p>
+<table>
+<tr><th>clamp</th><th>后果</th></tr>
+<tr><td><code>Math.max(1 − R, 0.001)</code></td><td>典型 RAS 单次稀释率仅 0.056%，<strong>默认换水率 4% 就在触发</strong>，NO₃ 被硬钳成同一个值、完全不响应换水率（v1.0 起的静默错误）</td></tr>
+<tr><td><code>Math.min(0.999, COP/EER)</code></td><td>EER &lt; COP 时电耗是关闭自然冷却的 <strong>3.45 倍</strong></td></tr>
+</table>
+
+<p><strong>为什么现有断言抓不到</strong>：这类错误不产生 NaN、不越界、不让 golden-master FAIL——
+它只是安静地把物理算错。<strong>唯一的可观测特征是「在正常工况下正在改变结果」。</strong></p>
+
+<h4>扰动测试</h4>
+<p>把常数改到「不可能生效」的值（max→−1e30、min→+1e30），比对全场输出指纹。
+指纹变了 = 该 clamp 正在生效 → 人工判定是物理边界还是静默改写。</p>
+<p><strong>分组二分</strong>：整组无变化即整组归档，有变化才拆半递归。
+126 项候选只用 <strong>38 次 jsdom</strong>（逐个跑需 128 次）——因为绝大多数 clamp 根本不触发。</p>
+
+<table>
+<tr><th>类别</th><th>候选</th><th>正在生效</th></tr>
+<tr><td>C! 极小常数（典型防除零写法）</td><td>20</td><td><strong>0</strong></td></tr>
+<tr><td>C 待判定</td><td>60</td><td>2</td></tr>
+<tr><td>B 物理边界</td><td>38</td><td>2</td></tr>
+<tr><td>A 数值保护（常数 0/1）</td><td>65</td><td>未测</td></tr>
+</table>
+
+<p><strong>4 处生效项逐条判定后全部为有意设计</strong>：集水池容积区间 20/200 m³（两端都生效，
+苗种期走下限、成鱼期走上限）、BF 风机日均负荷比下限 0.5（硝化菌群基础曝气）、
+自然冷却贡献率封顶 1。<strong>没有发现第三个 <code>0.001</code> 那类错误。</strong>
+最令人担心的 COP 下限 1.5/1.8/2.0、蒸发系数 β 区间、RH 域，<strong>在正常工况下全部不触发</strong>——
+它们是留给极端工况的余量。</p>
+
+<div class="note-box">⚠ <strong>覆盖边界</strong>：指纹只覆盖三文鱼 + 罗非鱼、设计冬 + 年均，
+<strong>只在极端参数下才越界的 clamp 会漏</strong>（极低换水率、极高盐度、空气曝气模式）；
+A 类 65 项未测。全表与判定依据见 <code>CLAMP_INVENTORY.md</code>；
+哨兵 <code>t11_clamp_census.js</code> 秒级检出「悄悄多了一个没人测过的 clamp」，
+完整扰动测试 <code>clamp_probe.js</code> 约 4 分钟、手动跑。</div>
+
+<hr class="section-end">
+
+<h3 id="item_v193_I">I. 热泵装机：收敛到单一出口</h3>
+
+<p>审计的通用建议是「让装机 kW 只有一个 formatter 出口」。普查后发现消费点
+<strong>不是 4 个而是 5 个</strong>：</p>
+
+<table>
+<tr><th>消费点</th><th>口径</th><th>判定</th></tr>
+<tr><td>热平衡卡片</td><td><code>hpThermalKWh(t) / hpUtilH</code></td><td>✅</td></tr>
+<tr><td>工况对比表</td><td>（本版已修，见 G 节）</td><td>✅</td></tr>
+<tr><td>设备清单 / 模块化</td><td><code>hpInstalledKwOf(sim, 0.75)</code></td><td>✅</td></tr>
+<tr><td>CAPEX 计价</td><td><code>hpInstalledKwOf(sim, 0.75)</code></td><td>✅</td></tr>
+<tr><td><strong>summary.totalHeatPumpCapacityKw</strong></td><td><strong>电耗 ÷ 小时数</strong></td><td>🔴 <strong>差 27 倍</strong></td></tr>
+</table>
+
+<p>实测：青岛 <strong>36.6 kW vs 统一公式 997.3 kW</strong>；三亚 359.9 vs 1061.7。
+它在 <code>summary</code> 里，<strong>会流进导出载荷、下游页面与可研报告</strong>，
+而不变量断言的比对范围里从来没有它（只比 <code>capex.items[].qty</code> 与 <code>modulePerSpec</code>）。</p>
+
+<p>另发现热泵利用小时的解析逻辑（<code>Math.max(8, Math.min(24, …))</code>）
+<strong>被复制了 4 份</strong>——复制即分叉隐患：任何一份改了钳制区间，其余三份不会跟。
+已抽出 <code>hpUtilHoursOf()</code> 作为唯一出口。</p>
+
+<p>新增 <code>t12</code> 三层断言：① 数据层 <code>summary == Σ hpInstalledKwOf</code>；
+② 源码层无重复实现；③ <strong>直接读渲染出的 DOM 文本</strong>抓「装机 kW」与数据层比对——
+<strong>这一层正是原断言的盲区</strong>。突变验证：把工况对比表改回 <code>/16</code>，
+会复现出审计原文里的 38 / 308 / 174 kW 并被立即捕获。</p>
+
+<hr class="section-end">
+
+<h3 id="item_v193_J">J. 水质告警：NH₃ 按鱼种 + Ω 方解石饱和度</h3>
+
+<h4>NH₃ 着色阈值按鱼种</h4>
+<p>鱼种限值表 <code>NH3_LIMIT_UG_L</code> <strong>早已存在</strong>（v1.9.2 为自检而加：
+鲑 12.5 / 大菱鲆 20 / 石斑 30 / 加州鲈·鳜·对虾 50 / 鳗鲡 60 / 罗非 100 μg/L），
+同一行 tooltip 也写着「三文鱼 12.5 μg/L」，<strong>但判据写死 <code>&gt; 0.025</code>（25 μg/L）</strong>。
+后果：最敏感的鲑科用了 2× 宽松阈值，NH₃ 在 12.5–25 μg/L 之间仍显示绿色「正常」。
+现改为三档：超限值红 / 超半限值黄 / 其余绿。</p>
+
+<h4>方解石饱和度 Ω</h4>
+<p>此前<strong>界面上完全没有显示</strong>——不是「缺告警」，是连数字都看不到
+（它已由碳酸盐平衡算出并进了导出载荷）。现补一行，按 &lt;0.8 危险 / &lt;1.0 警戒着色。</p>
+
+<table>
+<tr><th>鱼种</th><th>Ω 实测</th><th>判定</th></tr>
+<tr><td>大西洋鲑（30‰）</td><td>0.45 – 0.58</td><td>全程欠饱和</td></tr>
+<tr><td>大菱鲆（28‰）</td><td>0.37 – 0.56</td><td>全程欠饱和</td></tr>
+<tr><td>对虾（15‰）</td><td>1.29 / 0.85 / 0.78</td><td>仅苗种期达标</td></tr>
+<tr><td>罗非鱼 / 鳗鲡（淡水）</td><td>—</td><td>不适用，不显示该行</td></tr>
+</table>
+
+<p>这是<strong>模型算出的真实状态</strong>，不是告警实现问题：高密度 RAS 中 CO₂ 累积压低 pH，
+CO₃²⁻ 占比骤降。<strong>工程后果</strong>：Ω &lt; 1 时水对碳酸钙不饱和，
+持续溶蚀<strong>混凝土池体与水泥基砂浆</strong>（长期导致池壁起砂、露筋），
+对贝类/甲壳类还影响钙化。对策：提高碱度 / 强化脱气 / 投加碳酸盐。</p>
+
+<div class="note-box">⚠ <strong>蒸发计入补水（审计 P3 第三项）经实测后决定不做</strong>：
+蒸发仅占补水 <strong>0.06%–0.32%</strong>（青岛 1.48、Doha 0.92、三亚 0.29 m³·d⁻¹，
+对比补水 461 m³·d⁻¹），折算成本 &lt; 0.001 元/kg；
+而改动会使 12 条基线与三份文档的成本数字再重算一遍，换来小数点后第四位。<br>
+⚠ 该结论依赖<strong>默认 poolCover = partial 且换水率 5%/d</strong>。
+敞开池面 + 干热气候 + 低换水率时占比会显著上升，届时需重新评估。
+排水面板 tooltip 已注明「含蒸发以外的全部出水」。</div>
+
+<hr class="section-end">
+
+<h3 id="item_v193_K">K. 已修: 上述盲区</h3>
+
+<p><strong>比电耗与热泵电费没有产品出口。</strong><code>summary</code> 里没有对应字段
+(页面上的 <code>kwhPerKgYr</code> 只是热泵单项、且是分阶段的), 因此这两个对外发布的核心指标
+<strong>进不了 <code>SELFTEST_BASELINE</code>、无法自检</strong>, 现在只是碰巧还对着。
+建议下一版补 <code>kwhPerKg</code> / <code>hpCostPerKg</code> 并纳入基线。</p>
+
+<div class="note-box"><strong>年化基准的坑</strong>：全场年耗电与年液氧应按
+<strong>日值 × 365</strong> 累加，因为各生活阶段在场内<strong>全年并行运行</strong>。
+若按 <code>stageDays</code> 串行累加，比电耗会被低估 2.3 倍（4.2 vs 9.7 kWh/kg·yr）。
+本次以已发布的年液氧 471 t 作独立锚点反查确认。</div>
+
+<hr class="section-end">
+
 <h2 id="rel_1_9_1_9_2">v1.9 → v1.9.2: 液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机</h2>
 
 <p>v1.9.1 与 v1.9.2 不是新增功能, 而是<strong>四处物理口径修正</strong>。它们在与英文版 v2.0 对表 (PORTING_NOTES) 和用户实测中暴露,
@@ -1361,15 +1808,15 @@ v1.9.2 改为逐条计算四条出路的当前值、所需值与卡点：</p>
 
 <table>
 <tr><th>工况</th><th>气温 / 源水</th><th>OPEX</th><th>折旧</th><th>综合成本</th><th>比电耗</th></tr>
-<tr><td>青岛冬</td><td>-7°C / 4°C</td><td>27.70</td><td>7.93</td><td><strong>35.63</strong></td><td>9.7</td></tr>
-<tr><td>海南冬</td><td>17°C / 22°C</td><td>29.40</td><td>7.99</td><td><strong>37.39</strong></td><td>12.1</td></tr>
-<tr><td>海南夏</td><td>32°C / 27°C</td><td>29.91</td><td>8.04</td><td><strong>37.94</strong></td><td>12.8</td></tr>
-<tr><td>挪威 Bergen 冬</td><td>0°C / 4°C</td><td>27.71</td><td>7.94</td><td><strong>35.65</strong></td><td>9.7</td></tr>
+<tr><td>青岛冬</td><td>-7°C / 4°C</td><td>28.26</td><td>9.27</td><td><strong>37.53</strong></td><td>9.5</td></tr>
+<tr><td>海南冬</td><td>17°C / 22°C</td><td>29.57</td><td>9.37</td><td><strong>38.94</strong></td><td>11.9</td></tr>
+<tr><td>海南夏</td><td>32°C / 27°C</td><td>29.95</td><td>9.43</td><td><strong>39.39</strong></td><td>12.6</td></tr>
+<tr><td>挪威 Bergen 冬</td><td>0°C / 4°C</td><td>28.27</td><td>9.28</td><td><strong>37.55</strong></td><td>9.5</td></tr>
 </table>
 
 <p>单位元/kg 鱼；电 0.7 元/kWh、液氧 1.2 元/kg、饲料 12 元/kg；比电耗单位 kWh/kg·yr。
-年液氧消耗 <strong>473 t</strong>（四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化，与气候无关）。
-本表为<strong>工艺运行成本</strong>口径（v1.9.2 前的旧口径，未含维护/保险/补水/排污）。
+年液氧消耗 <strong>471 t</strong>（四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化，与气候无关）。
+本表为<strong>工艺运行成本</strong>口径（v1.9.2 两层成本模型的下层，已含维护/保险/补水/排污/折旧；再加苗种+人工+管理费即企业全成本）。
 v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，口径定义见 21.1。</p>
 
 <div class="note-box">
@@ -1402,8 +1849,8 @@ v1.9.2 起工艺运行成本为 37.01 元/kg、企业全成本 41.97 元/kg，�
 <tr><td>旁路泵 P-602</td><td>0</td><td>92.2 kW</td><td>+92.2 kW</td></tr>
 <tr><td><strong>综合泵功率</strong></td><td>369.0 kW</td><td>350.5 kW</td><td><strong>-18.4 kW</strong></td></tr>
 <tr><td>氧锥规格流量</td><td>10155 m³/h</td><td>1015 m³/h</td><td>缩 10×</td></tr>
-<tr><td>工程总投资</td><td>9433 万元</td><td>8104 万元</td><td><strong>-1329 万元</strong></td></tr>
-<tr><td>综合成本（工艺）</td><td>35.63 元/kg</td><td>33.95 元/kg</td><td><strong>-1.68 元/kg</strong></td></tr>
+<tr><td>工程总投资</td><td>11026 万元</td><td>9771 万元</td><td><strong>-1255 万元</strong></td></tr>
+<tr><td>综合成本（工艺）</td><td>37.53 元/kg</td><td>35.94 元/kg</td><td><strong>-1.59 元/kg</strong></td></tr>
 </table>
 
 <p>bypass 节能幅度从 v1.7 的 29.8 kW 降到 18.4 kW —— 主泵扬程从 12 m 降到 7 m 后，
@@ -3340,7 +3787,7 @@ OPEX 中的化学品/臭氧消耗在年均工况下按 feedRatio (= feedAvg/feed
 
 <h3 id="sec21_4">21.4 综合成本对比 <span class="tag-update">v1.3 含折旧 + 工况</span></h3>
 
-<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 35.63 / 海南冬 37.39 / 海南夏 37.94 / Bergen 冬 35.65 元/kg（工艺运行成本口径）。</div>
+<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 35.59 / 海南冬 36.95 / 海南夏 37.37 / Bergen 冬 35.61 元/kg（工艺运行成本口径）。</div>
 
 <p>1000 t/yr 三文鱼基准, 4 工况下综合成本对比(v1.3):</p>
 
@@ -3591,7 +4038,7 @@ load → sim.alk → naHCO₃ 成本 → totalAvg → 管理费 → 企业全成
 <div class="formula-block">
 判定: 制冷工况 且（冷源温度 + 逼近温差）&lt; 目标水温<br>
 &nbsp;&nbsp;冷源: 空气源取 T<sub>air</sub>；水/海水/地源取对应源温<br>
-&nbsp;&nbsp;逼近温差 <code>freeCoolingApproach_K</code> 默认 6 K（干冷器 5–8，板换 2–3）<br>
+&nbsp;&nbsp;逼近温差 <code>freeCoolingApproach_K</code> 默认 6 K（干冷器 5–8，板换 2–3）　<strong>⚠ 已于 v1.9.3 被 <code>fcDesignDT_K</code> 取代</strong>（判据由阈值改为容量，语义与默认值均已变，见「v1.9.2 → v1.9.3 → D 节」）<br>
 &nbsp;&nbsp;能效比 <code>freeCoolingEER</code> 默认 20
 </div>
 
@@ -3613,7 +4060,7 @@ CAPEX 不额外计 —— 自然冷却复用热泵已有的排热侧，热泵仍
 
 <h4 id="audit_I_10">I.10 新增：自检入口</h4>
 
-<p>访问 <code>index.html?selftest=1</code> 会跑 11 个固定工况并与内置基线比对。</p>
+<p>访问 <code>index.html?selftest=1</code> 会跑固定工况并与内置基线比对。　<strong>⚠ v1.9.3 已扩展为 14 项（11 数值 + 3 边界），受检字段由 2 个增至 4 个，见「v1.9.2 → v1.9.3 → C / E 节」。</strong></p>
 
 <div class="warning-box">
 <span class="label">⚠ 为什么需要它</span><br>
@@ -3743,7 +4190,7 @@ I.5 的发散检测最初把阈值设为 <code>R ≥ 0.999</code>，这些被钳
 <tr><td>NH₃ 着色阈值写死 25 μg/L</td><td>改为<strong>按鱼种取值</strong>（鲑科 12.5 / 大菱鲆 20 / 石斑 30 / 加州鲈·鳜·对虾 50 / 鳗鲡 60 / 罗非 100）。原值对冷水鲑科偏松一倍、对温水种偏严 2–4 倍，而同一个 tooltip 自己写着「三文鱼 12.5、温水鱼 50–100」</td></tr>
 <tr><td>方解石饱和指数 Ω 无告警</td><td>新增欠饱和告警（Ω &lt; 1 警告、&lt; 0.6 严重）。实测四个海水鱼种 Ω 全部 0.37–0.78，均欠饱和——长期<strong>溶蚀混凝土池体与砂浆</strong>、不利于甲壳类蜕壳与贝类钙化，是海水 RAS 的真实关切</td></tr>
 <tr><td>自然冷却无 UI 露出</td><td>热平衡卡片与工况对比表加 ❄️ 标记；三个参数（启用/逼近温差/EER）接入围护区，UI/读取/载入/监听全链路贯通（原先只在 PROCESS_DEFAULTS，等于硬编码）</td></tr>
-<tr><td>标题成本未标工况</td><td>头条数字旁标注 <code>[设计冬工况]</code>。自然冷却使<strong>设计冬变成全年最省</strong>（35.63 / 年均约 37.4 / 设计夏 37.94），不标注读者易当年均值</td></tr>
+<tr><td>标题成本未标工况</td><td>头条数字旁标注 <code>[设计冬工况]</code>。自然冷却使<strong>设计冬变成全年最省</strong>（35.59 / 年均约 36.9 / 设计夏 37.37），不标注读者易当年均值</td></tr>
 <tr><td>EBCT 校核的 fallback 是死代码</td><td><code>stageFarm.flowM3h</code> 字段不存在，改 <code>load.flowM3h</code></td></tr>
 </table>
 
@@ -5013,7 +5460,7 @@ SVG 矢量格式, 缩放无损, 可在 AutoCAD/Visio 中导入用作工程图基
 
 <h3 id="sec32_2">32.2 标准基线(1000 t/yr 三文鱼)</h3>
 
-<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 35.63 / 海南冬 37.39 / 海南夏 37.94 / Bergen 冬 35.65 元/kg（工艺运行成本口径）。</div>
+<div class="note-box"><strong>⚠ 本节为历史数据</strong>：下表是 v1.3 / v1.7 当时版本的实测值，保留作为版本演进记录。<strong>当前基线（v1.9.2）见"版本演进说明 → v1.9 → v1.9.2 → F 节"</strong>：青岛冬 35.59 / 海南冬 36.95 / 海南夏 37.37 / Bergen 冬 35.61 元/kg（工艺运行成本口径）。</div>
 
 <p>使用 v1.3 默认参数, 4 工况下综合成本(含 CAPEX 折旧, 不含人工/苗种):</p>
 
@@ -5668,7 +6115,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <div class="chapter">
 <h2 id="h2259">附录 B: 全局热配置参数表(完整)</h2>
 
-<p>iRAS 全局热配置(globalThermalConfig)字段一览 (含 v1.9.2 新增的通风与除湿参数):</p>
+<p>iRAS 全局热配置(globalThermalConfig)字段一览 (含 v1.9.2 新增的通风与除湿参数、v1.9.3 换代的自然冷却参数):</p>
 
 <table class="compact">
 <tr><th>字段名</th><th>类型</th><th>默认值</th><th>UI 位置</th><th>说明</th></tr>
@@ -5717,6 +6164,10 @@ docx.Packer.toBlob() → 用户下载 .docx
 <tr><td>buildingArea_user</td><td>数值</td><td>0(自动)</td><td>围护区</td><td>0 = 自动估算</td></tr>
 <tr><td>buildingHeight</td><td>数值</td><td>6</td><td>围护区</td><td>m</td></tr>
 <tr><td>thermalSharingFactor</td><td>数值</td><td>0.75</td><td>围护区</td><td>0.5-1.0, 共用车间散热系数</td></tr>
+<tr><td>freeCoolingEnabled</td><td>下拉</td><td>true</td><td>围护区</td><td>自然冷却开关。关闭则强制全部走机械压缩制冷（保守）</td></tr>
+<tr><td>fcDesignDT_K <span class="tag-new">v1.9.3</span></td><td>数值</td><td>留空=自动</td><td>围护区</td><td>自然冷却<strong>设计温差</strong> K —— 单独扛满设计负荷所需的冷源-水温差。留空按热源自动取：空气 11 / 水·海水 4 / 地源 6。取代 v1.9.2 的 <code>freeCoolingApproach_K</code>（语义由「阈值」变为「换热能力刻度」）</td></tr>
+<tr><td>fcAnnualK_air <span class="tag-new">v1.9.3</span></td><td>数值</td><td>0.65</td><td>围护区</td><td>年化正弦振幅折减，仅作用于空气源；水/海水/地源固定 1.0。见 D 节</td></tr>
+<tr><td>freeCoolingEER</td><td>数值</td><td>20</td><td>围护区</td><td>自然冷却设计点 EER，仅含冷源侧风机与泵的增量功率。干冷器 15-25，板换+冷源水可更高</td></tr>
 </table>
 </div>
 
