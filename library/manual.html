@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN"><!-- IRAS_MANUAL_V2_0 --><!-- IRAS_MANUAL_CH29_V2_0 --><!-- IRAS_MANUAL_CH16_V2_0 --><!-- IRAS_DOC_FC_CONTACTOR_V2 -->
 <head>
 <meta charset="UTF-8">
-<title>iRAS 技术手册 v1.9.3 完整版</title>
+<title>iRAS 技术手册 v2.0.0 完整版</title>
 <style>
 @page {
   size: A4;
   margin: 2.5cm 2cm 2.5cm 2cm;
-  @top-center { content: "iRAS · RAS 工程设计技术手册 v1.9.3 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
+  @top-center { content: "iRAS · RAS 工程设计技术手册 v2.0.0 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
   @bottom-right { content: "第 " counter(page) " 页 / 共 " counter(pages) " 页"; font-size: 9pt; color: #666; }
 }
 body { font-family: 'Noto Sans CJK SC', sans-serif; font-size: 10.5pt; line-height: 1.5; color: #222; }
@@ -189,7 +189,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <button id="navToggle" onclick="document.body.classList.toggle('nav-open')" title="目录 (快捷键 M)">☰</button>
 <nav id="manualNav">
   <div class="nvhead">
-    <b>iRAS 技术手册 v1.9.3</b>
+    <b>iRAS 技术手册 v2.0.0</b>
     <input id="nvFilter" type="search" placeholder="过滤章节… (/ 聚焦)" autocomplete="off">
   </div>
   <div class="nvlist">
@@ -238,6 +238,19 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     <a class="nv3" href="#item_D_3" title="D. CO₂ 公式修正 — 加入硝化产 CO₂ (validation memo F2)">D. CO₂ 公式修正 — 加入硝化产 CO₂ (validati…</a>
     <a class="nv3" href="#item_E_3" title="E. finance-core.js 零利率 bug 修复">E. finance-core.js 零利率 bug 修复</a>
     <a class="nv3" href="#item_F_2" title="F. v1.9 验证状态">F. v1.9 验证状态</a>
+    <a class="nv2" href="#rel_1_9_3_2_0_0" title="v1.9.3 → v2.0.0: 热平衡架构重构 · 气液接触器 · 规范对标">v1.9.3 → v2.0.0: 热平衡架构重构 · 气液接触器 · 规范对标</a>
+    <a class="nv3" href="#item_v200_A" title="A. 车间温度：从因变量改为输入">A. 车间温度：从因变量改为输入</a>
+    <a class="nv3" href="#item_v200_B" title="B. 气液接触器 —— 本版核心新增">B. 气液接触器 —— 本版核心新增</a>
+    <a class="nv3" href="#item_v200_C" title="C. 暖通能耗计入">C. 暖通能耗计入</a>
+    <a class="nv3" href="#item_v200_D" title="D. 脱气塔默认值对标教科书">D. 脱气塔默认值对标教科书</a>
+    <a class="nv3" href="#item_v200_E" title="E. 脱气效率与 G:L 耦合">E. 脱气效率与 G:L 耦合</a>
+    <a class="nv3" href="#item_v200_F" title="F. 水质限值按温水/冷水鱼种分档">F. 水质限值按温水/冷水鱼种分档</a>
+    <a class="nv3" href="#item_v200_G" title="G. 鱼种参数库水质自洽性修正">G. 鱼种参数库水质自洽性修正</a>
+    <a class="nv3" href="#item_v200_H" title="H. 基线工况按鱼种×地区实际配对重设">H. 基线工况按鱼种×地区实际配对重设</a>
+    <a class="nv3" href="#item_v200_I" title="I. 新增三项断言（自检 14 → 16 项）">I. 新增三项断言（自检 14 → 16 项）</a>
+    <a class="nv3" href="#item_v200_J" title="J. 新增参数">J. 新增参数</a>
+    <a class="nv3" href="#item_v200_K" title="K. 经核实无需修改的七项">K. 经核实无需修改的七项</a>
+    <a class="nv3" href="#item_v200_L" title="L. 已知限制与后续">L. 已知限制与后续</a>
     <a class="nv2" href="#rel_1_9_2_1_9_3" title="v1.9.2 → v1.9.3: 基线对齐与验证自动化">v1.9.2 → v1.9.3: 基线对齐与验证自动化</a>
     <a class="nv3" href="#item_v193_A" title="A. 四工况基线为何要改">A. 四工况基线为何要改</a>
     <a class="nv3" href="#item_v193_B" title="B. 自检基线本身混了两种气候口径">B. 自检基线本身混了两种气候口径</a>
@@ -484,7 +497,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     <a class="nv4" href="#sec28_6_3" title="28.6.3 v1.9.2 新逻辑: 按需求定新风">28.6.3 v1.9.2 新逻辑: 按需求定新风</a>
     <a class="nv4" href="#sec28_6_4" title="28.6.4 为什么除湿不计入新风">28.6.4 为什么除湿不计入新风</a>
     <a class="nv4" href="#sec28_6_5" title="28.6.5 显热与热回收">28.6.5 显热与热回收</a>
-    <a class="nv2" href="#ch29" title="第 29 章双节点稳态热平衡求解v1.9.2 除湿机 + 阻尼迭代">第 29 章双节点稳态热平衡求解v1.9.2 除湿机 + 阻尼迭代</a>
+    <a class="nv2" href="#ch29" title="第 29 章热平衡求解 ⚠ v2.0 架构已变更">第 29 章热平衡求解 ⚠ v2.0 架构已变更</a>
     <a class="nv3" href="#sec29_1" title="29.1 v1.1 的简化模型与局限">29.1 v1.1 的简化模型与局限</a>
     <a class="nv3" href="#sec29_2" title="29.2 双节点稳态方程 v1.6 公式订正">29.2 双节点稳态方程 v1.6 公式订正</a>
     <a class="nv3" href="#sec29_3" title="29.3 蒸发凝结模型">29.3 蒸发凝结模型</a>
@@ -587,8 +600,8 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <div class="cover">
   <div style="font-size:14pt; color:#666; margin-bottom:8pt;">iRAS</div>
   <div class="title">循环水养殖系统 (RAS)<br>工程设计技术手册</div>
-  <div class="subtitle">完整版 · v1.9.3</div>
-  <div class="version">版本: v1.9.3 · 2026 年 7 月</div>
+  <div class="subtitle">完整版 · v2.0.0</div>
+  <div class="version">版本: v2.0.0 · 2026 年 7 月</div>
   <div style="font-size:11pt; color:#666; margin-top:20pt;">
     物理框架重构 · 文献校准 · 工业实测对齐<br>
     全局气候 + 围护 · 多模块并联 · P&amp;ID 自动生成 · 投资财务评价<br>
@@ -600,13 +613,13 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
   <div class="footer">
     海南登登科技咨询有限公司 · 孙程<br>
     6881509@qq.com · iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras<br><br>
-    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v1.9.3 (2026 年 7 月) 全部内容</span>
+    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v2.0.0 (2026 年 7 月) 全部内容</span>
   </div>
 </div>
 
 <!-- ============ 版本演进说明 ============ -->
 <div class="chapter">
-<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v1.9.3)</h1>
+<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v2.0.0)</h1>
 
 <p>iRAS 项目从 2026 年初首发以来, 经历了 8 次重大版本升级, 每次都基于公开文献或工业项目实测数据校准, 不是经验调整。
 本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + <strong>v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机)</strong> 的全部内容,
@@ -1161,6 +1174,226 @@ v1.9 让 iRAS 从"工程算成本工具"升级为"<strong>工程算成本 + 水�
 (3) <strong>对接国际学术规范</strong> — 碳酸模块 vs PyCO2SYS 实验室级精度 (max|ΔpH| = 1e-5), 工具输出可直接用于 NTNU / 中国海洋大学等学术研究;
 (4) <strong>商业海水 RAS 设计能力</strong> — Atlantic Sapphire / Nordic Aqua / Salmon Evolution 等国际旗舰项目的高碱度 (237 mg/L) + 控 pH 实践, iRAS 工具可对标。
 </div>
+
+<hr class="section-end">
+
+<h2 id="rel_1_9_3_2_0_0">v1.9.3 → v2.0.0: 热平衡架构重构 · 气液接触器 · 规范对标</h2>
+
+<p>本版是自 v1.2 引入双节点热平衡以来<strong>最大的一次模型改动</strong>。热平衡代码
+<strong>净减少 65 行</strong>；全部 13 条数值基线重算；自检 14 → <strong>16 项</strong>，
+新增 t15–t17 三类断言。</p>
+
+<h3 id="item_v200_A">A. 车间温度：从因变量改为输入</h3>
+<p>v1.2–v1.9.3 把 <code>T_room</code> 作为空气节点能量方程的<strong>解</strong>，自由漂浮、
+无任何调节系统。后果：热带鱼种算出车间 <strong>9–14 °C / RH 99%</strong>。</p>
+<p>而实测与规范一致指向「空气 ≥ 水温」：摩洛哥 Amghass 站实测车间均值 16.0 °C（鳟鱼水温 12–16）；
+大连河豚车间实测 22–23 °C（水温 17）；ASHRAE HVAC Applications Ch.6 与 CJJ 122-2017
+均要求空气比水温高 1–2 °C、RH 50–70%。<strong>方向反了 15–20 K。</strong></p>
+<p>v2.0 改为 <code>T_room = T_水温</code>（暖通维持），<code>roomRH_set</code> 默认 65% 可调。
+由此<strong>删除</strong>：Picard 迭代、闭式解、T_room 钳位与「钳位时静默丢弃能量」缺陷。
+池面显热 <code>Q_pool_loss ≡ 0</code>（温差为零）。</p>
+<div class="info-box">
+<strong>由此消失的长期争议</strong>：水面传热系数取 5 还是 15 W/(m²·K)、太阳辐射要不要建模、
+钳位缺口去哪 —— 温差为零后<strong>全部无关</strong>。
+</div>
+
+<h3 id="item_v200_B">B. 气液接触器 —— 本版核心新增</h3>
+<p>v1.x 中 CO₂ 脱气塔与 MBBR 曝气的气水直接接触量<strong>完全不在水侧热平衡账内</strong>：
+三文鱼 1000 t 全场达 <strong>96,287 m³/h</strong>，是机械新风的 <strong>4.2 倍</strong>。</p>
+<p>出口空气按<strong>水温下饱和</strong>计算，<strong>无需任何标定系数</strong>，
+有两个独立领域的实测支撑：</p>
+<ul>
+<li>Karimi 等 2020（Wageningen，填料塔 8 组 GLR）：出口 RH 实测 <strong>98–100%</strong>，
+与进水温差平均 0.77 °C；作者以「出口 = 进水温度 + 100% RH」用 Mollier 外推，
+与实测比对 y = 0.9361x，R² = 0.9979</li>
+<li>Talati &amp; Stenstrom 1990（ASCE）：鼓风曝气湿度因子 hf = 1，经尾气实测现场研究确认</li>
+</ul>
+<p>热量用 Mollier 焓差 <code>Δh = h(T_水, 饱和) − h(T_进气, RH_进气)</code>。</p>
+<div class="warning-box">
+<strong>Δh 可为负</strong> —— 湿热空气遇冷水在填料上结露，把潜热交给水。
+<strong>脱气塔在热带是凝结加热器而非冷却塔</strong>：三亚年均每天向水中倒灌约
+<strong>18,470 kWh</strong>，设计夏达 53,482 kWh。这是 Atlantic Sapphire（佛州 Homestead）、
+宁波象山 Nordic Aqua 一类项目的核心成本，行业内普遍未量化。
+</div>
+
+<h3 id="item_v200_C2">C0. 自然冷却与接触器：抢同一个资源，不叠加</h3>
+<p>v2.0 接入气液接触器后，<strong>自然冷却在冷天基本失效</strong> —— 而那正是它原本最有价值的场景。</p>
+<p>原因：两者用的是<strong>同一个物理资源 —— 室外冷空气</strong>：</p>
+<pre>自然冷却：室外冷空气 → 干冷器/板换 → 排走水的热
+接触器：  室外冷空气 → 填料塔     → 排走水的热（顺带脱 CO₂）</pre>
+<p>而<strong>接触器是必开的</strong>（脱 CO₂ 是刚需），自然冷却是可选的。青岛设计冬接触器
+排走 21,266 kWh/d，已达内部产热的 82%，水侧净转为需<strong>制热</strong> ——
+此时自然冷却<strong>无负荷可排</strong>。</p>
+<table class="compact">
+<tr><th>工况（三文鱼 1000 t 青岛）</th><th>水侧方向</th><th>FC 贡献 g</th><th>FC 开→关 比电耗</th></tr>
+<tr><td>设计冬</td><td><b>heat</b></td><td>0.00</td><td>12.57 → 12.57，<b>Δ 0</b></td></tr>
+<tr><td>年均</td><td>cool</td><td>0.13</td><td>11.54 → 11.59，Δ 0.049</td></tr>
+<tr><td>设计夏</td><td>cool</td><td>0.00（室外 32 °C 过热）</td><td>Δ 0</td></tr>
+</table>
+<div class="warning-box">
+<b>⚠ v1.9.2 的自然冷却效益结论已订正。</b> 该版发布的「寒冷气候热泵费 1.68 → 0.29 元/kg、
+比电耗 12.2 → 10.2」是在<strong>接触器缺失</strong>时算出的 —— 那部分「省下的电」
+其实早已被脱气塔省掉，<strong>两者不叠加</strong>。
+</div>
+<p><strong>UI 保留自然冷却开关</strong>，理由有三：① 年均工况仍有 13% 贡献，而年均才是能耗口径；
+② 作为可关的对照基准；③ 真实工程可冬季降 G:L 减少接触器排热、把负荷让给自然冷却
+—— 这是优化空间，模型暂未建。</p>
+<p>新增诊断字段 <code>fcUnavailReason</code> 区分四种「不可用」：
+<code>off</code>（用户关闭）/ <code>not_cool</code>（<strong>水侧需制热，v2.0 新增的主因</strong>）/
+<code>uneconomic</code>（经济截止）/ <code>no_dt</code>（温差不足或冷源过热）。
+此前 UI 只显示 <code>freeCoolingAvailable = false</code>，用户会误以为都是温差不够。</p>
+
+<h3 id="item_v200_C">C. 暖通能耗计入</h3>
+<p>车间温度受控后，三部分负荷现已全部计入电耗：</p>
+<table class="compact">
+<tr><th>分项</th><th>字段</th><th>状态</th></tr>
+<tr><td>水侧热泵</td><td><code>thermalCostDaily</code></td><td>v1.x 即有</td></tr>
+<tr><td>除湿机（潜热）</td><td><code>dehumCostDaily</code></td><td>v1.9.2 即有</td></tr>
+<tr><td><strong>车间围护 + 通风显热</strong></td><td><code>hvacCostDaily</code></td>
+    <td><strong>v2.0 新增</strong></td></tr>
+</table>
+<p><code>T_room = T_w</code> 后，车间与室外温差恒等于「水温 − 气温」：正 = 失热需加热，
+负 = 得热需制冷。<strong>加热与制冷 COP 不同，必须分别取</strong>温度修正后的
+<code>COP_heat_corr</code> / <code>COP_cool_corr</code>，不可对绝对值统一折算。</p>
+<p>该项在寒冷地区与水侧热泵同量级：Bergen 设计冬 3,355 vs 2,847 kWh/d。
+新增 <code>hvacEnabled</code>（默认 true），若由暖通专业单独计列可置 false。</p>
+
+<h3 id="item_v200_D">D. 脱气塔默认值对标教科书</h3>
+<p><code>co2StripperGtoL</code> <strong>3 → 5</strong>，新增 <code>co2PackingHeight_m</code>
+<strong>1.5 m</strong>。依据 Timmons &amp; Ebeling《Recirculating Aquaculture》Ch.10 p.244–245：
+CO₂ 汽提 G/L 为 <strong>5:1–20:1</strong>（常规曝气才 &lt;3:1，增氧是 0.003:1–0.05:1，
+三个用途差三个数量级）；填料高度<strong>限于 1.0–1.5 m</strong>，超 1.5–2.0 m 后收益递减。
+Karimi 2020 实测 GLR &gt; 5 无额外去除增益，Summerfelt 2003 最优 5.1 —— <strong>四个来源一致</strong>。</p>
+<p>比功率随之 3.47 → <strong>5.79 kW/1000 m³/h 循环水量</strong>，进入 Summerfelt 等 2009 的
+<strong>5–15</strong> 区间 —— 顺带解决 v1.9.2 审计 P4 记录的「低于文献下限」遗留问题。</p>
+<div class="info-box">
+<strong>风压保持 2.5 kPa 不变。</strong> 原注释建议上调至 4.3–8.0 kPa 是把<strong>曝气风机档位
+误套到脱气塔</strong>：曝气要克服静水压（约 10 kPa/m 水柱），脱气只克服填料流动阻力
+（化工准则 0.2–0.4 kPa/m，液泛点才 1.3 kPa/m）。该注释已修正。
+</div>
+
+<h3 id="item_v200_E">E. 脱气效率与 G:L 耦合（新能力，默认关闭）</h3>
+<p>v1.x 中 <code>co2StripperEff</code> 与 <code>co2StripperGtoL</code> 是<strong>两个互相独立的
+参数</strong>，调高 G:L 只增加风量与电耗、去除率不变，与物理相悖。</p>
+<p>新增 <code>co2StripperEffMode</code>：<code>manual</code>（默认，与 v1.x 逐位一致）/
+<code>auto</code>（按 Ch.10 Fig 10.13/10.14/10.17 曲线自动算）。脱气塔面板新增
+<strong>5 个输入框</strong>（效率取值 / 填料高度 / 风机全压 / 风机效率 / 水力负荷）与
+<strong>实时诊断行</strong>，同屏显示单次去除率与比功率对标 —— 只显示去除率会诱导用户
+一路上调 G:L，电耗代价必须同屏可见。</p>
+<p>另重现 Fig 10.17：进风 CO₂ 本底 350 → 1000 ppm 时去除率降 10%，5000 ppm 时降 70%
+—— 这是「尾气必须排室外、不得回车间」的量化依据。</p>
+
+<h3 id="item_v200_F">F. 水质限值按温水/冷水鱼种分档</h3>
+<p>依据 Timmons Ch.3 Table 3.1。v1.x 对全部鱼种统一取<strong>冷水标准</strong>
+（TAN 1.0 / TSS 15），相当于把冷水鱼的标准套在温水鱼上 —— 对温水鱼种 TAN 严 3 倍、
+CO₂ 严 2 倍，造成<strong>告警误报</strong>（罗非 TAN 实测 0.7–0.97，旧阈值 1.0 下逼近红线，
+按教科书应为 3.0）。</p>
+<table class="compact">
+<tr><th>参数</th><th>温水鱼</th><th>冷水鱼</th><th>v1.x（统一）</th></tr>
+<tr><td>CO₂ mg/L</td><td>30</td><td>20</td><td>20 / 海水 15</td></tr>
+<tr><td>TAN mg/L</td><td>3.0</td><td>1.0</td><td>1.0</td></tr>
+<tr><td>TSS mg/L</td><td>20</td><td>10</td><td>15</td></tr>
+</table>
+<p>温水/冷水按养殖水温 ≥ 20 °C 判定（教科书两类为 24–30 与 10–18 °C）。
+⚠ 水质限值在本工具中<strong>是告警层</strong>，不参与选型与流量计算 —— 与教科书 Ch.3 的
+「约束驱动流量」方法论不同，本项修的是告警正确性。</p>
+
+<h3 id="item_v200_G">G. 鱼种参数库水质自洽性修正</h3>
+<p>新增的 <code>t17</code> 断言实测发现<strong>三处参数组合在物理上不可行</strong>。共同点：
+<code>density</code> 或耗氧系数在某个版本被调高，而 <code>turnover</code> 未同步 ——
+<strong>每次改动单独看都对，组合起来把参数推到物理不可行区</strong>。</p>
+<table class="compact">
+<tr><th>鱼种/阶段</th><th>原状态</th><th>turnover</th></tr>
+<tr><td>鳗鲡 养成期</td><td>出池 DO = 0.00 mg/L（完全耗尽），CO₂ 超阈值 44%</td><td>2.5 → 5.0</td></tr>
+<tr><td>鳗鲡 黑仔期</td><td>出池 DO 0.69（阈值 5.09）</td><td>3.0 → 4.5</td></tr>
+<tr><td>罗非 苗种期</td><td>出池 DO 3.20（阈值 4.70）</td><td>6.0 → 8.0</td></tr>
+<tr><td>大菱鲆 中鱼期</td><td>池内 CO₂ 15.2（阈值 15）</td><td>2.5 → 3.0</td></tr>
+</table>
+<p>以鳗鲡为例：v1.9.2 把养成期密度由 40 上调至 <strong>120 kg/m³</strong>（为修正 CAPEX 失真），
+同版新增 <strong>TSS 附加耗氧</strong>项 —— 高密度下该项占总耗氧 <strong>67%</strong>，
+两者叠加使出池溶氧归零。</p>
+<div class="warning-box">
+<strong>golden-master 基线对此无能为力</strong>：它们从未 FAIL 过，因为基线记录的
+正是错误状态本身。这类缺陷需要<strong>面向工程约束</strong>的断言才能捕捉。
+</div>
+
+<h3 id="item_v200_H">H. 基线工况按【鱼种 × 地区】实际配对重设</h3>
+<p>v1.x 起有 <strong>7 条基线没有 <code>climate</code> 字段</strong>，因而全部跑在默认地区
+<strong>青岛</strong> —— 罗非（28 °C）/ 石斑（27 °C）/ 对虾（30 °C）在 −7 °C 的青岛过冬，
+<strong>这些组合工程上不存在</strong>。接触器项接入前气候影响有限，该配对错误不显；
+接入后气候成为主导项，温水鱼种比电耗被推到 15–30 kWh/kg（行业实测上限为
+Atlantic Sapphire 丹麦的 13.6）。</p>
+<p>现按实际配对：温水淡水（罗非/加州鲈/鳜鱼/鳗鲡）→ <strong>上海</strong>；
+温水海水（石斑/对虾）→ <strong>三亚</strong>；冷水（三文鱼/大菱鲆）→ 青岛/Bergen/海南。
+比电耗全部回到 <strong>9.8–19.6</strong>。</p>
+<p><strong>新增 <code>salmon_sanya_annual</code></strong> —— 冷水鱼种 × 热带气候。
+这是当前行业热点，也是接触器项最关键的场景，此前<strong>无任何基线覆盖</strong>。</p>
+
+<h3 id="item_v200_I">I. 新增三项断言（自检 14 → 16 项，测试 t15–t17）</h3>
+<p><strong>t15 风量平衡</strong> —— 断言 A：设备层独立扫描出的每个「会动风」设备必须已在
+气路拓扑登记（判据只看字段名形态，<strong>不读登记表</strong>，否则退化成「把实现抄一遍」）；
+断言 B：拓扑中接触水的气流风量合计必须等于热平衡实际计入量。该断言在 v2.0 之前
+<strong>会立刻失败</strong>，正是它把 96,287 m³/h 未入账固化为可执行测试。</p>
+<p><strong>t16 接触器物理锚</strong> —— 复现 Karimi 2020 实测工况。采用<strong>有界检验</strong>
+而非精确匹配：检验出口状态、潜热占比（&gt;80%）、<strong>Δh 符号</strong>（湿热气候养冷水鱼
+必须为负）与量级有界（0.9–1.5×）。理由：理想 Mollier 计算必然高于实测
+（论文自身外推 y = 0.9361x），而<strong>结构错误会翻转工程结论，精度差 20% 只影响数值</strong>。</p>
+<p><strong>t17 鱼种参数库水质自洽性</strong> —— 硬约束（出池 DO / 池内 CO₂ / TAN / TSS）
++ 余量哨兵（&lt;10% 告警）+ 负荷指标（饲料/流量比）。</p>
+
+<h3 id="item_v200_J">J. 新增参数</h3>
+<table class="compact">
+<tr><th>参数</th><th>默认</th><th>说明</th></tr>
+<tr><td><code>roomRH_set</code></td><td>65 %</td>
+    <td>车间设定相对湿度。T_room = T_w 后，池面蒸发<strong>只依赖本参数</strong></td></tr>
+<tr><td><code>contactorRecovery</code></td><td>0</td><td>接触器排气热回收率 0–0.95</td></tr>
+<tr><td><code>hvacEnabled</code></td><td>true</td><td>车间显热是否计入能耗</td></tr>
+<tr><td><code>co2StripperEffMode</code></td><td>manual</td><td>脱气效率取值方式</td></tr>
+<tr><td><code>co2PackingHeight_m</code></td><td>1.5 m</td><td>填料层高度</td></tr>
+<tr><td><code>co2MaxAttainableEff</code></td><td>80 %</td><td>G:L=20 时最大可达去除率</td></tr>
+<tr><td><code>co2IntakeCO2_ppm</code></td><td>350</td><td>脱气塔进风 CO₂ 本底</td></tr>
+<tr><td>气路拓扑对象</td><td>—</td>
+    <td><code>airPath</code> / <code>airFlowM3h</code> / <code>collectAirStreams()</code></td></tr>
+</table>
+
+<h3 id="item_v200_K">K. 经核实【无需修改】的七项</h3>
+<p>本轮调查中曾判定有问题、经查规范与实测后确认<strong>模型正确</strong>：</p>
+<table class="compact">
+<tr><th>曾判定</th><th>核实依据</th></tr>
+<tr><td>DO 判据口径错误</td><td>Timmons Tab 3.1：鲑科<strong>出水</strong> 6–8 / 罗非 4–6 mg/L，本工具在区间内</td></tr>
+<tr><td>turnover 偏高 3 倍</td><td><strong>DB 21/T 2350-2024 §9.3 要求溶氧 8–12 mg/L</strong>，
+    三文鱼 turnover 3.0 是满足规范的<strong>最低值</strong></td></tr>
+<tr><td>耗氧强度偏高</td><td>MO₂ 3.15 mg/(kg·min) @15 °C，文献 2–4 中部（Calabrese 2023 实测 2.4 @9.3 °C）</td></tr>
+<tr><td>主泵扬程未生效</td><td>参数正确（7 m + 氧锥 3 m = 10 m），反算 9.5 m 吻合</td></tr>
+<tr><td>比电耗偏高</td><td>低于 Atlantic Sapphire 丹麦实测 13.6，高于挪威独立仿真 9.59</td></tr>
+<tr><td>脱气塔风压偏低</td><td>与 G:L=5 组合后比功率 5.79，进入 Summerfelt 5–15 区间</td></tr>
+<tr><td>围护 U 值缺失</td><td><strong>早已完整</strong>：U_墙/顶/地/窗 + 4 档保温预设 + 热回收 + 窗墙比</td></tr>
+</table>
+<div class="info-box">
+<strong>教训：先查规范与实测，再判断模型。</strong> 本轮多次因先用论文反推、或跨温度跨鱼种
+直接比较而误判 —— 「turnover 偏高」绕了七八轮，而辽宁省标准一条「溶氧 8–12 mg/L」即可定案。
+</div>
+
+<h3 id="item_v200_L">L. 已知限制与后续</h3>
+<p><strong>① 接触器蒸发未计入水量平衡。</strong> 气液接触器的<strong>热量</strong>已完整计入
+（Δh 含潜热，t16 验证潜热占 86%），但其带走的<strong>水的质量</strong>尚未进入
+<code>V_makeup</code>。实测三文鱼 1000 t 青岛设计冬：接触器蒸发
+<strong>584.6 kg/h（14.03 m³/d）</strong>，是池面蒸发 19.8 kg/h 的 <strong>29.5 倍</strong>，
+占补水量的 <strong>6.0%</strong>。后果：补水量、补水加热、补水费与排污量均系统性低估约 6%，
+且该偏差在高 G:L 或热带工况下会放大。<strong>属单向系统性偏差，已列入 v2.1。</strong></p>
+<p><strong>② 凝结水对盐度的影响未建模。</strong> 湿热气候下接触器 Δh 为负时空气在填料上
+<strong>结露、向系统净产水</strong>：三亚设计夏约 <strong>33 t/d</strong>。淡水场是白得的补水；
+但<strong>海水场</strong>意味着持续被淡水稀释，会影响换水策略与盐度控制。</p>
+<p><strong>③ 暖通侧未含太阳辐射与人员负荷。</strong> 围护体系本身是完整的 ——
+U_墙/顶/地/窗四值可调，含 4 档保温预设（温室 3.5 / 标准车间 0.8 / 保温车间 0.30 /
+近被动房 0.15）、通风热回收、窗墙比，地板对地温单独计算。但<strong>太阳辐射与采光带
+得热未建模</strong>：大连一项 RAS 车间 CFD+实测研究显示，屋顶采光带可把墙体表面温度推到
+29 °C（同期水温 17 °C）。因此<strong>高日照地区、尤其设有采光带的车间，夏季制冷负荷偏保守</strong>。
+人员负荷（约 100 W/人）相对车间显热（千瓦级）可忽略。</p>
+<p><strong>其它遗留</strong>：<code>contactorRecovery</code> 默认 0（上海冬季接触器排
+31,541 kWh/d 转制热，需实测定值）；MBBR 流化下限与 <code>bfTankDepth</code> 参数缺失；
+石斑三阶段 DO 余量仅 +2%/+3%/+10%；蛋分有支路泵而无供气动力项；
+单池面积 DB 21/T 2350 规定 5–30 m²，本工具每阶段建模为一个池，池数由用户设置。</p>
 
 <hr class="section-end">
 
@@ -3413,7 +3646,15 @@ v1.2 把所有热平衡参数挪到顶部全局配置区 <code>globalThermalConf
 制热 COP_heat 默认 4.0, 制冷 COP_cool 默认 3.0 (v1.0 一刀切 3.5)。热带降温场景下 v1.0 电费低估 30-40%。
 </div>
 
-<h3 id="sec16_5">16.5 双节点稳态求解概述 <span class="tag-update">v1.2</span></h3>
+<h3 id="sec16_5" style="color:#7f8c8d;">16.5 双节点稳态求解概述 <span style="background:#c0392b;color:#fff;padding:1pt 5pt;border-radius:3px;font-size:9pt;">v2.0 已废止</span> <span class="tag-update">v1.2</span></h3>
+
+<div class="warning-box">
+<b>⚠ v2.0.0：本节描述的双节点求解器已删除。</b>
+v2.0 起车间温度由暖通维持 <code>T_room = T_水温</code>，<code>RH_room = roomRH_set</code>（默认 65%），不再联立求解；池面显热 <code>Q_pool_loss ≡ 0</code>。
+同时新增<b>气液接触器</b>项（脱气塔 + MBBR 曝气，出口按水温饱和）。
+详见 <a href="#rel_1_9_3_2_0_0">v1.9.3 → v2.0.0</a> 与第 29 章章首说明。
+本节保留作推导与历史参考。
+</div>
 
 <p>v1.1 假设池热散到一个无限大"室外", 实际上车间空气会被池水加热到比室外高 5-12°C, 导致池散热小于"对室外气温散热"; 同时湿度积累让蒸发率下降。v1.2 引入双节点稳态:</p>
 
@@ -4057,6 +4298,18 @@ load → sim.alk → naHCO₃ 成本 → totalAvg → 管理费 → 企业全成
 <p><strong>未做部分</strong>：部分自然冷却。冷源温度接近但不足时，实际可做预冷 + 压缩机补足；
 本模型按「全有或全无」处理（保守，达不到判定就全走机械制冷）。
 CAPEX 不额外计 —— 自然冷却复用热泵已有的排热侧，热泵仍按最不利工况（通常夏季）定容。</p>
+
+<div class="warning-box">
+<strong>⚠ v2.0.0 过时参数取代说明</strong><br>
+<code>roomTemp</code>（车间室温）—— <strong>v2.0 起不再生效</strong>。v1.2–v1.9.3 期间该输入框
+虽可编辑，但值从未被 <code>calcThermalLoad</code> 消费（返回时被求解值覆盖）。
+v2.0 起车间温度由暖通维持 = 水温，该输入已停用。<br>
+<code>degasserExhaustIndoorFrac</code>（尾气入室比例）—— <strong>已废弃</strong>。新气路拓扑下
+该参数语义不完整：只描述尾气去向、未描述进气来源，而二者对结果影响<strong>方向相反</strong>。
+工艺气路进气取室外、排气排室外，全程不碰车间。<br>
+<code>poolUValue</code>（水面传热系数）—— <strong>v2.0 起无关</strong>。
+T_room = T_w 后池面温差为零，<code>Q_pool_loss ≡ 0</code>。
+</div>
 
 <h4 id="audit_I_10">I.10 新增：自检入口</h4>
 
@@ -4952,19 +5205,56 @@ ACH_eff = V_vent / V_room&nbsp;&nbsp;<span style="color:#888">← v1.9.2: 由 ma
 <div class="chapter">
 <h2 id="ch29"><span class="chapter-num">第 29 章</span>双节点稳态热平衡求解<span class="tag-update">v1.9.2 除湿机 + 阻尼迭代</span></h2>
 
+<div class="warning-box" style="border-left:6px solid #c0392b; background:#fdf2f0;">
+<b style="font-size:13pt;">⚠ v2.0.0 架构变更 —— 请先读本节再看下文</b><br><br>
+
+<b>本章 29.1–29.4 描述的是 v1.2–v1.9.3 的双节点稳态求解器，该求解器已在 v2.0.0 中删除。</b>
+保留这些内容是为了推导过程与历史参考，<b>不再反映当前版本行为</b>。<br><br>
+
+<b>v2.0 实际做法：</b>
+<table class="compact" style="margin-top:6pt;">
+<tr><th>项</th><th>v1.2–v1.9.3</th><th>v2.0.0</th></tr>
+<tr><td>T_room</td><td>空气节点方程的<b>解</b>，自由漂浮</td>
+    <td><b>暖通维持 = 水温</b>（输入）</td></tr>
+<tr><td>RH_room</td><td>湿平衡的解</td><td><b>= <code>roomRH_set</code></b>（默认 65%，可调）</td></tr>
+<tr><td>求解方式</td><td>三节点联立 + Picard 迭代 / 闭式解</td><td><b>无需求解</b>（已删除）</td></tr>
+<tr><td>池面显热 Q_pool_loss</td><td>UA_pool × (T_w − T_room)</td><td><b>≡ 0</b>（温差为零）</td></tr>
+<tr><td>钳位与能量丢弃</td><td>T_room 钳位时静默丢弃缺口</td><td><b>不存在</b></td></tr>
+<tr><td>围护 / 通风 / 池壁</td><td>混在水侧平衡</td>
+    <td><b>归暖通侧</b>，折算电耗后计入总账（<code>hvacKWhPerDay</code>）</td></tr>
+<tr><td>气液接触器</td><td><b>完全未计入</b></td>
+    <td><b>新增</b>：脱气塔 + MBBR 曝气，出口按水温饱和</td></tr>
+</table><br>
+
+<b>为什么改：</b>旧模型对热带鱼种算出车间 <b>9–14 °C / RH 99%</b>，而实测与规范一致指向
+「空气 ≥ 水温」（摩洛哥 Amghass 实测 16.0 °C / 鳟鱼水温 12–16；大连河豚车间实测 22–23 °C /
+水温 17；ASHRAE Ch.6 与 CJJ 122 均要求空气比水温高 1–2 °C）—— <b>方向反了 15–20 K</b>。<br><br>
+
+<b>v2.0 水侧热平衡（当前有效）：</b>
+<pre>Q_net_to_water = Q_metab + Q_equip + Q_makeup_signed
+                 − Q_pool_loss (≡ 0)
+                 − Q_evap_latent
+                 + Q_dehum_to_water
+                 − Q_contactor_net        ← v2.0 新增</pre>
+其中接触器项 <code>Δh = h(T_水, 饱和) − h(T_进气, RH_进气)</code>，
+<b>Δh 可为负</b>（湿热空气遇冷水结露放热给水）。<br><br>
+
+详见「<a href="#rel_1_9_3_2_0_0">v1.9.3 → v2.0.0</a>」章节 A / B / C 三节。
+</div>
+
 <h3 id="sec29_1">29.1 v1.1 的简化模型与局限</h3>
 
 <p>v1.1 的热平衡是单点能量平衡: 给定 T_w(目标水温)和 T_air(室外气温), 直接算补水加热量 + 池散热量 + 鱼代谢热 + 设备产热, 平衡后给热泵装机。
 这个模型<strong>忽略了车间空气节点</strong>, 默认池的热散到一个无限大的"室外"。问题在于:</p>
 
 <ul>
-<li>实际车间空气会被池水加热到比室外高 5-12°C, 导致池散热小于"对室外气温散热"</li>
+<li>实际车间空气会被池水加热到比室外高 5-12°C, 导致池散热小于"对室外气温散热"<br><span style="color:#c0392b;">⚠ v2.0 订正：该判断本身是对的（实测车间确实高于室外），但 v1.2 用「自由漂浮的空气节点」去模拟它，结果对热带鱼种反而算出车间<b>低于</b>水温 15–20 K。v2.0 改由暖通维持 T_room = T_w，不再求解。</span></li>
 <li>湿度积累让蒸发率下降(蒸发→W_room 升高→W_sat - W_room 减小→蒸发减少)</li>
 <li>冬季高湿空气在冷壁面凝结, 凝结水可回收减少补水(隐藏的热回收)</li>
 <li>夏季制冷时, 池水比车间空气冷, 空气会向池散热(反向)</li>
 </ul>
 
-<h3 id="sec29_2">29.2 双节点稳态方程 <span class="tag-update">v1.6 公式订正</span></h3>
+<h3 id="sec29_2" style="color:#7f8c8d;">29.2 双节点稳态方程 <span style="background:#c0392b;color:#fff;padding:1pt 5pt;border-radius:3px;font-size:9pt;">v2.0 已废止</span> <span class="tag-update">v1.6 公式订正</span></h3>
 
 <p>v1.2 引入双节点稳态求解器, 联立水节点能量、空气节点显热、空气节点湿度三个平衡:</p>
 
@@ -5076,7 +5366,44 @@ V_condense_recovery = |m_evap| × A_water × 86400 / 1000  (m³/d)<br>
 V_makeup_actual = V_makeup − V_condense_recovery
 </div>
 
-<h3 id="sec29_4">29.4 求解输出</h3>
+<h3 id="sec29_4">29.4 求解输出 <span style="background:#c0392b;color:#fff;padding:1pt 5pt;border-radius:3px;font-size:9pt;">v2.0 已订正</span></h3>
+
+<div class="warning-box">
+<b>⚠ v2.0.0 字段口径变更</b><br>
+<table class="compact" style="margin-top:6pt;">
+<tr><th>字段</th><th>v1.x</th><th>v2.0.0</th></tr>
+<tr><td><code>T_room</code></td><td>求解输出，T_air + 5 ~ +12 °C</td>
+    <td><b>输入</b> = 水温（暖通维持）</td></tr>
+<tr><td><code>RH_room</code></td><td>求解输出 55–80%</td>
+    <td><b>输入</b> = <code>roomRH_set</code>，默认 65%</td></tr>
+<tr><td><code>Q_pool</code> / <code>Q_pool_loss</code></td><td>5–30 kW</td>
+    <td><b>≡ 0</b>（温差为零）</td></tr>
+<tr><td><code>T_room_raw</code> / <code>T_room_clamped</code> /<br><code>Q_clamp_gap_kW</code> / <code>iterCount</code></td>
+    <td>钳位与迭代诊断</td>
+    <td>保留为常量（null / false / 0），<b>仅为下游载荷向后兼容</b></td></tr>
+</table>
+<b>v2.0 新增字段：</b>
+<table class="compact" style="margin-top:6pt;">
+<tr><th>字段</th><th>含义</th><th>典型值</th></tr>
+<tr><td><code>contactorAirFlowM3h</code></td><td>接触水的气流合计（脱气塔 + MBBR 曝气）</td>
+    <td>三文鱼 1000 t 全场 96,287 m³/h</td></tr>
+<tr><td><code>contactorDeltaH_kJ_kg</code></td><td>Mollier 焓差，<b>可为负</b></td>
+    <td>青岛冬 +45.7 / 三亚年均 −23.8</td></tr>
+<tr><td><code>contactorGrossKWhPerDay</code></td><td>接触器毛排热（回收前）</td><td>—</td></tr>
+<tr><td><code>contactorNetKWhPerDay</code></td><td>接触器净排热（进水侧平衡）</td>
+    <td>三亚年均 −18,470 kWh/d</td></tr>
+<tr><td><code>hvacSensibleKWhPerDay</code></td><td>车间围护+通风显热（热量，带符号）</td>
+    <td>Bergen 设计冬 +3,355 kWh/d</td></tr>
+<tr><td><code>hvacKWhPerDay</code></td><td>暖通显热折算<b>电耗</b></td><td>—</td></tr>
+<tr><td><code>hvacDirection</code> / <code>hvacCOP</code></td>
+    <td>heat / cool / none / off；对应温度修正后的 COP</td><td>—</td></tr>
+<tr><td><code>Q_makeup_signed</code></td><td>带符号补水项（v2.0 补出口，此前仅局部变量）</td><td>—</td></tr>
+<tr><td><code>roomRH_set</code></td><td>车间设定湿度</td><td>65%</td></tr>
+</table>
+</div>
+
+<p style="color:#7f8c8d;">以下为 v1.x 双节点求解器的输出表，保留作历史参考：</p>
+
 
 <p>双节点求解器输出:</p>
 
@@ -6115,7 +6442,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <div class="chapter">
 <h2 id="h2259">附录 B: 全局热配置参数表(完整)</h2>
 
-<p>iRAS 全局热配置(globalThermalConfig)字段一览 (含 v1.9.2 新增的通风与除湿参数、v1.9.3 换代的自然冷却参数):</p>
+<p>iRAS 全局热配置(globalThermalConfig)字段一览 (含 v1.9.2 新增的通风与除湿参数、v1.9.3 换代的自然冷却参数、<strong>v2.0.0 新增的车间与接触器参数</strong>):</p>
 
 <table class="compact">
 <tr><th>字段名</th><th>类型</th><th>默认值</th><th>UI 位置</th><th>说明</th></tr>
@@ -6154,7 +6481,7 @@ docx.Packer.toBlob() → 用户下载 .docx
 <tr><td>dischargePrice <span class="tag-new">v1.9.2</span></td><td>数值</td><td>2.0</td><td>单价区</td><td>排污处理 元/m³</td></tr>
 <tr><td>seedPrice <span class="tag-new">v1.9.2</span></td><td>数值</td><td>随鱼种</td><td>单价区</td><td>苗种 元/尾。切换鱼种自动带出默认值（鲑鱼卵 1.5 / 玻璃鳗 20 / 虾苗 0.03 等）</td></tr>
 <tr><td>co2IndoorLimit_ppm <span class="tag-new">v1.9.2</span></td><td>数值</td><td>1500</td><td>围护区</td><td>车间 CO₂ 设计限值 ppm, 800-5000。用于按鱼载荷反算新风需求下限</td></tr>
-<tr><td>degasserExhaustIndoorFrac <span class="tag-new">v1.9.2</span></td><td>数值</td><td>0.2</td><td>围护区</td><td>脱气塔尾气入室比例 0-1。0 = 管道直排室外, 1 = 全部排入车间</td></tr>
+<tr style="color:#7f8c8d;"><td>degasserExhaustIndoorFrac <span class="tag-new">v1.9.2</span> <span style="background:#c0392b;color:#fff;padding:0 4pt;border-radius:3px;font-size:8pt;">v2.0 废弃</span></td><td>数值</td><td>0.2</td><td>围护区</td><td>脱气塔尾气入室比例 0-1。0 = 管道直排室外, 1 = 全部排入车间</td></tr>
 <tr><td>dehumEnabled <span class="tag-new">v1.9.2</span></td><td>开关</td><td>false</td><td>围护区</td><td>是否配置机械除湿机</td></tr>
 <tr><td>dehumTargetRH <span class="tag-new">v1.9.2</span></td><td>数值</td><td>70</td><td>围护区</td><td>除湿控制目标 RH %, 40-90</td></tr>
 <tr><td>dehumSMER <span class="tag-new">v1.9.2</span></td><td>数值</td><td>2.5</td><td>围护区</td><td>比除湿效率 kg水/kWh, 0.5-6</td></tr>
@@ -6165,6 +6492,13 @@ docx.Packer.toBlob() → 用户下载 .docx
 <tr><td>buildingHeight</td><td>数值</td><td>6</td><td>围护区</td><td>m</td></tr>
 <tr><td>thermalSharingFactor</td><td>数值</td><td>0.75</td><td>围护区</td><td>0.5-1.0, 共用车间散热系数</td></tr>
 <tr><td>freeCoolingEnabled</td><td>下拉</td><td>true</td><td>围护区</td><td>自然冷却开关。关闭则强制全部走机械压缩制冷（保守）</td></tr>
+<tr><td>roomRH_set <span class="tag-new">v2.0.0</span></td><td>数值</td><td>65</td><td>围护区</td><td>车间设定相对湿度 %。<strong>T_room = T_w 后，池面蒸发只依赖本参数</strong>。区间依据：ASHRAE Ch.6 泳池馆 50–60%；CJJ 122 与国际泳池标准 50–70%；实测 RAS 车间（AQUAIR 开放数据集）中位 87%</td></tr>
+<tr><td>contactorRecovery <span class="tag-new">v2.0.0</span></td><td>数值</td><td>0</td><td>围护区</td><td>气液接触器排气热回收率 0–0.95。排气为水温饱和空气、焓值高，适合回收。⚠ 默认 0 = 不回收</td></tr>
+<tr><td>hvacEnabled <span class="tag-new">v2.0.0</span></td><td>布尔</td><td>true</td><td>围护区</td><td>车间围护+通风显热是否计入能耗。置 false 退回「界外」口径（供暖通专业单独计列的项目）</td></tr>
+<tr><td>co2StripperEffMode <span class="tag-new">v2.0.0</span></td><td>枚举</td><td>manual</td><td>脱气塔</td><td>manual = 沿用 co2StripperEff（与 v1.x 逐位一致）；auto = 按 Timmons Ch.10 Fig 10.13/10.14/10.17 曲线自动算</td></tr>
+<tr><td>co2PackingHeight_m <span class="tag-new">v2.0.0</span></td><td>数值</td><td>1.5</td><td>脱气塔</td><td>填料层高度 m，范围 0.3–3.0。Ch.10 p.245：设计高度限于 1.0–1.5 m，超 1.5–2.0 m 收益递减。⚠ 填料深度超 1 m 时建议水力负荷取偏低端以降低风机背压</td></tr>
+<tr><td>co2MaxAttainableEff <span class="tag-new">v2.0.0</span></td><td>数值</td><td>80</td><td>脱气塔</td><td>该装置在 G:L = 20 时的最大可达单次去除率 %（Fig 10.13 约 80%）</td></tr>
+<tr><td>co2IntakeCO2_ppm <span class="tag-new">v2.0.0</span></td><td>数值</td><td>350</td><td>脱气塔</td><td>脱气塔<strong>进风</strong> CO₂ 本底 ppm。Fig 10.17：本底 1000 ppm 时去除率降 10%，5000 ppm 降 70% —— 这是「尾气必须排室外」的量化依据</td></tr>
 <tr><td>fcDesignDT_K <span class="tag-new">v1.9.3</span></td><td>数值</td><td>留空=自动</td><td>围护区</td><td>自然冷却<strong>设计温差</strong> K —— 单独扛满设计负荷所需的冷源-水温差。留空按热源自动取：空气 11 / 水·海水 4 / 地源 6。取代 v1.9.2 的 <code>freeCoolingApproach_K</code>（语义由「阈值」变为「换热能力刻度」）</td></tr>
 <tr><td>fcAnnualK_air <span class="tag-new">v1.9.3</span></td><td>数值</td><td>0.65</td><td>围护区</td><td>年化正弦振幅折减，仅作用于空气源；水/海水/地源固定 1.0。见 D 节</td></tr>
 <tr><td>freeCoolingEER</td><td>数值</td><td>20</td><td>围护区</td><td>自然冷却设计点 EER，仅含冷源侧风机与泵的增量功率。干冷器 15-25，板换+冷源水可更高</td></tr>
