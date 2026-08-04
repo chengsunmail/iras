@@ -4,7 +4,7 @@
   <!-- 主页 - 工具入口 -->
   <url>
     <loc>https://iras.cn/</loc>
-    <lastmod>2026-07-31</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -49,7 +49,7 @@
   <!-- 技术手册 · 在线 HTML 版 (原 PDF 已由资料库在线版取代) -->
   <url>
     <loc>https://iras.cn/library/manual.html</loc>
-    <lastmod>2026-07-31</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

@@ -32,8 +32,8 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.0.0</title>
-<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 碳酸盐平衡求解 (pH/NH3/方解石饱和度, 对照 PyCO2SYS 验证); v1.9.1-v1.9.2 修正液氧/蒸发/通风/泵功率口径, 新增机械除湿机; v1.9.3 自然冷却改为容量判据 (支持部分自然冷却) 与年均工况 24 点数值积分。1000t 三文鱼综合成本 37.53 元/kg (工艺运行成本) / 42.52 元/kg (企业全成本), 青岛冬工况。">
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.1</title>
+<meta name="description" content="iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 碳酸盐平衡求解 (pH/NH3/方解石饱和度, 对照 PyCO2SYS 验证); v1.9.1-v1.9.2 修正液氧/蒸发/通风/泵功率口径, 新增机械除湿机; v1.9.3 自然冷却改为容量判据 (支持部分自然冷却) 与年均工况 24 点数值积分。v2.0 热平衡架构重构 (车间温度改为暖通维持, 首次计入气液接触器热湿交换); v2.1 修复车间显热能量守恒并补齐守恒类断言。1000t 三文鱼综合成本 38.90 元/kg (工艺运行成本) / 43.97 元/kg (企业全成本), 青岛冬工况。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
 <meta name="googlebot" content="index,follow">
@@ -46,7 +46,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.0.0">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.1">
 <meta property="og:description" content="覆盖工艺设计→P&ID→设备清单→投资概算→16 章可研报告完整工作流。AGPL v3 永久免费。1000t 三文鱼实测节能 30 kW、CAPEX 节省 612 万。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
@@ -56,7 +56,7 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.0.0">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.1">
 <meta name="twitter:description" content="循环水养殖 / 工厂化养殖工程设计开源工具。AGPL v3 永久免费。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
@@ -1108,7 +1108,7 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> v2.0.0 · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> <span id="footerVersion">v2.1</span> · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -1134,7 +1134,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: v2.0.0 · 发布日期: 2026-07-31</div>
+          <div>版本: <span id="metaVersion">v2.1</span> · 发布日期: <span id="metaReleaseDate">2026-08-01</span></div>
           <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -1205,6 +1205,8 @@
       <div class="grid grid-cols-2 gap-1 text-xs">
         <a href="#help-1" class="text-cyan-300 hover:text-cyan-100">1. 软件概述</a>
         <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (89 项)</a>
+        <a href="#help-changelog-v21" class="block hover:text-rose-300">📌 v2.1 升级说明 — 能量守恒修复 · 守恒断言落地</a>
+        <a href="#help-changelog-v201" class="block hover:text-sky-300">📌 v2.0.1 升级说明 — 缺陷修复 · 版本号自检</a>
         <a href="#help-changelog-v200" class="block hover:text-emerald-300">📌 v2.0.0 升级说明 — 热平衡架构重构 · 气液接触器 · 规范对标</a>
           <a href="#help-changelog-v193" class="text-amber-300 hover:text-amber-100 font-bold">📌 v1.9.3 升级说明 (最新)</a>
         <a href="#help-changelog-v192" class="text-cyan-300 hover:text-cyan-100">📌 v1.9.2 升级说明</a>
@@ -1261,7 +1263,7 @@
         <li><b>多模块并联 + N+1 备用 (v1.3)</b>: 工程化布局, 模块间故障隔离 (千吨级项目 4-6 模块, Atlantic Sapphire / Stolt Sea Farm 同款架构)</li>
         <li><b>P&amp;ID 工艺图自动生成 (v1.3.x)</b>: 独立 pid.html 页面, 可导出为 PNG/SVG, 符合 ISA-5.1 标准</li>
         <li><b>设备清单导出 (v1.3.x)</b>: 独立 equipment.html, 含每台规格 + 数量 + 单价 (设计院投资概算可直接引用)</li>
-        <li><b>双节点稳态热平衡 (v1.2)</b>: 车间空气-水体联立求解, 4 工况一键切换 (<strong>挪威 Bergen</strong> / <strong>青岛</strong> / <strong>海南</strong> 等典型场景, 热泵装机自动估算)</li>
+        <li><b>完整热平衡 (v2.1)</b>: 车间温度由暖通维持 (T_room = 水温), 水侧计入代谢/设备/补水/蒸发/除湿/气液接触器, 车间侧计入围护/通风/室内产热; 4 工况一键切换 (<strong>挪威 Bergen</strong> / <strong>青岛</strong> / <strong>海南</strong> 等典型场景, 热泵装机自动估算)</li>
         <li><b>投资财务评价 (v1.4)</b>: NPV / IRR / 投资回收期 / 盈亏平衡点 + 8 张标准财务表 + 5 因子敏感性分析 + Excel 导出</li>
         <li><b>16 章可行性研究报告 (v1.5)</b>: 按发改委 2017 编制规范输出 <strong>.docx 格式可研报告</strong>, 含工艺流程图 + 累计现金流 + Tornado 敏感性嵌入</li>
       </ul>
@@ -1271,6 +1273,179 @@
       <p class="mt-2 text-slate-400 text-sm">v1.9 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 国内服务器 <a href="http://iras.dengdengtech.cn/" class="text-cyan-300 underline">iras.dengdengtech.cn</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">github.com/chengsunmail/iras</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
 
       <p class="mt-3 text-xs text-slate-500">本工具不替代正式的环境影响评价 / 安全评价 / 节能评价 / 施工图详细设计, 仅用于工程概算阶段 (精度 ±40%)。详见技术手册附录 F 完整免责声明。</p>
+    </section>
+
+    <!-- IRAS_V21_DOCS_WATER IRAS_V21_DOCS_BATCH2 IRAS_DOCS_V2_1 v2.1 升级说明 -->
+    <section id="help-changelog-v21" class="mt-6">
+      <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v2.1 升级说明 (2026-08-01) — 能量守恒修复 · 守恒断言落地</h2>
+
+      <p class="mt-3 text-slate-400 text-sm">本版源于<strong>第三方第四轮审计</strong>。核心是修复 v2.0 架构重构时留下的<strong>能量守恒破口</strong>, 并补齐审计建议了三轮、唯一没落地的<strong>守恒类断言</strong>。13 条数值基线全部重算, 自检 17 → <strong>17 项</strong>(新增三条守恒断言并入既有不变量)。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">A. 🔴 车间显热能量守恒破口 (P0)</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.x 的能量分配是自洽的: 泵/UV 电功率拆两份, 一份进水 (<code>Q_pumps</code>), 一份进车间空气 (<code>Q_air_gain_kW</code>), 相加恰为电功率。进空气那份在旧模型里进入<strong>空气节点</strong>能量方程。</p>
+      <p class="mt-2 text-slate-400 text-sm">v2.0 删除空气节点时, <strong>挂在该节点上的产热项没有被重新安置</strong>。<code>Q_air_gain_kW</code> 仍在计算、仍在返回, 但不再进入任何一侧平衡 —— 既不在水侧, 也不在暖通侧。<strong>这部分能量从模型里凭空消失。</strong></p>
+      <p class="mt-2 text-slate-400 text-sm">同因还有第二处 (本轮自查发现, 审计未列): <code>dehumHeatDest === 'indoor'</code> 时的除湿机冷凝热。第 5461 行注释写着「排入车间的部分已在 T_room 迭代中计入」—— 而那个迭代在 v2.0 已被删除, 注释与 UI 提示都停留在旧模型。</p>
+      <p class="mt-2 text-slate-400 text-sm">实测规模 (三文鱼 1000 t 青岛设计冬): 丢失 <strong>1,617 kWh/d</strong>, 达 HVAC 显热负荷 3,864 的 <strong>41.8%</strong>。模型一边说要给车间供暖, 一边把电机与灯管废热倒进同一个车间却不入账。</p>
+      <p class="mt-2 text-slate-400 text-sm">修法: <code>Q_hvac_sens = Q_envelope + Q_vent_sens − Q_room_internal</code>, 其中室内产热 = 设备废热 + 除湿冷凝热(入室时)。符号由 <code>Q_hvac_sens</code> 自身携带, 不需分支。</p>
+      <p class="mt-2 text-xs text-slate-500">✅ 修复后成本变化的<strong>符号随工况方向翻转</strong>, 这是正确性的旁证: 制热工况下降 (青岛冬 −0.22, Bergen −0.15 元/kg, 废热减轻供暖), 制冷工况上升 (海南冬 +0.11, 青岛年均 +0.06, 废热加重制冷)。若为单向偏移, 反而说明修错了方向。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">B. 🟠 守恒类不变量断言落地 (建议三轮未落地)</h3>
+      <p class="mt-2 text-slate-400 text-sm">A 项那类缺陷<strong>现有三类断言全都抓不到</strong>: golden-master 抓不到 (基线跟着一起变)、有限性断言抓不到 (数值完全正常)、口径一致断言也抓不到 (不涉及同一量的两处换算)。<strong>只有守恒断言能抓</strong>。而同一版里出现两处同样成因的孤儿项, 说明这不是偶发失误, 是<strong>架构改动时缺少守恒护栏</strong>的系统性风险。</p>
+      <p class="mt-2 text-slate-400 text-sm">现已并入 <code>?selftest=1</code> 的逐阶段不变量 (亦有外部脚本 <code>t20_energy_closure.js</code> 同源可挂 CI), 三条:</p>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong>A 设备产热分配完整性</strong> — <code>Q_pumps + Q_uv + Q_air_gain×24 = 泵电功率 + UV电功率</code>。电功率 100% 终归变成热, 只有进水/进空气两个去处, 不得有第三个</li>
+        <li><strong>B 车间显热闭合</strong> — <code>hvacSensible = Q_envelope + Q_vent_sens − Q_room_internal</code></li>
+        <li><strong>C 水侧净热闭合</strong> — 含代谢/设备/补水/蒸发/除湿/接触器六项</li>
+      </ul>
+      <p class="mt-2 text-xs text-slate-500">修复前实测: 断言 A、C 通过, <strong>断言 B 在 56 个「工况×阶段」组合中 48 项失配</strong>, 残差与 <code>Q_air_gain×24</code> 逐位相等 —— 诊断被精确坐实。⚠ 新增任何进/出车间或水侧的热流时, 必须同步这三条式子, 那正是目的。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">C. 🟠 自然冷却可见性回归 (P0)</h3>
+      <p class="mt-2 text-slate-400 text-sm">v2.0 新增 <code>fcUnavailReason</code> 时的<strong>单行编辑失误</strong>, 把同行的 <code>freeCoolingSinkT: _fcSink,</code> 并进了行尾注释 —— 该字段自 v2.0 起不再导出, UI 第四档分支因而<strong>永不触发</strong>。v1.9.3 加这一档的动机是「用户拨动开关看不到任何回应, 无法区分『因不可用而无效』和『坏了』」, <strong>修好一版之后又回归了</strong>。而本该替代它的 <code>fcUnavailReason</code> 做好了却<strong>全代码库无消费点</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">本轮另发现第三层: 整个状态段包在 <code>pumpDirection === 'cool'</code> 里, 而 v2.0 最常见的原因恰是 <code>not_cool</code> (接触器把热排光, 水侧转制热) —— 即便前两层都修好, <strong>最该解释的情形仍然不说话</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">现改为读 <code>fcUnavailReason</code> 枚举 (四档 + 显式 default), 并把 <code>not_cool</code> 提到方向判断之外。缺字段会落到显式分支而非静默跳过 —— 这类「注释吞代码」用眼睛复查很难发现, 改成枚举后才有护栏。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">D. 🟡 口径与参数四处</h3>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong><code>totalMax</code> 补 <code>hvacCostDaily</code></strong> —— 此前只有 <code>totalAvg</code> 含它, 而 <code>totalMax</code> 是面向用户的「小计·工艺运行成本」并导出下游。同为暖通电耗, 除湿计入而显热不计, 无理由 (青岛冬 1,166 元/d, 约 0.97%)</li>
+        <li><strong><code>dehumEnabled</code> 开关对成本完全无效却仍 gate 显示</strong> —— v2.0 把除湿改为无条件的暖通职责后, 用户设「不配置」照付 2,989 kWh/d (海南夏) 却看不到卡片。实测开/关成本一字不差。现改为按是否真有除湿负荷显示</li>
+        <li><strong><code>degasserExhaustIndoorFrac</code> 默认 0.2 → 0</strong> —— 与气路拓扑 A5「工艺气路全程不碰车间」对齐。同一股尾气此前算热时 0%、算 CO₂ 时 20% 进车间; v2.0 把暖通显热计入能耗后该矛盾首次影响成本</li>
+        <li><strong><code>co2StripperGtoL</code> 引擎侧钳到 [1, 30]</strong> —— 旧式只有下界。UI 有 min/max 但可被载入方案 JSON 绕过, 填 1e6 得接触器排热 4.1×10⁹ kWh/d (有限但荒谬)</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-rose-300">E. 🟡 鱼种默认气候联动</h3>
+      <p class="mt-2 text-slate-400 text-sm">v2.0 修正了自检基线的鱼种-气候配对, 但 <strong>UI 默认仍是青岛且切鱼种不联动</strong> —— 用户点「罗非鱼」拿到的就是被修掉的那个组合 (28°C 的鱼在 −7°C 过冬)。<strong>测试修好了, 产品还在发同一个陷阱。</strong></p>
+      <p class="mt-2 text-slate-400 text-sm">新增 <code>DEFAULT_CLIMATE_BY_SPECIES</code> (与 <code>SEED_PRICE_BY_SPECIES</code> 同样板), 切鱼种时联动。实测比电耗: 罗非 16.21 → <strong>13.48</strong>, 对虾 36.85 → <strong>18.84</strong>, 鳜鱼 28.56 → 22.95。仅改默认起点, 用户仍可自由切换。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ 剩余差距来自产品默认工况是<strong>设计冬</strong>而基线用<strong>年均</strong> —— 定容工况与运行工况的正当区别, 不是配对问题。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">F. 关于审计的两处不同判断</h3>
+      <p class="mt-2 text-slate-400 text-sm">审计报「HVAC 潜热算出来但未计费, 海南夏 +0.42 元/kg」—— <strong>经复算不成立</strong>。v2.0 已把 <code>m_dehum_kgs</code> 改为无条件计算的暖通除湿职责, <code>dehumCostDaily</code> 已进 <code>totalMax</code>/<code>totalAvg</code>; 海南夏实测潜热 5,117 kWh/d → 除湿电 <strong>2,989 kWh/d</strong>, 按 SMER 2.5 折算已计费。真正的问题是<strong>反向</strong>的 (见 D 项第二条: 开关无效却 gate 显示)。</p>
+      <h3 class="mt-5 font-bold text-rose-300 border-t border-slate-700 pt-3">G. 🟡 补齐三处漏项 (第二批)</h3>
+      <p class="mt-2 text-slate-400 text-sm">在审计「仍然开放」表逐条实测复核后补上, 均为纯增项。</p>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong>车间暖通机组 CAPEX (AHU-1002)</strong> —— v2.0 引入车间显热能耗、v2.1 又修准了口径, 却一直没有对应设备与投资 (实测: CAPEX 17 条里有热泵、有除湿机, 暖通 0 条)。与 v1.9.2 给除湿机补 CAPEX 前的状态同构。按设计冬/夏显热峰值选型, 合计 <strong>85.5 kW / 24.4 W/m²</strong>。⚠ 与热泵不重复: 热泵调<strong>水温</strong>, 本机组维持<strong>室温</strong></li>
+        <li><strong>制冷↔制热切换余量 <code>regimeMarginPct</code></strong> —— 审计指出默认工况正坐在制度切换边界上 (单项 +0.24~0.36 而合计 +2.49, 严重非线性)。<strong>而 v2.1 的守恒修复恰好移动了这个边界</strong> (青岛冬 hvacSens 3,355 → 769), 边界挪了提示更该有。实测 G:L=3 时余量仅 <strong>3.9%</strong>, 默认阶段 1 仅 <strong>0.5%</strong>。余量 &lt; 15% 时在阶段卡片提示</li>
+        <li><strong>蛋分供气风机 (K-501)</strong> —— 此前只有支路泵没有风机, 而泡沫分离的效率由<strong>气量</strong>决定 (没有气就没有泡沫)。新增气水比/风压/效率三参数, 成鱼期 6.41 kW / 508 m³/h</li>
+      </ul>
+
+      <h3 class="mt-4 font-bold text-rose-300">H. 🔴 登记完整性断言 —— 守恒断言抓不到的那一类</h3>
+      <p class="mt-2 text-slate-400 text-sm">加蛋分风机时<strong>连犯三个同类错误, 现有断言一个都没抓到</strong>:</p>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li>风机并进 <code>totalPumpKw</code> (废热错误地按 <code>pumpHeatRatio</code> 进水) —— 守恒断言 A 等式<strong>两边同步放大</strong>, 残差为零</li>
+        <li>漏加 <code>elecCostAvgDaily</code> —— 比电耗<strong>单向低估</strong>, 该口径是手工枚举、无断言</li>
+        <li><strong>气流未登记 <code>airPath</code></strong> —— 508 m³/h 的接触水气流不进接触器热湿交换; 风量平衡断言只校验<strong>已登记项</strong>之间是否自洽</li>
+      </ul>
+      <p class="mt-2 text-slate-400 text-sm">第三条与 v2.0 的 <code>Q_air_gain</code> 孤儿项<strong>完全同类</strong>。结论:</p>
+      <p class="mt-2 text-sm" style="color:#fbbf24;">守恒/平衡断言只能约束<strong>已进入体系的量</strong>, 无法发现<strong>压根没进体系的量</strong>。要抓后者, 必须从<strong>设备侧反向枚举</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">新增 <code>POWER_REGISTRY</code> 登记表与两条断言 (并入逐阶段不变量):</p>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong>D 气流登记完整性</strong> —— 凡带 <code>airFlowM3h &gt; 0</code> 的 spec, 必须 (a) <code>airPath</code> 三字段齐全 (b) 出现在 <code>collectAirStreams()</code> 输出中 (c) <code>spec.power</code> 与同名标量一致</li>
+        <li><strong>E 电功率登记完整性</strong> —— 凡 <code>/Kw$|Power$/</code> 且 &gt; 0 的字段必须在 <code>POWER_REGISTRY</code> 声明计费去向; 且 <code>totalPumpKw</code> 必须等于其<strong>声明成员之和</strong></li>
+      </ul>
+      <p class="mt-2 text-xs text-slate-500">四条负对照全部精确转红 (用上面三个真实犯过的错 + 缺 airPath 构造)。其中「风机并进 totalPumpKw」正是 t20 守恒断言<strong>抓不到</strong>而登记断言 E 抓住的那条。⚠ 新增任何风机/泵/用电设备时必须同步 <code>POWER_REGISTRY</code> —— 那正是目的。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ 本断言仍有一层盲区: <strong>登记表本身可以声明错</strong> (如 <code>billedVia</code> 指向不存在的成本字段)。堵它需校验该字段真实存在且非零 —— 未做。</p>
+
+      <h3 class="mt-5 font-bold text-rose-300 border-t border-slate-700 pt-3">J. 🟠 接触器净水汽计入水量平衡</h3>
+      <p class="mt-2 text-slate-400 text-sm">v2.0 把接触器的<strong>热</strong>计入了水侧平衡, 但<strong>水的质量</strong>一直没进 <code>V_makeup</code>。本版补上, 并顺带修掉一处已存在但从未显形的盐度错误。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">发现的两个问题</h4>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong>符号不对称</strong> —— 凝结水<strong>减少</strong>补水 (已建模), 但蒸发<strong>不增加</strong>补水。补水与排污都等于 <code>V_total × exchangeDaily</code>, 注释写着「质量守恒」而蒸发不在其中。与 v2.0.1 修的 <code>totalKw_field</code> 同族: <strong>同一物理量的两个方向只守一边</strong></li>
+        <li><strong>纯水扣错了股</strong> —— 凝结水与除湿水是<strong>纯水</strong>, 却去扣减<strong>含盐的换水股</strong>。后果: 海水进得少、纯水补进来, 盐度会漂低 —— 一个已经存在但从未显形的错误 (盐度不是状态变量, 无处报警)</li>
+      </ul>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">采用的简化: 拆两股水流</h4>
+      <p class="mt-2 text-slate-400 text-sm">蒸发走掉的是纯水, 就补等量淡水, <strong>独立成股, 不动换水份额</strong>:</p>
+      <div class="mt-2 text-xs font-mono bg-slate-900/60 p-2 rounded text-slate-300">
+        换水股&nbsp;&nbsp;补水 V_exch (同盐度) ←→ 排污 V_exch (同盐度)<br>
+        蒸发股&nbsp;&nbsp;补淡水 E &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;←→ 蒸发失纯水 E
+      </div>
+      <p class="mt-2 text-slate-400 text-sm">体积平衡与盐平衡<strong>各自闭合</strong>, 盐度因此<strong>恒等守恒</strong> —— 不需要盐度状态变量, 不需要「补水盐度」参数, 不需要补盐 OPEX。工程上这也是实际做法: 海水 RAS 的蒸发补水本就走独立的淡水补给管路。实测<strong>换水股与排水量逐阶段完全相等</strong>。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">实测规模 —— 订正 HANDOFF v2.0.0 的记载</h4>
+      <div class="mt-2 overflow-x-auto"><table class="text-xs w-full text-slate-400">
+        <tr class="text-slate-300"><td class="py-1 pr-3">工况</td><td class="pr-3">换水股</td><td class="pr-3">淡水股</td><td class="pr-3">余纯水</td><td class="pr-3">净水汽</td><td>稳态盐度</td></tr>
+        <tr><td class="py-1 pr-3">青岛设计冬</td><td class="pr-3">461.2</td><td class="pr-3"><b>+29.6</b></td><td class="pr-3">0</td><td class="pr-3">+29.6</td><td>30‰</td></tr>
+        <tr><td class="py-1 pr-3">青岛年均</td><td class="pr-3">461.2</td><td class="pr-3">+11.7</td><td class="pr-3">0</td><td class="pr-3">+12.5</td><td>30‰</td></tr>
+        <tr class="text-amber-300/90"><td class="py-1 pr-3">海南设计夏</td><td class="pr-3">461.2</td><td class="pr-3">0</td><td class="pr-3"><b>41.4</b></td><td class="pr-3">−34.9</td><td><b>27.2‰</b> (−2.83)</td></tr>
+        <tr><td class="py-1 pr-3">对虾三亚</td><td class="pr-3">126.8</td><td class="pr-3">+4.6</td><td class="pr-3">0</td><td class="pr-3">+5.7</td><td>15‰</td></tr>
+      </table></div>
+      <p class="mt-2 text-slate-400 text-sm">⚠ HANDOFF v2.0.0 记的「584.6 kg/h, 占补水 <strong>6.0%</strong>, <strong>单向系统性偏差</strong>」<strong>三点都不准确</strong>: 实测范围 <strong>−10.8% ~ +10.7%, 双向</strong>。湿热气候下净结露, 模型反而<strong>高估</strong>补水需求。字段因此命名 <code>netWater</code> 而非 <code>evap</code> —— 「热带养冷水鱼」正是 v2.0 新增的能力, 净结露是常态而非边角情形。</p>
+      <p class="mt-2 text-slate-400 text-sm">净结露时没有「补负淡水」这回事: 纯水先抵扣蒸发股, 抵到零仍有余量的转为排水, 并按现有假设推出稳态盐度 <code>S × V_exch / (V_exch + V_surplus)</code>。这不是新建模, 是把模型现有假设的推论说出来。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">断言 F (三条)</h4>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong>F1 水量闭合</strong> —— 总补水 = 换水股 + 淡水股, 两股均 ≥ 0。拆股后这是恒等式, <strong>转红即说明两股水流的分离被破坏</strong></li>
+        <li><strong>F2 盐平衡</strong> —— 无净结露时盐度不得漂移; 有净结露时稳态盐度须等于稀释式</li>
+        <li><strong>F3 热质同源</strong> —— 由导出的 <code>mdot / W_in / W_out</code> <strong>独立重推</strong>净水汽量并比对。若有人把它改成独立的经验蒸发系数, 立刻转红 —— 这是本方案的核心护栏</li>
+      </ul>
+      <p class="mt-2 text-xs text-amber-400/90">⚠ F3 初版写成「潜热占比须在 [50%, 105%]」, 用 Karimi 2020 的 <strong>91%</strong> 做区间 —— <strong>判据错了</strong>。那 91% 是<strong>近等温工况</strong>(出口气温与进水温差 0.77°C) 的实测值; 青岛冬进气 −7°C、水温 12°C 时显热 19.1 kJ/kg、潜热 18.0, 占比 <strong>48.5% 是物理正确的</strong>, 却被区间判红。<strong>用文献单点值当断言区间, 必须先确认该值的适用工况。</strong></p>
+
+      <h3 class="mt-5 font-bold text-rose-300 border-t border-slate-700 pt-3">K. 🔴 第五轮审计 — 风机热与登记表升级</h3>
+      <!-- IRAS_V21_DOCS_AUDIT5 -->
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">K1. 🔴 三台风机的热此前没有任何去处 (P0)</h4>
+      <p class="mt-2 text-slate-400 text-sm">模型对泵与 UV 做了完整的电-热分配 (进水 <code>Q_pumps</code> + 进空气 <code>Q_air_gain</code> = 电功率), 但三台风机 (脱气 53.6 + BF 42.4 + 蛋分 11.7 = <strong>107.7 kW</strong>) 的电功率<strong>既不在这个分配里, 也不在任何其它热流里</strong>。代码注释写了「不走 <code>pumpHeatRatio</code> 进水」—— 这是对的, 但它也没走别的任何地方。</p>
+      <p class="mt-2 text-slate-400 text-sm">后果: 风机轴功全部变成气流温升, 而这三台吹的正是<strong>接触水的那三股气流</strong>, 接触器却用原始室外温度。方向与 v2.0 的 <code>Q_air_gain</code> 完全一致 —— <strong>模型付电费让风机运转, 却让这些电产生的热凭空消失, 然后再付一次热泵的钱把水加热回来。</strong></p>
+      <p class="mt-2 text-slate-400 text-sm">修法: 轴功 (η=0.57) 抬高接触器进气温度 (青岛设计冬 −7 → <strong>−3.5°C</strong>, 升温 3.3–3.5 K), 电机损失并入 <code>Q_room_internal</code>。⚠ 加热是<strong>等湿过程</strong>, 绝对含湿量不变, 只有温度抬高。</p>
+      <p class="mt-2 text-xs text-slate-500">✅ 成本变化<strong>符号随工况方向翻转</strong> —— 制冷工况上升 (海南夏 +0.42 / 三亚 +0.41), 制热工况下降 (Bergen −0.23 / 鳜鱼 −0.36)。与 v2.1 守恒修复时一致, 单向偏移反而说明修错方向。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">K2. 登记表升级为唯一真相源</h4>
+      <p class="mt-2 text-slate-400 text-sm">审计指出同一缺陷已在三个抽象层各出现一次: <code>Q_air_gain</code> (v2.0) → 蛋分气流漏登记 (v2.1 自查) → 风机热无去处 (本轮)。成因是<strong>计费去向、热去向、资本去向分散在三处不同机制里</strong>, 每处覆盖边界都是手工划的。</p>
+      <p class="mt-2 text-slate-400 text-sm"><code>POWER_REGISTRY</code> 每条现声明四项: <code>path</code> (支持嵌套) / <code>billedVia</code> / <code>heatVia</code> / <code>capexVia</code>。断言改为<strong>从登记表反向枚举</strong> —— 旧断言 E 用 <code>Object.keys(eq)</code> 正向扫描 + 命名规则, 实测漏掉 <code>co2StripperSpec.blowerKw</code> (53.6 kW) 与 <code>bfBlowerSpec.power</code> (42.4 kW)。审计原话:</p>
+      <p class="mt-2 text-sm" style="color:#fbbf24;">「为『漏了蛋分风机』而建的断言, 覆盖了蛋分风机, 却覆盖不了另外两台大 4–5 倍的风机。」</p>
+      <p class="mt-2 text-slate-400 text-sm">新增断言: <strong>A2</strong> (全量电-热分配, 由登记表枚举 <code>heatVia</code>) 与 <strong>F4</strong> (登记设备必须有 CAPEX 条目)。F4 落地后<strong>立刻抓到蛋分风机「有电费无投资」</strong> —— 这是同一模式的第三次 (v1.9.3 加药计量泵 / v2.1 车间暖通机组 / 本项), 前两次只写了注释总结、没变成断言。</p>
+      <p class="mt-2 text-xs text-slate-500">⚠ 实现过程中 A2 连报两次「已接入 0.00 kW」, 两次都是真错 (哨兵串被后续补丁注释污染导致静默跳过; <code>const</code> 块作用域导致变量在 return 处不可见)。<strong>若没有 A2, 第二个错会完全静默</strong> —— 数值正常、无 NaN、守恒 B/C 照常通过, 风机热又一次凭空消失。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">K3. 气候联动只覆盖点击路径</h4>
+      <p class="mt-2 text-slate-400 text-sm">审计报「温水鱼种 × 青岛未修」—— <strong>结论不成立</strong> (字段真名是 <code>DEFAULT_CLIMATE_BY_SPECIES</code>, 点击鱼种实测罗非 13.83 / 对虾 19.27), 但他们给的数字恰好是<strong>没有联动时</strong>的值。查因: 联动只挂在<strong>鱼种按钮的 click 处理器</strong>里, <code>loadStagesFromDB()</code> 不调用 —— 载入方案 / 下游导入 / 测试脚手架全部绕过。<strong>审计撞到了真洞, 只是归因错了。</strong></p>
+      <p class="mt-2 text-slate-400 text-sm">已移入 <code>loadStagesFromDB()</code>（所有切鱼种路径的必经之处），并加 <code>skipClimate</code> 开关 —— 载入用户保存的方案时不覆盖用户当初的显式选择。</p>
+      <p class="mt-2 text-xs text-slate-500">📌 <strong>意外收获</strong>: 对虾基线 <strong>−3.58 元/kg</strong> (热泵费 2.77 → 1.90)。原因是基线只覆盖<strong>年均</strong>字段, 而设备选型用<strong>设计冬/夏</strong> —— 三亚年均运行的对虾场一直按<strong>青岛设计冬</strong>选热泵。属选型工况与运行工况长期不一致的修正, 不是回归。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">K4. 与审计的两处不同判断</h4>
+      <p class="mt-2 text-slate-400 text-sm"><strong>「HVAC 潜热未计费」不成立</strong> (第二次报同一条)。实测海南夏潜热 4,473 → 除湿电 <strong>2,613 kWh/d</strong> / 1,829 元/d。<code>hvacLatentKWhPerDay</code> 与 <code>dehumKWhPerDay</code> 是同一个 <code>m_dehum</code> 的两种表达, 再计一次就是重复。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>「买了 92 万除湿机一天不开」表述有误</strong>。CAPEX 按设计夏峰值选型是正常工程做法 (夏季峰值选型、冬季不运行), 默认视图是设计冬所以显示 0 电费。经产品方确认, 除湿<strong>按独立机组</strong>处理: 潜热由独立除湿机承担、AHU 只管显热, 二者不重复。</p>
+
+      <h4 class="mt-3 text-sm font-bold text-slate-300">K5. 收尾两项</h4>
+      <!-- IRAS_V21_DOCS_FINAL IRAS_V21_UI_DUAL_NODE -->
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><strong>蛋分风机 1+1 备用</strong> —— 补 <code>modulePerSpec</code> 规格后, 三台风机的备用政策终于一致 (co2Blower / bfBlower / skimmerBlower 均 1+1)。与 v1.9.3 给脱气塔风机补规格时<strong>完全同一处境</strong>, 当时的原注释即适用:「此前没有模块化规格, 因而设备清单不显示备用、CAPEX 也不计备用。」</li>
+        <li><strong>v1.9.2 章节 G / I 两表加历史横幅</strong> —— 数字 (37.53 / 比电耗 9.5) 是当时实测, <strong>原样保留为历史记录</strong>; 但同章节末尾「请以本节为当前基线」这句在 v1.9.2 时是对的、<strong>现在已指错</strong>, 会让读者把 37.53 当成当前值, 已加订正批注。当前基线由 <code>&lt;meta description&gt;</code> 自基线自动生成。</li>
+      </ul>
+      <p class="mt-2 text-xs text-slate-500">⚠ 补丁顺序教训: 「meta 自基线生成」是构建期动作, 正确位置是<strong>链尾</strong>。第一次修复给了编号 48, 结果新增基线补丁 51 又排到它后面, 同一问题立刻重现 —— 现改为 <strong>99</strong>, 让「链尾」由编号本身保证, 而不是每次靠人记得。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">I. 版本号与位号</h3>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li>版本号统一为 <strong>v2.1</strong> (此前 v2.1.0)。本批并入 v2.1, 不另开 v2.2。v2.0.0 / v2.0.1 的历史叙述保持三段式原样</li>
+        <li>蛋分供气风机补位号 <strong>K-501</strong> —— 蛋分区已有 C-501 (塔) 与 P-501 (支路泵), 同类的 K-101 (池增氧) / K-302 (BF 风机) 都有位号, 唯独新加的风机没有。P&amp;ID 注册表内带 <code>isBlower</code> 标志, 供下游区分泵与风机符号</li>
+      </ul>
+
+      <p class="mt-2 text-slate-400 text-sm">审计报「三处对外基线未跟上重算」—— <strong>仅一处成立</strong>。<code>&lt;meta description&gt;</code> 确是当前对外事实, 已更新; 另两处 (行 1544「G. v1.9.2 成本基线」/ 行 1576「I. mainline vs bypass」) 都在 <code>help-changelog-v192</code> 章节内, 是 v1.9.2 变更日志的<strong>历史记录</strong>, 改它们等同于污染版本演进记录 —— 正是 v2.0.0 版本号全局替换踩过的坑。「常年需要制冷」那句按同一原则处理: <strong>加 v2.0 订正批注, 不改原句</strong>。</p>
+    </section>
+
+    <!-- IRAS_V21_DOC_FIX IRAS_DOCS_V2_0_1 v2.0.1 升级说明 -->
+    <section id="help-changelog-v201" class="mt-6">
+      <h2 class="text-xl font-bold text-sky-400 border-b border-sky-700/50 pb-2">📌 v2.0.1 升级说明 (2026-08-01) — 缺陷修复 · 版本号自检</h2>
+
+      <p class="mt-3 text-slate-400 text-sm">补丁版。<strong>不改动任何计算模型</strong> —— 13 条数值基线逐位不变, 与 v2.0.0 完全相同。全部改动是修两处缺陷、消一处口径分裂, 并把「发版后人工核对版本号」固化成自检项。自检 16 → <strong>17 项</strong>。</p>
+
+      <h3 class="mt-4 font-bold text-sky-300">A. 模块化聚合 <code>totalKw_field</code> 产出 NaN</h3>
+      <p class="mt-2 text-slate-400 text-sm">微滤机 RDF 是<strong>流量定额</strong>设备 (走 <code>configureFlow()</code>, 按 m³/h 选型), 不返回 <code>installedKw</code>。而全场聚合循环对每个设备一律计算 <code>ms.installedKw × numModules</code>, 得 <code>NaN</code>。同一对象字面量的下一行 <code>totalFlow_field</code> 有守卫, 本行没有 —— <strong>不对称守卫</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">影响面已实测边界: 16 个自检工况 × 全部阶段<strong>只有这一条</strong>非有限路径, 且 <code>NaN</code> 经 <code>JSON.stringify</code> 静默变成 <code>null</code>, 下游四页面均未消费该字段 —— 因此<strong>线上无可见故障, 属潜伏缺陷</strong>。修法与下一行同口径: 算不出就明确给 <code>null</code>, 不给 <code>NaN</code>。</p>
+
+      <h3 class="mt-4 font-bold text-sky-300">B. 容积率 FAR 默认值 0.5 / 0.7 两个口径并存</h3>
+      <p class="mt-2 text-slate-400 text-sm">v1.5 Bug 47 把 FAR 开放为参数时初值取 GB 50187 工业下限 0.7;「审计回合 7」认定水产按农业 / 乡镇企业用地分类, 改回实测主流 <strong>0.5</strong>, 并改了 UI 输入框与两处计算 fallback —— 但<strong>漏了三处</strong>:</p>
+      <ul class="mt-2 text-slate-400 text-sm list-disc list-inside space-y-1">
+        <li><code>collectState().farRatio</code> 的 fallback 仍是 0.7 —— <strong>唯一有实际后果的一处</strong>: 当输入框不可解析时, 存盘记 0.7 而导出用 0.5; 再次载入方案会把输入框刷成 0.7, <strong>总占地静默缩小 29%</strong> (0.5/0.7), 无任何提示</li>
+        <li><code>renderFarmSummary</code> 上方注释仍写「默认 0.7」</li>
+        <li>占地估算的<strong>用户可见文案</strong>仍写「默认 0.7, UI 可调」—— 直接误导用户</li>
+      </ul>
+      <p class="mt-2 text-slate-400 text-sm">三处全部归一到 0.5, 与输入框 <code>value="0.5"</code> 同源。</p>
+
+      <h3 class="mt-4 font-bold text-sky-300">C. 版本号: 从人工待办改为自检项</h3>
+      <p class="mt-2 text-slate-400 text-sm">页脚与「版本信息」面板此前是<strong>硬编码字面量</strong>, 不读 <code>IRAS_META</code>, 每次发版靠人记得手改。而本页 <code>v2.0.0</code> 出现 9 次, <strong>只有 5 处指向当前版本</strong>, 其余是版本演进记录 —— v2.0.0 首版补丁全局替换过一次, 把历史叙述一并污染。靠人在 9 处里挑对 5 处, 每版重来。</p>
+      <p class="mt-2 text-slate-400 text-sm">现改为运行时从 <code>IRAS_META</code> 注入 (单一事实源); HTML 字面量保留为 no-JS / SEO 回退。新增自检项 <code>meta_version_consistency</code> 锁定四条: <code>&lt;title&gt;</code> / <code>og:title</code> / <code>twitter:title</code> 三处 SEO 静态串含当前版本号, 页脚与面板注入结果与 <code>IRAS_META</code> 一致。<strong>该断言已用负对照验证会失败</strong> (改一处 SEO 串 / 删一个注入锚点, 均精确转红), 不是恒真判据。</p>
+
+      <p class="mt-3 text-xs text-slate-500">⚠ 本版<strong>未</strong>触碰 HANDOFF §5 列出的 v2.1 候选项 (接触器蒸发进水量平衡、凝结水盐度、MBBR 流化下限、蛋分供气动力等) —— 那些都要动模型, 不属补丁版范围。</p>
     </section>
 
     <!-- IRAS_DOCS_V2_0 v2.0 升级说明 -->
@@ -1370,19 +1545,9 @@
       <!-- IRAS_LIMITS_V2_SUPPL -->
       <h3 class="mt-4 font-bold text-rose-300">L. 已知限制与后续</h3>
 
-      <p class="mt-2 text-slate-400 text-sm"><strong>① 接触器蒸发未计入水量平衡。</strong>
-      气液接触器的<strong>热量</strong>已完整计入 (Δh 含潜热, t16 验证潜热占 86%), 但其带走的
-      <strong>水的质量</strong>尚未进入 <code>V_makeup</code>。实测三文鱼 1000 t 青岛设计冬:
-      接触器蒸发 <strong>584.6 kg/h (14.03 m³/d)</strong>, 是池面蒸发 19.8 kg/h 的
-      <strong>29.5 倍</strong>, 占补水量的 <strong>6.0%</strong>。
-      物理上成立 —— 96,287 m³/h 空气按水温饱和离开, 带走的水远超静止水面蒸发。
-      后果: 补水量、补水加热、补水费与排污量均系统性低估约 6%,
-      且该偏差在高 G:L 或热带工况下会放大。<strong>属单向系统性偏差, 已列入 v2.1。</strong></p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>✅ <b>接触器净水汽已计入水量平衡</b> (v2.1 补丁 25-27 完成)。补水拆为<b>换水股</b>(含盐, 与排污同量同盐度) + <b>蒸发股</b>(补淡水), 两股各自闭合, 盐平衡<b>恒等成立</b>, 无需盐度状态变量。实测换水股与排水量逐阶段完全相等。<br>⚠ <b>原记载的三个数字均已订正</b>: 旧文写「584.6 kg/h, 占补水 6.0%, <b>单向</b>系统性偏差」—— 实测范围 <b>−10.8% ~ +10.7%, 双向</b>(青岛设计冬 +29.6 m³/d、海南设计夏 −34.9 m³/d 为净结露)。湿热气候下模型反而<b>高估</b>补水需求, 故字段命名 netWater 而非 evap。另: 接触器净水汽是池面蒸发的约 <b>50 倍</b>(设计冬), 高于旧文记的 29.5 倍。</strong></p>
 
-      <p class="mt-2 text-slate-400 text-sm"><strong>② 凝结水对盐度的影响未建模。</strong>
-      湿热气候下接触器 Δh 为负时空气在填料上<strong>结露, 向系统净产水</strong>:
-      三亚设计夏约 <strong>33 t/d</strong>。淡水场是白得的补水; 但<strong>海水场</strong>意味着
-      持续被淡水稀释, 会影响换水策略与盐度控制。本版水量平衡中无此项。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>✅ <b>凝结水对盐度的影响已给出诊断</b> (v2.1)。净结露时纯水先抵扣蒸发股, 抵到零仍有余量的转为排水, 并按现有假设推出稳态盐度 <code>S × V_exch / (V_exch + V_surplus)</code>。海南设计夏实测 30 → <b>27.2‰</b> (漂移 −2.83)。这不是新建模, 是把模型现有假设的推论说出来 —— 盐度仍非状态变量 (让它成为状态变量会波及 O₂ 溶解度、碳酸盐体系、NH₃ 解离等, 属架构级改动)。</p>
 
       <p class="mt-2 text-slate-400 text-sm"><strong>③ 暖通侧未含太阳辐射与人员负荷。</strong>
       围护体系本身是完整的 —— U_墙/顶/地/窗四值可调, 含 4 档保温预设
@@ -1394,11 +1559,24 @@
 
       <p class="mt-2 text-slate-400 text-sm"><code>contactorRecovery</code> 默认 0 —— 实际配对下最紧的是<strong>上海冬季</strong> (接触器排 31,541 kWh/d, 方向转制热); 真实工程会冬季降 G:L 或做尾气热回收, 默认值待实测反馈确定。
       MBBR 流化下限与 <code>bfTankDepth</code> 参数缺失 (教科书填料层 1–5 m)。
-      暖通侧负荷 v2.0 <strong>标注界外</strong>, 不计入本工具能耗。
+      <s>暖通侧负荷 v2.0 标注界外, 不计入本工具能耗。</s> <b style="color:#f59e0b;">⚠ 已过时</b>: v2.0 起车间显热已计入能耗, v2.1 修正口径 (扣除室内产热) 并补设备投资 (AHU-1002); 第五轮审计后再补三台风机的电机损失。
       三节点 / 结露判据推迟 (T_room 受控后风险大降)。
       石斑三阶段 DO 余量仅 +2%/+3%/+10% (告警级)。
-      蛋分有支路泵而<strong>无供气动力项</strong>, 属独立 OPEX 漏项。
-      单池面积: DB21/T 2350 规定 5–30 m², 本工具每阶段建模为一个池 (66–2997 m²), 池数由用户设置。</p>
+      ✅ <b>蛋分供气风机已建模</b> (v2.1, 位号 K-501): 气水比/风压/效率三参数, 气流已登记 airPath 并计入接触器热湿交换; 第五轮审计后补 CAPEX 条目 (由新增断言 F4 抓出)。<br>✅ <b>1+1 备用已补</b> (modulePerSpec 规格 + SPARE_MAP 映射), 三台风机备用政策至此一致。<br>⚠ <b>蛋分塔高度未建模</b>: 塔体只按 HRT 定容积, 风压默认 25 kPa 是经验取值而非推导 (原注释写「2.5 m 水柱 + 5 kPa」= 29.5, 与默认值自相矛盾, 已订正为诚实表述)。
+      单池面积: DB21/T 2350 规定 5–30 m², 本工具每阶段建模为一个池 (66–2997 m²), 池数由用户设置。
+      </p>
+      <h3 class="mt-4 font-bold text-slate-300">L2. 已决定不做 (有意为之的设计选择)</h3>
+      <p class="mt-2 text-slate-400 text-sm">
+      <!-- IRAS_V21_LIMITS_SYNC -->
+      记录在此是为了避免被反复当作漏项重新发现 —— 本版第三方审计的四处误报中, 有两处正是这么来的。<br><br>
+      <b>① 接触器进气节点不参数化, 恒取室外空气。</b>
+      依据三条: (a) 与气路拓扑前提 <b>A5「工艺气路全程不碰车间」自洽</b> —— 参数化反而会让 A5 变成有条件成立的假设;
+      (b) 避免引入<b>耦合环路</b> (车间温度 → 接触器 → 水温 → 车间温度), 而 v2.0 删除双节点求解器正是为了消除这类环;
+      (c) 符合工程实际 —— 现代场脱气尾气本就管道直排室外, v2.1 已把 degasserExhaustIndoorFrac 默认改为 0。<br><br>
+      <b>② 盐度不作为状态变量。</b>
+      补水拆两股后盐平衡恒等成立, 无需状态变量。若要建模真实盐度动态, 会波及 O₂ 溶解度、
+      碳酸盐体系 (carbonate.js 有 20 处函数签名带 S)、NH₃ 解离分数、密度与泵扬程 —— 属架构级立项, 不在补丁版范围。<br><br>
+      <b>③ 人员负荷不单独建模。</b>约 100 W/人, 相对车间显热 (千瓦级) 可忽略。</p>
     </section>
 
     <!-- v1.9.3 升级说明 -->
@@ -1511,6 +1689,8 @@
       <p class="mt-2 text-slate-400 text-sm"><strong>(2) 代谢产热改由耗氧导出。</strong> 旧式用 Schrama 公式 <code>106 × Q10^((T−T_ref)/10) × N × W^0.85</code>, 系数 106 kJ/(d·kg^0.85) 源自 Saravanan &amp; Schrama 2012 虹鳟<strong>饱食投喂</strong>实测 (文献区间 77-160), 而该式<strong>没有投饵率变量</strong>。用饱食系数套商业投饵率 (鲑鱼成鱼 0.95% 体重/日) 高估约 3 倍: 旧值 11030 kWh/d = 1.11 W/kg 鱼, 而 van Dam 综述的维持代谢基准换算到 15°C 仅 0.11 W/kg。<br>v1.9.2 改为 <code class="text-emerald-300">Q_metab = 池内耗氧 × 13.6 kJ/g O₂</code> (Brett &amp; Groves 1979) —— 同一代谢过程同时决定耗氧与产热, 两者由氧热当量刚性绑定, 不再各取各的文献值。结果 <strong>11030 → 4053 kWh/d (−63%)</strong>, 折合 0.32 W/kg (维持代谢的约 3 倍, 属摄食鱼合理区间)。<br><strong>回归验证</strong>: 把 Q_metab 打到 0 做对照, 7 项设备选型 × 4 阶段 (主泵 / 峰值供氧 / 氧锥流量 / BF 风机 / RDF / UV / CO₂ 风机) <strong>逐位一致</strong> —— 代谢产热只影响热泵负荷, 不影响任何工艺设备选型。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">G. v1.9.2 成本基线 (1000 t/yr 大西洋鲑, mainline)</h3>
+      <!-- IRAS_V21_G_TABLE_NOTE -->
+      <p class="mt-2 text-xs" style="color:#f59e0b;">📌 <strong>历史数据</strong>：本表是 <strong>v1.9.2 当时</strong>的实测基线，数字<strong>不代表当前版本</strong>。此后经 v1.9.3 / v2.0.0 / v2.0.1 / v2.1 多次重算（热平衡架构重构、气液接触器、能量守恒修复、风机热接入等）。当前基线见 <strong>v2.1 章节</strong>与主页自检（<code>?selftest=1</code>），亦已自动同步到本页 <code>&lt;meta description&gt;</code>。表中的<strong>结构性结论</strong>（各工况相对关系、bypass 收益方向）仍然成立。</p>
       <div class="mt-2 overflow-x-auto">
       <table class="text-xs text-slate-300 w-full">
         <tr class="text-cyan-300 border-b border-slate-700"><th class="text-left py-1 pr-3">工况</th><th class="text-left py-1 pr-3">气温/源水</th><th class="text-right py-1 pr-3">OPEX</th><th class="text-right py-1 pr-3">折旧</th><th class="text-right py-1 pr-3">综合成本</th><th class="text-right py-1 pr-3">比电耗</th></tr>
@@ -1521,7 +1701,7 @@
       </table>
       </div>
       <p class="mt-2 text-slate-400 text-sm">单位元/kg 鱼, 电 0.7 元/kWh / 液氧 1.2 元/kg / 饲料 12 元/kg。比电耗单位 kWh/kg·yr。年液氧消耗 <strong>471 t</strong> (四工况一致 —— 液氧只随鱼载荷与池内 TSS 变化, 与气候无关)。<br><span class="text-slate-500">方法学: 每行按<strong>独立稳态点</strong>评估 —— 设计冬 / 设计夏两个热工况均取该行的气温与源水温, 以隔离气候单一变量。实际项目中热泵装机应按当地全年包线 (冬夏两端) 定容, 折旧会略高于本表 (实测约 +0.5%)。</span></p>
-      <p class="mt-2 text-slate-400 text-sm"><strong>与 v1.3 老基线的差异</strong>: 老表 (青岛冬 35.96 / 海南冬 37.70 / 海南夏 40.47 / Bergen 36.30) 跨气候跨度 4.51 元/kg, 新基线为 <strong>2.31 元/kg</strong>。压缩来自 B 项蒸发系数量纲修正 (凝结放热降 2-2.4 倍)、C 项通风口径, 以及 H 项代谢产热改由氧当量导出 —— 气候差异现在几乎全部体现在热泵费上 (<strong>0.29 → 2.53 元/kg</strong>), 饲料费 14.80 与泵电费 5.30 跨工况不变。<br><strong>四工况全部为制冷工况</strong>: 气候无关的基础热负荷 (池内生物产热 5271 + 设备产热 20677 = 25948 kWh/d) 远超水侧散热能力, 青岛 -7°C 也不例外 —— 这是 RAS 常年需要制冷的结构性原因, 不是模型异常。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>与 v1.3 老基线的差异</strong>: 老表 (青岛冬 35.96 / 海南冬 37.70 / 海南夏 40.47 / Bergen 36.30) 跨气候跨度 4.51 元/kg, 新基线为 <strong>2.31 元/kg</strong>。压缩来自 B 项蒸发系数量纲修正 (凝结放热降 2-2.4 倍)、C 项通风口径, 以及 H 项代谢产热改由氧当量导出 —— 气候差异现在几乎全部体现在热泵费上 (<strong>0.29 → 2.53 元/kg</strong>), 饲料费 14.80 与泵电费 5.30 跨工况不变。<br><strong>四工况全部为制冷工况</strong>: 气候无关的基础热负荷 (池内生物产热 5271 + 设备产热 20677 = 25948 kWh/d) 远超水侧散热能力, 青岛 -7°C 也不例外 —— 这是 RAS 常年需要制冷的结构性原因, 不是模型异常。<span style="color:#f59e0b;"> —— ⚠ <strong>v2.0 订正</strong>: 该结论是在<strong>气液接触器缺失</strong>时得出的。v2.0 接入接触器后, 脱气塔与 MBBR 曝气在冷天已把内部产热大量排走 (青岛设计冬 21,266 kWh/d, 达内部产热 82%), <strong>青岛冬与 Bergen 冬四个阶段已全部翻为「制热」</strong>。「常年制冷」只对温暖气候或接触器排热受限的场景成立。见 v2.0.0 章节 B。</span></p>
 
       <h3 class="mt-4 font-bold text-cyan-300">H. 第三方审计修复 + 自然冷却 + 自检</h3>
       <p class="mt-2 text-slate-400 text-sm">v1.9.2 主体完成后接受一轮第三方代码审计, 修复 <strong>8 项缺陷</strong>:
@@ -1552,7 +1732,7 @@
       <p class="mt-2 text-slate-400 text-sm">bypass 节能幅度从 v1.7 的 29.8 kW 降到 18.4 kW —— 主泵扬程降低后, "旁路让主泵不过锥"这个优势的绝对值随之变小; 但 CAPEX 节省 (氧锥按小流量定价) 基本不变, 仍是 bypass 的主要收益来源。</p>
 
       <div class="mt-3 text-xs text-slate-500 border-l-2 border-slate-600 pl-3">
-        本页下方 v1.9 / v1.7 / v1.3 各节保留<strong>当时版本</strong>的实测数据作为历史记录, 数值与本节不同属正常 —— 请以本节为当前基线。
+        本页下方 v1.9 / v1.7 / v1.3 各节保留<strong>当时版本</strong>的实测数据作为历史记录, 数值与本节不同属正常 —— <strong style="color:#f59e0b;">⚠ v2.1 订正</strong>：这句在 v1.9.2 当时是对的，<strong>现在已指错</strong> —— 当前基线是 <strong>v2.1</strong>，不是本节。本节数字请一律按历史记录读。
       </div>
     </section>
 
@@ -3515,8 +3695,14 @@
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
-  version: '2.0.0',
-  releaseDate: '2026-07-31',
+  /* v2.1 IRAS_V21_META_AUTOGEN — <meta description> 的成本数字取自
+     SELFTEST_BASELINE['salmon_qingdao_w'], 由 patch_v21_30 在构建期写入。
+     ⚠ <meta> 必须静态 (SEO 爬虫不执行 JS), 故不能运行期注入。
+       改基线后必须重跑该补丁 —— 全链重建会自动满足。
+     背景: 该数字曾在一版之内脱节三次, 每次靠人记得回来改, 每次都漏。 */
+  metaCostSource: 'SELFTEST_BASELINE.salmon_qingdao_w (青岛设计冬)',
+  version: '2.1',
+  releaseDate: '2026-08-01',
   author: '孙程',
   email: '6881509@qq.com',
   company: '海南登登科技咨询有限公司',
@@ -3962,9 +4148,9 @@ const PROCESS_DEFAULTS = {
   //   湿式/潜水电机应设为 1.0 (电机损失直接进水).
   motorEta: 0.95,
   uvHeatRatio: 0.95,
-  // v1.1 兼容字段, 现已不直接生效 (T_room 由双节点求出)
+  // v1.1 兼容字段, 现已不直接生效 (v2.0 起 T_room = 水温, 由暖通维持)
   tankIndoor: true,
-  roomTemp: 20,                  // v1.2: 仅作 fallback, 实际由稳态求出
+  roomTemp: 20,                  // v2.0 起仅作 fallback, 实际 T_room = 水温 (暖通维持)
   poolDepth: 1.5,
   poolUValue: 5,                 // 池水→车间空气传热系数
   // 蛋白分离器 (Protein Skimmer) - 工程上为旁路处理
@@ -3972,6 +4158,18 @@ const PROCESS_DEFAULTS = {
   skimmerMode: 'ozone',          // 'air' 空气, 'ozone' 臭氧
   skimmerFlowPct: 20,            // 旁路流量占循环流量的百分比 (典型 15-30%)
   skimmerDOMEffAir: 40,          // 空气模式 单次通过 DOM 去除率 30-50%
+  // v2.1 IRAS_V21_SKIMMER_BLOWER: 供气动力 —— 此前只有支路泵、没有风机,
+  //   而泡沫分离的效率由【气量】决定 (没有气就没有泡沫), 属独立 OPEX 漏项。
+  skimmerGtoL: 0.5,              // 蛋分气水比 (Timmons Ch.5 泡沫分离典型 0.3-0.8, 臭氧模式取高值)
+  // v2.1 IRAS_V21_P3_FIXES: 注释订正 (第五轮审计 P3)。
+  //   旧注释写「塔内水柱 ~2.5 m + 布气器阻力 ~5 kPa」, 但 2.5 m 水柱 = 24.5 kPa,
+  //   合计应为 29.5 而非 25 —— 注释与数值自相矛盾。
+  //   ⚠ 更根本的是: 蛋分塔高度【并未在模型中建模】(塔体只按 HRT 定容积),
+  //     所以 2.5 m 本身就是假设, 不是推导。
+  //   故本值按【经验取值】表述, 不再伪装成推导结果。25 kPa 落在小型蛋分
+  //   常用区间 (20-35) 内, 保持默认不变; 塔高参数化已记入 §L 待办。
+  skimmerPressure_kPa: 25,       // 布气风压 (经验取值, 常用 20-35 kPa; 塔高未建模)
+  skimmerBlowerEta: 55,          // 风机整体效率 % (小型旋涡/罗茨)
   skimmerDOMEffOzone: 70,        // 臭氧模式 单次通过 DOM 去除率 60-80%
   skimmerTSSEff: 40,             // v1.1 新增: 蛋分对 TSS 单次去除率 (主要 <30μm 细颗粒, 30-50%)
   skimmerHRT_min: 2,             // v1.1.2 新增: 蛋分塔 HRT (min)
@@ -4354,23 +4552,54 @@ function moistAirEnthalpy(T, W) {
      不是数值异常 —— Atlantic Sapphire (佛州 Homestead) 即此配置。
 
    进气 = 室外空气（前提 A1）; 排气 = 室外（A2）; 全程不碰车间（A5）。 */
-function contactorHeatKWhPerDay(eq, thermal, T_water, T_air, RH_air, recovery) {
-  const out = { grossKWhPerDay: 0, netKWhPerDay: 0, airFlowM3h: 0, dh_kJ_kg: 0 };
+/* v2.1 IRAS_V21_BLOWER_HEAT — blowerShaftKw: 三台风机的轴功 (kW)。
+   风机吹的正是接触水的那三股气流, 轴功全部变成气流温升, 因此进接触器的
+   空气温度不是室外温度, 而是 T_air + P_shaft/(mdot·c_p)。
+   v2.1 之前该项【完全缺失】, 接触器因此从水里多取约 18% 的热 (第五轮审计 P0)。 */
+function contactorHeatKWhPerDay(eq, thermal, T_water, T_air, RH_air, recovery, blowerShaftKw) {
+  // v2.1 IRAS_V21_CONTACTOR_WATER: netWater_kg_d 与 dh 同源 (同状态点、同 mdot)
+  const out = { grossKWhPerDay: 0, netKWhPerDay: 0, airFlowM3h: 0, dh_kJ_kg: 0,
+                netWater_kg_d: 0, W_in: 0, W_out: 0, latentFrac: 0 };
   if (!eq || typeof collectAirStreams !== 'function') return out;
   const streams = collectAirStreams(eq, thermal).filter(function (s) { return s.contactsWater; });
   if (!streams.length) return out;
-  const W_in  = humidityRatio(T_air, RH_air);
-  const W_out = humidityRatio(T_water, 1.0);          // 水温下饱和
-  const dh = moistAirEnthalpy(T_water, W_out) - moistAirEnthalpy(T_air, W_in);   // kJ/kg
-  const rho_in = 353 / (T_air + 273.15);              // 进气密度 (理想气体)
+  /* v2.1 IRAS_V21_BLOWER_HEAT: 进气温度须含风机轴功带来的温升。
+     ⚠ 含湿量 W_in 不随温升变化 —— 加热是等湿过程, 绝对含湿量守恒,
+       变的是相对湿度。故 W_in 仍按室外状态算, 只有温度抬高。 */
+  const rho_in0 = 353 / (T_air + 273.15);
   let air = 0;
   streams.forEach(function (s) { air += s.airFlowM3h; });
+  const mdot0 = air * rho_in0 / 3600;                 // kg/s (未计温升的估计值)
+  const _shaft = Number.isFinite(blowerShaftKw) ? Math.max(blowerShaftKw, 0) : 0;
+  const dT_blower = (mdot0 > 1e-9) ? _shaft / (mdot0 * 1.006) : 0;   // K
+  const T_air_in = T_air + dT_blower;
+
+  const W_in  = humidityRatio(T_air, RH_air);         // 等湿升温, 绝对含湿量不变
+  const W_out = humidityRatio(T_water, 1.0);          // 水温下饱和
+  const dh = moistAirEnthalpy(T_water, W_out) - moistAirEnthalpy(T_air_in, W_in);   // kJ/kg
+  const rho_in = 353 / (T_air_in + 273.15);           // 进气密度按实际进气温度
   const mdot = air * rho_in / 3600;                   // kg/s
   const eta = Math.min(Math.max(recovery || 0, 0), 0.95);   // 回收率钳到 [0, 0.95]
   out.airFlowM3h = air;
   out.dh_kJ_kg = dh;
   out.grossKWhPerDay = mdot * dh * 24;                // kW × 24
   out.netKWhPerDay = out.grossKWhPerDay * (1 - eta);
+  /* v2.1 IRAS_V21_CONTACTOR_WATER — 净水汽质量, 与 dh 同源
+     正 = 水汽被带走 (蒸发, 系统失水); 负 = 空气向水结露 (系统得水)。
+     ⚠ 湿热气候养冷水鱼时常态为负 —— 故命名 netWater 而非 evap。
+     ⚠ 不受 recovery 折减: 热可以回收, 水汽已经离开水面, 质量不会回来。
+       (回收的凝结水另由除湿机/凝结回收项计, 勿在此重复扣减。) */
+  out.mdot_kg_s = mdot;
+  out.W_in = W_in;
+  out.W_out = W_out;
+  out.T_air_in = T_air_in;          // v2.1 IRAS_V21_BLOWER_HEAT
+  out.dT_blower = dT_blower;
+  out.blowerShaftKw = _shaft;
+  out.netWater_kg_d = mdot * (W_out - W_in) * 86400;
+  // 潜热占比 —— 供断言 F 与 Karimi 2020 实测 (91%) 对标
+  const _lat = out.netWater_kg_d / 86400 * latentHeat_water(T_water);   // kW
+  out.latentFrac = (Math.abs(mdot * dh) > 1e-9)
+    ? Math.abs(_lat) / Math.abs(mdot * dh) : 0;
   return out;
 }
 
@@ -4588,7 +4817,11 @@ const EQUIP_PRICES_DEFAULTS = {
   heatPump:  { label: '热泵 (空气源)',     unit: '元/kW(热)',  price: 2000,   lo: 1500, hi: 3000  },
   heatExch:  { label: '板式换热器',        unit: '元/m²',      price: 1200,   lo: 800,  hi: 2000  },
   // v1.9.2: 机械除湿机 — 工业冷凝式按额定除湿量计价 (家用机换算约 1000-1500, 工业整机含风道/控制约 1500-3000)
-  dehumidifier: { label: '机械除湿机',     unit: '元/(kg/h)',  price: 1500,   lo: 800,  hi: 3000  }
+  dehumidifier: { label: '机械除湿机',     unit: '元/(kg/h)',  price: 1500,   lo: 800,  hi: 3000  },
+  // v2.1 IRAS_V21_HVAC_CAPEX: 车间暖通机组 —— v2.0 引入车间显热能耗、v2.1 修准其口径,
+  //   但一直没有对应设备与投资。整机口径 (含风道/控制), 低于热泵是因为处理的是
+  //   空气显热而非水, 单位容量造价低一个量级。
+  hvacUnit:     { label: '车间暖通机组',   unit: '元/kW(冷热)', price: 400,    lo: 250,  hi: 800   }
 };
 
 // ---------- 状态 ----------
@@ -4943,10 +5176,10 @@ function calcFlowAndConcentration(load, density, turnover) {
 }
 
 /* ============================================================================
-   函数: calcThermalLoad (v1.2: 双节点稳态 + 完整围护 + 蒸发/凝结 + COP(T))
+   函数: calcThermalLoad (v2.1: 暖通维持室温 + 气液接触器 + 风机热 + 完整围护 + COP(T))
    目的: 极端气候下精确求解热泵负荷 (挪威养罗非 / 海南养三文鱼场景)
 
-   【完整热平衡公式 v1.2】
+   【完整热平衡公式 v2.1】
    水的热平衡 (单位 kWh/d, 正值=向水中加热):
      Q_net_water = Q_metab + Q_pumps + Q_uv          (内部产热, 沿用 v1.1)
                  + Q_makeup_signed                    (补水温差, 扣 75% 板换)
@@ -5372,6 +5605,8 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
   //         但仅供报告标注为"界外", 不参与水侧净热平衡（SPEC §6）。
 
   let T_room, W_room, m_evap_kgs, Q_evap_latent, Q_pool_loss, Q_envelope, Q_vent_sens;
+  // v2.1 IRAS_V21_BLOWER_HEAT: 与 contactor 同为跨块变量, 必须外层声明
+  let _blowerElecKw = 0, _blowerShaftKw = 0, _blowerMotorLossKw = 0;
   let m_dehum_kgs = 0;
   let contactor = { grossKWhPerDay: 0, netKWhPerDay: 0, airFlowM3h: 0, dh_kJ_kg: 0 };
   // v2.0: 钳位与迭代已删除, 以下字段保留为常量仅为下游兼容（v1.x 载荷契约）
@@ -5413,9 +5648,21 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
     Q_evap_latent = m_evap_kgs * h_fg * 24;              // 正=蒸发(水散热)
 
     // ── 气液接触器（脱气塔 + MBBR 曝气）──────────────────
-    contactor = contactorHeatKWhPerDay(
+    /* v2.1 IRAS_V21_BLOWER_HEAT: 汇总三台风机的电功率, 拆轴功 / 电机损失。
+     轴功进气流 (抬高接触器进气温度), 电机损失进车间 (下方并入 Q_room_internal)。
+     η 取 0.57 —— 与各风机自身效率参数一致的整体口径 (旋涡/罗茨 0.55, 离心略高)。 */
+  /* ⚠ 必须用外层 let 而非块内 const —— 本段在 if 块内, const 是块作用域,
+     下方 return 与 Q_room_internal 都读不到 (实测踩过: 断言 A2 报「已接入 0.00 kW」)。
+     与同处的 contactor 变量同样处理。 */
+  _blowerElecKw = ((eq && eq.co2StripperSpec && eq.co2StripperSpec.blowerKw) || 0)
+                + ((eq && eq.bfBlowerSpec && eq.bfBlowerSpec.power) || 0)
+                + ((eq && eq.skimmerBlowerKw) || 0);
+  _blowerShaftKw = _blowerElecKw * 0.57;
+  _blowerMotorLossKw = _blowerElecKw * (1 - 0.57);
+  contactor = contactorHeatKWhPerDay(
       eq, null, T_target, T_air, RH,
-      (proc.contactorRecovery != null ? proc.contactorRecovery : 0));
+      (proc.contactorRecovery != null ? proc.contactorRecovery : 0),
+      _blowerShaftKw);
   }
 
   // ============ 5. 补水温差(板换) + 凝结回收 ============
@@ -5431,11 +5678,41 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
   const Q_dehum_reject_kWh_d = m_dehum_kg_d > 0
     ? (m_dehum_kg_d * latentHeat_water(T_target) / 3600 + dehumKWhPerDay) : 0;
   const dehumHeatDestOut = proc.dehumHeatDest || 'outdoor';
-  // 排入车间的部分已在 T_room 迭代中计入; 热回收给水的部分在下方进入水侧净热
+  // v2.1: 排入车间的部分由 IRAS_V21_HVAC_CLOSURE 计入暖通显热负荷
+  //   (T_room 迭代已在 v2.0 删除, 旧注释「已在 T_room 迭代中计入」曾使该热流成为孤儿项);
+  //   热回收给水的部分在下方进入水侧净热
   const Q_dehum_to_water = (dehumHeatDestOut === 'water') ? Q_dehum_reject_kWh_d : 0;
-  // 凝结水回池 → 减少补水量 (1 kg ≈ 1 L = 0.001 m³)
+  // 凝结水回池 (1 kg ≈ 1 L = 0.001 m³)。保留字段供兼容与显示。
   const V_condense_recovery = m_condense_kg_d / 1000;
-  const V_makeup_net = Math.max(V_makeup - V_condense_recovery - V_dehum_recovery, 0);
+
+  /* ══ v2.1 IRAS_V21_MAKEUP_SPLIT — 补水拆两股 ══
+     旧式 V_makeup_net = 换水量 − 凝结回收 − 除湿回收 有两个问题:
+       ① 符号不对称: 凝结【减少】补水, 但蒸发【不增加】补水
+       ② 纯水扣错股: 凝结水/除湿水是纯水, 却去扣减含盐的换水股 → 盐度漂低
+
+     改为两股独立、各自闭合:
+       换水股  补水 V_exch (同盐度)  ←→  排污 V_exch (同盐度)
+       蒸发股  补淡水 E             ←→  蒸发失纯水 E
+     盐平衡因此【恒等】成立, 无需盐度状态变量。
+
+     ⚠ 池面水汽用带符号的 E_pool 统一表达, 已【涵盖】m_condense_kg_d,
+       故不可再减 V_condense_recovery —— 否则重复计算。 */
+  const E_pool_m3d      = m_evap_kgs * 86400 / 1000;                    // 带符号: +蒸发 −结露
+  const E_contactor_m3d = (contactor.netWater_kg_d || 0) / 1000;        // 带符号, 与 Δh 同源
+  const E_net_m3d       = E_pool_m3d + E_contactor_m3d;                 // 净水汽 m³/d
+  // 除湿机产水是独立设备回收的纯水, 先抵扣蒸发股
+  const V_fresh_makeup  = Math.max(E_net_m3d - V_dehum_recovery, 0);    // 需补的淡水 m³/d
+  const V_pure_surplus  = Math.max(V_dehum_recovery - E_net_m3d, 0);    // 多余纯水 → 排水
+  const V_exchange_m3d  = V_makeup;                                     // 换水股 (含盐), 不再被纯水侵蚀
+  const V_makeup_net    = V_exchange_m3d + V_fresh_makeup;              // 总补水 = 两股之和
+
+  /* 净结露时的盐度漂移诊断 —— 不是新建模, 是现有假设 (换水补水与排污同盐度) 的推论。
+     稳态: S × V_exch = S_target × V_exch, 多余纯水 V_pure_surplus 稀释 →
+           S_steady = S_target × V_exch / (V_exch + V_pure_surplus) */
+  const S_target = (stage && stage.salinity != null) ? stage.salinity : 0;
+  const S_steady = (S_target > 0 && (V_exchange_m3d + V_pure_surplus) > 1e-9)
+    ? S_target * V_exchange_m3d / (V_exchange_m3d + V_pure_surplus) : S_target;
+  const S_drift  = S_steady - S_target;                                 // ≤ 0
 
   const Q_makeup_raw = V_makeup_net * 1000 * 4.18 * Math.abs(dT_total) / 3600;
   const hxEff = (proc.hxEff != null ? proc.hxEff : 75) / 100;
@@ -5464,6 +5741,21 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
   } else if (Q_net_to_water < -0.01) {
     Q_pump_load = -Q_net_to_water; pumpDirection = 'heat';
   }
+
+  /* v2.1 IRAS_V21_REGIME_MARGIN — 制冷↔制热切换余量
+     Q_net_to_water 是若干个数量级相当、符号相反的大项相减的【小差值】。
+     当这个差值相对于各项的量级很小时, 系统就坐在制度切换边界上:
+     微调 G:L / 接触器回收率 / 保温等级, 都可能让水侧在 cool 与 heat 之间翻转,
+     而翻转后每一份热量的代价从「被原有制冷负荷免费吸收」变成「按 COP 制热去补」——
+     成本响应因此【不成比例】(实测 G:L 3→5 与接触器单项各 +0.24~0.36, 合计 +2.49)。
+
+     余量 = |Q_net_to_water| ÷ 总热流通量 (各项绝对值之和的一半, 即典型单项量级)。
+     这不是误差估计, 是【结构敏感性】指标: 越小, 成本对参数越敏感且不连续。 */
+  const _regimeGross = (Math.abs(Q_metab) + Math.abs(Q_equip) + Math.abs(Q_makeup_signed)
+                        + Math.abs(Q_evap_latent) + Math.abs(Q_dehum_to_water)
+                        + Math.abs(contactor.netKWhPerDay)) / 2;
+  const regimeMarginPct = (_regimeGross > 1e-9)
+    ? Math.abs(Q_net_to_water) / _regimeGross * 100 : null;
 
   // COP 计算: v1.2 温度修正 (4 类热泵)
   // v1.6 (P1 BUG #4 修复): 移除 proc.COP_nom_* 优先级层, 统一从 heatPumpCOP_* 读取
@@ -5566,9 +5858,30 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
 
      ⚠ 加热与制冷 COP 不同，不可对绝对值统一折算。
      ⚠ 复用水侧热泵已做温度修正的 COP，保证两侧口径一致。
-     ⚠ 除湿机（潜热）已由 dehumKWhPerDay 单独计入，此处只算显热，避免重复。 */
+     ⚠ 除湿机（潜热）已由 dehumKWhPerDay 单独计入，此处只算显热，避免重复。
+     v2.1 IRAS_V21_P3_FIXES 口径确认（第五轮审计 P1）：除湿按【独立机组】处理 ——
+       · 潜热由独立除湿机承担（CAPEX 按设计冬/夏峰值选型，OPEX 走 dehumKWhPerDay），
+         AHU 只管显热，二者不重复计费；
+       · 夏季峰值选型、冬季不运行是正常工程做法，不是「买了不开的机器」；
+       · dehumEnabled 自 v2.0 起对计算【无效】(m_dehum 是无条件的暖通职责)，
+         现降级为选型标注，不再影响成本与可见性。 */
   const hvacOn = (proc.hvacEnabled !== false);
-  const Q_hvac_sens = Q_envelope + Q_vent_sens;              // kWh/d 热量，带符号
+  /* v2.1 IRAS_V21_HVAC_CLOSURE — 车间显热能量守恒
+     T_room = T_w 后车间是【受控节点】，暖通承担的是
+         围护失热 + 通风失热 − 室内产热
+     v2.0 只写了前两项，把室内产热漏在平衡之外（既不在水侧也不在暖通侧）：
+       · Q_air_gain_kW      电机/灯管废热，v1.x 进空气节点，删节点后成孤儿
+       · Q_dehum_reject     dehumHeatDest==='indoor' 时的冷凝热，同因
+     室内产热减轻供暖 / 加重制冷，符号由 Q_hvac_sens 自身携带，不需分支。
+     ⚠ 修改本式必须同步 t20 断言 B 与 SELFTEST_BASELINE。 */
+  const Q_air_gain_kWh_d = Q_air_gain_kW * 24;
+  const Q_dehum_to_room  = (dehumHeatDestOut === 'indoor') ? Q_dehum_reject_kWh_d : 0;
+  /* v2.1 IRAS_V21_BLOWER_ROOM: 风机电机损失散在车间, 与 Q_air_gain 同类。
+     v2.1 之前三台风机的电功率【完全没有去处】(第五轮审计 P0):
+     轴功已由 IRAS_V21_BLOWER_HEAT 计入接触器进气温升, 这里补上电机损失那一半。 */
+  const Q_blower_motor_kWh_d = (typeof _blowerMotorLossKw === 'number' ? _blowerMotorLossKw : 0) * 24;
+  const Q_room_internal  = Q_air_gain_kWh_d + Q_dehum_to_room + Q_blower_motor_kWh_d;   // 室内产热 kWh/d, ≥ 0
+  const Q_hvac_sens = Q_envelope + Q_vent_sens - Q_room_internal;   // kWh/d 热量，带符号
   const hvacDirection = !hvacOn ? 'off'
                       : (Q_hvac_sens > 0.01 ? 'heat'
                       : (Q_hvac_sens < -0.01 ? 'cool' : 'none'));
@@ -5579,11 +5892,20 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
   // ============ 8. 返回 ============
   return {
     V_makeup: V_makeup_net, T_source, T_target, dT_total, mode, needsThermal,
+    // v2.1 IRAS_V21_MAKEUP_SPLIT: 两股水流与盐度漂移诊断
+    V_exchange_m3d, V_fresh_makeup, V_pure_surplus,
+    E_pool_m3d, E_contactor_m3d, E_net_m3d,
+    S_target, S_steady, S_drift,
     Q_total_raw: Q_makeup_raw,
     Q_recovered, Q_after_hx: Q_makeup,
     heatPumpKWh, heatPumpThermalKWh, hxEff: hxEff*100,
     freeCoolingAvailable,
-    fcUnavailReason,   // IRAS_FC_REASON_V2: null/off/not_cool/uneconomic/no_dt freeCoolingSinkT: _fcSink,
+    // v2.1 IRAS_V21_FC_VISIBILITY: 下一行此前被误并进本行注释, 导致该字段自 v2.0 起未导出,
+    //   UI 第四档 (冷源温度不足) 永不触发 —— v1.9.3 修好的可见性问题因单行编辑失误回归。
+    // v2.1 IRAS_V21_REGIME_MARGIN: 距制冷/制热翻转的结构余量 (%)
+    regimeMarginPct, regimeGrossKWhD: _regimeGross,
+    fcUnavailReason,   // IRAS_FC_REASON_V2: null/off/not_cool/uneconomic/no_dt
+    freeCoolingSinkT: _fcSink,
     // v1.9.3 (P1/P2): 部分自然冷却与年化的可观测量
     fcFraction, fcDesignDT: _fcDT, fcEER_design: _fcEERd, fcCutoffX: _fcXc,
     fcUneconomic: _fcUneconomic,   // v1.9.3: EER ≤ COP_cool, 自然冷却永不经济
@@ -5616,14 +5938,27 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq) {
     contactorAirFlowM3h: contactor.airFlowM3h,
     // 气液接触器诊断
     contactorGrossKWhPerDay: contactor.grossKWhPerDay,   // 毛排热 (回收前)
-    contactorNetKWhPerDay: contactor.netKWhPerDay,       // 净排热 (进水侧平衡)
+    contactorNetKWhPerDay: contactor.netKWhPerDay,
+    // v2.1 IRAS_V21_WATER_ASSERT: 供断言 F3 与 Karimi 2020 (91%) 对标
+    contactorNetWater_kg_d: contactor.netWater_kg_d,
+    contactorLatentFrac: contactor.latentFrac,      // 仅供诊断显示, 不作断言区间
+    contactorW_in: contactor.W_in, contactorW_out: contactor.W_out,
+    contactorMdot_kg_s: contactor.mdot_kg_s,       // 净排热 (进水侧平衡)
     contactorDeltaH_kJ_kg: contactor.dh_kJ_kg,           // Mollier 焓差, 可为负
     contactorRecovery: Math.min(Math.max((proc.contactorRecovery != null ? proc.contactorRecovery : 0), 0), 0.95),
     // IRAS_EXPORT_MAKEUP_SIGNED_V2: 带符号补水项 —— 此前仅为局部变量, 导致
     //   renderThermalV12 需重算、外部审计无法核对能量闭合。
     Q_makeup_signed,
     // IRAS_HVAC_SENSIBLE_ENERGY_V2: 车间显热已计入能耗（不再界外）
-    hvacSensibleKWhPerDay: Q_envelope + Q_vent_sens,   // 热量, 带符号
+    // v2.1 IRAS_V21_HVAC_CLOSURE: 已扣除室内产热（见 §7B）
+    hvacSensibleKWhPerDay: Q_hvac_sens,                // 热量, 带符号
+    Q_room_internal,                                   // 室内产热 kWh/d（设备废热 + 除湿冷凝热入室 + 风机电机损失）
+    Q_blower_motor_kWh_d,                              // v2.1 IRAS_V21_BLOWER_ROOM
+    blowerElecKw: (typeof _blowerElecKw === 'number' ? _blowerElecKw : 0),
+    blowerShaftKw: (typeof _blowerShaftKw === 'number' ? _blowerShaftKw : 0),
+    contactorT_air_in: contactor.T_air_in,
+    contactorDT_blower: contactor.dT_blower,
+    Q_dehum_to_room,                                   // 其中除湿机部分
     hvacKWhPerDay,                                     // 折算后【电耗】kWh/d
     hvacDirection,                                     // heat / cool / none / off
     hvacCOP,
@@ -6347,9 +6682,38 @@ function calcPumpPowerBreakdown(flowData, proc, branchFlows) {
   const aopBranchPumpKw = aopActive ? shaftKw(branchFlows.aopFlow, Ha, ea) : 0;
   const skimmerActive = !!(proc.skimmerEnabled && branchFlows.skimmerOn && (branchFlows.skimmerFlow || 0) > 0);
   const skimmerBranchPumpKw = skimmerActive ? shaftKw(branchFlows.skimmerFlow, Hs, es) : 0;
+  /* v2.1 IRAS_V21_SKIMMER_BLOWER — 蛋分供气风机
+     泡沫分离靠气泡表面吸附 DOM, 分离效率由【气量】决定而非水量。
+     此前模型按 水量 × HRT 选塔体, 却没有任何产生气泡的动力项。
+     轴功率 = Q[m³/s] × Δp[Pa] / η, 与脱气塔 co2Blower 同构。 */
+  const skimGtoL = Math.min(Math.max(proc.skimmerGtoL != null ? proc.skimmerGtoL : 0.5, 0), 5);
+  const skimAirFlow_m3h = skimmerActive ? (branchFlows.skimmerFlow || 0) * skimGtoL : 0;
+  const skimBlowerEta = Math.max((proc.skimmerBlowerEta != null ? proc.skimmerBlowerEta : 55) / 100, 0.2);
+  const skimPressure_Pa = Math.min(Math.max(proc.skimmerPressure_kPa != null ? proc.skimmerPressure_kPa : 25, 0), 200) * 1000;
+  const skimmerBlowerKw = skimAirFlow_m3h > 0
+    ? (skimAirFlow_m3h / 3600) * skimPressure_Pa / skimBlowerEta / 1000 : 0;
+  /* v2.1 IRAS_V21_SKIMMER_AIRPATH — 气路登记
+     蛋分的气【鼓入水柱】, 与脱气塔同属接触水的气流, 必须登记并计入接触器
+     热湿交换。补丁 15 初版漏了这一步, 造成一条未登记气流 ——
+     与 v2.0 的 Q_air_gain 孤儿项同类错误。
+     ⚠ 风量平衡断言抓不到这种缺陷: 它只校验【已登记项】之间是否自洽,
+       无法知道存在一个从未声明自己的气流。 */
+  const skimmerBlowerSpec = skimAirFlow_m3h > 0 ? {
+    tag: 'K-501',              // v2.1 IRAS_V21_SKIMMER_TAG
+    airFlowM3h: skimAirFlow_m3h,
+    power: skimmerBlowerKw,
+    gToL: skimGtoL,
+    pressure_kPa: skimPressure_Pa / 1000,
+    // 空气模式取室外空气, 尾气经泡沫杯排出; 臭氧模式气源仍以室外空气为原料。
+    // OUTDOOR → OUTDOOR 与气路拓扑 A5「工艺气路全程不碰车间」一致。
+    airPath: { source: AIR_NODE.OUTDOOR, sink: AIR_NODE.OUTDOOR, contactsWater: true }
+  } : null;
+  // v2.1 IRAS_V21_SKIMMER_WIRING: skimmerBlowerKw 【不并入】本式 ——
+  //   与 co2BlowerKw / bfBlowerKw 同约定, 风机独立计费, 废热不走 pumpHeatRatio 进水。
   const totalPumpKw = mainPumpKw + denitriBranchPumpKw + uvBranchPumpKw + aopBranchPumpKw + skimmerBranchPumpKw + o2BypassPumpKw;
   return {
     mainPumpKw, uvBranchPumpKw, denitriBranchPumpKw, aopBranchPumpKw, skimmerBranchPumpKw,
+    skimmerBlowerKw, skimAirFlow_m3h, skimmerBlowerSpec,   // v2.1 IRAS_V21_SKIMMER_BLOWER
     // v1.7: 氧锥拓扑相关返回
     o2BypassPumpKw,     // 旁路泵 kW (bypass 模式)
     o2BypassFlow,       // 旁路流量 m³/h
@@ -6417,6 +6781,97 @@ const AIR_STREAMS_UNMODELED = [
        co2StripperSpec.airFlow 为 m³/h
        bfBlowerSpec.airFlow    为 m³/min   ← 同名不同单位
      原字段一律保留不动以维持向后兼容, 归一值另置于 airFlowM3h。 */
+/* v2.1 IRAS_V21_REGISTRY_ASSERT — 用电设备登记表
+   每一个有电功率的字段都必须在此声明【计费去向】, 否则自检断言 E 报错。
+
+   为什么需要它: 守恒断言只能约束已进入体系的量。v2.1 新增蛋分风机时,
+   我把它并进 totalPumpKw (废热错误地按 pumpHeatRatio 进水) —— 守恒断言
+   等式两边同步放大, 残差为零, 完全没抓到; 又漏加 elecCostAvgDaily,
+   导致比电耗单向低估。这类「归错节点 / 漏进汇总」的错误只有登记表能防。
+
+   billedVia 取值:
+     'totalPumpKw'  —— 汇总进 totalPumpKw, 再经 powerDaily* 计费
+     其余为该项自己的成本字段名。 */
+/* v2.1 IRAS_V21_REGISTRY_V2 — 用电设备登记表（唯一真相源）
+
+   每条声明四件事，断言从本表【反向枚举】去实现里找：
+     path      取值路径，支持嵌套（'co2StripperSpec.blowerKw'）
+     billedVia 运行费去向
+     heatVia   热去向 —— 电功率 100% 变成热，必须说明去了哪里
+     capexVia  资本去向 —— CAPEX 明细里对应条目的名称正则
+
+   为什么必须是反向枚举（第五轮审计 P2）：
+     旧断言 E 用 Object.keys(eq) 正向扫描 + /Kw$|Power$/ 命名规则，结果
+     co2StripperSpec.blowerKw (53.6 kW) 与 bfBlowerSpec.power (42.4 kW) 都扫不到 ——
+     「为『漏了蛋分风机』而建的断言，覆盖了蛋分风机，却覆盖不了另外两台大 4-5 倍的风机。」
+     反向枚举以本表为准，不依赖字段命名，且能同时抓「登记了但没实现」。
+
+   ⚠ 新增任何用电设备时，必须在此登记四项，否则断言 E/F4 报错 —— 那正是目的。
+
+   heatVia 取值：
+     'water'   进水（Q_pumps 一类，按 pumpHeatRatio）
+     'room'    进车间（Q_room_internal，减轻供暖/加重制冷）
+     'airflow' 进工艺气流（抬高接触器进气温度）
+     'split'   由 Q_air_gain 机制在水/气间分配（泵与 UV）
+     'external' 界外（不在本工具热平衡内，需注明理由） */
+const POWER_REGISTRY = {
+  mainPumpKw:          { label: '主泵',         path: 'mainPumpKw',
+                         billedVia: 'totalPumpKw', memberOfTotalPump: true,
+                         heatVia: 'split', capexVia: /主泵|循环泵/ },
+  uvBranchPumpKw:      { label: 'UV 支路泵',     path: 'uvBranchPumpKw',
+                         billedVia: 'totalPumpKw', memberOfTotalPump: true,
+                         heatVia: 'split', capexVia: /支路泵|UV/ },
+  denitriBranchPumpKw: { label: '反硝化支路泵',   path: 'denitriBranchPumpKw',
+                         billedVia: 'totalPumpKw', memberOfTotalPump: true,
+                         heatVia: 'split', capexVia: /支路泵|反硝化/ },
+  aopBranchPumpKw:     { label: 'AOP 支路泵',    path: 'aopBranchPumpKw',
+                         billedVia: 'totalPumpKw', memberOfTotalPump: true,
+                         heatVia: 'split', capexVia: /支路泵|AOP/ },
+  skimmerBranchPumpKw: { label: '蛋分支路泵',     path: 'skimmerBranchPumpKw',
+                         billedVia: 'totalPumpKw', memberOfTotalPump: true,
+                         heatVia: 'split', capexVia: /支路泵|蛋白质分离|蛋分/ },
+  o2BypassPumpKw:      { label: '氧锥旁路泵',     path: 'o2BypassPumpKw',
+                         billedVia: 'totalPumpKw', memberOfTotalPump: true,
+                         heatVia: 'split', capexVia: /旁路泵|氧锥/, optional: true },
+  totalPumpKw:         { label: '泵合计(聚合值)', path: 'totalPumpKw',
+                         billedVia: 'powerDaily', aggregate: true,
+                         heatVia: 'split', capexVia: null },
+  // ⚠ uvPower 单位是 W 不是 kW —— 历史字段, 勿按 kW 用
+  uvPower:             { label: 'UV 灯管(W)',    path: 'uvPower', unitW: true,
+                         billedVia: 'powerDaily', heatVia: 'split', capexVia: /UV|紫外/ },
+  ozoneGeneratorPower: { label: '臭氧发生器',     path: 'ozoneGeneratorPower',
+                         billedVia: 'ozoneCostDaily', heatVia: 'external',
+                         heatNote: '臭氧发生器为水冷/风冷独立机组, 热量随冷却介质排出, 界外',
+                         capexVia: /臭氧/, optional: true },
+  // ── 三台风机 ──
+  //   ⚠ heatVia 'airflow': 轴功抬高接触器进气温度, 电机损失进车间。
+  //     v2.1 第五轮审计发现这三台的热【完全没有去处】, 接触器因此从水里多取约 18% 的热。
+  //     实际接入由 IRAS_V21_BLOWER_HEAT 完成。
+  co2BlowerKw:         { label: '脱气塔风机',     path: 'co2StripperSpec.blowerKw',
+                         billedVia: 'co2BlowerCostDaily', heatVia: 'airflow',
+                         capexVia: /脱气|CO₂|CO2/ },
+  bfBlowerKw:          { label: 'BF 曝气风机',    path: 'bfBlowerSpec.power',
+                         billedVia: 'bfBlowerCostDaily', heatVia: 'airflow',
+                         capexVia: /曝气|风机|鼓风/ },
+  skimmerBlowerKw:     { label: '蛋分供气风机',   path: 'skimmerBlowerKw',
+                         billedVia: 'skimmerBlowerCostDaily', heatVia: 'airflow',
+                         capexVia: /蛋分供气|K-501/ }
+};
+
+/* 按 path 取值, 支持一层嵌套。返回 kW（uvPower 自动由 W 换算）。 */
+function powerRegistryValue(eq, key) {
+  const reg = POWER_REGISTRY[key];
+  if (!reg || !eq) return null;
+  const parts = String(reg.path).split('.');
+  let v = eq;
+  for (const p of parts) {
+    if (v == null || typeof v !== 'object') return null;
+    v = v[p];
+  }
+  if (!Number.isFinite(v)) return null;
+  return reg.unitW ? v / 1000 : v;
+}
+
 function collectAirStreams(eq, thermal) {
   const out = [];
   if (!eq) return out;
@@ -6433,6 +6888,12 @@ function collectAirStreams(eq, thermal) {
   if (eq.bfBlowerSpec && eq.bfBlowerSpec.airPath) {
     push('bfBlower', 'MBBR 曝气风机',
          eq.bfBlowerSpec.airFlowM3h, eq.bfBlowerSpec.airPath);
+  }
+  // v2.1 IRAS_V21_SKIMMER_AIRPATH: 蛋分供气 —— 气鼓入水柱, 接触水,
+  //   与脱气塔/MBBR 同类。此前未登记, 属未进体系的孤儿气流。
+  if (eq.skimmerBlowerSpec && eq.skimmerBlowerSpec.airPath) {
+    push('skimmerBlower', '蛋分供气风机',
+         eq.skimmerBlowerSpec.airFlowM3h, eq.skimmerBlowerSpec.airPath);
   }
   if (thermal && Number.isFinite(thermal.V_vent_eff_m3h)) {
     push('hvacFresh', '车间机械新风', thermal.V_vent_eff_m3h,
@@ -6676,7 +7137,12 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
     ? flowData.flowM3h / co2LoadingRate * sCO2
     : 0;  // 关闭时不计塔
   // 风机风量 (G:L 比例)
-  const co2GtoL = Math.max(proc.co2StripperGtoL || 3, 1);
+  // v2.1 IRAS_V21_PARAM_GUARD: 补上界。本式驱动 degasAirFlow → 接触器风量→热量,
+  //   旧式只有下界 1。UI 有 min/max 但可被绕过 (载入方案 JSON / 下游导入) ——
+  //   与下方 co2Pressure_Pa 的「双层兜底」同一约定。
+  //   教科书 G:L 上限 20 (Timmons Ch.10), 取 30 留余量。
+  //   未钳时填 1e6 得接触器排热 4.1e9 kWh/d —— 有限但荒谬。
+  const co2GtoL = Math.min(Math.max(proc.co2StripperGtoL || 3, 1), 30);
   const degasAirFlow_m3h = co2StripperOn ? flowData.flowM3h * co2GtoL : 0;  // m³/h 空气
   // v1.1.2: 风压和效率可调
   // 浅塔 (1-3m): 8-15 kPa; 中塔 (3-5m): 15-25; 深塔 (>5m): 25-35
@@ -6934,6 +7400,16 @@ function applyModularization(eq, stage, stageFarm, proc) {
   if (modCo2BlowerKw > 0) {
     modulePerSpec.co2Blower = configure('CO₂ 脱气塔风机', modCo2BlowerKw, BLOWER_UNIT_KW, true, { sparing: '1+1' });
   }
+  /* v2.1 IRAS_V21_SKIMMER_SPARE: 蛋分供气风机 K-501 —— 与上面 v1.9.3 给脱气塔风机
+     补规格时【完全同一处境】, 原注释即适用:「此前没有模块化规格, 因而设备清单
+     不显示备用、CAPEX 也不计备用。」v2.1 已补 CAPEX (断言 F4 抓出), 此处补规格,
+     使三台风机的备用政策终于一致。
+     依据: 蛋分停机不像增氧风机那样 15-30 min 内致鱼窒息, 但泡沫分离中断会让
+     DOM / TSS 持续累积, 属环路内 24h 运行的转动设备, 与 co2Blower / bfBlower 同口径 1+1。 */
+  const modSkimmerBlowerKw = ((eq && eq.skimmerBlowerKw) || 0) * modShare;
+  if (modSkimmerBlowerKw > 0) {
+    modulePerSpec.skimmerBlower = configure('蛋分供气风机', modSkimmerBlowerKw, BLOWER_UNIT_KW, true, { sparing: '1+1' });
+  }
   if (modUvBranchPumpKw > 0) {
     modulePerSpec.uvBranchPump = configure('UV 支路泵', modUvBranchPumpKw, BRANCH_PUMP_UNIT_KW, true, { sparing: '1+1' });
   }
@@ -6998,7 +7474,12 @@ function applyModularization(eq, stage, stageFarm, proc) {
       ...ms,
       modules: numModules,
       totalUnits_field: ms.totalCount * numModules,  // 全场 = 模块数 × 单模块台数(含备)
-      totalKw_field: ms.installedKw * numModules,
+      // v2.0.1 IRAS_V201_MODULAR_KW_GUARD: 对称守卫.
+      //   流量定额设备 (rdf 走 configureFlow) 没有 installedKw, 旧式
+      //   ms.installedKw * numModules 得 NaN, 经 JSON.stringify 静默变 null —— 下游
+      //   无从区分「不按功率定额」与「数据缺失」. 与下一行 totalFlow_field 同口径:
+      //   算不出就明确给 null, 不给 NaN.
+      totalKw_field: Number.isFinite(ms.installedKw) ? ms.installedKw * numModules : null,
       totalFlow_field: ms.installedFlow ? ms.installedFlow * numModules : null
     };
   });
@@ -7662,6 +8143,11 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
   const co2BlowerKw = (eq.co2StripperSpec && eq.co2StripperSpec.blowerKw) || 0;
   const co2BlowerKWh = co2BlowerKw * 24;
   const co2BlowerCostDaily = co2BlowerKWh * elecPrice;
+  // v2.1 IRAS_V21_SKIMMER_WIRING: 蛋分供气风机电费 —— 与上式同口径 (24h 运行, 不折算)。
+  //   独立成行而非并入泵电费: 风机废热进气流不进水, 且账目上应能看出是风机。
+  const skimmerBlowerKw = (eq && eq.skimmerBlowerKw) || 0;
+  const skimmerBlowerKWh = skimmerBlowerKw * 24;
+  const skimmerBlowerCostDaily = skimmerBlowerKWh * elecPrice;
 
   // 日饲料费
   const feedCostMax = load.feedMax * feedPrice;
@@ -7724,8 +8210,11 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
   const _nStg = Math.max(nStages || 1, 1);
   const laborCostDaily = _headcount * _gp('laborCostPerPerson', 150000) / 365 / _nStg;
 
-  const totalMax = feedCostMax + aerationCostMax + bfBlowerCostDaily + powerDailyMax + methanolCostDaily + naHCO3CostDaily + thermalCostDaily + dehumCostDaily + ozoneCostDaily + co2BlowerCostDaily + depDaily + processExtraDaily;
-  const totalAvg = feedCostAvg + aerationCostAvg + bfBlowerCostAvg + powerDailyAvg + methanolCostAvgDaily + naHCO3CostAvgDaily + thermalCostDaily + dehumCostDaily + hvacCostDaily + ozoneCostAvgDaily + co2BlowerCostDaily + depDaily + processExtraDaily;
+  // v2.1 IRAS_V21_COST_SCOPE: 补 hvacCostDaily —— 此前只有 totalAvg 含它, totalMax 漏,
+  //   而 totalMax 是面向用户的「小计·工艺运行成本」并导出下游。暖通显热 24h 连续运行,
+  //   峰均一致, 与同为暖通电耗的 dehumCostDaily 同性质, 无理由只计其一。
+  const totalMax = feedCostMax + aerationCostMax + bfBlowerCostDaily + powerDailyMax + methanolCostDaily + naHCO3CostDaily + thermalCostDaily + dehumCostDaily + hvacCostDaily + ozoneCostDaily + co2BlowerCostDaily + skimmerBlowerCostDaily + depDaily + processExtraDaily;
+  const totalAvg = feedCostAvg + aerationCostAvg + bfBlowerCostAvg + powerDailyAvg + methanolCostAvgDaily + naHCO3CostAvgDaily + thermalCostDaily + dehumCostDaily + hvacCostDaily + ozoneCostAvgDaily + co2BlowerCostDaily + skimmerBlowerCostDaily + depDaily + processExtraDaily;
 
   /* v1.9.3: 全场用电汇总 (均值口径, 与 totalAvg 同口径)
      ------------------------------------------------------------------
@@ -7741,12 +8230,14 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
        hvacCostDaily        车间暖通显热 ✓  (IRAS_HVAC_SENSIBLE_ENERGY_V2)
        ozoneCostAvgDaily    臭氧      ✓
        co2BlowerCostDaily   脱气风机   ✓
+       skimmerBlowerCostDaily 蛋分供气风机 ✓  (IRAS_V21_SKIMMER_ELEC)
        depDaily             折旧      ✗ 非电
        processExtraDaily    维护/保险/补水/排污 ✗ 非电
      将来新增用电项时, 只要与上一行对照就能发现这里漏加。 */
   const elecCostAvgDaily = (aerationIsElec ? aerationCostAvg : 0)
     + bfBlowerCostAvg + powerDailyAvg + thermalCostDaily + dehumCostDaily
-    + ozoneCostAvgDaily + co2BlowerCostDaily + hvacCostDaily;   // IRAS_HVAC_SENSIBLE_ENERGY_V2
+    + ozoneCostAvgDaily + co2BlowerCostDaily + hvacCostDaily   // IRAS_HVAC_SENSIBLE_ENERGY_V2
+    + skimmerBlowerCostDaily;   // v2.1 IRAS_V21_SKIMMER_ELEC: 漏加会让比电耗单向低估
   const elecKwhAvgDaily = (elecPrice > 0) ? elecCostAvgDaily / elecPrice : 0;
 
   // 企业侧汇总: 工艺运行成本 + 苗种 + 人工 + 管理费
@@ -7783,6 +8274,7 @@ function calcCostEstimate(load, stage, proc, eq, prices, sim, capex, stageFarm, 
     headcount: _headcount, seedCountIn: _countIn, waterPriceUsed: _waterPrice,
     fullCostMax: _finC(fullCostMax), fullCostAvg: _finC(fullCostAvg),
     co2BlowerCostMax: co2BlowerCostDaily, co2BlowerKw, co2BlowerKWh,
+    skimmerBlowerCostMax: skimmerBlowerCostDaily, skimmerBlowerKw, skimmerBlowerKWh,  // v2.1
     thermalKWh: heatPumpKWh, ozoneKWh,
     pumpKwhDaily, uvLampKwhDaily, miscKwhDaily,
     // v1.9.3: 全场用电 (均值口径) —— 供 summary 汇总出比电耗
@@ -7943,6 +8435,13 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     const dbKw = eq.co2StripperSpec ? eq.co2StripperSpec.blowerKw : 0;
     if (dbKw > 0.5) {
       total += add('脱气塔风机', `${dbKw.toFixed(1)} kW`, 'kW', dbKw, eqPrices.blower);
+    /* v2.1 IRAS_V21_SKIMMER_CAPEX: 蛋分供气风机 K-501 —— 由断言 F4 抓出「有电费无投资」。
+       复用 eqPrices.blower (与脱气塔/BF 风机同口径)。这是同一模式的第三次,
+       前两次 (加药计量泵 / 车间暖通机组) 只写了注释总结, 没变成断言。 */
+    if ((eq.skimmerBlowerKw || 0) > 0.05) {
+      total += add('蛋分供气风机 (K-501)', `${eq.skimmerBlowerKw.toFixed(1)} kW`
+        + ` · ${Math.round(eq.skimAirFlow_m3h || 0)} m³/h`, 'kW', eq.skimmerBlowerKw, eqPrices.blower);
+    }
     }
   }
 
@@ -8061,6 +8560,34 @@ function calcCapex(eq, sim, flowData, eqPrices) {
       total += add('机械除湿机 (DH-1001)', `${dehumKgH.toFixed(1)} kg/h`, 'kg/h', dehumKgH, eqPrices.dehumidifier);
     }
   }
+  /* 12c. 车间暖通机组 (v2.1 IRAS_V21_HVAC_CAPEX 新增)
+     v2.0 把车间显热计入能耗、v2.1 又修准了它的口径 (扣除室内产热), 但始终没有
+     对应设备与投资 —— 与 v1.9.2 给除湿机补 CAPEX 前的状态同构:
+     「凭空多出维持 T_room = T_w 的能力却不花钱」。
+     ⚠ 与热泵不重复: 热泵调【水温】(水侧), 本机组维持【室温】(空气侧);
+       二者电耗自 v2.0 起就分列 thermalCostDaily / hvacCostDaily, CAPEX 同理。
+     选型口径与除湿机一致: 设计冬/夏显热负荷绝对值峰值 ÷ 24 → kW, ×共用系数 ×1.2。 */
+  {
+    const hvacSharing = (globalThermalConfig && globalThermalConfig.thermalSharingFactor != null)
+      ? globalThermalConfig.thermalSharingFactor : 0.75;
+    const hvacOnCap = !(sim.thermal && sim.thermal.hvacEnabled === false);
+    let hvacKw = 0;
+    if (hvacOnCap) {
+      if (sim.thermalScenarios) {
+        // 冬取制热峰值、夏取制冷峰值, 机组按两者绝对值的大者选型 (同一台机双向运行)
+        const w = Math.abs((sim.thermalScenarios.design_winter || {}).hvacSensibleKWhPerDay || 0);
+        const s2 = Math.abs((sim.thermalScenarios.design_summer || {}).hvacSensibleKWhPerDay || 0);
+        hvacKw = Math.max(w, s2) / 24 * hvacSharing * 1.2;
+      } else if (sim.thermal) {
+        hvacKw = Math.abs(sim.thermal.hvacSensibleKWhPerDay || 0) / 24 * 1.2;
+      }
+    }
+    if (hvacKw > 0.5) {
+      // tag AHU-1002 —— 10 系列空气侧设备, 接在 DH-1001 之后
+      total += add('车间暖通机组 (AHU-1002)', `${hvacKw.toFixed(1)} kW 制冷/制热量`,
+                   'kW(冷热)', hvacKw, eqPrices.hvacUnit);
+    }
+  }
 
   const factor = eqPrices.totalFactor;
   // v1.1: 地区系数 (中国 1.0, 北欧 2.0, 只影响 CAPEX 不影响 OPEX)
@@ -8109,6 +8636,8 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     'UV 消毒器':             'uv',              // 2×75% 并联, sparesCount=0 → 系数 1.0
     '臭氧发生器':            'ozoneGenerator',
     '脱气塔风机':            'co2Blower',
+    // v2.1 IRAS_V21_SKIMMER_SPARE: 规格建好后才能映射, 使 CAPEX 也按 N+1 计价
+    '蛋分供气风机 (K-501)':  'skimmerBlower',
     '主循环泵+变频':         'mainPump',
     '鱼池增氧鼓风机 K-101':  'tankAirBlower',   // 仅空气曝气模式存在
     'BF曝气风机(粗孔)':      'bfBlower',
@@ -8345,7 +8874,11 @@ const GLOBAL_THERMAL_DEFAULTS = Object.freeze({
   ventHeatRecovery: 0,
   // v1.9.2: 通风量按需求封顶 (防止车间体积放大导致通风虚高)
   co2IndoorLimit_ppm: 1500,        // 车间 CO₂ 设计限值 ppm (OSHA 法定 5000; ASHRAE 舒适 ~1100; 1500 = 工业厂房间歇作业)
-  degasserExhaustIndoorFrac: 0.2,  // 脱气塔尾气入室比例 0-1 (0=管道直排室外, 1=全部排入车间)
+  // v2.1 IRAS_V21_PARAM_GUARD: 默认 0.2 → 0, 与气路拓扑 A5「工艺气路全程不碰车间」对齐。
+  //   接触器一直按 100% 室外→室外算热湿交换, 而本参数按 20% 进车间算 CO₂ 新风 ——
+  //   同一股尾气两套口径。v2.0 把暖通显热计入能耗后, 该矛盾首次影响成本。
+  //   现代场做法本就是尾气管道直排室外。参数保留可调 (语义不完整, 待废弃)。
+  degasserExhaustIndoorFrac: 0,    // 脱气塔尾气入室比例 0-1 (0=管道直排室外, 1=全部排入车间)
   // v1.9.2: 机械除湿机 (湿热气候养冷水鱼时通常必配)
   dehumEnabled: false,             // 是否配置机械除湿机
   dehumTargetRH: 70,               // 除湿控制目标相对湿度 % (泳池馆 ASHRAE 建议 50-60, RAS 车间可放宽)
@@ -8448,6 +8981,45 @@ const NH3_LIMIT_UG_L = {
   custom:   25     // 默认中性 (原写死值)
 };
 
+/* v2.1 IRAS_V21_DEFAULT_CLIMATE — 鱼种默认气候
+   v2.0 只修了 SELFTEST_BASELINE 的配对, 产品默认仍是青岛 + 切鱼种不联动,
+   于是「测试修好了, 产品还在发同一个陷阱」: 用户点罗非鱼拿到 16.21 kWh/kg
+   (行业实测上限 13.6)。配对依据与基线的 IRAS_BASELINE_PAIRING_V2 一致。
+
+   ⚠ 这只是【默认起点】, 用户仍可自由切到任何气候 —— 不加限制, 只避免
+     一个工程上不存在的组合成为开箱即得的结果。 */
+const DEFAULT_CLIMATE_BY_SPECIES = {
+  salmon:   'china_qingdao',    // 冷水海水 12–15°C
+  turbot:   'china_qingdao',    // 冷水海水 16°C — 配对本就合理
+  tilapia:  'china_shanghai',   // 温水淡水 28°C
+  bass:     'china_shanghai',   // 温水淡水 25°C
+  eel:      'china_shanghai',   // 温水淡水 26–28°C
+  mandarin: 'china_shanghai',   // 温水淡水 26°C
+  grouper:  'china_sanya',      // 温水海水 27°C
+  shrimp:   'china_sanya'       // 温水海水 30°C
+};
+
+/* 把鱼种默认气候写进 UI 控件, 使随后的 readGlobalThermalConfig() 能读到。
+   ⚠ 必须走控件而非直接改 globalThermalConfig —— 后者会被下一次
+     readGlobalThermalConfig() 覆盖 (v2.0 审计踩过 g_climateRegion 的名字坑)。*/
+function applyDefaultClimateForSpecies(sp) {
+  try {
+    const region = DEFAULT_CLIMATE_BY_SPECIES[sp];
+    if (!region) return false;
+    const el = document.getElementById('globalClimateRegion');
+    if (!el) return false;
+    if (!Array.prototype.some.call(el.options || [], o => o.value === region)) return false;
+    el.value = region;
+    if (typeof el.dispatchEvent === 'function') {
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    return true;
+  } catch (e) {
+    console.warn('[iRAS] applyDefaultClimateForSpecies 失败:', e && e.message);
+    return false;
+  }
+}
+
 const SEED_PRICE_BY_SPECIES = {
   salmon:   1.5,   // 大西洋鲑发眼卵 (冰岛/挪威进口, NOAP 财报反推约 0.2 EUR/粒)
   turbot:   2.0,   // 大菱鲆苗 3 g
@@ -8486,8 +9058,17 @@ const O2_REC_BY_SPECIES = {
 /* ============================================================================
    输入辅助
    ============================================================================ */
-function loadStagesFromDB(key) {
+function loadStagesFromDB(key, opts) {
   const sp = SPECIES_DB[key];
+  /* v2.1 IRAS_V21_CLIMATE_HOOK — 鱼种默认气候联动移到此处。
+     此前只挂在鱼种按钮的 click 处理器里, 于是载入方案 / 下游导入 / 测试脚手架
+     等【程序化路径全部绕过联动】—— 第五轮审计的测试正是这类路径, 因而量到
+     罗非 16.44 / 对虾 35.87 (青岛), 而点击路径得 13.83 / 19.27 (上海/三亚)。
+     loadStagesFromDB 是所有切鱼种路径的必经之处, 挂在这里才真正覆盖。
+     ⚠ skipClimate: 载入用户保存的方案时不覆盖 —— 那是用户的显式选择, 非默认起点。 */
+  if (!(opts && opts.skipClimate) && typeof applyDefaultClimateForSpecies === 'function') {
+    applyDefaultClimateForSpecies(key);
+  }
   // v1.1.2: 用全局 O2_REC_BY_SPECIES (与切换增氧方式时使用同一个表)
   const recSatBase = O2_REC_BY_SPECIES[key] || 125;
 
@@ -8942,7 +9523,7 @@ function renderStageBlock(idx, stage) {
     <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
       <div class="flex items-center gap-2">
         <span class="text-xl">♨️</span>
-        <div class="text-sm font-bold text-cyan-300">热平衡 + 热泵 (v1.2 双节点稳态)</div>
+        <div class="text-sm font-bold text-cyan-300">热平衡 + 热泵 (v2.1)</div>
         <span class="text-[10px] text-slate-500">气候/围护参数为全局设置, 见顶部 ① 区</span>
       </div>
     </div>
@@ -9280,23 +9861,55 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
      此前只在贡献率>0 时追加文字, 等于 0 时一个字都不说 —— 用户拨动开关看不到任何回应,
      无法区分"因不可用而无效"和"坏了" (正是用户报告的现象)。
      现在: 生效 → 贡献率; 关闭 → 明说已关闭; 开启但不可用 → 给出冷源温度与截止温度。 */
-  if (t.pumpDirection === 'cool') {
+  /* v2.1 IRAS_V21_FC_VISIBILITY — 四档状态改读 fcUnavailReason 枚举
+     旧实现有两个问题:
+       ① 靠 t.freeCoolingSinkT 判断第四档, 而该字段被误并进注释后恒为 undefined
+          ⇒ 分支永不触发 (v1.9.3 修好的可见性问题回归)
+       ② 整段包在 pumpDirection === 'cool' 里, 而 v2.0 最常见的原因恰是
+          'not_cool' (接触器把热排光, 水侧转制热) ⇒ 最该解释的情形反而不说话
+     改读枚举后, 缺字段会落到显式的 default 分支, 不再静默跳过。 */
+  if ((t.fcFraction || 0) > 0 && t.pumpDirection === 'cool') {
     const _fp = Math.round((t.fcFraction || 0) * 100);
-    if ((t.fcFraction || 0) > 0) {
-      pumpDirText += (_fp >= 100) ? ' ❄️ 自然冷却全量'
-        : ((t.scenario === 'annual') ? ` ❄️ 年化自然冷却 ${_fp}%` : ` ❄️ 部分自然冷却 ${_fp}%`);
-    } else if (t.fcEnabled === false) {
-      pumpDirText += ' · 自然冷却已关闭 (强制机械制冷)';
-    } else if (t.fcUneconomic) {
-      // v1.9.3 (审计 P0): EER ≤ 机械制冷 COP —— 开风机比开压缩机还费电, 模型已自动不启用
-      pumpDirText += ` · 自然冷却不经济 (EER ${(t.fcEER_design || 0).toFixed(1)}`
-        + ` ≤ 机械制冷 COP ${(t.COP_cool || 0).toFixed(2)}, 已自动改走机械制冷)`;
-    } else if (t.freeCoolingSinkT != null && t.fcHiT != null
-               && isFinite(t.freeCoolingSinkT) && isFinite(t.fcHiT)) {
-      // 截止温度 = 目标水温 − x_c·设计温差, 即"开风机仍比开压缩机省"的临界冷源温度
-      pumpDirText += ` · 自然冷却不可用 (冷源 ${t.freeCoolingSinkT.toFixed(1)}°C,`
-        + ` 需低于 ${t.fcHiT.toFixed(1)}°C)`;
+    pumpDirText += (_fp >= 100) ? ' ❄️ 自然冷却全量'
+      : ((t.scenario === 'annual') ? ` ❄️ 年化自然冷却 ${_fp}%` : ` ❄️ 部分自然冷却 ${_fp}%`);
+  } else {
+    switch (t.fcUnavailReason) {
+      case 'off':
+        pumpDirText += ' · 自然冷却已关闭 (强制机械制冷)';
+        break;
+      case 'not_cool':
+        // v2.0 起最常见: 接触器 (脱气塔 + MBBR 曝气) 与自然冷却抢同一股室外冷空气,
+        //   而接触器是必开的 —— 冷天它先把热排光, 水侧转为需制热, 自然冷却无负荷可排。
+        pumpDirText += ' · 自然冷却无负荷可排 (水侧当前需制热, 非制冷)';
+        break;
+      case 'uneconomic':
+        pumpDirText += ` · 自然冷却不经济 (EER ${(t.fcEER_design || 0).toFixed(1)}`
+          + ` ≤ 机械制冷 COP ${(t.COP_cool || 0).toFixed(2)}, 已自动改走机械制冷)`;
+        break;
+      case 'no_dt':
+        if (t.freeCoolingSinkT != null && t.fcHiT != null
+            && isFinite(t.freeCoolingSinkT) && isFinite(t.fcHiT)) {
+          // 截止温度 = 目标水温 − x_c·设计温差, 即"开风机仍比开压缩机省"的临界冷源温度
+          pumpDirText += ` · 自然冷却不可用 (冷源 ${t.freeCoolingSinkT.toFixed(1)}°C,`
+            + ` 需低于 ${t.fcHiT.toFixed(1)}°C)`;
+        } else {
+          pumpDirText += ' · 自然冷却不可用 (室外冷源温度不足)';
+        }
+        break;
+      default:
+        // 枚举缺失或出现未知值 —— 显式暴露, 不静默跳过
+        if (t.fcUnavailReason != null) {
+          pumpDirText += ` · ⚠ 自然冷却状态未知 (${t.fcUnavailReason})`;
+        }
     }
+  }
+  /* v2.1 IRAS_V21_REGIME_MARGIN: 余量 < 15% 时提示 —— 用户微调 G:L 会看到
+     不成比例的成本跳动, 若不说明原因, 只会以为模型不稳定。 */
+  if (t.regimeMarginPct != null && isFinite(t.regimeMarginPct)
+      && t.regimeMarginPct < 15 && t.pumpDirection !== 'none') {
+    const _rm = t.regimeMarginPct.toFixed(1);
+    const _other = t.pumpDirection === 'cool' ? '制热' : '制冷';
+    pumpDirText += ` · ⚖️ 距切换${_other}仅 ${_rm}%`;
   }
   const pumpDirColor = t.pumpDirection === 'cool' ? '#60a5fa' : (t.pumpDirection === 'heat' ? '#f87171' : '#94a3b8');
   const rhWarn = (t.RH_room||0) >= 95;
@@ -9321,11 +9934,16 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
   const energyLabel = { ok: '优秀', info: '合理', warn: '偏高', danger: '不经济' }[energyClass];
 
   // v1.9.2: 除湿机投入时增加一张指标卡 (原 v1.9.2 全部除湿输出都没有出口)
-  const dehumOn = !!t.dehumEnabled && (t.m_dehum_kg_d || 0) > 0.1;
+  /* v2.1 IRAS_V21_COST_SCOPE — 卡片可见性与成本口径对齐
+     v2.0 起 m_dehum_kgs 是【维持 RH_set 的暖通除湿职责】, 无条件计算,
+     dehumCostDaily 也无条件进成本。而这里仍按 dehumEnabled 决定是否显示,
+     结果: 用户设「不配置」→ 照付电费, 卡片却被隐藏, 账目不可见。
+     改为按是否真的存在除湿负荷显示; dehumEnabled 降级为选型标注。 */
+  const dehumOn = (t.m_dehum_kg_d || 0) > 0.1;
   const dehumDestText = { outdoor: '排至室外', indoor: '排入车间', water: '热回收给水' }[t.dehumHeatDest || 'outdoor'];
   const stateCards = `
     <div class="grid grid-cols-2 lg:grid-cols-${dehumOn ? 7 : 6} gap-2 mt-2">
-      <div class="metric-chip px-2 py-1.5" title="车间空气温度 (双节点稳态闭式解; 池水把空气拉高, 围护散热把空气拉低)">
+      <div class="metric-chip px-2 py-1.5" title="车间空气温度。v2.0 起由暖通维持 = 水温 (不再是空气节点方程的解); 维持所需的显热负荷计入 hvacKWhPerDay">
         <div class="text-[10px] text-slate-400">车间室温</div>
         <div class="text-cyan-300 font-bold">${(t.T_room||0).toFixed(1)}°C</div>
         <div class="text-[9px] text-slate-500">建筑 ${(t.A_building||0).toFixed(0)} m²</div>
@@ -9389,7 +10007,9 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
       : `由 <b>ACH 设定</b>决定 (${(t.V_vent_ach_m3h||0).toFixed(0)} ≥ CO₂ 需求 ${(t.V_vent_fish_m3h||0).toFixed(0)} m³/h)`}</div>`;
   }
   if (dehumOn) {
-    const _rejectNote = { outdoor: '排至室外, 不影响车间', indoor: '排入车间, 已计入室温求解', water: '热回收进水侧' }[t.dehumHeatDest || 'outdoor'];
+    // v2.1: 'indoor' 的说明订正 —— T_room 求解器已在 v2.0 删除, 该冷凝热现由
+    //   IRAS_V21_HVAC_CLOSURE 作为室内产热计入暖通显热负荷 (此前是孤儿项)。
+    const _rejectNote = { outdoor: '排至室外, 不影响车间', indoor: '排入车间, 已计入暖通显热负荷', water: '热回收进水侧' }[t.dehumHeatDest || 'outdoor'];
     warnings += `<div class="text-[10px] text-teal-300 mt-1.5 px-2 py-1 bg-teal-900/20 border-l-2 border-teal-500 rounded" title="除湿机不是省电设备 — 它用电换湿度, 目的是避免霉菌/结构腐蚀/电气故障">💧 除湿机: 除湿 <b>${(t.m_dehum_kg_d||0).toFixed(0)} kg/d</b> · 电耗 <b>${(t.dehumKWhPerDay||0).toFixed(0)} kWh/d</b> · 冷凝器排热 ${(t.Q_dehum_reject_kWh_d||0).toFixed(0)} kWh/d (${_rejectNote})${(t.V_dehum_recovery||0) > 0 ? ` · 冷凝水回收 ${(t.V_dehum_recovery||0).toFixed(2)} m³/d` : ' · 冷凝水不回收'}${t.converged === false ? ' · <b class="text-rose-300">⚠ 迭代未收敛, 结果不可采信</b>' : ''}</div>`;
   }
 
@@ -9886,6 +10506,10 @@ function renderEquipCard(idx, eq) {
   html += fmtRow('UV支路泵',  `${eq.uvBranchPumpKw.toFixed(2)} kW`);
   html += fmtRow('AOP支路泵',  `${eq.aopBranchPumpKw.toFixed(2)} kW`);
   html += fmtRow('蛋分支路泵',  `${(eq.skimmerBranchPumpKw||0).toFixed(2)} kW`);
+  // v2.1: 供气风机 —— 泡沫分离效率由气量决定, 此前无此项
+  if ((eq.skimmerBlowerKw || 0) > 0) {
+    html += fmtRow('蛋分供气风机 (K-501)', `${eq.skimmerBlowerKw.toFixed(2)} kW` + ` · ${Math.round(eq.skimAirFlow_m3h||0)} m³/h`);
+  }
   // v1.7: 氧锥旁路泵 (仅 bypass 拓扑时 > 0)
   if ((eq.o2BypassPumpKw || 0) > 0) {
     html += fmtRow('氧锥旁路泵 (bypass)',  `${eq.o2BypassPumpKw.toFixed(2)} kW`);
@@ -10431,6 +11055,9 @@ function renderSpeciesButtons() {
       if (_sp && SEED_PRICE_BY_SPECIES[currentSpecies] != null) {
         _sp.value = SEED_PRICE_BY_SPECIES[currentSpecies];
       }
+      // v2.1 IRAS_V21_CLIMATE_HOOK: 气候联动已移入 loadStagesFromDB(), 覆盖全部切鱼种路径
+      //   (此前只在这里调用, 载入方案 / 下游导入 / 测试脚手架都绕过)。此处只需重读配置。
+      if (typeof readGlobalThermalConfig === 'function') readGlobalThermalConfig();
       renderSpeciesButtons();
       rebuildStages();
       recomputeAll();
@@ -11329,7 +11956,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   // 主车间面积 = V_total / 平均池深 × 1.6 (含通道/操作平台/设备走线)
   // 水处理机房 = 主车间 × 0.4
   // 公用配套 (液氧站 + 配电 + 办公 + 宿舍 + 仓库 + 门卫) ≈ 1000-1700 m² (随规模)
-  // 总占地 = 总建筑面积 / 容积率 FAR (v1.5 Bug 47: FAR 从 UI 读, 默认 0.7)
+  // 总占地 = 总建筑面积 / 容积率 FAR (v1.5 Bug 47: FAR 从 UI 读, 默认 0.5)
   // 1 亩 = 666.67 m²
   const landEl = document.getElementById('landAreaSummaryDisplay');
   const landBreakdownEl = document.getElementById('landAreaBreakdownDisplay');
@@ -11386,7 +12013,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
     } else {
       landEl.textContent = '—';
       if (landBreakdownEl) {
-        landBreakdownEl.textContent = '主车间面积 = V_total / 平均池深 × 1.6 (含通道/操作平台); 总占地 = 总建筑面积 / 容积率 FAR (默认 0.7, UI 可调)。仅供前期申报参考。';
+        landBreakdownEl.textContent = '主车间面积 = V_total / 平均池深 × 1.6 (含通道/操作平台); 总占地 = 总建筑面积 / 容积率 FAR (默认 0.5, UI 可调)。仅供前期申报参考。';
       }
     }
   }
@@ -11621,6 +12248,11 @@ function buildPIDExport() {
         denitriBranch:  { tag: 'P-601', kw: eq.denitriBranchPumpKw, needed: eq.denitriBranchPumpKw > 0 },
         aopBranch:      { tag: 'P-701', kw: eq.aopBranchPumpKw,   needed: eq.aopBranchPumpKw > 0 },
         skimmerBranch:  { tag: 'P-501', kw: eq.skimmerBranchPumpKw, needed: eq.skimmerBranchPumpKw > 0 },
+      // v2.1 IRAS_V21_SKIMMER_TAG: 蛋分供气风机 K-501 —— 蛋分区 (C-501/P-501) 的风机号。
+      //   放在 pumps 分组内是沿用本表「转动设备统一登记」的既有做法 (K-101 亦在此列),
+      //   isBlower 标志供下游区分, 避免被当成泵渲染成泵符号。
+      skimmerBlower:  { tag: 'K-501', kw: eq.skimmerBlowerKw || 0, needed: (eq.skimmerBlowerKw || 0) > 0,
+                        isBlower: true, airFlowM3h: eq.skimAirFlow_m3h || 0 },
         // v1.7: 氧锥旁路泵 (仅 bypass 拓扑时 kw > 0)
         o2Bypass:       { tag: 'P-602', kw: eq.o2BypassPumpKw || 0, needed: (eq.o2BypassPumpKw||0) > 0,
                           flow: eq.o2BypassFlow || 0,
@@ -11887,8 +12519,11 @@ function collectState() {
     })(),
     // v1.5 Bug 47: 容积率 FAR (项目级常量, 与 regionFactor 类似)
     farRatio: (function(){
+      // v2.0.1 IRAS_V201_FAR_DEFAULT_05: fallback 0.7 → 0.5.
+      //   「审计回合 7」已把 UI 初值与两处计算 fallback 改为 0.5 (水产按农业用地,
+      //   不套 GB 50187 工业下限 0.7), 唯独漏了这里 —— 存盘与导出两个口径.
       var v = parseFloat(document.getElementById('inpFarRatio')?.value);
-      return Number.isFinite(v) ? v : 0.7;
+      return Number.isFinite(v) ? v : 0.5;
     })(),
     // v1.6: 站级设备配置 (用户对液氧储罐等的覆盖)
     siteEquipConfig: JSON.parse(JSON.stringify(siteEquipConfig))
@@ -12962,6 +13597,45 @@ if (location.search.includes('test=1')) {
    退出码语义: window.__iRAS_selftest = { pass, fail, results }
    ========================================================================== */
 const SELFTEST_BASELINE = [
+  // ══ IRAS_BASELINE_V21_BATCH6 (2026-08-04, 蛋分风机备用后) ══
+  //   蛋分风机获得 modulePerSpec 规格 → 按 N+1 计价, 折旧 +0.02~0.04 元/kg。
+  //   三台风机的备用政策至此一致 (co2Blower / bfBlower / skimmerBlower 均 1+1)。
+  // ══ IRAS_BASELINE_V21_BATCH5 (2026-08-04, 气候联动修复后) ══
+  //   气候联动移入 loadStagesFromDB 后, 六条非鲑工况的【设备选型工况】才真正
+  //   跟随鱼种所在地区。此前基线只覆盖年均字段, 设计冬/夏仍来自 UI 默认的青岛 ——
+  //   三亚年均运行的对虾场按青岛设计冬选热泵, 供暖设备严重偏大 (−3.58 元/kg 即此)。
+  //   六条大西洋鲑不变: defaultClimate 本就是青岛。
+  // ══ IRAS_BASELINE_V21_BATCH4 (2026-08-04, 第五轮审计后) ══
+  //   主因: 三台风机 (107.7 kW) 的电功率此前【没有任何去处】(第五轮审计 P0)。
+  //   轴功抬高接触器进气温度 (青岛冬 −7 → −3.5°C), 电机损失并入 Q_room_internal。
+  //   ⚠ 成本变化【符号随工况方向翻转】—— 制冷工况上升 (海南夏 +0.42), 制热工况下降
+  //     (Bergen −0.23)。与 v2.1 守恒修复时一致, 单向偏移反而说明修错方向。
+  //   次因: 蛋分风机 CAPEX 进折旧 (由新增断言 F4 抓出「有电费无投资」)。
+  // ══ IRAS_BASELINE_V21_BATCH3 (2026-08-01, 第三批后) ══
+  //   第三批变化 (补丁 25-27): 接触器净水汽计入水量平衡, 补水拆为
+  //   【换水股(含盐)】+【蒸发股(淡水)】。青岛冬补水 461 → 491 m³/d (+6.4%),
+  //   但补水加热经板换回收 75%、补水单价低, 故元/kg 影响仅 +0.00 ~ +0.08。
+  //   ⚠ 湿热气候 (海南冬/三亚) 显示 +0.00 不是没变, 是变化在两位小数以下:
+  //     净结露 ⇒ 淡水股为 0, 仅纯水盈余转排水。
+  // ══ IRAS_BASELINE_V21_BATCH2 (2026-08-01, 第二批后) ══
+  //   第二批变化 (补丁 13-20): 暖通机组 CAPEX + 蛋分供气风机 OPEX + 蛋分气流并入接触器。
+  //   全部为增项, 13 条【一致上升】—— 与第一批守恒修复的符号双向翻转不同,
+  //   这里单向是正常的: 新增的是成本项, 不是符号可变的热流。
+  // ══ IRAS_BASELINE_V21_CLOSURE (2026-08-01) ══
+  //   13 条数值工况全部重算, 由【产品路径】生成 (gen_base_v21.js 走真实 recomputeAll)。
+  //
+  //   主因: v2.1 修复车间显热能量守恒 —— v2.0 删除空气节点时, 挂在该节点上的
+  //     Q_air_gain_kW (电机/灯管废热) 与 Q_dehum_reject('indoor') 成为孤儿项,
+  //     既不在水侧也不在暖通侧, 带走 HVAC 显热负荷的 41.8% (青岛设计冬 1,617/3,864)。
+  //
+  //   ⚠ 注意成本变化的【符号随工况方向翻转】, 这是修复正确性的旁证:
+  //       制热工况 成本下降 —— 设备废热减轻供暖 (青岛冬 −0.22, Bergen −0.15)
+  //       制冷工况 成本上升 —— 设备废热加重制冷 (海南冬 +0.11, 青岛年均 +0.06)
+  //     若为单向偏移, 反而说明修错了方向。
+  //
+  //   次因: 尾气入室比例默认 0.2 → 0 (与气路拓扑 A5 对齐)。
+  //   无影响: 鱼种默认气候联动 —— 本表 13 条均显式覆盖 climate 温度字段,
+  //           且覆盖在 readGlobalThermalConfig() 之后 (实测确认)。
   // ══ IRAS_BASELINE_V2_HVAC ══
   //   计入【车间围护+通风显热】能耗后重算。此前该项仅存于
   //   hvacSensibleKWhPerDay 并标注「界外」, 未进电耗 —— 而 T_room = T_w 后
@@ -13008,24 +13682,24 @@ const SELFTEST_BASELINE = [
   //   产品路径的均值口径才与成本模型自洽。
   { id: 'salmon_qingdao_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 39.77, fullCostPerKg: 44.89, kwhPerKg: 11.54, hpCostPerKg: 1.06 } },
+    expect: { costPerKg: 40.36, fullCostPerKg: 45.50, kwhPerKg: 12.23, hpCostPerKg: 1.14 } },
 
   { id: 'salmon_qingdao_w',  species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: -7, T_source_design_winter: 4,
                T_air_design_summer: -7, T_source_design_summer: 4, RH_winter: 60 },
-    expect: { costPerKg: 39.31, fullCostPerKg: 44.41, kwhPerKg: 12.57, hpCostPerKg: 1.30 } },
+    expect: { costPerKg: 38.90, fullCostPerKg: 43.97, kwhPerKg: 11.90, hpCostPerKg: 1.08 } },
   { id: 'salmon_hainan_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 17, T_source_design_winter: 22,
                T_air_design_summer: 17, T_source_design_summer: 22, RH_winter: 78 },
-    expect: { costPerKg: 39.36, fullCostPerKg: 44.46, kwhPerKg: 12.44, hpCostPerKg: 1.53 } },
+    expect: { costPerKg: 40.09, fullCostPerKg: 45.23, kwhPerKg: 13.34, hpCostPerKg: 1.68 } },
   { id: 'salmon_hainan_s',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 32, T_source_design_winter: 27,
                T_air_design_summer: 32, T_source_design_summer: 27, RH_winter: 78 },
-    expect: { costPerKg: 43.46, fullCostPerKg: 48.81, kwhPerKg: 18.43, hpCostPerKg: 4.51 } },
+    expect: { costPerKg: 44.15, fullCostPerKg: 49.54, kwhPerKg: 19.30, hpCostPerKg: 4.64 } },
   { id: 'salmon_bergen_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 0, T_source_design_winter: 4,
                T_air_design_summer: 0, T_source_design_summer: 4, RH_winter: 75 },
-    expect: { costPerKg: 37.86, fullCostPerKg: 42.87, kwhPerKg: 10.46, hpCostPerKg: 0.35 } },
+    expect: { costPerKg: 37.71, fullCostPerKg: 42.71, kwhPerKg: 10.22, hpCostPerKg: 0.19 } },
   // 各鱼种 (默认气候 = 青岛, 走 UI 默认值)
       /* IRAS_BASELINE_PAIRING_V2 新增: 冷水鱼种 × 热带气候
      当前行业热点（Atlantic Sapphire 佛州 Homestead、宁波象山 Nordic Aqua），
@@ -13035,36 +13709,36 @@ const SELFTEST_BASELINE = [
      此场景此前【无任何基线覆盖】。 */
   { id: 'salmon_sanya_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 42.13, fullCostPerKg: 47.40, kwhPerKg: 15.96, hpCostPerKg: 3.30 } },
+    expect: { costPerKg: 42.82, fullCostPerKg: 48.13, kwhPerKg: 16.85, hpCostPerKg: 3.45 } },
 
   // IRAS_BASELINE_PAIRING_V2: 罗非（28°C）温水淡水，不会在青岛养 → china_shanghai 年均
   { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 30.94, fullCostPerKg: 35.60, kwhPerKg: 9.77, hpCostPerKg: 0.85 } },
+    expect: { costPerKg: 30.93, fullCostPerKg: 35.59, kwhPerKg: 9.76, hpCostPerKg: 0.79 } },
       // IRAS_BASELINE_PAIRING_V2: 大菱鲆（16°C）冷水海水，配对本就合理，仅补年均口径 → china_qingdao 年均
   { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 55.84, fullCostPerKg: 66.01, kwhPerKg: 16.31, hpCostPerKg: 1.67 } },
+    expect: { costPerKg: 56.15, fullCostPerKg: 66.34, kwhPerKg: 16.43, hpCostPerKg: 1.74 } },
       // IRAS_BASELINE_PAIRING_V2: 石斑（27°C）温水海水 → china_sanya 年均
   { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 44.54, fullCostPerKg: 54.24, kwhPerKg: 14.14, hpCostPerKg: 1.93 } },
+    expect: { costPerKg: 44.61, fullCostPerKg: 54.31, kwhPerKg: 14.10, hpCostPerKg: 1.59 } },
       // IRAS_BASELINE_PAIRING_V2: 加州鲈（25°C）温水淡水 → china_shanghai 年均
   { id: 'bass_300',      species: 'bass',     yieldTons: 300,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 46.26, fullCostPerKg: 53.21, kwhPerKg: 12.80, hpCostPerKg: 1.11 } },
+    expect: { costPerKg: 46.40, fullCostPerKg: 53.36, kwhPerKg: 12.53, hpCostPerKg: 1.05 } },
       // IRAS_BASELINE_PAIRING_V2: 鳗鲡（26-28°C）温水淡水 → china_shanghai 年均
   { id: 'eel_200',       species: 'eel',      yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 60.96, fullCostPerKg: 116.92, kwhPerKg: 12.83, hpCostPerKg: 1.07 } },
+    expect: { costPerKg: 61.02, fullCostPerKg: 116.98, kwhPerKg: 12.74, hpCostPerKg: 1.01 } },
       // IRAS_BASELINE_PAIRING_V2: 鳜鱼（26°C）温水淡水 → china_shanghai 年均
   { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 58.77, fullCostPerKg: 70.62, kwhPerKg: 16.51, hpCostPerKg: 1.47 } },
+    expect: { costPerKg: 58.62, fullCostPerKg: 70.47, kwhPerKg: 16.08, hpCostPerKg: 1.38 } },
       // IRAS_BASELINE_PAIRING_V2: 对虾（30°C）温水海水 → china_sanya 年均
   { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 53.23, fullCostPerKg: 70.47, kwhPerKg: 19.56, hpCostPerKg: 2.75 } },
+    expect: { costPerKg: 50.41, fullCostPerKg: 67.50, kwhPerKg: 17.52, hpCostPerKg: 1.90 } },
   // ── 边界工况: 只跑不变量断言 (不比对数值), 用于捕捉 NaN/Infinity 与口径漂移 ──
   { id: 'edge_yield_0',   species: 'salmon', yieldTons: 0,      expect: {} },
   { id: 'edge_yield_tiny',species: 'salmon', yieldTons: 0.001,  expect: {} },
@@ -13150,6 +13824,278 @@ function runSelfTest(quiet) {
                        + ' vs 统一公式 ' + hpRef.toFixed(1) + ' kW');
             }
           }
+          /* ③ v2.1 IRAS_V21_SELFTEST_CLOSURE 能量守恒 (三条)
+             建议三轮未落地的一类。v2.0 的 Q_air_gain_kW 孤儿缺陷正是它该抓的:
+             golden-master 抓不到 (基线跟着变)、有限性抓不到 (数值正常)、
+             口径一致抓不到 (不涉同量两处换算)。
+             ⚠ 新增任何进/出车间或水侧的热流时必须同步这三条式子。 */
+          (function () {
+            const t = r.sim.thermal;
+            if (!t) return;
+            const TOLQ = 0.5;                       // kWh/d, 远小于任何有意义的破口
+            const near = (a, b) => Math.abs(a - b) <= TOLQ;
+            const airGain = (t.Q_air_gain_kW || 0) * 24;
+
+            /* ── A. 设备产热分配完整性 —— v2.1 IRAS_V21_BLOWER_ROOM 扩为全量分配式 ──
+               旧 A 只写了泵与 UV, 且两边是【代数恒等式】(Q_pumps + Q_air_gain ≡ 泵电功率),
+               所以它只能锁住未来的编辑、无法独立验证当前分配是否完备 —— 三台风机
+               (107.7 kW) 压根不在式子里, 它们的热因此完全没有去处 (第五轮审计 P0)。
+               现改为【由 POWER_REGISTRY 反向枚举】全部用电设备, 按 heatVia 归集:
+                 Σ电功率 == 进水/进气(split) + 进气流(airflow) + 进车间(room) + 界外(external)
+               新增设备不声明 heatVia 由 E1 拦; 声明了但没接进热流由本条拦。 */
+            const etaM = t.motorEta || 0.95;
+            const shaft = (t.Q_pumps || 0) / (t.pumpHeatRatio || 0.85);
+            const uvElec = ((r.eq && r.eq.uvPower || 0) / 1000) * 24;
+
+            // A1 泵与 UV 的 split 分配 (原恒等式, 保留为回归保护)
+            const lhsA = (t.Q_pumps || 0) + (t.Q_uv || 0) + airGain;
+            const rhsA = shaft / etaM + uvElec;
+            if (!near(lhsA, rhsA)) {
+              inv.push(tag + ' 能量守恒A1 泵/UV 产热分配失配 ' + (lhsA - rhsA).toFixed(1)
+                       + ' kWh/d (进水+进气 ' + lhsA.toFixed(0) + ' vs 电功率 ' + rhsA.toFixed(0) + ')');
+            }
+
+            // A2 全量: 登记表里每台 airflow 设备的电功率必须已分配到气流+车间
+            (function () {
+              const REGA = (typeof POWER_REGISTRY !== 'undefined') ? POWER_REGISTRY : {};
+              let airflowElec = 0;
+              Object.keys(REGA).forEach(function (k) {
+                if (REGA[k].heatVia !== 'airflow') return;
+                const v = (typeof powerRegistryValue === 'function')
+                  ? powerRegistryValue(r.eq, k) : null;
+                if (v != null && v > 0) airflowElec += v;
+              });
+              if (airflowElec <= 0) return;
+              const declared = (t.blowerElecKw || 0);
+              if (Math.abs(declared - airflowElec) > 0.01) {
+                inv.push(tag + ' 能量守恒A2 airflow 类设备电功率 ' + airflowElec.toFixed(2)
+                         + ' kW 与已接入热平衡的 ' + declared.toFixed(2)
+                         + ' kW 不符 —— 有设备的热未接入 (登记表与实现脱节)');
+                return;
+              }
+              // 轴功 + 电机损失 必须等于电功率 (kWh/d 口径)
+              const shaftD = (t.blowerShaftKw || 0) * 24;
+              const motorD = (t.Q_blower_motor_kWh_d || 0);
+              if (Math.abs(shaftD + motorD - declared * 24) > 0.5) {
+                inv.push(tag + ' 能量守恒A2 风机电功率 ' + (declared * 24).toFixed(0)
+                         + ' ≠ 轴功 ' + shaftD.toFixed(0) + ' + 电机损失 ' + motorD.toFixed(0));
+              }
+              /* A3 轴功必须【真的到达】接触器 —— 账目完整不等于接入正确。
+                 ⚠ 负对照实测: 只把轴功参数传 0 (热不接入), 上面两条仍全过,
+                   因为 blowerShaftKw / Q_blower_motor_kWh_d 照常算出、加起来也对。
+                   必须独立校验接触器侧的进气温升与轴功自洽。 */
+              const dTb = t.contactorDT_blower, md2 = t.contactorMdot_kg_s;
+              if ((t.blowerShaftKw || 0) > 0.01 && Number.isFinite(dTb) && Number.isFinite(md2) && md2 > 0) {
+                const expectDT = (t.blowerShaftKw || 0) / (md2 * 1.006);
+                if (Math.abs(dTb - expectDT) > 0.15) {
+                  inv.push(tag + ' 能量守恒A3 接触器进气温升 ' + dTb.toFixed(2)
+                           + ' K ≠ 轴功推算的 ' + expectDT.toFixed(2)
+                           + ' K —— 风机轴功未真正接入接触器');
+                }
+              }
+            })();
+
+            // B. 车间显热闭合: 暖通负荷 = 围护 + 通风 − 室内产热
+            const rhsB = (t.Q_envelope || 0) + (t.Q_vent_sens || 0) - (t.Q_room_internal || 0);
+            if (!near(t.hvacSensibleKWhPerDay || 0, rhsB)) {
+              inv.push(tag + ' 能量守恒B 车间显热失配 '
+                       + ((t.hvacSensibleKWhPerDay || 0) - rhsB).toFixed(1)
+                       + ' kWh/d (室内产热 ' + (t.Q_room_internal || 0).toFixed(0) + ')');
+            }
+
+            // C. 水侧净热闭合
+            const rhsC = (t.Q_metab || 0) + (t.Q_equip || 0) + (t.Q_makeup_signed || 0)
+                       - (t.Q_pool_loss || 0) - (t.Q_evap_latent || 0)
+                       + (t.Q_dehum_to_water || 0) - (t.contactorNetKWhPerDay || 0);
+            if (!near(t.Q_net_to_water || 0, rhsC)) {
+              inv.push(tag + ' 能量守恒C 水侧净热失配 '
+                       + ((t.Q_net_to_water || 0) - rhsC).toFixed(1) + ' kWh/d');
+            }
+          })();
+
+          /* ④ v2.1 IRAS_V21_REGISTRY_ASSERT 登记完整性 (两条)
+             守恒断言只能约束【已进入体系的量】, 无法发现【压根没进体系的量】。
+             v2.0 的 Q_air_gain 孤儿项与 v2.1 蛋分气流漏登记都属后者。
+             本断言从【设备侧反向枚举】, 要求每个有气量/有功率的东西都必须登记。 */
+          (function () {
+            const eqR = r.eq;
+            if (!eqR) return;
+
+            // ── D. 气流登记完整性 ──
+            let streams = [];
+            try {
+              streams = (typeof collectAirStreams === 'function')
+                ? collectAirStreams(eqR, r.sim && r.sim.thermal) : [];
+            } catch (e) {
+              inv.push(tag + ' 登记D collectAirStreams 抛错: ' + (e && e.message));
+            }
+            const streamFlows = streams.map(function (s) { return s.airFlowM3h; });
+            Object.keys(eqR).forEach(function (k) {
+              const v = eqR[k];
+              if (!v || typeof v !== 'object' || Array.isArray(v)) return;
+              const af = v.airFlowM3h;
+              if (!(Number.isFinite(af) && af > 0)) return;
+              // (a) airPath 齐全
+              const p = v.airPath;
+              if (!p || p.source == null || p.sink == null || p.contactsWater == null) {
+                inv.push(tag + ' 登记D ' + k + ' 有气量 ' + af.toFixed(0)
+                         + ' m³/h 但 airPath 缺失/不完整');
+                return;
+              }
+              // (b) 必须出现在 collectAirStreams 输出里
+              const hit = streamFlows.some(function (f) { return Math.abs(f - af) < 0.01; });
+              if (!hit) {
+                inv.push(tag + ' 登记D ' + k + ' 有 airPath 但未进 collectAirStreams'
+                         + ' (' + af.toFixed(0) + ' m³/h 未参与接触器热湿交换)');
+              }
+              /* (c) v2.1 IRAS_V21_REVERSE_ASSERT: spec 功率必须在登记表里有对应条目。
+                 旧实现用 k.replace(/Spec$/,'Kw') 推导标量名, 推出的
+                 co2StripperKw / bfBlowerKw 【都不存在】⇒ Number.isFinite 为假 ⇒ 静默跳过,
+                 三个 spec 里只有 skimmerBlowerSpec 真正被校验过。
+                 现改为在登记表里按 path 前缀反查, 不依赖命名推导。 */
+              const pw = Number.isFinite(v.power) ? v.power
+                       : (Number.isFinite(v.blowerKw) ? v.blowerKw : null);
+              if (pw != null && pw > 0) {
+                const REGD = (typeof POWER_REGISTRY !== 'undefined') ? POWER_REGISTRY : {};
+                /* 双路匹配: (1) 登记 path 以本 spec 为前缀 (co2StripperSpec.blowerKw);
+                   (2) 或某条登记项的取值与本 spec 的功率相同 —— 覆盖
+                   skimmerBlowerSpec 这类「spec 在对象里、功率登记在顶层标量」的情形。 */
+                const hit = Object.keys(REGD).some(function (rk) {
+                  if (String(REGD[rk].path || '').indexOf(k + '.') === 0) return true;
+                  const rv = (typeof powerRegistryValue === 'function')
+                    ? powerRegistryValue(eqR, rk) : null;
+                  return rv != null && Math.abs(rv - pw) < 0.01;
+                });
+                if (!hit) {
+                  inv.push(tag + ' 登记D ' + k + ' 有功率 ' + pw.toFixed(2)
+                           + ' kW 但未在 POWER_REGISTRY 登记');
+                }
+              }
+            });
+
+            /* ── E. 电功率登记完整性 —— v2.1 IRAS_V21_REVERSE_ASSERT 改为反向枚举 ──
+               旧实现是正向扫描 (Object.keys + /Kw$|Power$/ 命名规则), 实测漏掉
+               co2StripperSpec.blowerKw (53.6 kW) 与 bfBlowerSpec.power (42.4 kW)
+               —— 嵌套在对象里, 后者还不匹配命名规则。
+               现以登记表为准反向枚举: 不依赖字段命名, 且能抓「登记了但没实现」。
+               正向扫描保留为补充, 用于抓「实现了但没登记」。 */
+            let pumpSum = 0;
+            const REG = (typeof POWER_REGISTRY !== 'undefined') ? POWER_REGISTRY : {};
+            const regKeys = Object.keys(REG);
+
+            // E1 反向: 表里每条都必须能在 eq 里取到值
+            regKeys.forEach(function (k) {
+              const reg = REG[k];
+              const v = (typeof powerRegistryValue === 'function')
+                ? powerRegistryValue(eqR, k) : null;
+              if (v == null) {
+                if (!reg.optional) {
+                  inv.push(tag + ' 登记E1 ' + k + ' (' + reg.label + ') 登记了路径 '
+                           + reg.path + ' 但取不到值 —— 登记表与实现不符');
+                }
+                return;
+              }
+              if (!reg.heatVia) {
+                inv.push(tag + ' 登记E1 ' + k + ' 未声明 heatVia (热去向)');
+              }
+              if (reg.memberOfTotalPump && v > 0) pumpSum += v;
+            });
+
+            // E2 正向: eq 顶层出现的电功率字段必须在表里 (抓「实现了但没登记」)
+            Object.keys(eqR).forEach(function (k) {
+              const v = eqR[k];
+              if (typeof v !== 'number' || !(v > 0)) return;
+              if (!/Kw$|Power$/.test(k)) return;
+              if (!REG[k]) {
+                inv.push(tag + ' 登记E2 ' + k + ' = ' + v.toFixed(2)
+                         + ' 未在 POWER_REGISTRY 登记 (新增用电设备须同步登记表)');
+              }
+            });
+            // totalPumpKw 必须等于声明成员之和 —— 防「加了泵忘了并入总功率」
+            if (Number.isFinite(eqR.totalPumpKw) && Math.abs(eqR.totalPumpKw - pumpSum) > 0.01) {
+              inv.push(tag + ' 登记E totalPumpKw ' + eqR.totalPumpKw.toFixed(2)
+                       + ' ≠ 登记成员之和 ' + pumpSum.toFixed(2)
+                       + ' (有泵未并入总功率, 或有非泵项被误并入)');
+            }
+          })();
+
+          /* ⑤ v2.1 IRAS_V21_WATER_ASSERT 水量与热质一致性 (三条)
+             拆股后盐平衡是【恒等式】, 断言转红即说明两股水流的分离被破坏。
+             F3 锁住「质与热同源」—— 若有人把净水汽量改成独立的经验系数, 立刻转红。 */
+          (function () {
+            const t = r.sim.thermal;
+            if (!t) return;
+            const TOLV = 0.01;   // m³/d
+
+            // F1 水量闭合
+            const ex = t.V_exchange_m3d, fr = t.V_fresh_makeup;
+            if (Number.isFinite(ex) && Number.isFinite(fr)) {
+              if (ex < -TOLV || fr < -TOLV) {
+                inv.push(tag + ' 水量F1 分股为负 (换水 ' + ex.toFixed(2)
+                         + ', 淡水 ' + fr.toFixed(2) + ')');
+              }
+              if (Math.abs((t.V_makeup || 0) - (ex + fr)) > TOLV) {
+                inv.push(tag + ' 水量F1 总补水 ' + (t.V_makeup || 0).toFixed(2)
+                         + ' ≠ 换水股+淡水股 ' + (ex + fr).toFixed(2));
+              }
+            }
+
+            // F2 盐平衡: 无净结露 ⇒ 盐度不漂
+            const su = t.V_pure_surplus || 0;
+            if (su <= TOLV && Math.abs(t.S_drift || 0) > 1e-6) {
+              inv.push(tag + ' 水量F2 无净结露却出现盐度漂移 ' + (t.S_drift || 0).toFixed(3) + '‰');
+            }
+            if (su > TOLV && (t.S_target || 0) > 0) {
+              const expect = t.S_target * ex / (ex + su);
+              if (Math.abs((t.S_steady || 0) - expect) > 1e-3) {
+                inv.push(tag + ' 水量F2 稳态盐度 ' + (t.S_steady || 0).toFixed(2)
+                         + ' ≠ 稀释式 ' + expect.toFixed(2));
+              }
+            }
+
+            /* F3 热质同源: 由导出的状态点独立重推净水汽量。
+               若将来有人把 netWater 改成独立的经验蒸发系数 (而非与 Δh 同源的
+               mdot × ΔW), 本条立刻转红 —— 这是本方案的核心护栏。
+               ⚠ 不要改回「潜热占比落在某区间」: 占比随进气温度大幅变化
+                 (青岛冬 48%、近等温 ~91%), 用文献单点值做区间会把正确结果判红。 */
+            /* F4 v2.1 IRAS_V21_REVERSE_ASSERT — 登记设备必须有 CAPEX 条目
+               同一模式已出现三次: v1.9.3 加药计量泵「清单有台数、投资 0 台」→
+               v2.1 车间暖通机组「凭空多出维持室温的能力却不花钱」→
+               v2.1 蛋分风机「有电费无投资」。前两次各写了注释总结, 但没变成断言。 */
+            (function () {
+              const REGC = (typeof POWER_REGISTRY !== 'undefined') ? POWER_REGISTRY : {};
+              const eqF = r.eq;                                 // ⚠ eqR 不在本闭包作用域
+              if (!eqF) return;
+              const items = (r.capex && r.capex.items) || [];
+              const names = items.map(function (x) { return String(x.name || ''); });
+              Object.keys(REGC).forEach(function (k) {
+                const reg = REGC[k];
+                if (!reg.capexVia) return;                       // null = 聚合值, 无独立设备
+                const v = (typeof powerRegistryValue === 'function')
+                  ? powerRegistryValue(eqF, k) : null;
+                /* 门槛须与 CAPEX 侧的选型门槛一致 (0.05 kW), 否则极小工况下
+                   设备小到不值得单列条目, 断言却仍要求它出现 —— edge_yield_tiny 即此情形。 */
+                if (v == null || !(v > 0.05)) return;            // 该设备本工况未启用或小于选型门槛
+                const hit = names.some(function (n) { return reg.capexVia.test(n); });
+                if (!hit) {
+                  inv.push(tag + ' 资本F4 ' + k + ' (' + reg.label + ', ' + v.toFixed(1)
+                           + ' kW) 有电功率但 CAPEX 明细中无对应条目');
+                }
+              });
+            })();
+
+            const md = t.contactorMdot_kg_s, wi = t.contactorW_in, wo = t.contactorW_out;
+            if (Number.isFinite(md) && Number.isFinite(wi) && Number.isFinite(wo) && md > 0) {
+              const expectKgD = md * (wo - wi) * 86400;
+              const gotKgD = t.contactorNetWater_kg_d || 0;
+              if (Math.abs(gotKgD - expectKgD) > 0.5) {
+                inv.push(tag + ' 水量F3 净水汽 ' + gotKgD.toFixed(1)
+                         + ' kg/d ≠ 由状态点重推的 ' + expectKgD.toFixed(1)
+                         + ' —— 质与热已不同源');
+              }
+            }
+          })();
+
           // ② 边界有限性: 遍历关键返回对象的所有数值字段, 不得出现 NaN/Infinity
           //    (P1/P4 那类"静默污染"问题的通用捕手)
           [['load', r.load], ['sim.thermal', r.sim.thermal], ['eq', r.eq],
@@ -13221,6 +14167,46 @@ function runSelfTest(quiet) {
       recomputeAll();
     } catch (e) { console.error('[iRAS selftest] 现场恢复失败:', e); }
   }
+
+  // ── v2.0.1 IRAS_V201_SELFTEST_META: 版本号一致性 ──
+  //   把「发版后人工核对 9 处版本号里该改的那 5 处」变成自动断言.
+  //   不触碰计算路径, 纯元数据校验.
+  (function () {
+    const bad = [];
+    try {
+      const v = 'v' + IRAS_META.version;
+      const meta = (sel) => {
+        const el = document.querySelector(sel);
+        return el ? (el.getAttribute('content') || '') : null;
+      };
+      // A. <title>
+      if (String(document.title || '').indexOf(v) < 0) {
+        bad.push('<title> 不含 ' + v + ': ' + String(document.title).slice(-40));
+      }
+      // B. SEO 静态串 (必须静态, 无法从 IRAS_META 注入)
+      [['og:title', 'meta[property="og:title"]'],
+       ['twitter:title', 'meta[name="twitter:title"]']].forEach(function (p) {
+        const c = meta(p[1]);
+        if (c == null) bad.push(p[0] + ' 缺失');
+        else if (c.indexOf(v) < 0) bad.push(p[0] + ' 不含 ' + v + ': ' + c.slice(-40));
+      });
+      // C. 页脚 / 面板 (由 applyMetaToDOM 注入; 元素缺失或注入失败则转红)
+      [['footerVersion', v], ['metaVersion', v],
+       ['metaReleaseDate', IRAS_META.releaseDate]].forEach(function (p) {
+        const el = document.getElementById(p[0]);
+        if (!el) bad.push('#' + p[0] + ' 元素缺失 (applyMetaToDOM 无处可写)');
+        else if ((el.textContent || '').trim() !== p[1]) {
+          bad.push('#' + p[0] + ' = "' + (el.textContent || '').trim() + '", 期望 "' + p[1] + '"');
+        }
+      });
+    } catch (e) {
+      bad.push('断言自身异常: ' + (e && e.message));
+    }
+    const row = { id: 'meta_version_consistency', ok: bad.length === 0 };
+    if (bad.length) row.invariants = bad.slice(0, 6);
+    row.ok ? out.pass++ : out.fail++;
+    out.results.push(row);
+  })();
 
   // ── 输出 ──
   const tag = out.fail === 0 ? '✅ 全部通过' : ('❌ ' + out.fail + ' 项失败');
@@ -13296,6 +14282,22 @@ function runSelfTest(quiet) {
   }
   return out;
 }
+
+/* v2.0.1 IRAS_V201_VERSION_SOURCE — 版本号单一事实源
+   页脚与「版本信息」面板此前是硬编码字面量, 每次发版靠人记得手改.
+   现改为从 IRAS_META 注入; HTML 里的字面量保留为 no-JS / SEO 回退,
+   并由自检项 meta_version_consistency 锁定二者一致 (漂移即 FAIL).
+   <title> / og:title / twitter:title 必须静态 (SEO), 仍是字面量, 同样受自检锁定. */
+function applyMetaToDOM() {
+  try {
+    const v = 'v' + IRAS_META.version;
+    const setTxt = (id, s) => { const el = document.getElementById(id); if (el) el.textContent = s; };
+    setTxt('footerVersion', v);
+    setTxt('metaVersion', v);
+    setTxt('metaReleaseDate', IRAS_META.releaseDate);
+  } catch (e) { console.warn('[iRAS] applyMetaToDOM 失败:', e && e.message); }
+}
+applyMetaToDOM();
 
 // URL 触发 —— 放在最后, 确保所有函数与初始渲染都已就绪
 (function () {
