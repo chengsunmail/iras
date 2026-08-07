@@ -2,7 +2,7 @@
 <html lang="zh-CN"><!-- IRAS_MANUAL_V2_0 --><!-- IRAS_MANUAL_CH29_V2_0 --><!-- IRAS_MANUAL_CH16_V2_0 --><!-- IRAS_DOC_FC_CONTACTOR_V2 -->
 <head>
 <meta charset="UTF-8">
-<title>iRAS 技术手册 v2.1 完整版</title>
+<title>iRAS 技术手册 v2.2 完整版</title><!-- IRAS_V22_MANUAL_VERSION -->
 <style>
 @page {
   size: A4;
@@ -280,6 +280,8 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     <a class="nv3" href="#item_v200_L" title="L. 已知限制与后续">L. 已知限制与后续</a>
         <a class="nv2" href="#rel_2_0_0_2_0_1" title="v2.0.0 → v2.0.1: 缺陷修复 · 版本号自检">v2.0.0 → v2.0.1: 缺陷修复 · 版本号自检</a>
     <a class="nv2" href="#rel_2_0_1_2_1" title="v2.0.1 → v2.1: 能量守恒修复 · 守恒断言落地">v2.0.1 → v2.1: 能量守恒修复 · 守恒断言落地</a>
+    <a class="nv2" href="#rel_2_1_2_2" title="v2.1 → v2.2: 工况覆盖补盲 · 登记表声明自校验">v2.1 → v2.2: 工况覆盖补盲 · 登记表声明自校验</a>
+    <a class="nv2" href="#rel_2_2_b2" title="v2.2 第二批: UI 审计 · 字段范围单一事实源">v2.2 第二批: UI 审计 · 字段范围单一事实源</a>
     <a class="nv2" href="#h255" title="目录">目录</a>
     <a class="nv2" href="#ch1" title="第 1 章循环水养殖概述">第 1 章循环水养殖概述</a>
     <a class="nv3" href="#sec1_1" title="1.1 什么是循环水养殖 (RAS)">1.1 什么是循环水养殖 (RAS)</a>
@@ -403,7 +405,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     <a class="nv4" href="#sec15_7_3" title="15.7.3 修正前后对照 (1000 t/yr 大西洋三文鱼)">15.7.3 修正前后对照 (1000 t/yr 大西洋三…</a>
     <a class="nv3" href="#sec15_8" title="15.8 常见故障">15.8 常见故障</a>
     <a class="nv2" href="#ch16" title="第 16 章热负荷与温控 v1.2 完全重写">第 16 章热负荷与温控 v1.2 完全重写</a>
-    <a class="nv3" href="#sec16_0" title="16.0 当前热平衡模型 (v2.1) ★ 先读本节">16.0 当前热平衡模型 (v2.1) ★</a>
+    <a class="nv3" href="#sec16_0" title="16.0 当前热平衡模型 (v2.1 起) ★ 先读本节">16.0 当前热平衡模型 (v2.1 起) ★</a>
     <a class="nv3" href="#sec16_1" title="16.1 项目级常量管理 (v1.2)">16.1 项目级常量管理 (v1.2)</a>
     <a class="nv3" href="#sec16_2" title="16.2 补水温差">16.2 补水温差</a>
     <a class="nv3" href="#sec16_3" title="16.3 板式换热回收">16.3 板式换热回收</a>
@@ -603,30 +605,36 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <div class="cover">
   <div style="font-size:14pt; color:#666; margin-bottom:8pt;">iRAS</div>
   <div class="title">循环水养殖系统 (RAS)<br>工程设计技术手册</div>
-  <div class="subtitle">完整版 · v2.1</div>
-  <div class="version">版本: v2.1 · 2026 年 8 月</div>
+  <div class="subtitle">完整版 · v2.2</div>
+  <div class="version">版本: v2.2 · 2026 年 8 月</div>
   <div style="font-size:11pt; color:#666; margin-top:20pt;">
     物理框架重构 · 文献校准 · 工业实测对齐<br>
     全局气候 + 围护 · 多模块并联 · P&amp;ID 自动生成 · 投资财务评价<br>
     可研报告生成 · 站级设备 · UI 重构 · 工程逻辑精化<br>
     氧锥拓扑建模 · 系统排水重构 · 全面审计修复<br>
     碳酸盐平衡 · 液氧消耗口径 · 蒸发系数量纲 · 通风口径 · 机械除湿机<br>
-    <strong>部分自然冷却 · 年均工况数值积分 · 比电耗与热泵电费出口 · 无头测试套件</strong>
+    部分自然冷却 · 年均工况数值积分 · 比电耗与热泵电费出口 · 无头测试套件<br>
+    热平衡架构重构 · 气液接触器 · 车间显热能量守恒 · 守恒类断言
+    <!-- IRAS_V22_MANUAL_OVERVIEW -->
+    <br>
+    <strong>工况覆盖补盲 · 登记表声明自校验 · UI 审计 · 字段范围单一事实源</strong>
   </div>
   <div class="footer">
     海南登登科技咨询有限公司 · 孙程<br>
     6881509@qq.com · iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras<br><br>
-    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v2.0.0 (2026 年 7 月) 全部内容</span>
+    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v2.2 (2026 年 8 月) 全部内容</span>
   </div>
 </div>
 
 <!-- ============ 版本演进说明 ============ -->
 <div class="chapter">
-<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v2.0.0)</h1>
+<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v2.2)</h1>
 
-<p>iRAS 项目从 2026 年初首发以来, 经历了 8 次重大版本升级, 每次都基于公开文献或工业项目实测数据校准, 不是经验调整。
-本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + <strong>v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机)</strong> 的全部内容,
+<p>iRAS 项目从 2026 年初首发以来, 经历了 <strong>11 次</strong>重大版本升级, 每次都基于公开文献或工业项目实测数据校准, 不是经验调整。
+本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机) + v1.9.3 (基线对齐与验证自动化) + <strong>v2.0.0 (热平衡架构重构 + 气液接触器)</strong> + <strong>v2.0.1 / v2.1 (缺陷修复 + 车间显热能量守恒 + 守恒类断言)</strong> + <strong>v2.2 (工况覆盖补盲 + 登记表声明自校验 + UI 审计 + 字段范围单一事实源)</strong> 的全部内容,
 是 RAS 工程设计的完整参考。</p>
+
+<p style="font-size:9.5pt; color:#888;">〔v2.2 注: 本段此前停在 v2.0.0 —— v2.1 与 v2.2 两批工作都只加了下方的版本演进章节, 而没有更新这段总览。同一事实 (手册覆盖到哪个版本) 散布于封面副标题、封面页脚、本章标题与本段共四处, 改一处不改其余。已加入 t21 三文档判据, 下次漏改会转红。〕</p>
 
 <!-- IRAS_V21_RELEASE_ORDER: 本区段按升级顺序排列, 新增版本请【追加到末尾】,
      不要前插 —— 前插正是 v1.7→v1.9 之后出现降序断裂的原因。 -->
@@ -1057,7 +1065,7 @@ v1.7 主要意义不在于"加了多少功能", 而在于把工具从"演示原�
 <!-- IRAS_V21_V17_BASELINE_MOVED -->
 📌 <b>历史数据</b>：本章记录的是 <b>v1.7 当时</b>的成本基线，用于说明氧锥 mainline / bypass
 两种拓扑的差异。这些数字<b>已被 v1.9 / v1.9.2 / v1.9.3 / v2.0.0 / v2.1 多次重算覆盖</b>，
-<b>不代表当前版本</b>。当前基线见「v2.0.1 → v2.1」章节与主页自检基线
+<b>不代表当前版本</b>。当前基线见「v2.1 → v2.2」章节与主页自检基线
 （<code>?selftest=1</code>）。结论层面的 mainline vs bypass 对比仍然成立。
 </p>
 
@@ -2303,6 +2311,58 @@ U_墙/顶/地/窗四值可调，含 4 档保温预设（温室 3.5 / 标准车�
 </div>
 
 <div class="chapter">
+<!-- IRAS_V22_MANUAL_REL -->
+<h2 id="rel_2_1_2_2">v2.1 → v2.2: 工况覆盖补盲 · 登记表声明自校验 <span class="reldate">v2.2</span></h2>
+
+<p>源于<b>第三方第六轮审计</b>。审计核心判断:「断言的质量已超过工况的覆盖面 —— 下一步的收益在加工况, 不在加断言」。本版照单全收: 自检 17 → <b>20 项</b>, 13 条数值基线重算 (|Δ| ≤ 0.02 元/kg, 符号随工况方向翻转)。</p>
+
+<h3>A. 三条配置边界工况</h3>
+<p>此前 13 条数值工况全部「mainline 拓扑 + 脱气塔开启 + 纯氧增氧」。新增 <code>edge_no_degasser</code> / <code>edge_bypass</code> / <code>edge_air_aeration</code> 三条配置边界工况, 只跑不变量断言、不比数值。落地顺序刻意为<b>先加工况 (转红) 再修缺陷 (转绿)</b> —— 红→绿转换即工况有效性的负对照。</p>
+
+<h3>B. 蛋分风机 CAPEX 解嵌套 + ΔT/mdot 不动点迭代</h3>
+<p><b>CAPEX 嵌套</b>: 蛋分风机条目原嵌在脱气塔 <code>if</code> 条件分支两层内, 脱气关闭时蛋分照常运行照常计费、投资却消失 —— F4 目标模式第四次出现, 且在修复它的同一次提交里。现与各独立设备并列。</p>
+<p><b>ΔT/mdot 不自洽</b>: 风机温升按冷密度算、焓流按热密度算, 丢失 (1−mdot/mdot₀) 份轴功 —— 默认工况 1.2%, 脱气关闭时 ΔT≈30 K、丢 10.1%。现做<b>不动点迭代</b>解联立至 mdot·c<sub>p</sub>·ΔT ≡ P<sub>shaft</sub>, 附录 B 的 <code>dT_blower</code> / <code>mdot</code> 自此严格同一状态点 (即「mdot 自洽」)。</p>
+
+<h3>C. 轴功 η 逐台加权</h3>
+<p>旧口径 ΣkW × 0.57 与各风机效率参数脱节 (用户调高效率, 模型反而认为进气流的热更少)。物理上 kW<sub>i</sub>×η<sub>i</sub> = Q·Δp 与 η 无关, η 只影响电机损失分成 —— <b>η 逐台加权</b>自动恢复该性质, η 与各功率公式严格同源 (co2 读 co2BlowerEfficiency, bf 取公式内常数 0.60, skimmer 读 skimmerBlowerEta, 鱼池增氧读 tankAirBlowerEfficiency)。</p>
+
+<h3>D. 第四台风机接入 + 断言 E2b</h3>
+<p>空气曝气模式的鱼池<b>增氧鼓风机 K-101 此前登记表与气路都看不见</b> (计费有、CAPEX 有、热去向无、气路无) —— 与 Q_air_gain (v2.0)、蛋分气流 (v2.1)、风机轴功 (第五轮) 同族的第四次逃逸, 机制是关键功率藏在混合数值与格式化字符串的展示对象里。现全量接入 (airFlowM3h + airPath + 登记表 + 轴功加权)。新增断言 <b>E2b 递归扫 *Spec 子对象</b>封住该逃逸类; 治本方案 registerDevice 工厂化已立项 v2.3。</p>
+
+<h3>E. capexVia 精确名称数组 + capexMinKw</h3>
+<p><code>capexVia</code> 由<b>正则改精确名称数组</b>: 旧正则假阴性 (删掉真目标仍绿) 与假阳性 (bypass 下 F4 四阶段误报) 双向皆错。五台支路泵显式声明共享「支路泵合计」聚合条目。精确化随即曝光被掩盖四版的存量不一致 —— BF/脱气塔风机 CAPEX 选型门槛 0.5 kW vs F4 的 0.05 kW, 现以 <code>capexMinKw</code> 显式声明进登记表, 与 CAPEX 侧选型门槛同源。</p>
+
+<h3>F. 断言 G: 登记表声明自校验</h3>
+<p>堵 v2.1 明示的最后盲区 (「billedVia 可以指向不存在的成本字段而断言不会发现」)。<b>断言 G</b>1 落地当天抓到 5 条活体: 声明写的是内部变量名 <code>*CostDaily</code>, cost 导出面是 <code>*CostMax/*CostAvg</code> —— 与第六轮审计连错两轮的 <code>dehumCostDaily</code> 同一个坑 (billedVia 声明必须真实存在于导出面, 设备活跃时非零)。G2 防同一 CAPEX 条目被重复认领。</p>
+
+<h3>G. 其他</h3>
+<p><b>skipClimate 删除</b>: 全库零调用点的死参数 (restoreState 不经 loadStagesFromDB), 为不存在的调用方准备的开关只会在被忘传时静默伤人。<b>渲染与计算解耦</b>: 渲染抛错此前被计算 catch 吞掉伪装成「计算异常」并销毁结果, 现独立捕获、标注「渲染异常, 计算结果有效」—— 负对照双向实测 (修复前渲染故障使 13 条数值全灭为 0, 修复后零影响)。<b>审计误报驳回</b>: NH₃ 阈值与 Ω 告警两条「六轮未动」为第四轮已驳回误报的复发 (v1.9.3 起在位); 接触器进气节点不可选为记录在案的设计决策。</p>
+
+<!-- IRAS_V22_B2_MANUAL -->
+<h2 id="rel_2_2_b2">v2.2 第二批: UI 审计 · 字段范围单一事实源 <span class="reldate">v2.2</span></h2>
+
+<p>源于本版的<b>首次 UI 专项审计</b>。与第一批的登记表工作是同一个模式在 UI 侧的实例。自检 20 → <b>21 项</b>, 13 条数值基线<b>逐位不变</b> (纯重构)。</p>
+
+<h3>A. 填 0 → 界面回显默认值 → 输入被静默丢弃</h3>
+<p>用户填 0 → 模型收 0 → 重渲染后输入框显示默认值 (模板把 0 当 falsy) → 再改任何别的字段, 全量读回时假显示值覆盖 proc, 用户设置无声消失。<b>陷阱在三层</b> (渲染 / 读取 / 消费), <b>只修一层反而更糟</b>: 实测只修渲染侧会造成「界面诚实显示 0、模型仍用默认值」, 而原状态至少界面与模型口径一致。三层必须同批落地。</p>
+
+<h3>B. FIELD_SPEC —— 范围的单一事实源</h3>
+<p>取值约定此前散布四处 (默认值表 / 渲染模板 / 读取侧钳制 / 消费侧兜底), <b>实测已漂移四条</b>: <code>co2StripperEff</code> 三处三值 (65/65/75)、<code>co2StripperGtoL</code> 事实源 v2.0 改 3→5 而副本停在 3、<code>co2PackingHeight_m</code> 1.5 vs 1.0、<code>climateRegion</code> 事实源与消费侧不同。这些副本平时是永不触发的死代码, 故漂移无人发现 —— 直到用户填 0 让它们复活。</p>
+<p><code>FIELD_SPEC</code> 只管范围 (min/max/step/clamp), 默认值仍归 <code>PROCESS_DEFAULTS</code>, 由断言 H 保证对齐。clamp 取 UI 范围与原钳制的<b>并集</b> —— 机械规则, 不收紧现有能力, 无回归风险。同时消灭: UI 范围与代码钳制不一致 (7 字段)、22 字段无钳制、同字段多处渲染矛盾 (3 处)。</p>
+
+<!-- IRAS_V22_B2_MANUAL_E -->
+<h3>C2. 覆盖扩展与 clamp 规则修正</h3>
+<p>第一版 <code>FIELD_SPEC</code> 只收了原本带 <code>min/max</code> 属性的 34 个字段, 另有 <b>22 个字段完全无钳制</b> —— 实测 <code>mainPumpEta=0</code> 使主泵报 1383.6 kW (成本 +6.6 元/kg)、<code>VTR20=0</code> 使成本 +12.0 元/kg, <b>全部有限无 NaN</b>: 危害是「看起来正常的错误数字」, 会原样进可研报告, 比 NaN 难发现得多。现已全部接入 —— 依据取自各字段自己的 <code>title</code> 提示 (22 条无一缺失地写明了工程范围, 只是从未落到属性上)。本批 min/max 取 tooltip 的工程范围, clamp 取更宽的物理边界 (第一批那些字段的 UI 范围本身就是硬边界, 本批多为典型值区间, 当硬边界会挡掉合法探索)。</p>
+<p><b>并集规则的缺陷</b>: 第一批的 <code>clamp = UI 范围 ∪ getNumClamped</code> 漏了第三个来源 —— 消费处的 <code>Math.max(x, 下限)</code>。它与前两者性质不同: 前两者是<b>允许区间</b> (并集 = 不收紧能力), 后者是<b>物理硬保护</b> (必须遵守而非并入)。后果: <code>co2BlowerEfficiency</code> 的 clamp 是 [0,100] 而消费处写着 <code>Math.max(η/100, 0.3)</code> —— 用户填 0 时 proc 存 0、界面显示 0、<b>模型实际用 30%</b>, 而 t22 一直报「保真 ✅」(它检查的三个量全在 proc 层, 看不见消费处)。规则修正为 <code>clamp_lo = max(消费处硬下限, 原下限)</code>, 并撤除全部 8 处隐式兜底。至此 <b>66 个输入字段零裸奔</b>。</p>
+<p><b>删除死控件 sourceTemp</b>: 双证据确认 —— 静态全库无消费点、动态填 -99 结果逐位不变。源水温自 v1.2 起归全局气候 (<code>T_source_annual</code> 等), 本字段是当时未清理的残留。给死控件加钳制等于承认它还活着, 故删而不修, 与第一批删 <code>skipClimate</code> 同一原则。</p>
+
+<h3>C3. 物质平衡实测 (本版仅验证, 未建断言)</h3>
+<p>发布前对四条基本物质平衡做了产品路径实测 (三文鱼 1000 t): <b>氮 (TAN) 残差 0.08%、硝酸盐 0.00、CO₂ 0.13% (即换水那份)、TSS −1.8%</b> —— 前三条闭合, 说明稳态方程是自洽解出的。TSS 的 −1.8% 四阶段同号且随规模成比例, 但<b>未确证为模型缺陷</b> (更可能是核算漏了排污股)。</p>
+<p>⚠ 需要明确记录的是: 现有断言覆盖能量 (A1/A2/A3/B/C)、水量 (F1/F2/F3)、登记 (D/E/G)、资本 (F4), <b>没有一条物质平衡断言</b>。即今天闭合是因为公式恰好写对, 不是因为有东西防止它写错。<b>氧平衡、碱度平衡、碳酸盐体系 (carbonate.js 与主模型的交叉一致性) 三项连"今天是否闭合"都未测过。</b>已列为下一版首要工作。</p>
+
+<h3>C. 断言 H 与判据盲区</h3>
+<p>新增自检项 <code>field_spec_consistency</code> (H1 渲染与表逐位一致 / H2 clamp ⊇ UI 范围 / H3 默认值存在且在范围内)。⚠ 记一条判据盲区: <code>t22</code> 检查的量全在 proc 层, 消费侧的 <code>||</code> 不影响 proc, 故 t22 结构上覆盖不了第三层 (负对照实测无反应), 另补静态判据 <code>t23</code>。<b>一条判据绿了不等于该层被覆盖。</b></p>
+
 <h2 id="ch1"><span class="chapter-num">第 1 章</span>循环水养殖概述</h2>
 
 <h3 id="sec1_1">1.1 什么是循环水养殖 (RAS)</h3>
@@ -3590,7 +3650,9 @@ P_bypass (kW) = Q_bypass × ρ × g × o2BypassPumpHead_m / (3.6 × 10⁶ × o2B
   全投资 IRR      14.90%             17.31%   (+2.41%)
 </div>
 
-<h3 id="sec15_6">15.6 air 模式增氧 — K-101 鱼池增氧鼓风机 <span class="tag-new">v1.7 新增</span></h3>
+<h3 id="sec15_6">15.6 air 模式增氧 — K-101 鱼池增氧鼓风机 <span class="reldate">v2.2 补气路登记</span> <span class="tag-new">v1.7 新增</span></h3>
+
+<p style="background:#e8f5e9; padding:6pt; border-left:4px solid #43a047;">📌 <b>v2.2：K-101 全量接入热平衡与气路登记。</b>v1.7 加入本机时只做了选型、计费与 CAPEX，<b>热去向与气路登记都缺</b> —— 它鼓的空气直接打进鱼池水体，比脱气塔更无疑问地接触水，却从未进入 <code>collectAirStreams</code>，其电功率也不在热平衡的任何一侧。这与 v2.0 的 <code>Q_air_gain</code> 孤儿项、v2.1 的蛋分气流、第五轮审计的风机轴功<b>完全同族，是第四次</b>。逃逸机制值得记一笔：32.3 kW 藏在一个混合了数值与格式化字符串的展示对象（<code>aerationSpec</code>）里，所有「数值字段 + 命名规则」的扫描器集体失明。<br>v2.2 补齐四件套：<code>airFlowM3h</code> 归一单位 + <code>airPath</code>（OUTDOOR→OUTDOOR，contactsWater，与气路拓扑 A5 一致）+ <code>POWER_REGISTRY</code> 登记（<code>tankAirBlowerKw</code>）+ 并入轴功逐台加权。新增断言 E2b 递归扫 <code>*Spec</code>子对象封住该逃逸类。</p>
 
 <p>v1.7 之前 air 模式 (空气曝气) 只有 K-302 (BF 曝气风机), <strong>缺鱼池主增氧风机</strong>。
 温水鱼种 (罗非鱼 / 鳗鱼 / 对虾) 的大规模 RAS 设计无法用工具自动生成 — 而这是 80%+ 中国 RAS 项目的实际场景。</p>
@@ -3697,7 +3759,8 @@ v1.9.1 后这两个约束分别由两个口径给出 — 蒸发器按 <code>o2Pe
 v1.1 用单点能量平衡估算热泵负荷, 忽略车间空气节点。v1.2 引入<strong>双节点 Picard 迭代</strong>同时求解空气热平衡 + 空气湿平衡。本章给出基础理论框架, 详细求解过程见第 29 章。<br><br><span style="background:#c0392b;color:#fff;padding:1pt 5pt;border-radius:3px;font-size:9pt;">v2.0 已废止</span> <b>⚠ 上述双节点求解器已在 v2.0.0 中删除</b>。本章 16.1–16.4 的围护 / 蒸发 / COP 理论仍然有效, 但 16.5 描述的求解方式不再反映当前行为。<b>当前模型见本章开头的 16.0「当前热平衡模型 (v2.1)」</b>与第 29 章章首说明。
 </div>
 
-<h3 id="sec16_0">16.0 当前热平衡模型 (v2.1) ★ 先读本节</h3>
+<h3 id="sec16_0">16.0 当前热平衡模型 (v2.1 起) ★ 先读本节</h3>
+<p style="font-size:9.5pt;color:#888;">〔v2.2 注: 热平衡架构未变。v2.2 对本章相关的两处数值级修正 —— 风机温升 ΔT 与 mdot 不动点自洽、轴功 η 逐台加权 —— 见「v2.1 → v2.2」版本演进章 B/C 节。〕</p>
 
 <p><b>本节是当前有效的模型描述。</b> 第 29 章与本章 16.5 保留的是 v1.2–v1.9.3 的双节点求解器推导，
 已于 v2.0.0 删除，仅作历史参考。</p>
@@ -3737,18 +3800,48 @@ Q_pool_loss ≡ 0           ← 温差为零，池面显热消失</pre>
     <td>v2.1（v2.0 删空气节点时成孤儿，带走 HVAC 显热负荷的 41.8%）</td></tr>
 <tr><td><code>Q_dehum_to_room</code></td><td>除湿冷凝热（仅 <code>dehumHeatDest==='indoor'</code>）</td>
     <td>v2.1（注释仍写「已在 T_room 迭代中计入」，而该迭代已删除）</td></tr>
-<tr><td><code>Q_blower_motor_kWh_d</code></td><td>三台风机的电机损失</td>
-    <td>v2.1（第五轮审计 P0）</td></tr>
+<tr><td><code>Q_blower_motor_kWh_d</code></td><td>四台风机的电机损失（v2.2 起含 K-101）</td>
+    <td>v2.1（第五轮审计 P0）· v2.2 逐台加权</td></tr>
 </table>
 
-<h4>16.0.4 风机热：轴功进气流，电机损失进车间</h4>
+<h4>16.0.4 风机热：轴功进气流，电机损失进车间 <span class="reldate">v2.2 修订</span></h4>
+<!-- IRAS_V22_MANUAL_FORMULA -->
 
-<p>三台风机（脱气塔 + BF 曝气 + 蛋分供气，三文鱼 1000 t 成鱼期合计约 <b>107.7 kW</b>）
-的电功率按 η = 0.57 拆两份：</p>
+<p><b>四台风机</b>（脱气塔 + BF 曝气 + 蛋分供气 + 鱼池增氧 K-101；前三台在纯氧模式下
+运行，K-101 为空气曝气模式专属。三文鱼 1000 t 成鱼期前三台合计约 <b>107.7 kW</b>）
+的电功率<b>逐台按各自效率</b>拆两份：</p>
 
-<pre>轴功 P_shaft = P_elec × η        → 抬高接触器进气温度
-    ΔT = P_shaft / (mdot × c_p)   青岛设计冬 −7 → −3.5 °C
-电机损失 P_elec × (1−η)          → Q_room_internal</pre>
+<pre>轴功   P_shaft = Σ (P_elec,i × η_i)     → 抬高接触器进气温度
+电机损失 P_elec,total − P_shaft          → Q_room_internal
+
+η_i 与各风机自身的功率公式同源：
+   脱气塔    proc.co2BlowerEfficiency   (默认 60%)
+   BF 曝气   0.60                       (bfBlowerPower 公式内常数)
+   蛋分供气  proc.skimmerBlowerEta       (默认 55%)
+   K-101     proc.tankAirBlowerEfficiency (默认 60%)</pre>
+
+<p style="background:#e8f5e9; padding:6pt; border-left:4px solid #43a047;">
+📌 <b>v2.2 修订一：由 ΣkW × 0.57 改为逐台加权。</b>旧口径与各风机自身的效率参数脱节 ——
+用户把 <code>co2BlowerEfficiency</code> 从 30 调到 90，电耗 174→95 kW，而模型轴功恒按 0.57 折，
+<b>方向反直觉</b>（效率越高，模型认为进气流的热越少）。物理上
+kW<sub>i</sub> × η<sub>i</sub> = Q·Δp 即气侧有用功，与 η 无关；η 只该影响电机损失分成。
+逐台加权自动恢复该性质。</p>
+
+<p>进气温升 ΔT 与质量流量 mdot <b>互为因变量</b>（温升改变密度、密度改变 mdot），
+须解联立：</p>
+
+<pre>   mdot · c_p · ΔT = P_shaft
+   mdot = V̇_air · ρ(T_air + ΔT) / 3600        ρ = 353/(T+273.15)
+
+解法：不动点迭代，压缩因子 ≈ ΔT/T_abs ≈ 0.1，6 次后误差 &lt; 1e-4 K。
+实测：青岛设计冬进气 −7 → −3.5 °C。</pre>
+
+<p style="background:#fff8e1; padding:6pt; border-left:4px solid #f59e0b;">
+⚠ <b>v2.2 修订二：ΔT 与 mdot 必须取同一密度。</b>旧实现 ΔT 按冷密度 mdot₀ 算、
+焓流按热密度 mdot 算，注入气流的热 = P_shaft × (mdot/mdot₀)，
+<b>丢失 (1 − mdot/mdot₀) 份轴功</b> —— 默认工况 1.2%（藏在断言 A3 的 0.15 K 容差内），
+脱气塔关闭时风量骤小、ΔT ≈ 30 K，<b>丢 10.1%</b>。由边界工况 <code>edge_no_degasser</code>
+触发 A3 显形。修复后 mdot · c_p · ΔT ≡ P_shaft 恒等成立。</p>
 
 <p><b>⚠ 加热是等湿过程</b>：绝对含湿量 <code>W_in</code> 不随温升变化，变的是相对湿度。</p>
 
@@ -5623,7 +5716,7 @@ V_makeup_actual = V_makeup − V_condense_recovery
         <b>⚠ 勿用文献单点值当区间断言 —— 会把正确结果判红</b></td>
     <td>青岛冬 48% / 海南夏更高</td></tr>
 <tr><td><code>blowerElecKw</code> / <code>blowerShaftKw</code> <span class="tag-new">v2.1</span></td>
-    <td>三台风机（脱气 + BF 曝气 + 蛋分供气）的电功率与轴功（η=0.57）。
+    <td>四台风机（脱气 + BF 曝气 + 蛋分供气 + 鱼池增氧 K-101）的电功率与轴功。<br>v2.2 起轴功 = Σ(kW_i × η_i) 逐台加权，不再用统一的 η=0.57。
         轴功抬高接触器进气温度，电机损失进 <code>Q_room_internal</code>。
         <b>⚠ v2.1 第五轮审计前，这三台的热【完全没有去处】</b></td>
     <td>三文鱼成鱼期 57.5 / 32.8 kW</td></tr>
