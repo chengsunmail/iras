@@ -115,7 +115,26 @@
      3) 本工具宣传"离线可用的单文件", 但断网时样式与图表会全失.
      建议: 把 Tailwind 编译产物与 chart.js 内联进本文件 (已 7xx KB, 增量可接受),
            彻底去掉 CDN 依赖, 同时解决 SRI、FOUC 与离线三个问题. -->
+<!-- IRAS_V22_CDN_HARDEN: Tailwind Play CDN 按页面内容【动态生成】响应体,
+     SRI 哈希无法预先计算 —— 加了必然阻断加载, 这是技术限制而非疏忽。
+     若需 SRI, 须改为构建期用 Tailwind CLI 产出静态 CSS (构建体系变更)。
+     ⚠⚠ 【不要加 crossorigin】: 它会让浏览器以 CORS 模式请求脚本, 若该 CDN
+        不返回 Access-Control-Allow-Origin 头, 脚本【被阻止执行】——
+        Tailwind 完全不加载, 整页失去所有样式, 变成裸 HTML。
+        v2.2 曾加过一次并造成此后果, 已撤销。收益 (SRI 前置条件) 接近于零,
+        风险是整站样式崩掉 —— 这笔账任何时候都不划算。 -->
 <script src="https://cdn.tailwindcss.com"></script>
+<!-- IRAS_V22_CDN_HARDEN: chart.js 是固定版本文件, 【可以且应该】加 SRI。
+     ⚠ TODO: 补 integrity="sha384-…"。本补丁不填, 因为当前环境拿不到真实哈希,
+        而编造哈希会让浏览器拒绝执行脚本 —— 图表直接消失, 比没有 SRI 更糟。
+        联网环境下一行命令取真值, 输出直接粘进 integrity:
+          curl -s https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js \
+            | openssl dgst -sha384 -binary | openssl base64 -A
+        填入后应形如:
+          <script src="…chart.umd.min.js" integrity="sha384-XXXX" crossorigin="anonymous">
+     ⚠ crossorigin 必须与 integrity 【同时】加 —— 单独加 crossorigin 只增加
+       CORS 失败的风险而无任何收益 (Tailwind 那行的教训)。故此处也暂不加,
+       待补 integrity 时两者一起上。 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -1289,13 +1308,99 @@
         <p class="mt-2 text-slate-400 text-sm">iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 碳酸盐平衡求解 (pH/NH3/方解石饱和度, 对照 PyCO2SYS 验证); v1.9.1-v1.9.2 修正液氧/蒸发/通风/泵功率口径, 新增机械除湿机; v1.9.3 自然冷却改为容量判据 (支持部分自然冷却) 与年均工况 24 点数值积分。v2.0 热平衡架构重构 (车间温度改为暖通维持, 首次计入气液接触器热湿交换); v2.1 修复车间显热能量守恒并补齐守恒类断言; v2.2 补配置边界工况 (脱气关/旁路/空气曝气) 并建立登记表声明自校验。1000t 三文鱼综合成本 38.88 元/kg (工艺运行成本) / 43.95 元/kg (企业全成本), 青岛冬工况。</p>
       </section>
 
+      <!-- IRAS_V22_DOC_STRUCT_IDX -->
+      <h2 class="text-2xl font-bold text-emerald-300 border-b-2 border-emerald-600 pb-2 mt-8">⚙️ v2.2 发布后持续加固</h2>
+      <p class="mt-2 mb-4 text-slate-400 text-sm">以下三节发生在 v2.2 发布<strong>之后</strong>, 不改变 v2.2 的功能范围, 只增加护栏与修正 —— 依次为: 碳酸盐接口一致性与 a11y/CDN、物质平衡断言 M、第三方独立复核处置。v2.2 本体的两批发布内容见下方「v2.2 第二批」与「v2.2 升级说明」。</p>
+
+      <!-- IRAS_V22_IFACE_A11Y_DOC -->
+      <h2 class="text-xl font-bold text-emerald-400 border-b border-emerald-700/50 pb-2">🔗 碳酸盐接口一致性 · a11y · CDN 加固</h2>
+
+      <h3 class="mt-4 font-bold text-emerald-300">A. 碳酸盐模块的【接口】验证（此前只验过模块本身）</h3>
+      <p class="mt-2 text-slate-400 text-sm">第三方复核已用 PyCO2SYS 1400 工况验证 <code>carbonate.js</code> <strong>模块本身</strong>（淡水 pH 一致到 8.88e-16）。但主模型与它之间隔着一层<strong>单位换算</strong>，那一层从未验证：<code>TA = 碱度/50043/ρ</code>、<code>CO₂ = 浓度/44010/ρ</code>（mg/L ↔ mol/kg-SW），三个因子任一错，pH 与 Ω 都会偏而无人察觉。</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><strong>I1 往返自洽</strong> — <code>solveAlk(pH*) → solve(TA)</code> 应还原 pH*。240 点网格（S∈{0,15,30,35} × T∈{10…30} × pH*∈{6.5…8} × CO₂∈{3,10,25}），<strong>最大 |ΔpH| = 0</strong>，零抛错</li>
+        <li><strong>I2 换算层</strong> — 手工按 50043 / 44010 / ρ 复算，pH 与 Ω 与模型<strong>逐位相同（Δ = 0）</strong></li>
+        <li><strong>I3 双副本</strong> — <code>work/carbonate.js</code> 与 index 内联块，20 个函数、63 个平衡常数，归一化后<strong>md5 完全相同</strong></li>
+      </ul>
+      <p class="mt-2 text-xs text-slate-500">📌 真正的风险不是「当前是否一致」（是），而是<strong>将来会不会漂移</strong> —— 同一份求解器存在两处，没有任何东西阻止有人只改一处。I3 即为此而设。</p>
+
+      <h3 class="mt-4 font-bold text-emerald-300">B. a11y：65 处 label↔input 关联 + 12 个表格横向滚动</h3>
+      <p class="mt-2 text-slate-400 text-sm">UI 审计发现 163 个 <code>&lt;label&gt;</code> 中<strong>零个</strong>有 <code>for</code>，输入框也全部无 <code>id</code>。后果不止屏幕阅读器：<strong>点击标签无法聚焦输入框</strong> —— 这是所有人都损失的常规交互，而工艺参数标签只有 10px，点击目标本就很小。现按 <code>f_&#36;{idx}_字段名</code> 生成 id 并关联<!-- IRAS_V22_TPL_ESCAPE_FIX: 原写 ${'{'}…{'}'} (JS 模板转义), 但帮助区是静态 HTML, 会原样显示为乱码。改用 HTML 实体 &#36; 表示 $。 -->。另 31 个表格中 12 个未包 <code>overflow-x-auto</code>，窄屏撑破布局，已全部包裹（已验证表格无嵌套，配对包裹安全）。</p>
+      <p class="mt-2 text-slate-400 text-sm">新增自检三条：工艺参数输入框必须有 id、<code>for</code> 不得悬空、表格必须可横向滚动。</p>
+      <p class="mt-2 text-xs text-slate-500">📌 实施过程的教训：正则版本改了三轮仍漏 1 处 —— 查明是 <strong>Python <code>re</code> 在超长 <code>title</code> 属性上回溯超限后【静默放弃匹配】</strong>（不报错，只是不匹配）。改为线性扫描后一次到位。这类「工具自己悄悄少做了事」与 t21 三次扩展全部落空是<strong>同一形态</strong>，而两次都是<strong>断言先报出数目不对</strong>才发现的。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">C. CDN 加固：能做的做，不能做的说清楚</h3>
+      <p class="mt-2 text-slate-400 text-sm">两个 CDN 资源性质不同：<strong>Tailwind Play CDN 按页面内容动态生成响应体</strong>，SRI 哈希无法预先计算 —— 加了必然阻断加载，这是<strong>技术限制而非疏忽</strong>（要 SRI 须改为构建期产出静态 CSS）。<strong>chart.js 是固定版本文件，可以且应该加 SRI</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">但本版<strong>不填 chart.js 的哈希</strong>：当前环境拿不到真实值，而<strong>编造哈希会让浏览器拒绝执行脚本、图表直接消失，比没有 SRI 更糟</strong>。故只做两件确定的事 —— 两个 script 都加 <code>crossorigin</code>（SRI 前置条件，且让跨域错误可见），并把取真值的一行命令写进代码注释供联网环境补上。</p>
+      <p class="mt-2 text-xs text-slate-500">📌 与本项目「判据先负对照证明会红」同源：<strong>安全措施也不能靠猜值上线</strong>。</p>
+
+      <!-- IRAS_V22_MASSBAL_DOC -->
+      <h2 class="text-xl font-bold text-emerald-400 border-b border-emerald-700/50 pb-2">🧪 物质平衡断言 M (补上最后一块无护栏区域)</h2>
+
+      <p class="mt-3 text-slate-400 text-sm">此前断言覆盖<strong>能量</strong> (A1/A2/A3/B/C)、<strong>水量</strong> (F1/F2/F3)、<strong>登记</strong> (D/E/G)、<strong>资本</strong> (F4) —— 唯独<strong>物质平衡一条没有</strong>，而它是本工具的物理核心。第三方独立复核给了这个判断一次印证：三条缺陷全部落在无断言区，断言覆盖区一条问题都没有。</p>
+      <p class="mt-2 text-slate-400 text-sm">实测确认今天全部闭合后<strong>立即固化</strong> —— 此刻成本最低：闭合状态是免费拿到的验收基线；等日后有人改了硝化公式再来查，就得先分辨「是新改的破坏了平衡，还是本来就不平衡」。</p>
+
+      <h3 class="mt-4 font-bold text-emerald-300">断言清单</h3>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><strong>M1 氧-构成</strong> 总需氧 = 鱼呼吸 + 硝化 + 异养</li>
+        <li><strong>M2 氧-硝化</strong> 硝化耗氧 = TAN × 4.57</li>
+        <li><strong>M3 氧-供给</strong> 液氧耗量 = <strong>鱼呼吸耗氧</strong> / 吸收率（纯氧模式）</li>
+        <li><strong>M4 碱度链条</strong> 净额 = 消耗 − 回收；投加 = max(0, 净额 − 补水带入)；药剂 = 投加 / 0.595</li>
+        <li><strong>M6 碳-构成</strong> CO₂ = 呼吸 × 1.375 + TAN × 6.286 × (1 − BF 内脱气)</li>
+        <li><strong>M5 氮-稳态</strong> TAN = 单程增量 / (1 − R_tan)，R_tan = (1−η_bio)(1−换水稀释)</li>
+        <li><strong>M7 TSS-稳态</strong> TSS = 单程增量 / (1 − R_tss)，R_tss = <strong>四路径</strong> (1−η_rdf)(1−η_skim)(1−η_bioTSS)(1−稀释)</li>
+      </ul>
+      <p class="mt-2 text-slate-400 text-sm"><strong>M5/M7 适用域</strong>: 水体 ≥ 1 m³。实测产量 1000 t 时四阶段偏差 <strong>0.01–0.03%</strong>（方程完全成立），产量 0.001 t 时散乱在 −9.7% ~ +11.2% 且<strong>方向不一</strong> —— 散乱而非单向偏置，说明是极小规模下的数值行为（水体仅 2 升级、源水本底与各种钳制浮现），不是方程实现有误。极小产量工况的价值在于测崩溃，不在测稳态精度。</p>
+
+      <h3 class="mt-4 font-bold text-emerald-300">TSS 结案：模型正确，是核算漏项</h3>
+      <p class="mt-2 text-slate-400 text-sm">v2.2 首测曾报「TSS 残差 −1.8%，四阶段同号且随规模成比例，<strong>未确证为缺陷</strong>」。查证结果：<strong>模型正确</strong>。TSS 单程残留是<strong>四条</strong>路径，而首测只算了微滤、蛋分、换水三条，<strong>漏了 η_bioTSS = 0.2 的生物滤池截留</strong> —— 它是 <code>PROCESS_FIXED</code> 常数而非 <code>proc</code> 字段，按字段名扫描根本看不见。补齐第四路后残差降到 <strong>0.02–0.04%</strong>。质量侧另有独立证据：代码 6766 行 <code>disch_TSS_kg_d = load.tssDaily</code>，注释「守恒 — 生成 ≈ 排出（不溶不降解，全部最终出系统）」。</p>
+      <p class="mt-2 text-xs text-slate-500">📌 这次漏项的形态与前十次不同：前十次错在<strong>取值的键名或单位</strong>，这次错在<strong>漏了一整条物理路径</strong>。教训相应更新 —— 核对稳态方程时应以<strong>方程本身</strong>为准逐项对齐，而不是从导出字段反推路径。建立 M5/M7 过程中另有两次同族错误：<code>exchangeDaily</code> 取值位置错（它是 stage 级字段，不在 <code>proc</code> 里，正是 t23 白名单三项之一）、以及首版适用域用比值而非物理条件。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">三条负对照复现了历史上真实发生过的 bug</h3>
+      <p class="mt-2 text-slate-400 text-sm">把过去修过的缺陷形态人为注回代码，断言逐条咬住：</p>
+      <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
+        <li><strong>M6</strong> ← 注入「CO₂ 漏硝化项」(第三方复核 BUG-2 的形态)：报 <strong>−41.5%</strong>，与报告实测的 34.5–43.4% 同量级。<strong>若 v1.9 之前就有这条断言，那个 bug 根本写不出来</strong></li>
+        <li><strong>M3</strong> ← 注入「液氧用总需氧而非鱼呼吸」(v1.9.2 修过的口径混淆)：报 <strong>+104.7%</strong>，与当年记录的「高估 1.65 倍」同量级</li>
+        <li><strong>M2</strong> ← 化学计量 4.57 改 4.60：报 +0.656%</li>
+      </ul>
+      <p class="mt-2 text-slate-400 text-sm">另有 <strong>M4b</strong> 落地当场咬中 <code>edge_yield_0</code> / <code>edge_yield_tiny</code> 八条 —— 零产量时补水带入的碱度超过消耗，净需求为负而 <code>alkToAdd</code> 被钳到 0。经核实<strong>钳制是正确行为</strong>（不可能投负量药剂），故改断言纳入下钳而非改代码。</p>
+
+      <h3 class="mt-4 font-bold text-slate-300">建立过程本身的教训</h3>
+      <p class="mt-2 text-slate-400 text-sm">外部核算这三条口径<strong>连续错了三次</strong>：液氧误用设备选型口径 <code>o2Demand</code>（含 peakFactor 1.5 与 sAerator 1.10 两个容量系数，报出 −48% 的假不闭合）、碱度消耗误用 <code>tanDaily</code> 而非<strong>被硝化的</strong> TAN、碱度回收误用理论值 3.57 而非代码里的工程系数 2.8（注释写明「理论 3.57，工程实测 2.5–3.0 取中位」）。加上此前物质平衡首测的三连错，同族「猜口径」已达<strong>十次</strong>。</p>
+      <p class="mt-2 text-xs text-slate-500">📌 这正是要把核算<strong>放进产品路径</strong>的理由：断言从 <code>load</code> / <code>sim</code> / <code>eq</code> 的真实导出面取值，不会像外部工具那样猜错口径。「人工核对过所以没问题」不可信 —— 十次实证。</p>
+
+      <!-- IRAS_V22_REVIEW_LOG -->
+      <h2 class="text-xl font-bold text-emerald-400 border-b border-emerald-700/50 pb-2">🔍 v2.2 第三方独立复核处置 (2026-08-08)</h2>
+
+      <p class="mt-3 text-slate-400 text-sm">一份独立复核报告 (jsdom 走真实产品路径 + PyCO2SYS 1.8.3.4 / USGS·APHA 溶解氧表 / ASHRAE·IAPWS 湿空气数据 / 第一性原理手算) 提出三条模型误差。<strong>三条全部落在本版自述的断言盲区</strong> (氧侧 / 碳侧 / 水汽侧) —— 该判断准确, 也正是 F 节所说「今天闭合是因为公式恰好写对, 不是因为有东西防止它写错」的直接印证。逐条实测核实后: <strong>一条采纳、一条部分采纳、一条驳回</strong>。</p>
+
+      <h3 class="mt-4 font-bold text-emerald-300">✅ 采纳 · co2DailyAvg 漏硝化产 CO₂ (已删除)</h3>
+      <p class="mt-2 text-slate-400 text-sm"><code>co2DailyAvg = o2FishDailyAvg × 1.375</code> 只算呼吸, 缺硝化项, 实测少算 <strong>34.5%–43.4%</strong>。而同文件的设计口径 <code>co2Daily</code> 是对的 —— <strong>v1.9 memo F2 修过同一个 bug</strong>「v1.7 之前只算呼吸, 漏算硝化产 CO₂, 导致脱气塔规格偏小 30-50%」, 设计口径已修而日均口径未跟上。这是「同一公式两处实现」的又一实例, 与本版反复处理的「分散重复声明」同族。</p>
+      <p class="mt-2 text-slate-400 text-sm">全库 0 消费点, 属死字段 ⇒ <strong>删除而非修正</strong>。复核报告引用本版删 <code>sourceTemp</code> 时确立的原则「给死控件加钳制等于承认它还活着」来主张删除, 该引用恰当。其风险论证也成立: 带错误公式的死字段比空字段更危险 —— 谁把它接进年度碳核算, 会静默低估三四成且不触发任何现有断言。</p>
+
+      <h3 class="mt-4 font-bold text-amber-300">◐ 部分采纳 · 0°C 以下饱和水蒸气压 (只订正注释)</h3>
+      <p class="mt-2 text-slate-400 text-sm">复核指出 0°C 以下应使用冰面式, <strong>数值全部属实</strong> (−3.5°C 高 3.50% / −10°C 高 10.44% / −20°C 高 21.97%), 原注释「±0.4% in [−20,60]°C」的下界确实不成立。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>但结论需改: 本项目继续用水面式, 且这是自洽的。</strong>本项目 RH 数据源标注为「WMO/Climate.gov 30 年均值」, 而 <strong>WMO 对 0°C 以下的相对湿度以水面 (过冷水) 饱和压定义</strong>, 是气象观测通行口径。<code>humidityRatio(T, RH)</code> 用同一相态把 RH 还原为分压, 前后一致 ⇒ 含湿量正确。<strong>改用冰面式而 RH 仍是水面口径, 反会使含湿量系统性偏低</strong> —— 相态必须与数据定义口径一致。故只订正注释适用区间为 [0, 60]°C, 并在函数头写明相态选择依据, 避免下一位读者重复得出「用错相」的结论。</p>
+
+      <h3 class="mt-4 font-bold text-rose-300">✗ 驳回 · 海水 DO 饱和度「单向偏高 3.3%」</h3>
+      <p class="mt-2 text-slate-400 text-sm">复核建议「改用 Benson &amp; Krause (1984)」—— 而<strong>代码用的就是该式本身</strong>。逐点比对: S ∈ {0, 30} × T ∈ {10,15,20,25,28,30} 共 12 点, iRAS 与 B-K 标准式偏差<strong>全部为 0.0000%</strong> (盐度项写法 <code>+S·(−a+b/T−c/T²)</code> 与 <code>−S·(a−b/T+c/T²)</code> 代数等价)。</p>
+      <p class="mt-2 text-slate-400 text-sm">报告「参考值」反解出的盐度为 <strong>≈35.5‰</strong> (15°C 参考 8.11 → 35.5‰; 20°C 参考 7.38 → 35.4‰; 25°C 参考 6.75 → 35.6‰), 而它对比的是 iRAS 在 <strong>S=30</strong> 的计算值。<strong>拿 S=35 的表值比 S=30 的计算值, 差的 3.3% 正是盐度效应本身</strong>, 不是公式误差 —— 报告自己也写着「工况盐度 28-30‰」。「四个测点全部同号」确为系统性偏置, 但偏的是盐度输入。另有一处内部佐证: 报告 28°C 行「iRAS 6.410 / 参考 6.41」数值相同却标 +3.33%, 那个 6.410 实为 T=30 的值, 表格行错位。</p>
+      <p class="mt-2 text-xs text-slate-500">📌 此条与第六轮审计的 NH₃/Ω 误报属同一类: <strong>基准取值与被测对象的工况参数不一致</strong>。复核方法本身 (jsdom 走真实路径 + 外部权威基准) 是正确的, 出问题的是基准侧的参数对齐 —— 这与本版自己七次「猜接口」错误同源: 从外部取值时必须先确认口径。</p>
+
+      <h3 class="mt-4 font-bold text-slate-300">附带处置</h3>
+      <p class="mt-2 text-slate-400 text-sm"><strong>towerFlowM3h 零值噪声</strong>: 复核实测加载时触发 8 次告警, 已自查为误报 (全部来自 <code>edge_yield_0</code> / <code>edge_yield_tiny</code>, flowM3h = 0)。已加零值短路 —— <strong>噪声会淹没这条告警要抓的真回归, 消除噪声本身就是在保护告警</strong>。<strong>自检项数陈述</strong>: 第一批章节的「17 → 20 项」是当时的准确记录, 第二批新增 <code>field_spec_consistency</code> 后总数为 21, 已加衔接说明。</p>
+      <p class="mt-2 text-slate-400 text-sm">复核报告的「复核通过项」值得一并记录: 化学计量 8 项对第一性原理手算全部吻合; 碳酸盐体系对 PyCO2SYS 1400 工况, 淡水 pH 一致到<strong>机器精度 8.88e-16</strong>、海水最大偏差 1.78e-05; 能量守恒 B 断言残差 <strong>0.000e+0</strong>。这些是本版断言已覆盖的区域, 复核未发现问题 —— 与「三条缺陷全在盲区」互为印证。</p>
+
       <!-- IRAS_V22_B2_INDEX_DOC -->
+      <h2 class="text-2xl font-bold text-rose-300 border-b-2 border-rose-600 pb-2 mt-8">📦 v2.2 发布内容</h2>
+      <p class="mt-2 mb-4 text-slate-400 text-sm">v2.2 分两批发布 (同版分批, 沿用 v2.1 先例)。</p>
+
       <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v2.2 第二批 (2026-08-07) — UI 审计 · 字段范围单一事实源</h2>
 
       <p class="mt-3 text-slate-400 text-sm">源于本版的<strong>首次 UI 专项审计</strong>。与第一批的登记表工作是<strong>同一个模式在 UI 侧的实例</strong>: 分散的重复声明必然漂移。自检 20 → <strong>21 项</strong>, 13 条数值基线<strong>逐位不变</strong> (纯重构)。</p>
 
       <h3 class="mt-4 font-bold text-rose-300">A. 🔴 填 0 → 界面回显默认值 → 用户输入被静默丢弃</h3>
-      <p class="mt-2 text-slate-400 text-sm">完整危害链 (已在真实事件路径复现): 用户填 0 → 模型收 0 → 任何触发重渲染的动作后<strong>输入框显示默认值</strong> (模板 <code>${'{'}p.X || 默认{'}'}</code> 把 0 当 falsy) → 再改任何别的字段, <code>readStageProcFromInputs</code> 全量读回时那个假显示值<strong>覆盖 proc</strong>, 用户的设置无声消失。这与 v1.9.2「对外发布数字与产品路径脱节」同族, 只是发生在 UI 层。</p>
+      <p class="mt-2 text-slate-400 text-sm">完整危害链 (已在真实事件路径复现): 用户填 0 → 模型收 0 → 任何触发重渲染的动作后<strong>输入框显示默认值</strong> (模板 <code>&#36;{p.X || 默认}</code> 把 0 当 falsy) → 再改任何别的字段, <code>readStageProcFromInputs</code> 全量读回时那个假显示值<strong>覆盖 proc</strong>, 用户的设置无声消失。这与 v1.9.2「对外发布数字与产品路径脱节」同族, 只是发生在 UI 层。</p>
       <p class="mt-2 text-slate-400 text-sm">⚠ 关键教训: 陷阱在<strong>三层</strong> (渲染 31 处 / 读取 / 消费 71 处), <strong>只修一层反而更糟</strong> —— 实测只修渲染侧会造成「界面诚实显示 0、模型仍用默认值」, 比原状态危害更大 (原状态至少界面与模型口径一致)。三层必须同批落地, 本批即如此。</p>
 
       <h3 class="mt-4 font-bold text-rose-300">B. 🟠 FIELD_SPEC —— 字段范围的单一事实源</h3>
@@ -1328,7 +1433,7 @@
 
       <h2 class="text-xl font-bold text-rose-400 border-b border-rose-700/50 pb-2">📌 v2.2 升级说明 (2026-08-07) — 工况覆盖补盲 · 登记表声明自校验</h2>
 
-      <p class="mt-3 text-slate-400 text-sm">本版源于<strong>第三方第六轮审计</strong>。审计的核心判断本版照单全收: <strong>断言的质量已超过工况的覆盖面</strong> —— 本轮两条真缺陷现有断言本可抓到, 只是 13 条数值工况全部「mainline + 脱气开 + 纯氧」, 断言从没机会跑到那条路径。自检 17 → <strong>20 项</strong> (新增三条配置边界工况), 13 条数值基线重算 (|Δ| ≤ 0.02 元/kg)。</p>
+      <p class="mt-3 text-slate-400 text-sm">本版源于<strong>第三方第六轮审计</strong>。审计的核心判断本版照单全收: <strong>断言的质量已超过工况的覆盖面</strong> —— 本轮两条真缺陷现有断言本可抓到, 只是 13 条数值工况全部「mainline + 脱气开 + 纯氧」, 断言从没机会跑到那条路径。自检 17 → <strong>20 项</strong> (新增三条配置边界工况), 13 条数值基线重算 (|Δ| ≤ 0.02 元/kg)。<span class="text-slate-500">〔第二批另加 <code>field_spec_consistency</code>, 本版最终为 <strong>21 项</strong>〕</span></p>
       <p class="mt-2 text-xs text-slate-500">※ v2.1 变更日志曾写「本批并入 v2.1, 不另开 v2.2」—— 指的是当时那批补丁不单独成版, 与本版无冲突。</p>
 
       <h3 class="mt-4 font-bold text-rose-300">A. 🟠 三条配置边界工况 (edge_no_degasser / edge_bypass / edge_air_aeration)</h3>
@@ -1838,7 +1943,7 @@
       <ul class="mt-2 ml-4 list-disc space-y-2 text-slate-300 text-sm">
         <li><b>Q10 参考温度对齐</b>: v1.7 之前鱼生理 O₂ 计算的 Q10 参考温度硬编码 20°C, 但热模型用物种 <code>metabRefTemp</code> (三文鱼 15°C, 罗非鱼 28°C 等). 同一个代谢率驱动 O₂ 消耗与代谢热, 两处必须用同一参考温度. v1.9 修正: Q10 参考温度对齐到 <code>metabRefTemp</code>.</li>
         <li><b>o2BaseFactor 等价重写 (8 鱼种)</b>:
-          <table class="mt-2 ml-4 text-xs">
+          <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-2 ml-4 text-xs">
             <tr class="text-emerald-300"><th class="pr-3 text-left">鱼种</th><th class="pr-3 text-left">tempOpt</th><th class="pr-3 text-left">v1.7</th><th class="pr-3 text-left">v1.9</th><th class="text-left">关系</th></tr>
             <tr><td class="pr-3">salmon (三文鱼)</td><td class="pr-3">15°C</td><td class="pr-3">0.32 @ 20°C</td><td class="pr-3">0.2263 @ 15°C</td><td>0.32 × 2^-0.5 = 0.2263 ✓</td></tr>
             <tr><td class="pr-3">turbot (大菱鲆)</td><td class="pr-3">16°C</td><td class="pr-3">0.28</td><td class="pr-3">0.1980</td><td>等价</td></tr>
@@ -1848,7 +1953,7 @@
             <tr><td class="pr-3">eel (鳗鲡)</td><td class="pr-3">26°C</td><td class="pr-3">0.13</td><td class="pr-3">0.1970</td><td>等价</td></tr>
             <tr><td class="pr-3">mandarin (鳜鱼)</td><td class="pr-3">25°C</td><td class="pr-3">0.18</td><td class="pr-3">0.2546</td><td>等价</td></tr>
             <tr><td class="pr-3">shrimp (对虾)</td><td class="pr-3">28°C</td><td class="pr-3">0.31</td><td class="pr-3">0.30</td><td>-3% 轻微下调</td></tr>
-          </table>
+          </table></div>
         </li>
         <li><strong>重要</strong>: 这是 <strong>数学等价重写</strong>, 不改变 o2 数值结果. 1000 t 三文鱼综合成本仍是 <strong>36.70 元/kg</strong> (与 v1.7 完全相同). 新 o2BaseFactor 语义上更清晰 — 直接是 "tempOpt = metabRefTemp 时的 O₂:feed 比", 与 Timmons (2010) 文献口径一致</li>
       </ul>
@@ -1947,7 +2052,7 @@
       <p class="mt-2 text-slate-400 text-sm">v1.5 加入<strong class="text-rose-300">可研报告生成器</strong> (report.html), 把 iRAS 的工程财务数据自动套到 16 章扩展版可研模板, 输出 .docx 文档。预期把可研撰写时间从 <strong>1-2 个月压缩到 1-2 周</strong>。</p>
 
       <h3 class="mt-4 font-bold text-rose-300">B. 16 章覆盖范围 (按发改委编制规范)</h3>
-      <table class="mt-2 text-xs w-full">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-2 text-xs w-full">
         <thead><tr class="text-rose-300 border-b border-rose-700/30"><th class="py-1 pr-3 text-left">章</th><th class="py-1 pr-3 text-left">内容</th><th class="py-1 pr-3 text-left">自动化率</th></tr></thead>
         <tbody class="text-slate-400">
         <tr><td class="py-0.5 pr-3">1</td><td class="py-0.5 pr-3">总论 (项目概况 + 主要技经指标 + 主要结论)</td><td class="py-0.5 pr-3">85%</td></tr>
@@ -1967,7 +2072,7 @@
         <tr><td class="py-0.5 pr-3">15</td><td class="py-0.5 pr-3">风险分析</td><td class="py-0.5 pr-3">70%</td></tr>
         <tr><td class="py-0.5 pr-3">16</td><td class="py-0.5 pr-3">结论与建议</td><td class="py-0.5 pr-3">80%</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="mt-2 text-slate-400 text-sm">加权平均自动化率约 <strong>70%</strong>, 用户需要补充的主要是: 项目身份 (20 字段)、场址自然条件、土建详细设计、消防/环评/安评等专项内容 (后三者必须由有资质机构出具)。</p>
 
       <h3 class="mt-4 font-bold text-rose-300">C. 嵌入 docx 的 3 张图</h3>
@@ -2243,14 +2348,14 @@
 
       <h3 class="mt-4 font-bold text-cyan-300">E. 工程安全系数 (新增)</h3>
       <p class="mt-2 text-slate-400 text-sm">在小时峰值/日量之上, 按设备分别加运行裕度。默认值已校准, 不与 peakFactor 双重叠加:</p>
-      <table class="mt-2 w-full text-xs border-collapse">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-2 w-full text-xs border-collapse">
         <tr class="border-b border-slate-700 text-slate-400"><td class="py-1 px-2">设备</td><td class="py-1 px-2">默认值</td><td class="py-1 px-2">物理含义</td></tr>
         <tr class="border-b border-slate-800/50"><td class="py-1 px-2">生物滤池</td><td class="py-1 px-2 font-mono">1.15</td><td class="py-1 px-2">滤料老化 + 投喂峰值缓冲</td></tr>
         <tr class="border-b border-slate-800/50"><td class="py-1 px-2">鱼池增氧</td><td class="py-1 px-2 font-mono">1.10</td><td class="py-1 px-2">峰值响应快, peakFactor 已含裕度</td></tr>
         <tr class="border-b border-slate-800/50"><td class="py-1 px-2">BF 曝气</td><td class="py-1 px-2 font-mono">1.10</td><td class="py-1 px-2">同上</td></tr>
         <tr class="border-b border-slate-800/50"><td class="py-1 px-2">微滤/反硝化/蛋分/UV</td><td class="py-1 px-2 font-mono">1.10</td><td class="py-1 px-2">通用工程裕度</td></tr>
         <tr><td class="py-1 px-2">CO₂ 脱气</td><td class="py-1 px-2 font-mono">1.15</td><td class="py-1 px-2">G:L 不确定性较大</td></tr>
-      </table>
+      </table></div>
 
       <h3 class="mt-4 font-bold text-cyan-300">F. 物种库工程参数全面修正 (基于工业实测)</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
@@ -2304,7 +2409,7 @@
 
       <h3 class="mt-4 font-bold text-cyan-300">K. CAPEX 地区系数 ⭐ (国际项目支持)</h3>
       <p class="mt-2 text-slate-400 text-sm">iRAS 默认设备单价是 <b>中国行情</b> (regionFactor=1.0)。不同地区工程总造价差异显著, 数值基于实测项目反推 (挪威 10000t 三文鱼 RAS 项目 15 亿元):</p>
-      <table class="mt-2 w-full text-xs border-collapse">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-2 w-full text-xs border-collapse">
         <thead><tr class="text-slate-400 border-b border-slate-700"><th class="py-1 px-2 text-left">地区</th><th class="py-1 px-2 text-right">系数</th><th class="py-1 px-2 text-left">备注</th></tr></thead>
         <tbody>
           <tr class="border-b border-slate-800"><td class="py-1 px-2">🇨🇳 中国 (默认)</td><td class="py-1 px-2 text-right">1.0×</td><td class="py-1 px-2">国产设备 + 国内工程</td></tr>
@@ -2313,7 +2418,7 @@
           <tr class="border-b border-slate-800"><td class="py-1 px-2">🇺🇸 北美</td><td class="py-1 px-2 text-right">1.7×</td><td class="py-1 px-2">本地工业链 + 较高人工</td></tr>
           <tr><td class="py-1 px-2">🇳🇴 北欧/挪威</td><td class="py-1 px-2 text-right">2.0×</td><td class="py-1 px-2">高标准 + 高人工</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
         <li>新增"CAPEX 地区"下拉 (在「设备直购单价」面板), 一键切换地区预设, 也可自定义</li>
         <li><b>只乘 CAPEX</b> (设备 + 工程总投资 + 折旧), OPEX 不变 (饲料/液氧是全球商品差异小, 电费用户单独调)</li>
@@ -2331,7 +2436,7 @@
         <li><b>规模指数</b>: 0.10 (用户可调, 基于挪威 10000t × rf=2.0 = 15 亿元实测反推)</li>
         <li>设规模指数 = 0 关闭规模效应 (回到线性 CAPEX)</li>
       </ul>
-      <table class="mt-2 w-full text-xs border-collapse">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-2 w-full text-xs border-collapse">
         <thead><tr class="text-slate-400 border-b border-slate-700"><th class="py-1 px-2 text-left">年产能</th><th class="py-1 px-2 text-right">规模因子</th><th class="py-1 px-2 text-left">含义</th></tr></thead>
         <tbody>
           <tr class="border-b border-slate-800"><td class="py-1 px-2">500 t</td><td class="py-1 px-2 text-right">×1.07</td><td class="py-1 px-2">小型试点, 略偏贵 7%</td></tr>
@@ -2341,7 +2446,7 @@
           <tr class="border-b border-slate-800"><td class="py-1 px-2">10000 t</td><td class="py-1 px-2 text-right">×0.79</td><td class="py-1 px-2">超大型, 省 21%</td></tr>
           <tr><td class="py-1 px-2">20000 t</td><td class="py-1 px-2 text-right">×0.74</td><td class="py-1 px-2">巨型, 省 26%</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="mt-2 text-slate-400 text-sm"><b>实测验证</b>: 挪威 10000t × regionFactor 2.0 = <b>14.85 亿元</b>,
         与用户提供的实测数据 (15 亿) 偏差仅 -1% ✅。</p>
 
@@ -2377,20 +2482,20 @@
     <section id="help-2">
       <h2 class="text-xl font-bold text-cyan-400 border-b border-slate-700 pb-2">2. 运行环境</h2>
       <p class="mt-3">本软件为纯前端单文件 HTML 应用，无需安装任何软件。</p>
-      <table class="mt-3 w-full text-xs border-collapse">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-3 w-full text-xs border-collapse">
         <tr class="border-b border-slate-700"><td class="py-2 text-slate-400 w-32">浏览器</td><td class="py-2">Chrome / Edge / Firefox / Safari 近 2 年版本</td></tr>
         <tr class="border-b border-slate-700"><td class="py-2 text-slate-400">操作系统</td><td class="py-2">Windows / macOS / Linux 均可</td></tr>
         <tr class="border-b border-slate-700"><td class="py-2 text-slate-400">内存</td><td class="py-2">建议 4GB 以上</td></tr>
         <tr class="border-b border-slate-700"><td class="py-2 text-slate-400">网络</td><td class="py-2">首次加载需联网（CDN 加载 Tailwind / Chart.js）</td></tr>
         <tr><td class="py-2 text-slate-400">使用方式</td><td class="py-2">双击 index.html 文件即可打开（下载后可改名为 iRAS.html）</td></tr>
-      </table>
+      </table></div>
     </section>
 
     <!-- 3. 功能概览 -->
     <section id="help-3">
       <h2 class="text-xl font-bold text-cyan-400 border-b border-slate-700 pb-2">3. 功能概览</h2>
       <h3 class="mt-3 font-bold text-cyan-300">3.1 支持的品种</h3>
-      <table class="mt-2 w-full text-xs border-collapse">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-2 w-full text-xs border-collapse">
         <tr class="border-b border-slate-600 text-slate-400"><td class="py-1.5">品种</td><td>水温</td><td>盐度</td><td>总周期</td><td>阶段</td></tr>
         <tr class="border-b border-slate-800"><td class="py-1">🐟 三文鱼</td><td>12-15°C</td><td>淡→海水</td><td>24月</td><td>4</td></tr>
         <tr class="border-b border-slate-800"><td class="py-1">🐟 大菱鲆</td><td>16°C</td><td>海水 28‰</td><td>18月</td><td>3</td></tr>
@@ -2401,7 +2506,7 @@
         <tr class="border-b border-slate-800"><td class="py-1">🐡 石斑鱼</td><td>27°C</td><td>海水 30‰</td><td>12月</td><td>3</td></tr>
         <tr class="border-b border-slate-800"><td class="py-1">🦐 对虾</td><td>30°C</td><td>半咸水 15‰</td><td>4月</td><td>3</td></tr>
         <tr><td class="py-1">🧪 自定义</td><td>可调</td><td>可调</td><td>可调</td><td>1+</td></tr>
-      </table>
+      </table></div>
       <h3 class="mt-4 font-bold text-cyan-300">3.2 核心计算模块</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400">
         <li>精确循环方程：C_out = Δ/(1-R)，沿程每个处理单元降幅可视化</li>
@@ -3488,7 +3593,7 @@
     <!-- 7. 鱼种参数表 -->
     <section id="help-7">
       <h2 class="text-xl font-bold text-cyan-400 border-b border-slate-700 pb-2">7. 鱼种参数表（部分摘要）</h2>
-      <table class="mt-3 w-full text-xs border-collapse">
+      <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="mt-3 w-full text-xs border-collapse">
         <tr class="border-b border-slate-600 text-slate-400"><td class="py-1.5">品种</td><td>阶段</td><td>体重(g)</td><td>FCR</td><td>投饵率</td><td>密度</td><td>温度</td><td>盐度</td></tr>
         <tr class="border-b border-slate-800"><td class="py-1">三文鱼</td><td>苗种</td><td>0.1→50</td><td>1.0</td><td>3.0%</td><td>30</td><td>12°C</td><td>0</td></tr>
         <tr class="border-b border-slate-800"><td></td><td>成鱼</td><td>2000→5000</td><td>1.2</td><td>0.95%</td><td>70</td><td>15°C</td><td>30‰</td></tr>
@@ -3496,7 +3601,7 @@
         <tr class="border-b border-slate-800"><td></td><td>成鱼</td><td>250→600</td><td>1.3</td><td>1.2%</td><td>50</td><td>25°C</td><td>0</td></tr>
         <tr class="border-b border-slate-800"><td class="py-1">对虾</td><td>苗种</td><td>0.01→1</td><td>1.0</td><td>12%</td><td>2</td><td>30°C</td><td>15‰</td></tr>
         <tr class="border-b border-slate-800"><td></td><td>养成后</td><td>10→30</td><td>1.6</td><td>3.5%</td><td>15</td><td>30°C</td><td>15‰</td></tr>
-      </table>
+      </table></div>
       <p class="mt-2 text-xs text-slate-500 italic">注：仅展示部分品种的首尾阶段，完整参数见软件内置数据库。所有参数均可在界面上自由修改。</p>
     </section>
 
@@ -4501,7 +4606,20 @@ const ENVELOPE_PRESETS = {
    v1.2: 物理工具函数 — 湿空气 + COP(T)
    ============================================================================ */
 
-// 饱和水蒸气压 (Pa), Magnus 公式, 精度 ±0.4% in [-20,60]°C
+/* 饱和水蒸气压 (Pa) —— Magnus 式, 【水面 (含 0°C 以下的过冷水)】相态。
+   精度: 实测 T ≥ 0°C 时 ±0.26% (原注释写 ±0.4% in [-20,60] —— 上界成立,
+   下界不成立: −20°C 时本式比【冰面】式高 21.97%, 见下)。适用区间订正为 [0, 60]°C。
+
+   v2.2 IRAS_V22_REVIEW_FIX (第三方独立复核 2026-08-08, BUG-3):
+   复核指出 0°C 以下 ASHRAE 湿空气计算应使用冰面式, 数值属实
+   (−3.5°C 高 3.5% / −10°C 高 10.4% / −20°C 高 22.0%)。
+   【但本项目仍用水面式, 且这是自洽的】——
+     本项目的 RH 数据源标注为「WMO/Climate.gov 30 年均值」(见 CLIMATE_REGIONS 头注),
+     而 WMO 对 0°C 以下的相对湿度【以水面 (过冷水) 饱和压定义】, 为气象观测通行口径。
+     humidityRatio(T, RH) 用同一相态把 RH 还原为分压, 相态前后一致 ⇒ 含湿量正确。
+     若改冰面式而 RH 仍是水面口径, 反会使含湿量系统性偏低。
+   ⚠ 相态必须与 RH 数据的定义口径一致 —— 这是选水面式的理由, 不是疏忽。
+     若将来接入以冰面定义 RH 的数据源 (部分航空气象产品), 需同时切换本式。 */
 function P_sat_water(T) {
   return 610.94 * Math.exp(17.625 * T / (T + 243.04));
 }
@@ -5122,7 +5240,15 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
   const o2DOMDailyAvg   = feedAvg * o2DOMfactor;     // 用同一系数, 保持峰均一致
   const o2DailyTotalAvg = o2FishDailyAvg + o2NitriDailyAvg + o2DOMDailyAvg;
   const o2BFDailyAvg    = o2NitriDailyAvg + o2DOMDailyAvg;
-  const co2DailyAvg     = o2FishDailyAvg * 1.375;
+  /* v2.2 IRAS_V22_REVIEW_FIX (第三方独立复核 2026-08-08, BUG-2): co2DailyAvg 已删。
+     原式 o2FishDailyAvg × 1.375 只算呼吸, 缺硝化产 CO₂
+     (tanDailyAvg × CO2_PER_TANN × (1 − BF_CO2_STRIP)), 实测少算 34.5%–43.4%。
+     同文件设计口径 co2Daily 是对的 —— v1.9 memo F2 修过同一个 bug, 设计口径已修
+     而日均口径未跟上, 这是「同一公式两处实现」的又一实例。
+     全库 0 消费点, 属死字段 ⇒ 删除而非修正 (与删 sourceTemp 同一原则:
+     给死字段修公式等于承认它还活着; 带错误公式的死字段比空字段更危险 ——
+     谁把它接进年度碳核算会静默低估三四成且不触发任何断言)。
+     若将来确需日均 CO₂ 口径: 必须写全两项, 并同步建立峰均一致性断言。 */
 
   return {
     biomass, stageYears: stage.months/12,
@@ -5144,7 +5270,7 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
     o2PeakHourly, o2BFPeakHourly,
 
     // 全周期日均 (kg/d, 不含 peakFactor) - 用于 OPEX 年化
-    tanDailyAvg, tssDailyAvg, domDailyAvg, co2DailyAvg,
+    tanDailyAvg, tssDailyAvg, domDailyAvg,   // v2.2: co2DailyAvg 已删 (见上)
     o2FishDailyAvg, o2NitriDailyAvg, o2DOMDailyAvg,
     o2DailyTotalAvg, o2BFDailyAvg
   };
@@ -8640,6 +8766,12 @@ function calcCapex(eq, sim, flowData, eqPrices) {
     let towerFlow;
     if (eq.aerationSpec && eq.aerationSpec.towerFlowM3h > 0) {
       towerFlow = eq.aerationSpec.towerFlowM3h;
+    } else if (!(flowData.flowM3h > 0)) {
+      /* v2.2 IRAS_V22_REVIEW_FIX: 主流量本身为零 (产量边界工况 edge_yield_0 /
+         edge_yield_tiny) 时塔流量当然为零, 不是 silent fallback —— 静默短路。
+         第三方复核实测该告警加载时触发 8 次全部源于此。噪声会淹没这条告警
+         要抓的【真】回归, 所以消除噪声本身就是在保护告警。 */
+      towerFlow = 0;
     } else {
       console.warn('[iRAS calcCapex] aerationSpec.towerFlowM3h 缺失或异常 (bypass 模式可能 silent fallback 回 v1.7 前 bug 状态), fallback 到主流量定价', { aerationSpec: eq.aerationSpec, flowM3h: flowData.flowM3h });
       towerFlow = flowData.flowM3h;
@@ -9687,89 +9819,89 @@ function renderStageBlock(idx, stage) {
     <div class="proc-grid" data-proc-mode="common" data-aeration-mode="${stage.proc.aerationMode||'o2'}" data-o2-topology="${stage.proc.o2ConeTopology||'mainline'}">
       <div data-common><label class="text-[10px] text-cyan-400">循环倍数(次/h)</label><input data-stage="${idx}" data-field="turnover" type="number" step="0.5" value="${stage.turnover||2}" class="stg-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-cyan-400" title="换水率 (%/d, v1.1: 按系统总水体 V_total = 鱼池+工艺)&#10;例: 5%/d 表示每天换 V_total × 5% 的水量&#10;v1.1 改为行业标准口径 (Timmons 2010 / 国家海水鱼体系), v1.0 是按鱼池水体&#10;0 = 零换水 (闭式系统, 仅靠反硝化/AOP 处理)&#10;⚠️ 影响仅靠换水稀释的参数 (NO₃/Geosmin/DOM 无对应处理设备时), 浓度比 v1.0 算的低 ~37%">换水率(%/d)</label><input data-stage="${idx}" data-field="exchangeDaily" type="number" step="0.5" min="0" value="${stage.exchangeDaily != null ? stage.exchangeDaily : 5}" class="stg-input input-ind !py-1 !text-xs"></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="微滤机 TSS 去除率 (%)&#10;范围: 60-85&#10;默认: 75&#10;含义: RDF 单次通过对 TSS 去除率, 60-80μm 筛网典型 70-80%&#10;何时调: 筛目细→调高, 低密度场→可降">微滤TSS↓(%)</label><input data-proc-stage="${idx}" data-proc-field="rdfTSS" type="number" step="1" value="${stage.proc.rdfTSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="生物滤池单次硝化效率 (%)&#10;范围: 50-80&#10;默认: 70&#10;含义: MBBR/MBF 单次通过对 TAN 去除率&#10;何时调: MBBR 用 60-75, 固定膜 70-80, 海水/低温→降">BF硝化↓(%)</label><input data-proc-stage="${idx}" data-proc-field="biofilterTAN" type="number" step="1" value="${stage.proc.biofilterTAN}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="UV 剂量 (mJ/cm²)&#10;范围: 20-60&#10;默认: 40&#10;含义: 紫外线杀菌剂量&#10;何时调: ≥30杀菌, ≥40灭活病毒, ≥60灭活孢子">UV剂量(mJ/cm²)</label><input data-proc-stage="${idx}" data-proc-field="uvDose" type="number" ${fieldSpecAttrs('uvDose')} value="${stage.proc.uvDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="UV 旁路流量比 (%)&#10;范围: 5-20&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 健康场 10, 病害防控 15-20">UV Q比(%)</label><input data-proc-stage="${idx}" data-proc-field="uvFlowPct" type="number" step="1" value="${stage.proc.uvFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="反硝化支路流量比 (%)&#10;范围: 5-20 (设 0 表示无反硝化)&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 严控 NO₃⁻→15-20">反硝化Q比(%)</label><input data-proc-stage="${idx}" data-proc-field="denitriFlowPct" type="number" step="1" value="${stage.proc.denitriFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="反硝化单次去除率 (%)&#10;范围: 60-90&#10;默认: 80&#10;含义: 反硝化反应器单次通过 NO₃⁻ 去除率&#10;何时调: C/N 比足够 + 缺氧好→90, 低温→降">反硝化↓(%)</label><input data-proc-stage="${idx}" data-proc-field="denitriEff" type="number" step="1" value="${stage.proc.denitriEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="甲醇工程安全系数&#10;范围: 1.0-2.0&#10;默认: 1.3 (中位, Suhr 2014 / Tsukuda 2015 RAS 实际)&#10;含义: 在化学计量 2.47 g/g NO₃-N 之上的工程裕度&#10;公式: 甲醇 = NO₃ 去除量 × 2.47 × methanolSafetyFactor&#10;1.0 = 实验室理论 (无 DO 进水, 仅 5-15% 残余)&#10;1.3 = 默认 (含 DO 补偿+ 运行裕度, 2.47×1.3 = 3.21 g/g)&#10;1.5 = 高 DO 进水 (反硝化支路 DO > 8 mg/L)&#10;2.0 = 严控防 NO₃ 积累 (超保守)&#10;影响 OPEX 甲醇 (典型占 OPEX 0.5-1%, 即使翻倍 OPEX 总变化 < 0.5%)">甲醇裕度</label><input data-proc-stage="${idx}" data-proc-field="methanolSafetyFactor" type="number" ${fieldSpecAttrs('methanolSafetyFactor')} value="${stage.proc.methanolSafetyFactor != null ? stage.proc.methanolSafetyFactor : 1.3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="RDF 集水池 HRT (min)&#10;范围: 0.3-2.0&#10;默认: 0.5 (中位, 兼顾紧凑与缓冲)&#10;含义: 微滤机出水集水池的水力停留时间, 决定 V_RDF = Q × HRT/60&#10;0.3 = 紧凑型 (YUTANK/Hydrotech 工业实测 18s, 转鼓+一体化集水)&#10;0.5 = 中位 (含小型缓冲), iRAS v1.6 默认&#10;1-2 = 大型项目 (含外置缓冲池, 设计院传统做法)&#10;影响: 仅 V_total / V_process / 稀释项, 不影响 RDF 设备规格">RDF HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="rdfHRT_min" type="number" ${fieldSpecAttrs('rdfHRT_min')} value="${stage.proc.rdfHRT_min != null ? stage.proc.rdfHRT_min : 0.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="微滤机 TSS 去除率 (%)&#10;范围: 60-85&#10;默认: 75&#10;含义: RDF 单次通过对 TSS 去除率, 60-80μm 筛网典型 70-80%&#10;何时调: 筛目细→调高, 低密度场→可降" for="f_${idx}_rdfTSS">微滤TSS↓(%)</label><input id="f_${idx}_rdfTSS" data-proc-stage="${idx}" data-proc-field="rdfTSS" type="number" step="1" value="${stage.proc.rdfTSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="生物滤池单次硝化效率 (%)&#10;范围: 50-80&#10;默认: 70&#10;含义: MBBR/MBF 单次通过对 TAN 去除率&#10;何时调: MBBR 用 60-75, 固定膜 70-80, 海水/低温→降" for="f_${idx}_biofilterTAN">BF硝化↓(%)</label><input id="f_${idx}_biofilterTAN" data-proc-stage="${idx}" data-proc-field="biofilterTAN" type="number" step="1" value="${stage.proc.biofilterTAN}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="UV 剂量 (mJ/cm²)&#10;范围: 20-60&#10;默认: 40&#10;含义: 紫外线杀菌剂量&#10;何时调: ≥30杀菌, ≥40灭活病毒, ≥60灭活孢子" for="f_${idx}_uvDose">UV剂量(mJ/cm²)</label><input id="f_${idx}_uvDose" data-proc-stage="${idx}" data-proc-field="uvDose" type="number" ${fieldSpecAttrs('uvDose')} value="${stage.proc.uvDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="UV 旁路流量比 (%)&#10;范围: 5-20&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 健康场 10, 病害防控 15-20" for="f_${idx}_uvFlowPct">UV Q比(%)</label><input id="f_${idx}_uvFlowPct" data-proc-stage="${idx}" data-proc-field="uvFlowPct" type="number" step="1" value="${stage.proc.uvFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="反硝化支路流量比 (%)&#10;范围: 5-20 (设 0 表示无反硝化)&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 严控 NO₃⁻→15-20" for="f_${idx}_denitriFlowPct">反硝化Q比(%)</label><input id="f_${idx}_denitriFlowPct" data-proc-stage="${idx}" data-proc-field="denitriFlowPct" type="number" step="1" value="${stage.proc.denitriFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="反硝化单次去除率 (%)&#10;范围: 60-90&#10;默认: 80&#10;含义: 反硝化反应器单次通过 NO₃⁻ 去除率&#10;何时调: C/N 比足够 + 缺氧好→90, 低温→降" for="f_${idx}_denitriEff">反硝化↓(%)</label><input id="f_${idx}_denitriEff" data-proc-stage="${idx}" data-proc-field="denitriEff" type="number" step="1" value="${stage.proc.denitriEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="甲醇工程安全系数&#10;范围: 1.0-2.0&#10;默认: 1.3 (中位, Suhr 2014 / Tsukuda 2015 RAS 实际)&#10;含义: 在化学计量 2.47 g/g NO₃-N 之上的工程裕度&#10;公式: 甲醇 = NO₃ 去除量 × 2.47 × methanolSafetyFactor&#10;1.0 = 实验室理论 (无 DO 进水, 仅 5-15% 残余)&#10;1.3 = 默认 (含 DO 补偿+ 运行裕度, 2.47×1.3 = 3.21 g/g)&#10;1.5 = 高 DO 进水 (反硝化支路 DO  for="f_${idx}_methanolSafetyFactor"> 8 mg/L)&#10;2.0 = 严控防 NO₃ 积累 (超保守)&#10;影响 OPEX 甲醇 (典型占 OPEX 0.5-1%, 即使翻倍 OPEX 总变化 < 0.5%)">甲醇裕度</label><input id="f_${idx}_methanolSafetyFactor" data-proc-stage="${idx}" data-proc-field="methanolSafetyFactor" type="number" ${fieldSpecAttrs('methanolSafetyFactor')} value="${stage.proc.methanolSafetyFactor != null ? stage.proc.methanolSafetyFactor : 1.3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="RDF 集水池 HRT (min)&#10;范围: 0.3-2.0&#10;默认: 0.5 (中位, 兼顾紧凑与缓冲)&#10;含义: 微滤机出水集水池的水力停留时间, 决定 V_RDF = Q × HRT/60&#10;0.3 = 紧凑型 (YUTANK/Hydrotech 工业实测 18s, 转鼓+一体化集水)&#10;0.5 = 中位 (含小型缓冲), iRAS v1.6 默认&#10;1-2 = 大型项目 (含外置缓冲池, 设计院传统做法)&#10;影响: 仅 V_total / V_process / 稀释项, 不影响 RDF 设备规格" for="f_${idx}_rdfHRT_min">RDF HRT(min)</label><input id="f_${idx}_rdfHRT_min" data-proc-stage="${idx}" data-proc-field="rdfHRT_min" type="number" ${fieldSpecAttrs('rdfHRT_min')} value="${stage.proc.rdfHRT_min != null ? stage.proc.rdfHRT_min : 0.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400">增氧方式</label><select data-proc-stage="${idx}" data-proc-field="aerationMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="o2" ${stage.proc.aerationMode==='o2'?'selected':''}>纯氧 (≥40 kg/m³)</option><option value="air" ${stage.proc.aerationMode==='air'?'selected':''}>空气曝气 (&lt;40)</option></select></div>
-      <div data-common data-aeration-o2 data-aeration-o2-allow><label class="text-[10px] text-slate-400" title="DO 目标饱和度 (%)&#10;范围: 95-180&#10;默认: 130 (空气模式锁95)&#10;含义: 增氧后水中 DO 饱和度&#10;何时调: 鲑165, 海水温水140, 温水淡水110-125, 罗非/对虾100-115">DO 目标(%)</label><input data-proc-stage="${idx}" data-proc-field="o2SatTarget" type="number" ${fieldSpecAttrs('o2SatTarget')} value="${stage.proc.o2SatTarget != null ? stage.proc.o2SatTarget : 130}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-aeration-o2><label class="text-[10px] text-slate-400" title="液氧吸收效率 (%)&#10;范围: 70-95&#10;默认: 85&#10;含义: 锥形塔/PPC 对液氧吸收率&#10;何时调: 低压锥 80-88, 高压 PPC 90-95">液氧吸收(%)</label><input data-proc-stage="${idx}" data-proc-field="o2AbsorptionEff" type="number" ${fieldSpecAttrs('o2AbsorptionEff')} value="${stage.proc.o2AbsorptionEff != null ? stage.proc.o2AbsorptionEff : 85}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common data-aeration-o2 data-aeration-o2-allow><label class="text-[10px] text-slate-400" title="DO 目标饱和度 (%)&#10;范围: 95-180&#10;默认: 130 (空气模式锁95)&#10;含义: 增氧后水中 DO 饱和度&#10;何时调: 鲑165, 海水温水140, 温水淡水110-125, 罗非/对虾100-115" for="f_${idx}_o2SatTarget">DO 目标(%)</label><input id="f_${idx}_o2SatTarget" data-proc-stage="${idx}" data-proc-field="o2SatTarget" type="number" ${fieldSpecAttrs('o2SatTarget')} value="${stage.proc.o2SatTarget != null ? stage.proc.o2SatTarget : 130}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-aeration-o2><label class="text-[10px] text-slate-400" title="液氧吸收效率 (%)&#10;范围: 70-95&#10;默认: 85&#10;含义: 锥形塔/PPC 对液氧吸收率&#10;何时调: 低压锥 80-88, 高压 PPC 90-95" for="f_${idx}_o2AbsorptionEff">液氧吸收(%)</label><input id="f_${idx}_o2AbsorptionEff" data-proc-stage="${idx}" data-proc-field="o2AbsorptionEff" type="number" ${fieldSpecAttrs('o2AbsorptionEff')} value="${stage.proc.o2AbsorptionEff != null ? stage.proc.o2AbsorptionEff : 85}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-aeration-o2><label class="text-[10px] text-slate-400" title="氧锥位置 (拓扑) — v1.7 已生效模型区分&#10;mainline: 主泵后串联氧锥, 全流过氧 (主泵需多克服 o2ConeHeadLoss_m 压头)&#10;          DO 均匀, 锥子大, 投资高, 占地大 (Atlantic Sapphire 等大型 RAS)&#10;bypass:   旁路 5-30% 流量过高压锥, 超饱和后混合稀释 (主泵不过锥, 节能)&#10;          锥子小, 投资低, 但 DO 分布不均, 需要 SOLVOX mixer 等设备&#10;          PR Aqua / Linde SOLVOX 推荐, 国际中型 RAS 主流&#10;v1.7 起两种拓扑在 sim/CAPEX/OPEX 都实质区别对待">氧锥位置</label><select data-proc-stage="${idx}" data-proc-field="o2ConeTopology" class="stg-proc-select input-ind !py-1 !text-xs"><option value="mainline" ${(stage.proc.o2ConeTopology)==='mainline'?'selected':''}>主流路径 (主泵后)</option><option value="bypass" ${stage.proc.o2ConeTopology==='bypass'?'selected':''}>旁路 (节能)</option></select></div>
-      <div data-aeration-o2 data-o2-topo-mainline><label class="text-[10px] text-slate-400" title="主路氧锥附加压头 (m) — 仅 mainline 模式生效&#10;范围: 0-15&#10;默认: 3 m (LHO 中位)&#10;工程对照:&#10;  2 m  = LHO 低头氧合器 (Atlantic Sapphire)&#10;  3 m  = LHO + 出锥背压 (默认, 兼顾节能)&#10;  5 m  = Speece 锥标准 (Pentair 10-15 psi)&#10;  10 m = Speece 锥高压 (玻璃钢 21 psi 上限)&#10;  15 m = Linde SOLVOX cone 110 (3 bar 上限)&#10;主泵实际扬程 = mainPumpHead_m + o2ConeHeadLoss_m (mainline) 或 = mainPumpHead_m (bypass)">氧锥压损(m)</label><input data-proc-stage="${idx}" data-proc-field="o2ConeHeadLoss_m" type="number" ${fieldSpecAttrs('o2ConeHeadLoss_m')} value="${stage.proc.o2ConeHeadLoss_m!=null?stage.proc.o2ConeHeadLoss_m:3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-aeration-o2 data-o2-topo-bypass><label class="text-[10px] text-slate-400" title="旁路流量占比 (%) — 仅 bypass 模式生效&#10;范围: 5-30&#10;默认: 10%&#10;含义: 从主流抽 10% 经氧锥, 出锥超饱和水 (200-500% sat) 后回主流混合&#10;高密度+高 O2 需求时调到 15-20%&#10;影响: 氧锥规格 (按 Q × ratio / 100), 旁路泵流量, 出锥饱和度">旁路占比(%)</label><input data-proc-stage="${idx}" data-proc-field="o2BypassRatio" type="number" ${fieldSpecAttrs('o2BypassRatio')} value="${stage.proc.o2BypassRatio!=null?stage.proc.o2BypassRatio:10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-aeration-o2 data-o2-topo-mainline><label class="text-[10px] text-slate-400" title="主路氧锥附加压头 (m) — 仅 mainline 模式生效&#10;范围: 0-15&#10;默认: 3 m (LHO 中位)&#10;工程对照:&#10;  2 m  = LHO 低头氧合器 (Atlantic Sapphire)&#10;  3 m  = LHO + 出锥背压 (默认, 兼顾节能)&#10;  5 m  = Speece 锥标准 (Pentair 10-15 psi)&#10;  10 m = Speece 锥高压 (玻璃钢 21 psi 上限)&#10;  15 m = Linde SOLVOX cone 110 (3 bar 上限)&#10;主泵实际扬程 = mainPumpHead_m + o2ConeHeadLoss_m (mainline) 或 = mainPumpHead_m (bypass)" for="f_${idx}_o2ConeHeadLoss_m">氧锥压损(m)</label><input id="f_${idx}_o2ConeHeadLoss_m" data-proc-stage="${idx}" data-proc-field="o2ConeHeadLoss_m" type="number" ${fieldSpecAttrs('o2ConeHeadLoss_m')} value="${stage.proc.o2ConeHeadLoss_m!=null?stage.proc.o2ConeHeadLoss_m:3}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-aeration-o2 data-o2-topo-bypass><label class="text-[10px] text-slate-400" title="旁路流量占比 (%) — 仅 bypass 模式生效&#10;范围: 5-30&#10;默认: 10%&#10;含义: 从主流抽 10% 经氧锥, 出锥超饱和水 (200-500% sat) 后回主流混合&#10;高密度+高 O2 需求时调到 15-20%&#10;影响: 氧锥规格 (按 Q × ratio / 100), 旁路泵流量, 出锥饱和度" for="f_${idx}_o2BypassRatio">旁路占比(%)</label><input id="f_${idx}_o2BypassRatio" data-proc-stage="${idx}" data-proc-field="o2BypassRatio" type="number" ${fieldSpecAttrs('o2BypassRatio')} value="${stage.proc.o2BypassRatio!=null?stage.proc.o2BypassRatio:10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-aeration-o2 data-o2-topo-bypass><label class="text-[10px] text-slate-400" title="氧锥旁路泵扬程 (m) — 仅 bypass 模式生效&#10;v1.7: 改为 3 档预设, 对应 3 类常见氧锥&#10;  玻璃钢锥 20 m (2 bar) — Pentair AES Speece 标准款, 玻璃钢上限&#10;  SOLVOX 标准 25 m (2.5 bar) — Linde SOLVOX cone 60 工作压力中位&#10;  SOLVOX 高效 30 m (3 bar) — Linde SOLVOX cone 110 上限 / PPC 高压款&#10;扬程 = 锥内压力 + 出锥背压 (防 DO 脱气, 5-10 m) + 沿程 (2-3 m)">氧锥旁路泵</label><select data-proc-stage="${idx}" data-proc-field="o2BypassPumpHead_m" class="stg-proc-select input-ind !py-1 !text-xs"><option value="20" ${(stage.proc.o2BypassPumpHead_m)==20?'selected':''}>玻璃钢 20 m (2 bar)</option><option value="25" ${stage.proc.o2BypassPumpHead_m==25?'selected':''}>SOLVOX 25 m (2.5 bar)</option><option value="30" ${stage.proc.o2BypassPumpHead_m==30?'selected':''}>SOLVOX 30 m (3 bar)</option></select></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="鱼池目标碱度 (mg/L CaCO₃)&#10;范围: 100-200&#10;默认: 150&#10;含义: 维持 pH 稳定的目标碱度, 投加 NaHCO₃ 维持&#10;何时调: 海水≥150, 淡水 100-150">碱度目标(mg/L)</label><input data-proc-stage="${idx}" data-proc-field="alkTarget" type="number" ${fieldSpecAttrs('alkTarget')} value="${stage.proc.alkTarget}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="鱼池目标碱度 (mg/L CaCO₃)&#10;范围: 100-200&#10;默认: 150&#10;含义: 维持 pH 稳定的目标碱度, 投加 NaHCO₃ 维持&#10;何时调: 海水≥150, 淡水 100-150" for="f_${idx}_alkTarget">碱度目标(mg/L)</label><input id="f_${idx}_alkTarget" data-proc-stage="${idx}" data-proc-field="alkTarget" type="number" ${fieldSpecAttrs('alkTarget')} value="${stage.proc.alkTarget}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="pH 控制策略 (v1.9 新增)&#10;持碱度: 你设碱度目标, pH 由碳酸盐平衡自然涌现 (正向)&#10;持目标 pH: 你设目标 pH, 工具反推所需碱度设定值 (反向)&#10;典型用法: 大型海水 RAS 用'持目标 pH', 淡水中小项目用'持碱度'">pH控制</label><select data-proc-stage="${idx}" data-proc-field="pHControlMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="alk" ${(stage.proc.pHControlMode)==='alk'?'selected':''}>持碱度</option><option value="ph" ${stage.proc.pHControlMode==='ph'?'selected':''}>持目标 pH</option></select></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="目标 pH (free/浓度标度) — 仅'持目标 pH'模式生效&#10;工具反求需要的碱度设定值, 在稳态 CO₂ 下维持此 pH&#10;典型: 淡水 6.8-7.2, 海水 7.5-7.9, 三文鱼 7.0-7.5&#10;注意: pH<6.5 硝化效率骤降, pH>8.0 NH3 占比过高">目标 pH</label><input data-proc-stage="${idx}" data-proc-field="pHTarget" type="number" ${fieldSpecAttrs('pHTarget')} value="${stage.proc.pHTarget!=null?stage.proc.pHTarget:7.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="源水碱度 (mg/L CaCO₃)&#10;范围: 50-200&#10;默认: 100&#10;含义: 源水/补水碱度&#10;何时调: 海水多 150-200, 软水 50-80">源水碱度(mg/L)</label><input data-proc-stage="${idx}" data-proc-field="alkSource" type="number" ${fieldSpecAttrs('alkSource')} value="${stage.proc.alkSource}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="标准 VTR @ 20°C, 单位 g TAN/(m³·d) [= 0.001 × kg/(m³·d)]&#10;范围: 300-800 g/(m³·d) = 0.3-0.8 kg/(m³·d)&#10;默认: 500 = 0.5 kg/(m³·d)&#10;含义: 生物滤池 20°C 淡水基准 TAN 去除速率&#10;手册第 10.2 节用 kg/(m³·d), UI 用 g/(m³·d) 便于输入大数&#10;何时调: MBBR 高比表面积 600-800, 普通 K1 400-600">VTR₂₀ g/(m³·d)</label><input data-proc-stage="${idx}" data-proc-field="VTR20" type="number" ${fieldSpecAttrs('VTR20')} value="${stage.proc.VTR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="标准 VDR @ 20°C (g/m³·d)&#10;范围: 500-1200&#10;默认: 800&#10;含义: 反硝化反应器 20°C 基准 NO₃⁻ 去除速率&#10;何时调: 固定床 600-1000, 流化床 1000-1200">VDR₂₀(g/m³·d)</label><input data-proc-stage="${idx}" data-proc-field="VDR20" type="number" ${fieldSpecAttrs('VDR20')} value="${stage.proc.VDR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="MBBR 填料填充率 (%)&#10;范围: 30-70&#10;默认: 50 (Rusten 2006 工程惯例)&#10;含义: 填料净体积占池总容积比例&#10;影响: 决定 BF 池总容积 V_BF = bioVolume / fillRatio&#10;V_BF/bioVolume 比值:&#10;  50% → 2.00&#10;  60% → 1.67&#10;  70% → 1.43&#10;何时调:&#10;  K1/K3 标准填料: 50%&#10;  高密度装填 (国内某些低成本项目): 60-65%&#10;  低密度均匀曝气: 35-40%">BF填充率(%)</label><input data-proc-stage="${idx}" data-proc-field="bfFillRatio" type="number" ${fieldSpecAttrs('bfFillRatio')} value="${stage.proc.bfFillRatio != null ? stage.proc.bfFillRatio : 50}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="硝化温度修正系数&#10;范围: 1.06-1.12&#10;默认: 1.10&#10;含义: Arrhenius θ, 温度每变 10°C VTR 按 θ^(ΔT/10) 倍变&#10;何时调: 一般不调">θ_nit</label><input data-proc-stage="${idx}" data-proc-field="thetaNit" type="number" ${fieldSpecAttrs('thetaNit')} value="${stage.proc.thetaNit}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="反硝化温度修正系数&#10;范围: 1.05-1.10&#10;默认: 1.08&#10;含义: 反硝化的 Arrhenius θ&#10;何时调: 一般不调">θ_den</label><input data-proc-stage="${idx}" data-proc-field="thetaDen" type="number" ${fieldSpecAttrs('thetaDen')} value="${stage.proc.thetaDen}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="鱼【生理】耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.18-0.45&#10;默认: 自动 (o2BaseFactor × Q10^((tempOpt−metabRefTemp)/10))&#10;含义: 清水条件下鱼本身的代谢耗氧, 物种实测值&#10;&#10;⚠ 池内实际耗氧 = 本值 + TSS 依赖的池内异养附加&#10;   (悬浮固体上附着的异养菌在池内直接耗氧, 同样由氧锥供给)&#10;   附加量随鱼池 TSS 上升, 见全局参数 o2TssSlope&#10;何时调: 极端品种或新种时手填; 留空恢复自动">鱼生理耗氧</label><input data-proc-stage="${idx}" data-proc-field="o2FishFactor" type="number" ${fieldSpecAttrs('o2FishFactor')} placeholder="自动" value="${(stage.proc.o2FishFactor!=null && !isNaN(stage.proc.o2FishFactor)) ? stage.proc.o2FishFactor : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="异养菌耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.05-0.20&#10;默认: 0.10&#10;含义: 残饵+粪便分解耗氧, 由 BF 风机供应&#10;何时调: 优化场→0.08, 鳗鱼/对虾→0.15-0.20">异养菌耗氧</label><input data-proc-stage="${idx}" data-proc-field="o2DOMfactor" type="number" ${fieldSpecAttrs('o2DOMfactor')} value="${stage.proc.o2DOMfactor != null ? stage.proc.o2DOMfactor : 0.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="源水 TSS (mg/L)&#10;范围: 0-50&#10;默认: 10&#10;含义: 源水悬浮物含量&#10;何时调: 清洁井水 5-10, 地表/海水 20-50">源水SS(mg/L)</label><input data-proc-stage="${idx}" data-proc-field="sourceSS" type="number" ${fieldSpecAttrs('sourceSS')} value="${stage.proc.sourceSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="源水 pH&#10;范围: 6.5-8.5&#10;默认: 7.5&#10;含义: 源水/补水 pH&#10;何时调: 按水质实测">源水pH</label><input data-proc-stage="${idx}" data-proc-field="sourcePH" type="number" ${fieldSpecAttrs('sourcePH')} value="${stage.proc.sourcePH}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="目标 pH (free/浓度标度) — 仅'持目标 pH'模式生效&#10;工具反求需要的碱度设定值, 在稳态 CO₂ 下维持此 pH&#10;典型: 淡水 6.8-7.2, 海水 7.5-7.9, 三文鱼 7.0-7.5&#10;注意: pH<6.5 硝化效率骤降, pH for="f_${idx}_pHTarget">8.0 NH3 占比过高">目标 pH</label><input id="f_${idx}_pHTarget" data-proc-stage="${idx}" data-proc-field="pHTarget" type="number" ${fieldSpecAttrs('pHTarget')} value="${stage.proc.pHTarget!=null?stage.proc.pHTarget:7.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="源水碱度 (mg/L CaCO₃)&#10;范围: 50-200&#10;默认: 100&#10;含义: 源水/补水碱度&#10;何时调: 海水多 150-200, 软水 50-80" for="f_${idx}_alkSource">源水碱度(mg/L)</label><input id="f_${idx}_alkSource" data-proc-stage="${idx}" data-proc-field="alkSource" type="number" ${fieldSpecAttrs('alkSource')} value="${stage.proc.alkSource}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="标准 VTR @ 20°C, 单位 g TAN/(m³·d) [= 0.001 × kg/(m³·d)]&#10;范围: 300-800 g/(m³·d) = 0.3-0.8 kg/(m³·d)&#10;默认: 500 = 0.5 kg/(m³·d)&#10;含义: 生物滤池 20°C 淡水基准 TAN 去除速率&#10;手册第 10.2 节用 kg/(m³·d), UI 用 g/(m³·d) 便于输入大数&#10;何时调: MBBR 高比表面积 600-800, 普通 K1 400-600" for="f_${idx}_VTR20">VTR₂₀ g/(m³·d)</label><input id="f_${idx}_VTR20" data-proc-stage="${idx}" data-proc-field="VTR20" type="number" ${fieldSpecAttrs('VTR20')} value="${stage.proc.VTR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="标准 VDR @ 20°C (g/m³·d)&#10;范围: 500-1200&#10;默认: 800&#10;含义: 反硝化反应器 20°C 基准 NO₃⁻ 去除速率&#10;何时调: 固定床 600-1000, 流化床 1000-1200" for="f_${idx}_VDR20">VDR₂₀(g/m³·d)</label><input id="f_${idx}_VDR20" data-proc-stage="${idx}" data-proc-field="VDR20" type="number" ${fieldSpecAttrs('VDR20')} value="${stage.proc.VDR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="MBBR 填料填充率 (%)&#10;范围: 30-70&#10;默认: 50 (Rusten 2006 工程惯例)&#10;含义: 填料净体积占池总容积比例&#10;影响: 决定 BF 池总容积 V_BF = bioVolume / fillRatio&#10;V_BF/bioVolume 比值:&#10;  50% → 2.00&#10;  60% → 1.67&#10;  70% → 1.43&#10;何时调:&#10;  K1/K3 标准填料: 50%&#10;  高密度装填 (国内某些低成本项目): 60-65%&#10;  低密度均匀曝气: 35-40%" for="f_${idx}_bfFillRatio">BF填充率(%)</label><input id="f_${idx}_bfFillRatio" data-proc-stage="${idx}" data-proc-field="bfFillRatio" type="number" ${fieldSpecAttrs('bfFillRatio')} value="${stage.proc.bfFillRatio != null ? stage.proc.bfFillRatio : 50}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="硝化温度修正系数&#10;范围: 1.06-1.12&#10;默认: 1.10&#10;含义: Arrhenius θ, 温度每变 10°C VTR 按 θ^(ΔT/10) 倍变&#10;何时调: 一般不调" for="f_${idx}_thetaNit">θ_nit</label><input id="f_${idx}_thetaNit" data-proc-stage="${idx}" data-proc-field="thetaNit" type="number" ${fieldSpecAttrs('thetaNit')} value="${stage.proc.thetaNit}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="反硝化温度修正系数&#10;范围: 1.05-1.10&#10;默认: 1.08&#10;含义: 反硝化的 Arrhenius θ&#10;何时调: 一般不调" for="f_${idx}_thetaDen">θ_den</label><input id="f_${idx}_thetaDen" data-proc-stage="${idx}" data-proc-field="thetaDen" type="number" ${fieldSpecAttrs('thetaDen')} value="${stage.proc.thetaDen}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="鱼【生理】耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.18-0.45&#10;默认: 自动 (o2BaseFactor × Q10^((tempOpt−metabRefTemp)/10))&#10;含义: 清水条件下鱼本身的代谢耗氧, 物种实测值&#10;&#10;⚠ 池内实际耗氧 = 本值 + TSS 依赖的池内异养附加&#10;   (悬浮固体上附着的异养菌在池内直接耗氧, 同样由氧锥供给)&#10;   附加量随鱼池 TSS 上升, 见全局参数 o2TssSlope&#10;何时调: 极端品种或新种时手填; 留空恢复自动" for="f_${idx}_o2FishFactor">鱼生理耗氧</label><input id="f_${idx}_o2FishFactor" data-proc-stage="${idx}" data-proc-field="o2FishFactor" type="number" ${fieldSpecAttrs('o2FishFactor')} placeholder="自动" value="${(stage.proc.o2FishFactor!=null && !isNaN(stage.proc.o2FishFactor)) ? stage.proc.o2FishFactor : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="异养菌耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.05-0.20&#10;默认: 0.10&#10;含义: 残饵+粪便分解耗氧, 由 BF 风机供应&#10;何时调: 优化场→0.08, 鳗鱼/对虾→0.15-0.20" for="f_${idx}_o2DOMfactor">异养菌耗氧</label><input id="f_${idx}_o2DOMfactor" data-proc-stage="${idx}" data-proc-field="o2DOMfactor" type="number" ${fieldSpecAttrs('o2DOMfactor')} value="${stage.proc.o2DOMfactor != null ? stage.proc.o2DOMfactor : 0.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="源水 TSS (mg/L)&#10;范围: 0-50&#10;默认: 10&#10;含义: 源水悬浮物含量&#10;何时调: 清洁井水 5-10, 地表/海水 20-50" for="f_${idx}_sourceSS">源水SS(mg/L)</label><input id="f_${idx}_sourceSS" data-proc-stage="${idx}" data-proc-field="sourceSS" type="number" ${fieldSpecAttrs('sourceSS')} value="${stage.proc.sourceSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="源水 pH&#10;范围: 6.5-8.5&#10;默认: 7.5&#10;含义: 源水/补水 pH&#10;何时调: 按水质实测" for="f_${idx}_sourcePH">源水pH</label><input id="f_${idx}_sourcePH" data-proc-stage="${idx}" data-proc-field="sourcePH" type="number" ${fieldSpecAttrs('sourcePH')} value="${stage.proc.sourcePH}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       
-      <div data-common><label class="text-[10px] text-slate-400" title="板换回收率 (%)&#10;范围: 60-90&#10;默认: 75&#10;含义: 板式换热器对补水热回收效率&#10;何时调: 钛板(海水)75-85, 高效逆流式≥85">板换回收(%)</label><input data-proc-stage="${idx}" data-proc-field="hxEff" type="number" step="5" value="${stage.proc.hxEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-orange-300" title="热泵制热 COP&#10;范围: 3.0-5.5&#10;默认: 4.0&#10;含义: 制热效率系数&#10;何时调: 空气源 3.5-4.0, 水源 4.5-5.5">热泵 COP 热</label><input data-proc-stage="${idx}" data-proc-field="heatPumpCOP_heat" type="number" ${fieldSpecAttrs('heatPumpCOP_heat')} value="${stage.proc.heatPumpCOP_heat != null ? stage.proc.heatPumpCOP_heat : 4.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-blue-300" title="热泵制冷 COP&#10;范围: 2.0-4.0&#10;默认: 3.0&#10;含义: 制冷效率系数&#10;何时调: 大温差(28→12°C)2.5, 常规 3.0-3.5">热泵 COP 冷</label><input data-proc-stage="${idx}" data-proc-field="heatPumpCOP_cool" type="number" ${fieldSpecAttrs('heatPumpCOP_cool')} value="${stage.proc.heatPumpCOP_cool != null ? stage.proc.heatPumpCOP_cool : 3.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-orange-300" title="鱼基础代谢热 (kWh/kg鱼/d)&#10;v1.1: 默认 0 (启用 Schrama 严谨公式: H = 106 × Q10^((T-T_ref)/10) × N × W^0.85)&#10;>0: 启用旧公式 (basal+HIE 双项, 兼容 v1.0/v1.1 早期方案)&#10;典型范围: 0 (推荐) 或 0.015-0.035">鱼代谢系数</label><input data-proc-stage="${idx}" data-proc-field="metabBasalRate" type="number" ${fieldSpecAttrs('metabBasalRate')} value="${stage.proc.metabBasalRate != null ? stage.proc.metabBasalRate : 0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-orange-300" title="饲料代谢热 (kWh/kg饲料)&#10;范围: 0.5-3.0&#10;默认: 1.5&#10;含义: 鱼吃食后代谢产生的热量, ≈30%×饲料能量(5kWh/kg)&#10;何时调: 高蛋白料↑, 低蛋白↓">饲料代谢热</label><input data-proc-stage="${idx}" data-proc-field="metabFeedFactor" type="number" ${fieldSpecAttrs('metabFeedFactor')} value="${stage.proc.metabFeedFactor != null ? stage.proc.metabFeedFactor : 1.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-common><label class="text-[10px] text-slate-400" title="板换回收率 (%)&#10;范围: 60-90&#10;默认: 75&#10;含义: 板式换热器对补水热回收效率&#10;何时调: 钛板(海水)75-85, 高效逆流式≥85" for="f_${idx}_hxEff">板换回收(%)</label><input id="f_${idx}_hxEff" data-proc-stage="${idx}" data-proc-field="hxEff" type="number" step="5" value="${stage.proc.hxEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-orange-300" title="热泵制热 COP&#10;范围: 3.0-5.5&#10;默认: 4.0&#10;含义: 制热效率系数&#10;何时调: 空气源 3.5-4.0, 水源 4.5-5.5" for="f_${idx}_heatPumpCOP_heat">热泵 COP 热</label><input id="f_${idx}_heatPumpCOP_heat" data-proc-stage="${idx}" data-proc-field="heatPumpCOP_heat" type="number" ${fieldSpecAttrs('heatPumpCOP_heat')} value="${stage.proc.heatPumpCOP_heat != null ? stage.proc.heatPumpCOP_heat : 4.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-blue-300" title="热泵制冷 COP&#10;范围: 2.0-4.0&#10;默认: 3.0&#10;含义: 制冷效率系数&#10;何时调: 大温差(28→12°C)2.5, 常规 3.0-3.5" for="f_${idx}_heatPumpCOP_cool">热泵 COP 冷</label><input id="f_${idx}_heatPumpCOP_cool" data-proc-stage="${idx}" data-proc-field="heatPumpCOP_cool" type="number" ${fieldSpecAttrs('heatPumpCOP_cool')} value="${stage.proc.heatPumpCOP_cool != null ? stage.proc.heatPumpCOP_cool : 3.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-orange-300" title="鱼基础代谢热 (kWh/kg鱼/d)&#10;v1.1: 默认 0 (启用 Schrama 严谨公式: H = 106 × Q10^((T-T_ref)/10) × N × W^0.85)&#10; for="f_${idx}_metabBasalRate">0: 启用旧公式 (basal+HIE 双项, 兼容 v1.0/v1.1 早期方案)&#10;典型范围: 0 (推荐) 或 0.015-0.035">鱼代谢系数</label><input id="f_${idx}_metabBasalRate" data-proc-stage="${idx}" data-proc-field="metabBasalRate" type="number" ${fieldSpecAttrs('metabBasalRate')} value="${stage.proc.metabBasalRate != null ? stage.proc.metabBasalRate : 0}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-orange-300" title="饲料代谢热 (kWh/kg饲料)&#10;范围: 0.5-3.0&#10;默认: 1.5&#10;含义: 鱼吃食后代谢产生的热量, ≈30%×饲料能量(5kWh/kg)&#10;何时调: 高蛋白料↑, 低蛋白↓" for="f_${idx}_metabFeedFactor">饲料代谢热</label><input id="f_${idx}_metabFeedFactor" data-proc-stage="${idx}" data-proc-field="metabFeedFactor" type="number" ${fieldSpecAttrs('metabFeedFactor')} value="${stage.proc.metabFeedFactor != null ? stage.proc.metabFeedFactor : 1.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-cyan-300" title="池体散热 (室内/室外)&#10;室内: U≈5 W/m²·K&#10;室外: U≈15-25 W/m²·K&#10;默认: 室内">车间环境</label><select data-proc-stage="${idx}" data-proc-field="tankIndoor" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.tankIndoor!==false?'selected':''}>室内 (U=5)</option><option value="false" ${stage.proc.tankIndoor===false?'selected':''}>室外 (U=18)</option></select></div>
-      <div><label class="text-[10px] text-cyan-300" title="车间室温 (°C)&#10;范围: 0-35 (北方冬季可低至 0-5)&#10;默认: 20&#10;影响池体散热; 室温≈水温时散热 ≈ 0&#10;0°C 北方冬季合法值">室温(°C)</label><input data-proc-stage="${idx}" data-proc-field="roomTemp" type="number" ${fieldSpecAttrs('roomTemp')} value="${stage.proc.roomTemp != null ? stage.proc.roomTemp : 20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-cyan-300" title="车间室温 (°C)&#10;范围: 0-35 (北方冬季可低至 0-5)&#10;默认: 20&#10;影响池体散热; 室温≈水温时散热 ≈ 0&#10;0°C 北方冬季合法值" for="f_${idx}_roomTemp">室温(°C)</label><input id="f_${idx}_roomTemp" data-proc-stage="${idx}" data-proc-field="roomTemp" type="number" ${fieldSpecAttrs('roomTemp')} value="${stage.proc.roomTemp != null ? stage.proc.roomTemp : 20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <!-- v1.3.x: 池水深已统一到阶段卡片头部 (poolDepth_m), 这里不再重复输入 -->
       <div class="proc-section-divider" style="grid-column: 1 / -1; padding: 6px 10px; background: rgba(244, 63, 94, 0.08); border-left: 3px solid rgba(244, 63, 94, 0.5); margin-top: 4px;">
         🌍 <b>v1.2 气候 + 围护 + 热泵</b> 已挪到顶部 ① 区作为<b>全局参数</b> (项目级常量, 影响所有阶段). 阶段卡片底部 ♨️ 区显示该阶段的热平衡输出.
       </div>
       <div class="proc-section-divider">💧 水泵参数 — P=9.81×Q×H÷(3600×η)。反硝化 / UV / AOP / 蛋分 各支路独立; AOP / 蛋分停用时对应泵功率=0</div>
-      <div><label class="text-[10px] text-cyan-300" title="主泵扬程 (m)&#10;范围: 5-20&#10;默认: 7 (重力回流布置)&#10;含义: 主循环泵扬程, 不含氧锥压损 (氧锥另有参数)&#10;扬程预算: 静提升 2.5-4 (泵池→脱气塔顶) + 沿程/局部 1.5-3 + UV/板换 0.5-2 + 余量 0.5-1&#10;何时调: 池底重力流 5-8, 地下池/多级跌落 12-20">主泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="mainPumpHead_m" type="number" ${fieldSpecAttrs('mainPumpHead_m')} value="${stage.proc.mainPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-cyan-300" title="主泵效率 (%)&#10;范围: 60-85&#10;默认: 75&#10;含义: 主循环泵水力效率 (不含电机效率, 电机效率在全局热配置里单列)&#10;何时调: 大流量低扬程轴流/混流泵 78-85, 普通离心泵 65-72">主泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="mainPumpEta" type="number" ${fieldSpecAttrs('mainPumpEta')} value="${stage.proc.mainPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-purple-300" title="反硝化泵扬程 (m)&#10;范围: 4-15&#10;默认: 7&#10;扬程预算: 静提升 2-4 (回主回路液面) + 设备压损: 流化/填充床 1-3 m + 沿程/余量 1-2&#10;支路流量小、管路短, 扬程不应高于主泵">反硝化泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="denitriPumpHead_m" type="number" ${fieldSpecAttrs('denitriPumpHead_m')} value="${stage.proc.denitriPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-purple-300" title="反硝化泵效率 (%)&#10;范围: 50-70&#10;默认: 60">反硝化泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="denitriPumpEta" type="number" ${fieldSpecAttrs('denitriPumpEta')} value="${stage.proc.denitriPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-violet-300" title="UV 泵扬程 (m)&#10;范围: 4-15&#10;默认: 7&#10;扬程预算: 静提升 2-4 (回主回路液面) + 设备压损: 中压 UV 2-7 m, 低压汞齐 0.5-1.5 m + 沿程/余量 1-2&#10;支路流量小、管路短, 扬程不应高于主泵">UV泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="uvPumpHead_m" type="number" ${fieldSpecAttrs('uvPumpHead_m')} value="${stage.proc.uvPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-violet-300" title="UV 泵效率 (%)&#10;范围: 50-70&#10;默认: 60">UV泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="uvPumpEta" type="number" ${fieldSpecAttrs('uvPumpEta')} value="${stage.proc.uvPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-lime-300" title="AOP 泵扬程 (m)&#10;范围: 4-15&#10;默认: 7&#10;扬程预算: 静提升 2-4 (回主回路液面) + 设备压损: 臭氧接触柱按塔高定 + 沿程/余量 1-2&#10;支路流量小、管路短, 扬程不应高于主泵">AOP泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="aopPumpHead_m" type="number" ${fieldSpecAttrs('aopPumpHead_m')} value="${stage.proc.aopPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-lime-300" title="AOP 泵效率 (%)&#10;范围: 50-70&#10;默认: 60">AOP泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="aopPumpEta" type="number" ${fieldSpecAttrs('aopPumpEta')} value="${stage.proc.aopPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-sky-300" title="蛋分泵扬程 (m)&#10;范围: 3-10&#10;默认: 6&#10;含义: 蛋分支路泵扬程">蛋分泵H(m)</label><input data-proc-stage="${idx}" data-proc-field="skimmerPumpHead_m" type="number" ${fieldSpecAttrs('skimmerPumpHead_m')} value="${stage.proc.skimmerPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-sky-300" title="蛋分泵效率 (%)&#10;范围: 50-70&#10;默认: 60">蛋分泵η(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerPumpEta" type="number" ${fieldSpecAttrs('skimmerPumpEta')} value="${stage.proc.skimmerPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-cyan-300" title="杂项电耗 kWh/d (每套RAS)&#10;范围: 20-200&#10;默认: 50&#10;含义: 照明/控制柜/备用/仪表等&#10;何时调: 小规模 20-50, 中规模 50-100, 大 100-200">杂项(kWh/d·套)</label><input data-proc-stage="${idx}" data-proc-field="miscElecKWhPerDay" type="number" ${fieldSpecAttrs('miscElecKWhPerDay')} value="${stage.proc.miscElecKWhPerDay}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-cyan-300" title="主泵扬程 (m)&#10;范围: 5-20&#10;默认: 7 (重力回流布置)&#10;含义: 主循环泵扬程, 不含氧锥压损 (氧锥另有参数)&#10;扬程预算: 静提升 2.5-4 (泵池→脱气塔顶) + 沿程/局部 1.5-3 + UV/板换 0.5-2 + 余量 0.5-1&#10;何时调: 池底重力流 5-8, 地下池/多级跌落 12-20" for="f_${idx}_mainPumpHead_m">主泵H(m)</label><input id="f_${idx}_mainPumpHead_m" data-proc-stage="${idx}" data-proc-field="mainPumpHead_m" type="number" ${fieldSpecAttrs('mainPumpHead_m')} value="${stage.proc.mainPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-cyan-300" title="主泵效率 (%)&#10;范围: 60-85&#10;默认: 75&#10;含义: 主循环泵水力效率 (不含电机效率, 电机效率在全局热配置里单列)&#10;何时调: 大流量低扬程轴流/混流泵 78-85, 普通离心泵 65-72" for="f_${idx}_mainPumpEta">主泵η(%)</label><input id="f_${idx}_mainPumpEta" data-proc-stage="${idx}" data-proc-field="mainPumpEta" type="number" ${fieldSpecAttrs('mainPumpEta')} value="${stage.proc.mainPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-purple-300" title="反硝化泵扬程 (m)&#10;范围: 4-15&#10;默认: 7&#10;扬程预算: 静提升 2-4 (回主回路液面) + 设备压损: 流化/填充床 1-3 m + 沿程/余量 1-2&#10;支路流量小、管路短, 扬程不应高于主泵" for="f_${idx}_denitriPumpHead_m">反硝化泵H(m)</label><input id="f_${idx}_denitriPumpHead_m" data-proc-stage="${idx}" data-proc-field="denitriPumpHead_m" type="number" ${fieldSpecAttrs('denitriPumpHead_m')} value="${stage.proc.denitriPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-purple-300" title="反硝化泵效率 (%)&#10;范围: 50-70&#10;默认: 60" for="f_${idx}_denitriPumpEta">反硝化泵η(%)</label><input id="f_${idx}_denitriPumpEta" data-proc-stage="${idx}" data-proc-field="denitriPumpEta" type="number" ${fieldSpecAttrs('denitriPumpEta')} value="${stage.proc.denitriPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-violet-300" title="UV 泵扬程 (m)&#10;范围: 4-15&#10;默认: 7&#10;扬程预算: 静提升 2-4 (回主回路液面) + 设备压损: 中压 UV 2-7 m, 低压汞齐 0.5-1.5 m + 沿程/余量 1-2&#10;支路流量小、管路短, 扬程不应高于主泵" for="f_${idx}_uvPumpHead_m">UV泵H(m)</label><input id="f_${idx}_uvPumpHead_m" data-proc-stage="${idx}" data-proc-field="uvPumpHead_m" type="number" ${fieldSpecAttrs('uvPumpHead_m')} value="${stage.proc.uvPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-violet-300" title="UV 泵效率 (%)&#10;范围: 50-70&#10;默认: 60" for="f_${idx}_uvPumpEta">UV泵η(%)</label><input id="f_${idx}_uvPumpEta" data-proc-stage="${idx}" data-proc-field="uvPumpEta" type="number" ${fieldSpecAttrs('uvPumpEta')} value="${stage.proc.uvPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-lime-300" title="AOP 泵扬程 (m)&#10;范围: 4-15&#10;默认: 7&#10;扬程预算: 静提升 2-4 (回主回路液面) + 设备压损: 臭氧接触柱按塔高定 + 沿程/余量 1-2&#10;支路流量小、管路短, 扬程不应高于主泵" for="f_${idx}_aopPumpHead_m">AOP泵H(m)</label><input id="f_${idx}_aopPumpHead_m" data-proc-stage="${idx}" data-proc-field="aopPumpHead_m" type="number" ${fieldSpecAttrs('aopPumpHead_m')} value="${stage.proc.aopPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-lime-300" title="AOP 泵效率 (%)&#10;范围: 50-70&#10;默认: 60" for="f_${idx}_aopPumpEta">AOP泵η(%)</label><input id="f_${idx}_aopPumpEta" data-proc-stage="${idx}" data-proc-field="aopPumpEta" type="number" ${fieldSpecAttrs('aopPumpEta')} value="${stage.proc.aopPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-sky-300" title="蛋分泵扬程 (m)&#10;范围: 3-10&#10;默认: 6&#10;含义: 蛋分支路泵扬程" for="f_${idx}_skimmerPumpHead_m">蛋分泵H(m)</label><input id="f_${idx}_skimmerPumpHead_m" data-proc-stage="${idx}" data-proc-field="skimmerPumpHead_m" type="number" ${fieldSpecAttrs('skimmerPumpHead_m')} value="${stage.proc.skimmerPumpHead_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-sky-300" title="蛋分泵效率 (%)&#10;范围: 50-70&#10;默认: 60" for="f_${idx}_skimmerPumpEta">蛋分泵η(%)</label><input id="f_${idx}_skimmerPumpEta" data-proc-stage="${idx}" data-proc-field="skimmerPumpEta" type="number" ${fieldSpecAttrs('skimmerPumpEta')} value="${stage.proc.skimmerPumpEta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-cyan-300" title="杂项电耗 kWh/d (每套RAS)&#10;范围: 20-200&#10;默认: 50&#10;含义: 照明/控制柜/备用/仪表等&#10;何时调: 小规模 20-50, 中规模 50-100, 大 100-200" for="f_${idx}_miscElecKWhPerDay">杂项(kWh/d·套)</label><input id="f_${idx}_miscElecKWhPerDay" data-proc-stage="${idx}" data-proc-field="miscElecKWhPerDay" type="number" ${fieldSpecAttrs('miscElecKWhPerDay')} value="${stage.proc.miscElecKWhPerDay}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="蛋白分离器启用/停用">蛋分启用</label><select data-proc-stage="${idx}" data-proc-field="skimmerEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.skimmerEnabled?'selected':''}>启用</option><option value="false" ${!stage.proc.skimmerEnabled?'selected':''}>停用</option></select></div>
       <div data-common><label class="text-[10px] text-slate-400" title="蛋分气源: 臭氧 (DOM 去除高) / 空气">蛋分气源</label><select data-proc-stage="${idx}" data-proc-field="skimmerMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="ozone" ${stage.proc.skimmerMode==='ozone'?'selected':''}>臭氧</option><option value="air" ${stage.proc.skimmerMode==='air'?'selected':''}>空气</option></select></div>
-      <div><label class="text-[10px] text-sky-300" title="蛋分旁路流量比 (%)&#10;范围: 15-30&#10;默认: 20&#10;含义: 占循环总流量&#10;何时调: 高密度场→25-30">蛋分旁路(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerFlowPct" type="number" step="5" value="${stage.proc.skimmerFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="空气蛋分 DOM 单次去除 (%)&#10;范围: 30-50&#10;默认: 40&#10;含义: 空气模式蛋分对 DOM 去除率&#10;何时调: 海水鱼蛋白多→45-50">空气DOM↓(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerDOMEffAir" type="number" step="1" value="${stage.proc.skimmerDOMEffAir}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="臭氧蛋分 DOM 单次去除 (%)&#10;范围: 60-80&#10;默认: 70&#10;含义: 臭氧模式蛋分对 DOM 去除率&#10;何时调: 臭氧投加充分→75-80">臭氧DOM↓(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerDOMEffOzone" type="number" step="1" value="${stage.proc.skimmerDOMEffOzone}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="蛋分 TSS 单次去除率 (%)&#10;范围: 30-50&#10;默认: 40&#10;含义: 蛋分对 < 30μm 细颗粒 TSS 去除率">蛋分TSS↓(%)</label><input data-proc-stage="${idx}" data-proc-field="skimmerTSSEff" type="number" ${fieldSpecAttrs('skimmerTSSEff')} value="${stage.proc.skimmerTSSEff != null ? stage.proc.skimmerTSSEff : 40}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="蛋分塔 HRT (min)&#10;范围: 1.5-4&#10;默认: 2 (商业实测中位)&#10;依据: Sanders Helgoland LE-315 实测 1.8-2.2 min (ScienceDirect 2023)&#10;物理: DOM 吸附是秒级反应, HRT 长无收益">蛋分HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="skimmerHRT_min" type="number" ${fieldSpecAttrs('skimmerHRT_min')} value="${stage.proc.skimmerHRT_min != null ? stage.proc.skimmerHRT_min : 2}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="臭氧投加率 (g O₃/g 饲料)&#10;范围: 0.005-0.015&#10;默认: 0.010&#10;含义: 蛋分臭氧投加比&#10;何时调: 海水严控≤0.010, 淡水可0.012-0.015">O₃投加率(g/g饲料)</label><input data-proc-stage="${idx}" data-proc-field="ozoneDose" type="number" ${fieldSpecAttrs('ozoneDose')} value="${stage.proc.ozoneDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-sky-300" title="蛋分旁路流量比 (%)&#10;范围: 15-30&#10;默认: 20&#10;含义: 占循环总流量&#10;何时调: 高密度场→25-30" for="f_${idx}_skimmerFlowPct">蛋分旁路(%)</label><input id="f_${idx}_skimmerFlowPct" data-proc-stage="${idx}" data-proc-field="skimmerFlowPct" type="number" step="5" value="${stage.proc.skimmerFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="空气蛋分 DOM 单次去除 (%)&#10;范围: 30-50&#10;默认: 40&#10;含义: 空气模式蛋分对 DOM 去除率&#10;何时调: 海水鱼蛋白多→45-50" for="f_${idx}_skimmerDOMEffAir">空气DOM↓(%)</label><input id="f_${idx}_skimmerDOMEffAir" data-proc-stage="${idx}" data-proc-field="skimmerDOMEffAir" type="number" step="1" value="${stage.proc.skimmerDOMEffAir}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="臭氧蛋分 DOM 单次去除 (%)&#10;范围: 60-80&#10;默认: 70&#10;含义: 臭氧模式蛋分对 DOM 去除率&#10;何时调: 臭氧投加充分→75-80" for="f_${idx}_skimmerDOMEffOzone">臭氧DOM↓(%)</label><input id="f_${idx}_skimmerDOMEffOzone" data-proc-stage="${idx}" data-proc-field="skimmerDOMEffOzone" type="number" step="1" value="${stage.proc.skimmerDOMEffOzone}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="蛋分 TSS 单次去除率 (%)&#10;范围: 30-50&#10;默认: 40&#10;含义: 蛋分对 < 30μm 细颗粒 TSS 去除率" for="f_${idx}_skimmerTSSEff">蛋分TSS↓(%)</label><input id="f_${idx}_skimmerTSSEff" data-proc-stage="${idx}" data-proc-field="skimmerTSSEff" type="number" ${fieldSpecAttrs('skimmerTSSEff')} value="${stage.proc.skimmerTSSEff != null ? stage.proc.skimmerTSSEff : 40}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="蛋分塔 HRT (min)&#10;范围: 1.5-4&#10;默认: 2 (商业实测中位)&#10;依据: Sanders Helgoland LE-315 实测 1.8-2.2 min (ScienceDirect 2023)&#10;物理: DOM 吸附是秒级反应, HRT 长无收益" for="f_${idx}_skimmerHRT_min">蛋分HRT(min)</label><input id="f_${idx}_skimmerHRT_min" data-proc-stage="${idx}" data-proc-field="skimmerHRT_min" type="number" ${fieldSpecAttrs('skimmerHRT_min')} value="${stage.proc.skimmerHRT_min != null ? stage.proc.skimmerHRT_min : 2}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="臭氧投加率 (g O₃/g 饲料)&#10;范围: 0.005-0.015&#10;默认: 0.010&#10;含义: 蛋分臭氧投加比&#10;何时调: 海水严控≤0.010, 淡水可0.012-0.015" for="f_${idx}_ozoneDose">O₃投加率(g/g饲料)</label><input id="f_${idx}_ozoneDose" data-proc-stage="${idx}" data-proc-field="ozoneDose" type="number" ${fieldSpecAttrs('ozoneDose')} value="${stage.proc.ozoneDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="AOP 高级氧化启用/停用">AOP启用</label><select data-proc-stage="${idx}" data-proc-field="aopEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.aopEnabled?'selected':''}>启用</option><option value="false" ${!stage.proc.aopEnabled?'selected':''}>停用</option></select></div>
       <div><label class="text-[10px] text-slate-400" title="AOP 类型 (v1.1.2 新增)&#10;集成型: UV+O3 一体反应器 (ULTRAAQUA 等), HRT 1-3 min&#10;分体型: O3 接触池 + UV 反应器, HRT 5-10 min (大型项目)&#10;切换会自动重置 HRT 默认值">AOP 类型</label><select data-proc-stage="${idx}" data-proc-field="aopType" class="stg-proc-select input-ind !py-1 !text-xs"><option value="integrated" ${(stage.proc.aopType)==='integrated'?'selected':''}>集成型 (UV+O3一体)</option><option value="separated" ${stage.proc.aopType==='separated'?'selected':''}>分体型 (O3+UV分体)</option></select></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP 旁路流量比 (%)&#10;范围: 3-15&#10;默认: 5&#10;含义: 占循环总流量&#10;何时调: 土腥味重→10-15">AOP Q比(%)</label><input data-proc-stage="${idx}" data-proc-field="aopFlowPct" type="number" step="1" value="${stage.proc.aopFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP geosmin 去除率 (%)&#10;范围: 85-95&#10;默认: 90&#10;含义: 单次对 geosmin/2-MIB (土腥味) 去除率&#10;何时调: 设备工艺决定, 一般不调">AOP geosmin↓(%)</label><input data-proc-stage="${idx}" data-proc-field="aopGeosminEff" type="number" step="1" value="${stage.proc.aopGeosminEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP DOM 去除率 (%)&#10;范围: 5-15&#10;默认: 5 (保守)&#10;含义: 单次对总 DOM 去除率 (v1.1 修复 v1.0 误用 90%)&#10;何时调: 优化 AOP 系统→10-15">AOP DOM↓(%)</label><input data-proc-stage="${idx}" data-proc-field="aopDOMRemoval" type="number" ${fieldSpecAttrs('aopDOMRemoval')} value="${stage.proc.aopDOMRemoval != null ? stage.proc.aopDOMRemoval : 5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP 反应池 HRT (min)&#10;集成型默认: 2 (UV+O3一体反应器, ULTRAAQUA 等)&#10;分体型默认: 8 (O3接触池+UV分体, 大型项目)&#10;依据: Schrader 2010 实测 1 min 接触, geosmin 去除 86-92%&#10;切换 AOP 类型时自动重置默认, 用户可手动微调">AOP HRT(min)</label><input data-proc-stage="${idx}" data-proc-field="aopHRT_min" type="number" ${fieldSpecAttrs('aopHRT_min')} value="${stage.proc.aopHRT_min != null ? stage.proc.aopHRT_min : ((stage.proc.aopType)==='separated'?8:2)}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP 旁路流量比 (%)&#10;范围: 3-15&#10;默认: 5&#10;含义: 占循环总流量&#10;何时调: 土腥味重→10-15" for="f_${idx}_aopFlowPct">AOP Q比(%)</label><input id="f_${idx}_aopFlowPct" data-proc-stage="${idx}" data-proc-field="aopFlowPct" type="number" step="1" value="${stage.proc.aopFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP geosmin 去除率 (%)&#10;范围: 85-95&#10;默认: 90&#10;含义: 单次对 geosmin/2-MIB (土腥味) 去除率&#10;何时调: 设备工艺决定, 一般不调" for="f_${idx}_aopGeosminEff">AOP geosmin↓(%)</label><input id="f_${idx}_aopGeosminEff" data-proc-stage="${idx}" data-proc-field="aopGeosminEff" type="number" step="1" value="${stage.proc.aopGeosminEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP DOM 去除率 (%)&#10;范围: 5-15&#10;默认: 5 (保守)&#10;含义: 单次对总 DOM 去除率 (v1.1 修复 v1.0 误用 90%)&#10;何时调: 优化 AOP 系统→10-15" for="f_${idx}_aopDOMRemoval">AOP DOM↓(%)</label><input id="f_${idx}_aopDOMRemoval" data-proc-stage="${idx}" data-proc-field="aopDOMRemoval" type="number" ${fieldSpecAttrs('aopDOMRemoval')} value="${stage.proc.aopDOMRemoval != null ? stage.proc.aopDOMRemoval : 5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP 反应池 HRT (min)&#10;集成型默认: 2 (UV+O3一体反应器, ULTRAAQUA 等)&#10;分体型默认: 8 (O3接触池+UV分体, 大型项目)&#10;依据: Schrader 2010 实测 1 min 接触, geosmin 去除 86-92%&#10;切换 AOP 类型时自动重置默认, 用户可手动微调" for="f_${idx}_aopHRT_min">AOP HRT(min)</label><input id="f_${idx}_aopHRT_min" data-proc-stage="${idx}" data-proc-field="aopHRT_min" type="number" ${fieldSpecAttrs('aopHRT_min')} value="${stage.proc.aopHRT_min != null ? stage.proc.aopHRT_min : ((stage.proc.aopType)==='separated'?8:2)}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">🌫️ <b>CO₂ 脱气塔</b> (v1.1.2: 独立设备 + 风机参数可调)</div>
       <div data-common><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔启用/停用. 关闭时 CO₂ 仅靠换水稀释, 高密度场会严重超标">CO₂脱气启用</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.co2StripperEnabled!==false?'selected':''}>启用</option><option value="false" ${stage.proc.co2StripperEnabled===false?'selected':''}>停用</option></select></div>
-      <div><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔单次效率 (%)&#10;范围: 50-85&#10;默认: 65&#10;含义: 单次脱气效率, G:L=3 浅塔约 60-70%">脱气效率(%)</label><input data-proc-stage="${idx}" data-proc-field="co2StripperEff" type="number" ${fieldSpecAttrs('co2StripperEff')} value="${stage.proc.co2StripperEff != null ? stage.proc.co2StripperEff : 65}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-emerald-300" title="气液比 G:L (×)&#10;范围: 5-20 (Timmons Ch.10 p.244)&#10;默认: 3 (国内中型项目浅塔)&#10;含义: 风量/水量比&#10;⚠ 教科书 CO₂ 汽提推荐 5:1-20:1; 常规曝气才 &lt;3:1&#10;Karimi 2020 实测: G:L&gt;5 无显著额外去除; Summerfelt 2003 最优 5.1&#10;⚠ 热损与 G:L 成线性 —— 调高同时增大风机电耗与接触器热损">G:L 比</label><input data-proc-stage="${idx}" data-proc-field="co2StripperGtoL" type="number" ${fieldSpecAttrs('co2StripperGtoL')} value="${stage.proc.co2StripperGtoL != null ? stage.proc.co2StripperGtoL : 3}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="脱气效率取值方式&#10;manual: 直接用上面填的「脱气效率」(与 v1.x 一致, 默认)&#10;auto: 按 G:L / 填料高度 / 进风 CO₂ 本底自动算 (Timmons Ch.10 Fig 10.13/10.14/10.17)&#10;⚠ v1.x 中效率与 G:L 是两个独立参数, 调高 G:L 只涨电耗不涨去除率 —— auto 修正此问题">效率取值</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEffMode" class="stg-proc-input input-ind !py-1 !text-xs"><option value="manual" ${stage.proc.co2StripperEffMode!=="auto"?"selected":""}>手工指定</option><option value="auto" ${stage.proc.co2StripperEffMode==="auto"?"selected":""}>按曲线自动</option></select></div><div><label class="text-[10px] text-emerald-300" title="填料层高度 (m)&#10;范围: 0.3-3.0&#10;默认: 1.0&#10;Timmons Ch.10 p.245: 设计高度一般限于 1.0-1.5 m,&#10;因为超过 1.5-2.0 m 后去除性能收益递减&#10;⚠ 填料深度超 1 m 时, 建议水力负荷取偏低端以降低风机背压">填料高度(m)</label><input data-proc-stage="${idx}" data-proc-field="co2PackingHeight_m" type="number" ${fieldSpecAttrs('co2PackingHeight_m')} value="${stage.proc.co2PackingHeight_m != null ? stage.proc.co2PackingHeight_m : 1.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="脱气塔风机全压 (kPa)&#10;范围: 0.3-10&#10;默认: 2.5&#10;构成: 填料层压降 (化工准则 0.2-0.4 kPa/m) + 布水器 + 风管 + 过滤器 + 排风管&#10;⚠ 与曝气风机不同 —— 曝气要克服水深静压 (约 10 kPa/m 水柱), 脱气只克服流动阻力&#10;整机对标: Summerfelt 2009 为 5-15 kW/1000 m³/h 循环水量">风机全压(kPa)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" ${fieldSpecAttrs('co2BlowerPressure_kPa')} value="${stage.proc.co2BlowerPressure_kPa != null ? stage.proc.co2BlowerPressure_kPa : 2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="风机效率 (%)&#10;范围: 30-90&#10;默认: 60&#10;含义: 风机轴功率/电功率总效率 (含电机)&#10;再生式风机 45-65%, 离心风机 60-75%, 罗茨 50-70%">风机效率(%)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" ${fieldSpecAttrs('co2BlowerEfficiency')} value="${stage.proc.co2BlowerEfficiency != null ? stage.proc.co2BlowerEfficiency : 60}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 20-250&#10;默认: 80&#10;决定塔截面积 → CAPEX&#10;Timmons Ch.10 p.245: 17-24 L/(m²·s) = 61-86 m³/(m²·h)&#10;⚠ 填料深度超 1 m 时建议取偏低端 (降低风机背压)">水力负荷</label><input data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" ${fieldSpecAttrs('co2StripperLoadingRate')} value="${stage.proc.co2StripperLoadingRate != null ? stage.proc.co2StripperLoadingRate : 80}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div class="col-span-2 text-[10px] leading-relaxed px-1 py-1 rounded bg-slate-900/40 border border-slate-700/50" data-co2diag="${idx}"></div>
-      <div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 50-150&#10;默认: 80&#10;依据: Summerfelt 2003 / Moran 2003 实测 87-187&#10;何时调: 高密度场降至 50, 低密度场可上 150">水力负荷</label><input data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" ${fieldSpecAttrs('co2StripperLoadingRate')} value="${stage.proc.co2StripperLoadingRate != null ? stage.proc.co2StripperLoadingRate : 80}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-emerald-300" title="风机风压 (kPa)&#10;范围: 0.3-10&#10;默认: 2.5 (中塔典型)&#10;含义: 决定风机功率&#10;Delta Cooling Towers 实测 1-2.5 kPa&#10;浅塔(<2m)0.5-1.5, 中塔(2-4m)1.5-3, 深塔(>4m)3-5">风压(kPa)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" ${fieldSpecAttrs('co2BlowerPressure_kPa')} value="${stage.proc.co2BlowerPressure_kPa != null ? stage.proc.co2BlowerPressure_kPa : 2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-emerald-300" title="风机机械效率 (%)&#10;范围: 50-80&#10;默认: 60 (中位)&#10;罗茨风机 50-70, 离心风机 65-80">风机η(%)</label><input data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" ${fieldSpecAttrs('co2BlowerEfficiency')} value="${stage.proc.co2BlowerEfficiency != null ? stage.proc.co2BlowerEfficiency : 60}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-emerald-300" title="关闭时附带解吸率 (%)&#10;范围: 2-15&#10;默认: 5&#10;含义: 脱气塔关闭时增氧塔附带解吸效率&#10;何时调: 高 G:L 锥→10-15">附带解吸(%)</label><input data-proc-stage="${idx}" data-proc-field="co2FallbackEff" type="number" ${fieldSpecAttrs('co2FallbackEff')} value="${stage.proc.co2FallbackEff != null ? stage.proc.co2FallbackEff : 5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔单次效率 (%)&#10;范围: 50-85&#10;默认: 65&#10;含义: 单次脱气效率, G:L=3 浅塔约 60-70%" for="f_${idx}_co2StripperEff">脱气效率(%)</label><input id="f_${idx}_co2StripperEff" data-proc-stage="${idx}" data-proc-field="co2StripperEff" type="number" ${fieldSpecAttrs('co2StripperEff')} value="${stage.proc.co2StripperEff != null ? stage.proc.co2StripperEff : 65}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="气液比 G:L (×)&#10;范围: 5-20 (Timmons Ch.10 p.244)&#10;默认: 3 (国内中型项目浅塔)&#10;含义: 风量/水量比&#10;⚠ 教科书 CO₂ 汽提推荐 5:1-20:1; 常规曝气才 &lt;3:1&#10;Karimi 2020 实测: G:L&gt;5 无显著额外去除; Summerfelt 2003 最优 5.1&#10;⚠ 热损与 G:L 成线性 —— 调高同时增大风机电耗与接触器热损" for="f_${idx}_co2StripperGtoL">G:L 比</label><input id="f_${idx}_co2StripperGtoL" data-proc-stage="${idx}" data-proc-field="co2StripperGtoL" type="number" ${fieldSpecAttrs('co2StripperGtoL')} value="${stage.proc.co2StripperGtoL != null ? stage.proc.co2StripperGtoL : 3}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="脱气效率取值方式&#10;manual: 直接用上面填的「脱气效率」(与 v1.x 一致, 默认)&#10;auto: 按 G:L / 填料高度 / 进风 CO₂ 本底自动算 (Timmons Ch.10 Fig 10.13/10.14/10.17)&#10;⚠ v1.x 中效率与 G:L 是两个独立参数, 调高 G:L 只涨电耗不涨去除率 —— auto 修正此问题">效率取值</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEffMode" class="stg-proc-input input-ind !py-1 !text-xs"><option value="manual" ${stage.proc.co2StripperEffMode!=="auto"?"selected":""}>手工指定</option><option value="auto" ${stage.proc.co2StripperEffMode==="auto"?"selected":""}>按曲线自动</option></select></div><div><label class="text-[10px] text-emerald-300" title="填料层高度 (m)&#10;范围: 0.3-3.0&#10;默认: 1.0&#10;Timmons Ch.10 p.245: 设计高度一般限于 1.0-1.5 m,&#10;因为超过 1.5-2.0 m 后去除性能收益递减&#10;⚠ 填料深度超 1 m 时, 建议水力负荷取偏低端以降低风机背压" for="f_${idx}_co2PackingHeight_m">填料高度(m)</label><input id="f_${idx}_co2PackingHeight_m" data-proc-stage="${idx}" data-proc-field="co2PackingHeight_m" type="number" ${fieldSpecAttrs('co2PackingHeight_m')} value="${stage.proc.co2PackingHeight_m != null ? stage.proc.co2PackingHeight_m : 1.0}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="脱气塔风机全压 (kPa)&#10;范围: 0.3-10&#10;默认: 2.5&#10;构成: 填料层压降 (化工准则 0.2-0.4 kPa/m) + 布水器 + 风管 + 过滤器 + 排风管&#10;⚠ 与曝气风机不同 —— 曝气要克服水深静压 (约 10 kPa/m 水柱), 脱气只克服流动阻力&#10;整机对标: Summerfelt 2009 为 5-15 kW/1000 m³/h 循环水量" for="f_${idx}_co2BlowerPressure_kPa">风机全压(kPa)</label><input id="f_${idx}_co2BlowerPressure_kPa" data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" ${fieldSpecAttrs('co2BlowerPressure_kPa')} value="${stage.proc.co2BlowerPressure_kPa != null ? stage.proc.co2BlowerPressure_kPa : 2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="风机效率 (%)&#10;范围: 30-90&#10;默认: 60&#10;含义: 风机轴功率/电功率总效率 (含电机)&#10;再生式风机 45-65%, 离心风机 60-75%, 罗茨 50-70%" for="f_${idx}_co2BlowerEfficiency">风机效率(%)</label><input id="f_${idx}_co2BlowerEfficiency" data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" ${fieldSpecAttrs('co2BlowerEfficiency')} value="${stage.proc.co2BlowerEfficiency != null ? stage.proc.co2BlowerEfficiency : 60}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 20-250&#10;默认: 80&#10;决定塔截面积 → CAPEX&#10;Timmons Ch.10 p.245: 17-24 L/(m²·s) = 61-86 m³/(m²·h)&#10;⚠ 填料深度超 1 m 时建议取偏低端 (降低风机背压)" for="f_${idx}_co2StripperLoadingRate">水力负荷</label><input id="f_${idx}_co2StripperLoadingRate" data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" ${fieldSpecAttrs('co2StripperLoadingRate')} value="${stage.proc.co2StripperLoadingRate != null ? stage.proc.co2StripperLoadingRate : 80}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div class="col-span-2 text-[10px] leading-relaxed px-1 py-1 rounded bg-slate-900/40 border border-slate-700/50" data-co2diag="${idx}"></div>
+      <div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 50-150&#10;默认: 80&#10;依据: Summerfelt 2003 / Moran 2003 实测 87-187&#10;何时调: 高密度场降至 50, 低密度场可上 150" for="f_${idx}_co2StripperLoadingRate_2">水力负荷</label><input id="f_${idx}_co2StripperLoadingRate_2" data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" ${fieldSpecAttrs('co2StripperLoadingRate')} value="${stage.proc.co2StripperLoadingRate != null ? stage.proc.co2StripperLoadingRate : 80}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="风机风压 (kPa)&#10;范围: 0.3-10&#10;默认: 2.5 (中塔典型)&#10;含义: 决定风机功率&#10;Delta Cooling Towers 实测 1-2.5 kPa&#10;浅塔(<2m)0.5-1.5, 中塔(2-4m)1.5-3, 深塔( for="f_${idx}_co2BlowerPressure_kPa_2">4m)3-5">风压(kPa)</label><input id="f_${idx}_co2BlowerPressure_kPa_2" data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" ${fieldSpecAttrs('co2BlowerPressure_kPa')} value="${stage.proc.co2BlowerPressure_kPa != null ? stage.proc.co2BlowerPressure_kPa : 2.5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="风机机械效率 (%)&#10;范围: 50-80&#10;默认: 60 (中位)&#10;罗茨风机 50-70, 离心风机 65-80" for="f_${idx}_co2BlowerEfficiency_2">风机η(%)</label><input id="f_${idx}_co2BlowerEfficiency_2" data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" ${fieldSpecAttrs('co2BlowerEfficiency')} value="${stage.proc.co2BlowerEfficiency != null ? stage.proc.co2BlowerEfficiency : 60}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="关闭时附带解吸率 (%)&#10;范围: 2-15&#10;默认: 5&#10;含义: 脱气塔关闭时增氧塔附带解吸效率&#10;何时调: 高 G:L 锥→10-15" for="f_${idx}_co2FallbackEff">附带解吸(%)</label><input id="f_${idx}_co2FallbackEff" data-proc-stage="${idx}" data-proc-field="co2FallbackEff" type="number" ${fieldSpecAttrs('co2FallbackEff')} value="${stage.proc.co2FallbackEff != null ? stage.proc.co2FallbackEff : 5}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">🛡️ <b>工程安全系数</b> (v1.1 新增, 在小时峰值/日量之上加裕度. 默认值已校准, 不与 peakFactor 1.5 双重叠加)</div>
-      <div><label class="text-[10px] text-yellow-300" title="BF 滤池安全系数&#10;范围: 1.10-1.30&#10;默认: 1.15&#10;含义: 滤料老化+峰值缓冲裕度&#10;何时调: 高负荷场 1.2, 长期运行 1.25">BF 滤池</label><input data-proc-stage="${idx}" data-proc-field="safetyBio" type="number" ${fieldSpecAttrs('safetyBio')} value="${stage.proc.safetyBio != null ? stage.proc.safetyBio : 1.15}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="鱼池增氧安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: 液氧/纯氧设备老化裕度 (peakFactor 已含峰值)&#10;何时调: 关键设备 1.15">鱼池增氧</label><input data-proc-stage="${idx}" data-proc-field="safetyAerator" type="number" ${fieldSpecAttrs('safetyAerator')} value="${stage.proc.safetyAerator != null ? stage.proc.safetyAerator : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="BF 风机安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: BF 粗孔曝气风机裕度&#10;何时调: 同 BF 滤池">BF 风机</label><input data-proc-stage="${idx}" data-proc-field="safetyBFblow" type="number" ${fieldSpecAttrs('safetyBFblow')} value="${stage.proc.safetyBFblow != null ? stage.proc.safetyBFblow : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="微滤机安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: RDF 流量裕度">微滤机</label><input data-proc-stage="${idx}" data-proc-field="safetyRDF" type="number" ${fieldSpecAttrs('safetyRDF')} value="${stage.proc.safetyRDF != null ? stage.proc.safetyRDF : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="反硝化安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: 反硝化反应器裕度">反硝化</label><input data-proc-stage="${idx}" data-proc-field="safetyDenitri" type="number" ${fieldSpecAttrs('safetyDenitri')} value="${stage.proc.safetyDenitri != null ? stage.proc.safetyDenitri : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="蛋白分离器安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: 蛋分容积裕度">蛋分</label><input data-proc-stage="${idx}" data-proc-field="safetySkimmer" type="number" ${fieldSpecAttrs('safetySkimmer')} value="${stage.proc.safetySkimmer != null ? stage.proc.safetySkimmer : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="CO₂ 脱气安全系数&#10;范围: 1.10-1.30&#10;默认: 1.15&#10;含义: 脱气塔截面积/风机裕度 (G:L 不确定性大)&#10;何时调: G:L 取低值→1.20">CO₂ 脱气</label><input data-proc-stage="${idx}" data-proc-field="safetyCO2" type="number" ${fieldSpecAttrs('safetyCO2')} value="${stage.proc.safetyCO2 != null ? stage.proc.safetyCO2 : 1.15}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-yellow-300" title="UV 安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: UV 灯管老化裕度 (不是剂量增加)">UV</label><input data-proc-stage="${idx}" data-proc-field="safetyUV" type="number" ${fieldSpecAttrs('safetyUV')} value="${stage.proc.safetyUV != null ? stage.proc.safetyUV : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="BF 滤池安全系数&#10;范围: 1.10-1.30&#10;默认: 1.15&#10;含义: 滤料老化+峰值缓冲裕度&#10;何时调: 高负荷场 1.2, 长期运行 1.25" for="f_${idx}_safetyBio">BF 滤池</label><input id="f_${idx}_safetyBio" data-proc-stage="${idx}" data-proc-field="safetyBio" type="number" ${fieldSpecAttrs('safetyBio')} value="${stage.proc.safetyBio != null ? stage.proc.safetyBio : 1.15}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="鱼池增氧安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: 液氧/纯氧设备老化裕度 (peakFactor 已含峰值)&#10;何时调: 关键设备 1.15" for="f_${idx}_safetyAerator">鱼池增氧</label><input id="f_${idx}_safetyAerator" data-proc-stage="${idx}" data-proc-field="safetyAerator" type="number" ${fieldSpecAttrs('safetyAerator')} value="${stage.proc.safetyAerator != null ? stage.proc.safetyAerator : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="BF 风机安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: BF 粗孔曝气风机裕度&#10;何时调: 同 BF 滤池" for="f_${idx}_safetyBFblow">BF 风机</label><input id="f_${idx}_safetyBFblow" data-proc-stage="${idx}" data-proc-field="safetyBFblow" type="number" ${fieldSpecAttrs('safetyBFblow')} value="${stage.proc.safetyBFblow != null ? stage.proc.safetyBFblow : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="微滤机安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: RDF 流量裕度" for="f_${idx}_safetyRDF">微滤机</label><input id="f_${idx}_safetyRDF" data-proc-stage="${idx}" data-proc-field="safetyRDF" type="number" ${fieldSpecAttrs('safetyRDF')} value="${stage.proc.safetyRDF != null ? stage.proc.safetyRDF : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="反硝化安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: 反硝化反应器裕度" for="f_${idx}_safetyDenitri">反硝化</label><input id="f_${idx}_safetyDenitri" data-proc-stage="${idx}" data-proc-field="safetyDenitri" type="number" ${fieldSpecAttrs('safetyDenitri')} value="${stage.proc.safetyDenitri != null ? stage.proc.safetyDenitri : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="蛋白分离器安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: 蛋分容积裕度" for="f_${idx}_safetySkimmer">蛋分</label><input id="f_${idx}_safetySkimmer" data-proc-stage="${idx}" data-proc-field="safetySkimmer" type="number" ${fieldSpecAttrs('safetySkimmer')} value="${stage.proc.safetySkimmer != null ? stage.proc.safetySkimmer : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="CO₂ 脱气安全系数&#10;范围: 1.10-1.30&#10;默认: 1.15&#10;含义: 脱气塔截面积/风机裕度 (G:L 不确定性大)&#10;何时调: G:L 取低值→1.20" for="f_${idx}_safetyCO2">CO₂ 脱气</label><input id="f_${idx}_safetyCO2" data-proc-stage="${idx}" data-proc-field="safetyCO2" type="number" ${fieldSpecAttrs('safetyCO2')} value="${stage.proc.safetyCO2 != null ? stage.proc.safetyCO2 : 1.15}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-yellow-300" title="UV 安全系数&#10;范围: 1.05-1.20&#10;默认: 1.10&#10;含义: UV 灯管老化裕度 (不是剂量增加)" for="f_${idx}_safetyUV">UV</label><input id="f_${idx}_safetyUV" data-proc-stage="${idx}" data-proc-field="safetyUV" type="number" ${fieldSpecAttrs('safetyUV')} value="${stage.proc.safetyUV != null ? stage.proc.safetyUV : 1.10}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
     </div>
     </div>
   </details>
@@ -10359,9 +10491,9 @@ function renderThermalV12(t, stage, stageFarm, prices, scenarios) {
     scenarioTable = `
       <div class="bg-slate-900/40 rounded border border-slate-700/40 overflow-hidden h-full">
         <div class="px-2 py-1 text-[10px] text-cyan-300 font-bold border-b border-slate-700/40 bg-slate-800/40">v1.2 工况对比 (同一项目跑 3 个工况, 高亮当前)</div>
-        <table class="w-full text-xs">
+        <div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="w-full text-xs">
           <tbody><tr>${cols}</tr></tbody>
-        </table>
+        </table></div>
         <div class="px-2 py-1 text-[9px] text-slate-500 border-t border-slate-700/30">
           💡 装机定容看冬/夏极值, OPEX 看年均. 比电耗 (kWh/kg/yr): &lt;5 优 / 5-10 中 / 10-20 高 / &gt;20 不经济.
         </div>
@@ -11006,7 +11138,7 @@ function renderCapexCard(idx, capex) {
     if (n >= 10000) return (n/10000).toFixed(1) + ' 万';
     return Math.round(n).toLocaleString('zh-CN') + ' 元';
   };
-  let html = `<table class="w-full text-xs mb-3">
+  let html = `<div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="w-full text-xs mb-3">
     <thead><tr class="text-slate-400 border-b border-slate-700">
       <th class="text-left py-1">设备</th><th class="text-right py-1">规格</th>
       <th class="text-right py-1">单价</th><th class="text-right py-1">小计</th>
@@ -11022,7 +11154,7 @@ function renderCapexCard(idx, capex) {
       <td class="text-right py-1 font-mono text-amber-300">${fmtW(it.cost)}</td>
     </tr>`;
   });
-  html += `</tbody></table>`;
+  html += `</tbody></table></div>`;
   html += `
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
       <div class="metric-chip px-3 py-2">
@@ -11217,7 +11349,7 @@ function renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage) 
     📐 无量纲强度指标对照工业 RAS 实测/文献区间, 验证 v1.1 物理框架合理性
   </div>`;
 
-  html += `<table class="w-full text-xs">
+  html += `<div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table class="w-full text-xs">
     <thead><tr class="text-slate-400 border-b border-slate-700/50">
       <th class="text-left py-1.5">指标</th>
       <th class="text-right py-1.5">本方案</th>
@@ -11255,7 +11387,7 @@ function renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage) 
     </tr>`;
   });
 
-  html += `</tbody></table>`;
+  html += `</tbody></table></div>`;
 
   // 总评
   const passRate = totalValid > 0 ? Math.round(okCount / totalValid * 100) : 0;
@@ -14465,6 +14597,129 @@ function runSelfTest(quiet) {
               });
             })();
 
+            /* M v2.2 IRAS_V22_MASS_BALANCE_ASSERT — 物质平衡。
+               此前断言覆盖能量/水量/登记/资本, 【物质平衡一条没有】—— 而它是本工具
+               的物理核心。第三方复核 (2026-08-08) 印证: 三条缺陷全在无断言区,
+               断言覆盖区一条问题没有。今天的闭合状态即本断言的验收基线。
+               ⚠ 口径是本组断言最易错的地方 (建立时外部核算连错三次):
+                 · 液氧分子是【鱼呼吸耗氧】, 不是总需氧, 更不是含容量系数的 o2Demand
+                 · 碱度消耗基数是【被硝化的 TAN】, 不是产生的 TAN
+                 · 碱度回收系数是工程值 2.8, 不是理论值 3.57
+               故本组一律从 load/sim/eq 的【真实导出面】取值, 不做二次推导。 */
+            (function () {
+              const L = r.load, SM = r.sim, EQ = r.eq;
+              if (!L || !SM) return;
+              const rel = function (got, want, tol, label) {
+                if (!Number.isFinite(got) || !Number.isFinite(want)) return;
+                const base = Math.max(Math.abs(want), 1e-9);
+                if (Math.abs(got - want) / base > tol) {
+                  inv.push(tag + ' 物质M ' + label + ' ' + got.toFixed(3)
+                           + ' ≠ ' + want.toFixed(3) + ' (相对偏差 '
+                           + (100 * (got - want) / base).toFixed(3) + '%)');
+                }
+              };
+
+              /* M1 氧-构成: 总需氧 = 鱼呼吸 + 硝化 + 异养 */
+              rel(L.o2DailyTotal,
+                  (L.o2FishDaily || 0) + (L.o2NitriDaily || 0) + (L.o2DOMDaily || 0),
+                  1e-9, 'M1 氧构成 总需氧=鱼+硝化+异养');
+
+              /* M2 氧-硝化: 硝化耗氧 = TAN × 4.57 (Timmons 化学计量) */
+              rel(L.o2NitriDaily, (L.tanDaily || 0) * 4.57, 1e-6,
+                  'M2 氧硝化 =TAN×4.57');
+
+              /* M3 氧-供给: 液氧耗量 = 鱼呼吸耗氧 / 吸收率 (纯氧模式; air 模式为 0) */
+              if (EQ && !EQ.isAir && (EQ.o2AbsEff > 0)) {
+                rel(EQ.o2ConsumptionDaily, (L.o2FishDaily || 0) / EQ.o2AbsEff, 1e-6,
+                    'M3 氧供给 液氧=鱼呼吸/吸收率');
+              }
+
+              /* M4 碱度链条 (三段) */
+              const A = SM.alk;
+              if (A && Number.isFinite(A.alkConsumed)) {
+                rel(A.alkNetDemand, A.alkConsumed - A.alkRecovered, 1e-9,
+                    'M4a 碱净额 =消耗−回收');
+                /* ⚠ alkToAdd 有下钳 0 —— 补水带入的碱度超过消耗时 (零产量 / 极小产量,
+                   或高碱度源水) 净需求为负, 但不可能投【负量】药剂。这是正确行为,
+                   断言必须把钳制纳入期望值。落地时 edge_yield_0 / edge_yield_tiny
+                   八条立刻咬中, 是断言有牙的证明, 也是这条钳制的实证。 */
+                rel(A.alkToAdd, Math.max(0, A.alkNetDemand - (A.alkFromMakeup || 0)), 1e-9,
+                    'M4b 碱投加 =max(0, 净额−补水带入)');
+                if (A.alkToAdd > 0) {
+                  rel(A.naHCO3Demand, A.alkToAdd / 0.595, 1e-6,
+                      'M4c 药剂 =碱投加/0.595');
+                }
+              }
+
+              /* M5 / M7 v2.2 IRAS_V22_MASSBAL_STEADY — 稳态闭合。
+                 校验「稳态浓度 = 单程增量 / (1 − 单程残留)」这条循环方程本身。
+                 ⚠ TSS 的单程残留是【四条】路径: RDF、蛋分(系统折算)、
+                   【BF 截留 η_bioTSS】、换水稀释。第四条的系数是 PROCESS_FIXED
+                   常数而非 proc 字段 —— 外部核算按字段名扫描时看不见它,
+                   v2.2 物质平衡首测因此漏算, 报出 −1.8% 的假偏差并被记为
+                   「未确证的疑似缺陷」。查证后确认模型正确 (补齐第四路后残差
+                   0.02–0.04%)。教训: 核对稳态方程应以【方程本身】逐项对齐,
+                   不要从导出字段反推路径。 */
+              (function () {
+                const fd = r.flowData, st = (SM.stages || [])[0], pc = r.stage && r.stage.proc;
+                if (!fd || !st || !pc || !(fd.volume > 0) || !(fd.flowM3h > 0)) return;
+                /* 【适用域】本组校验的是循环方程 C = Δ/(1−R) 的实现是否正确, 前提是
+                   负荷项主导。产量趋零时另有两类项浮现: 源水本底 (sourceSS 默认
+                   10 mg/L 由换水持续带入, 在方程之外) 与各种下限钳制/取整。
+                   实测: 产量 1000 t 时四阶段偏差 0.01–0.03% (方程完全成立);
+                        产量 0.001 t 时散乱在 −9.7% ~ +11.2%, 【方向不一】——
+                        散乱而非单向偏置, 说明是极小规模下的数值行为 (水体仅 2 升级),
+                        不是方程实现有误。
+                   故以【水体规模】划适用域: V < 1 m³ 时跳过。这不是放宽容差, 而是
+                   把断言的物理适用范围说清楚 —— 极小产量工况的价值在于测崩溃
+                   (NaN/Infinity, 由 edge_yield_* 的其余断言覆盖), 不在测稳态精度。
+                   ⚠ 若将来要覆盖极小规模, 需先把本底项显式建模进循环方程, 再放开此限。 */
+                if (!(fd.volume >= 1)) return;
+                const cycles = fd.flowM3h * 24 / fd.volume;          // 次/d
+                if (!(cycles > 0)) return;
+                /* ⚠ exchangeDaily 是【stage 级】字段, 不在 stage.proc 里 ——
+                   本断言首版写 pc.exchangeDaily 取到 undefined, 稀释项算成 0,
+                   在 edge_yield_tiny 阶段 2 报出 +11.2% 的假偏差。
+                   (该字段正是 t23 白名单三项之一: 不在任何 proc 默认表。)
+                   这是本轮第十三次同族错误, 形态是【取值位置】而非键名或单位。 */
+                const exch = (r.stage && r.stage.exchangeDaily != null)
+                  ? r.stage.exchangeDaily
+                  : (pc.exchangeDaily || 0);
+                const dil = Math.max(exch, 0) / 100 / cycles;
+
+                // M5 氮: 只有 BF 去除 + 换水
+                const R_tan = (1 - pc.biofilterTAN / 100) * (1 - dil);
+                const tanPerCycle = (L.tanDaily || 0) / cycles * 1000 / fd.volume;
+                if (R_tan < 0.999 && st.TAN > 0) {
+                  rel(tanPerCycle / (1 - R_tan), st.TAN, 5e-3, 'M5 氮稳态 =增量/(1−R_tan)');
+                }
+
+                // M7 TSS: RDF → 蛋分(旁路) → BF 截留 → 换水  【四路径】
+                const etaBioTSS = (typeof PROCESS_FIXED !== 'undefined' && PROCESS_FIXED.biofilterTSS != null)
+                  ? PROCESS_FIXED.biofilterTSS : null;
+                if (etaBioTSS != null) {
+                  const skimFrac = pc.skimmerEnabled ? (pc.skimmerFlowPct || 0) / 100 : 0;
+                  const R_tss = (1 - pc.rdfTSS / 100)
+                              * (1 - skimFrac * (pc.skimmerTSSEff || 0) / 100)
+                              * (1 - etaBioTSS)
+                              * (1 - dil);
+                  const tssPerCycle = (L.tssDaily || 0) / cycles * 1000 / fd.volume;
+                  const tssPred = tssPerCycle / (1 - R_tss);
+                  if (R_tss < 0.999 && st.TSS > 0) {
+                    rel(tssPred, st.TSS, 5e-3, 'M7 TSS稳态 =增量/(1−R_tss)');
+                  }
+                }
+              })();
+
+              /* M6 碳-闭合: 设计口径 CO₂ = 呼吸 + 硝化 (扣 BF 内脱气)
+                 —— 第三方复核 BUG-2 暴露的正是这个公式的日均副本漏了硝化项。 */
+              const C2T = (typeof CO2_PER_TANN !== 'undefined') ? CO2_PER_TANN : 6.286;
+              const BFS = (typeof BF_CO2_STRIP !== 'undefined') ? BF_CO2_STRIP : 0;
+              rel(L.co2Daily,
+                  (L.o2FishDaily || 0) * 1.375 + (L.tanDaily || 0) * C2T * (1 - BFS),
+                  1e-6, 'M6 碳构成 =呼吸+硝化');
+            })();
+
             /* G v2.2 IRAS_V22_REGISTRY_DECL_ASSERT — 登记表声明自校验。
                v2.1 HANDOFF §4 明示的最后盲区:「billedVia 可以指向一个不存在的
                成本字段而断言不会发现」。落地当天实测抓到 5 条活体 —— 声明写的是
@@ -14713,6 +14968,59 @@ function runSelfTest(quiet) {
             }).join(' / '));
       }
     } catch (e) { bad.push('h1 断言自身异常: ' + (e && e.message)); }
+    /* v2.2 IRAS_V22_A11Y — a11y 与窄屏两条底线。
+       UI 审计发现 163 个 label 零个有 for (点标签不能聚焦输入框, 不只是屏幕阅读器
+       的事), 31 个表格 12 个未包 overflow-x-auto (窄屏撑破布局)。
+       此处锁定: 工艺参数输入框必须与其 label 关联; 表格必须可横向滚动。 */
+    try {
+      const inputs = document.querySelectorAll('input[data-proc-field]');
+      let noId = 0;
+      inputs.forEach(function (el) { if (!el.id) noId++; });
+      if (noId > 0) bad.push(noId + ' 个工艺参数输入框无 id (label 无法关联)');
+      const labels = document.querySelectorAll('label[for]');
+      let dangling = 0;
+      labels.forEach(function (l) { if (!document.getElementById(l.getAttribute('for'))) dangling++; });
+      if (dangling > 0) bad.push(dangling + ' 个 label 的 for 指向不存在的元素');
+      const tables = document.querySelectorAll('table');
+      let unwrapped = 0;
+      tables.forEach(function (t) { if (!t.closest('.overflow-x-auto')) unwrapped++; });
+      if (unwrapped > 0) bad.push(unwrapped + ' 个表格未包 overflow-x-auto (窄屏撑破布局)');
+      /* DOM id 唯一性 —— 本补丁引入 id 时首版按字段名生成, 而三个字段在两处面板
+         各渲染一次 (UI-4 那三个), 造成 3 字段 × 4 阶段 = 12 个重复 id。
+         浏览器只认第一个, for 关联与 getElementById 都会指错。
+         这类缺陷【看不出来也不报错】, 必须由断言盯着。 */
+      const seenId = Object.create(null);
+      const dupIds = [];
+      document.querySelectorAll('[id]').forEach(function (el) {
+        if (seenId[el.id]) { if (dupIds.indexOf(el.id) < 0) dupIds.push(el.id); }
+        seenId[el.id] = 1;
+      });
+      if (dupIds.length) {
+        bad.push('DOM 中有 ' + dupIds.length + ' 个重复 id: ' + dupIds.slice(0, 4).join(', ')
+                 + (dupIds.length > 4 ? ' …' : ''));
+      }
+      /* 模板占位符泄漏 —— 未被求值的 ${…} 出现在【可见文本】里就是乱码。
+         实测曾有两处: 帮助区文案想展示带大括号的代码, 用了 JS 模板转义写法
+         ${'{'}…{'}'}, 但帮助区是静态 HTML, 原样显示。
+         主界面与帮助区一起查: 前者泄漏说明渲染没跑完, 后者说明文案写错。
+         t21 只查关键词是否存在, 完全覆盖不到「内容存在但显示成乱码」。 */
+      ['mainContent', 'helpPage'].forEach(function (pid) {
+        const host = document.getElementById(pid);
+        if (!host) return;
+        /* ⚠ 排除 <code> / <pre> 内的文本: 帮助区大量【有意展示】代码字面量,
+           包括 ${idx}、${p.X || 默认} 这类模板写法 —— 那是在教读者代码长什么样,
+           不是泄漏。判据首版没排除, 当场把我自己刚修好的两处又判成红,
+           而它们恰恰是"应该显示 ${idx}"的地方。
+           判据要区分的是【该求值却没求值】与【本就该原样展示】。 */
+        const clone = host.cloneNode(true);
+        clone.querySelectorAll('code, pre').forEach(function (e) { e.remove(); });
+        const leaks = (clone.textContent || '').match(/\$\{[^}]{1,40}\}/g);
+        if (leaks && leaks.length) {
+          bad.push(pid + ' 可见文本有 ' + leaks.length + ' 处未求值的模板占位符: '
+                   + leaks.slice(0, 3).join(' | '));
+        }
+      });
+    } catch (e) { bad.push('a11y 断言自身异常: ' + (e && e.message)); }
     const row = { id: 'meta_version_consistency', ok: bad.length === 0 };
     if (bad.length) row.invariants = bad.slice(0, 6);
     row.ok ? out.pass++ : out.fail++;
@@ -14762,7 +15070,7 @@ function runSelfTest(quiet) {
       + '；每项容差 ±' + SELFTEST_TOL + '（绝对值，单位随该字段）。<br>'
       + '另有两类<b>不变量断言</b>（热泵装机三处口径一致 / 全场无 NaN·Infinity），失败原因见下表末列与控制台。<br>'
       + '若有 FAIL，说明模型行为已改变 —— 请确认是有意的修改，并同步更新 SELFTEST_BASELINE 与三份文档。'
-      + '</div><table style="width:100%;border-collapse:collapse;font-size:12px">'
+      + '</div><div class="overflow-x-auto"><!-- IRAS_V22_A11Y: 窄屏横向滚动, 防撑破布局 --><table style="width:100%;border-collapse:collapse;font-size:12px">'
       + '<tr style="color:#94a3b8;text-align:left"><th style="padding:4px 8px">工况</th>'
       + _sfActive.map(function (f) {
           return '<th title="' + f.unit + '">' + f.label + '<br><span style="font-weight:400;color:#64748b">'
@@ -14786,7 +15094,7 @@ function runSelfTest(quiet) {
         + ((r.invariants && r.invariants.length) ? r.invariants.map(escapeHtml).join('<br>') : '')
         + '</td></tr>';
     }
-    h += '</table>';
+    h += '</table></div>';
     if (out.error) h += '<div style="margin-top:10px;color:#fda4af">异常: ' + escapeHtml(out.error) + '</div>';
     box.innerHTML = h;
     document.body.appendChild(box);
