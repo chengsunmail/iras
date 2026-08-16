@@ -39,7 +39,7 @@
  *    正向 pH (free & NBS) max|dpH| = 1e-5; 反向 TA = 0.083 umol/kg;
  *    omega_calcite 0.006%; NH3 fraction 1.5e-16.
  *
- *  移植自英文 iRAS v1.9 (Polarlys Innovation AS), 中文版 v1.9 同步引入.
+ *  移植自英文 iRAS v1.9, 中文版 v1.9 同步引入.
  * ========================================================================== */
 (function (global) {
   'use strict';
