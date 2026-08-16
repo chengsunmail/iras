@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iRAS 投资财务评价</title>
+<title>iRAS 投资财务评价 v2.3.3</title>
 <!--
   iRAS v1.4: 投资财务评价独立页面
   数据源: localStorage['iRAS_financeExport'] (从主页面 "投资财务评价" 按钮传入)
@@ -312,6 +312,19 @@
 // ===========================================================================
 
 const SHARE_KEY = 'iRAS_financeExport';
+/* ══ v2.3.3 IRAS_V233_PAGE_VERSION — 下游页版本号跟随主页面 (项目方决定) ══
+   本常量是本页版本号的【单一事实源】; 页面标题里的字面量由门禁 check_doc_version.js
+   与它对齐, 二者不一致即转红。
+   ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
+     "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
+     缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
+const IRAS_PAGE_VERSION = '2.3.3';
+function irasWarnVersionMismatch(dataVersion) {
+  if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
+  return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
+    + dataVersion + ' 生成。缺失字段会走兼容回退, 建议在主页面重新计算并导出。';
+}
+
 const STATE = { data: null, params: null, calc: null };
 
 // ---------------- 数据加载 ----------------

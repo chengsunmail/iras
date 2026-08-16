@@ -28,7 +28,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="孙程 / 海南登登科技咨询有限公司">
 <meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
-<title>iRAS · 可研报告生成器 v1.7</title>
+<title>iRAS · 可研报告生成器 v2.3.3</title>
 <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
 <!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
 <script src="finance-core.js"></script>
@@ -945,6 +945,10 @@
 @@P@@详细公用工程方案见第 7 章(土建/总图/公用工程方案)。
 </script>
 <script type="text/njk-template" id="tpl-ch05">@@H1@@第 5 章 工艺技术方案
+
+{% if warnings.hasAny %}
+@@P@@⚠ <strong>阅读提示</strong>: 模型在本方案中检出 {{ warnings.count }} 条配置级告警{% if warnings.hasDanger %}(含严重级){% endif %}, 涉及{% for w in warnings.items %}{% if loop.first %}{{ w.stage }} {{ w.title }}{% elif loop.index <= 3 %}、{{ w.stage }} {{ w.title }}{% endif %}{% endfor %}{% if warnings.count > 3 %} 等{% endif %}。<strong>本章所述工艺参数是在这些告警存在的前提下算出的</strong>, 逐条内容与建议处置见 15.5 节。
+{% endif %}
 
 @@H2@@5.1 工艺路线选择
 
@@ -2178,6 +2182,48 @@ T7: 满产运营|投产第 3 年起|满产稳产 {{ (finance.params.ramp3*100)|r
 @@P@@<strong>综合评估</strong>: 本项目 IRR {{ (finance.indicators.irrTotal*100)|round(2) }}% 低于基准折现率 {{ (finance.params.discount*100)|round(1) }}%, 已不满足财务基准要求。建议优化方案后再考虑实施。
 {% endif %}
 
+@@H2@@15.5 设计边界与模型告警
+
+@@P@@本节由 iRAS 模型在计算过程中<strong>自动检出并逐条披露</strong>, 不经人工筛选。判据为<strong>结果级</strong>——以模型实算的稳态值与鱼种阈值比较, 而非按配置组合一律报警; 阈值全部取自本工具既有的水质限值表, 未为本节另设标准。
+
+{% if warnings.hasAny %}
+@@P@@⚠ <strong>本方案共检出 {{ warnings.count }} 条配置级告警{% if warnings.hasDanger %}, 其中含 danger 级项{% endif %}。以下内容不构成对方案的否决, 但<strong>在进入初步设计前应逐条处置或书面说明接受理由</strong>。</strong>
+
+@@TABLE@@阶段|级别|问题|实测与判据|建议处置
+{% for w in warnings.items %}{{ w.stage }}|{% if w.level == 'danger' %}严重{% else %}提示{% endif %}|{{ w.title }}|{{ w.detail }}|{{ w.action }}
+{% endfor %}@@END_TABLE@@
+
+{% if warnings.hasDanger %}
+@@P@@<strong>其中 danger 级告警意味着该阶段在所给配置下无法稳定达标</strong>, 相应的投资估算与运行成本是"按该配置算出来的数", 不代表该配置可行。若不调整配置而直接采用本报告的经济指标, 属于对已知问题的默认接受, 应在决策文件中留痕。
+{% endif %}
+{% else %}
+@@P@@✅ <strong>本方案未检出配置级告警</strong>: 各阶段鱼池 CO₂ 稳态浓度均在鱼种阈值内; 采用空气曝气的阶段(若有)其池底布气强度与体积曝气强度均未超限。
+{% endif %}
+
+{% if warnings.hasStage %}
+@@H3@@15.5.1 阶段级工程提示
+
+@@P@@下列 {{ warnings.stageCount }} 条为模型在逐阶段计算中给出的<strong>工程提示</strong>, 性质与上表的配置级告警不同: 它们多数不指向"不可行", 而是提示<strong>参数取值是否合理、某个物理效应是否被充分考虑</strong>。{% if warnings.hasStageDanger %}其中含<strong>严重级</strong>项, 应优先处置。{% endif %}此前这些提示<strong>只在软件界面上显示, 导出报告后即消失</strong>——本版起随报告一并带出。
+
+@@TABLE@@阶段|级别|提示内容
+{% for w in warnings.stage %}{{ w.stage }}|{% if w.level == 'danger' %}严重{% else %}提示{% endif %}|{{ w.text }}
+{% endfor %}@@END_TABLE@@
+{% endif %}
+
+{% if warnings.hasRoomCO2 %}
+@@H3@@15.5.2 车间 CO₂ 与新风量的设计边界
+
+@@P@@采用空气曝气时, 气泡在池面破裂会把水中 CO₂ 带入车间; 配置脱气塔时, 塔的尾气去向另按设计确定。这部分 CO₂ <strong>直接决定新风量, 进而决定通风机选型</strong>——而通风机在投资估算与运行成本两侧都有份额, 故在此披露其取值依据。
+
+@@TABLE@@阶段|入室 CO₂ (kg/d)|车间稳态 (ppm)|设计限值 (ppm)|新风量 (m³/h)|控制项
+{% for r in warnings.room %}{{ r.stage }}|{{ r.toRoom|round(0) }}|{{ r.ppm|round(0) }}|{{ r.limit|round(0) }}|{{ r.ventEff|round(0) }}|{% if r.boosted %}CO₂ 稀释需求{% else %}换气次数 (ACH){% endif %}
+{% endfor %}@@END_TABLE@@
+
+{% if warnings.roomBoosted %}
+@@P@@表中标注"CO₂ 稀释需求"的阶段, 其新风量<strong>由 CO₂ 稀释反算决定而非按换气次数取值</strong>——即通风机是被 CO₂ 负荷顶大的。若后续调整增氧方式或脱气塔配置, 通风机选型须同步复核, 不可沿用。
+{% endif %}
+{% endif %}
+
 @@P@@关键风险管控建议见第 16 章结论与建议。
 </script>
 <script type="text/njk-template" id="tpl-ch16">@@H1@@第 16 章 结论与建议
@@ -2188,7 +2234,13 @@ T7: 满产运营|投产第 3 年起|满产稳产 {{ (finance.params.ramp3*100)|r
 
 @@P@@本项目采用循环水养殖(RAS)工艺, 该工艺在挪威、丹麦、苏格兰等国家已有 20+ 年的工业应用历史, 国内莱州、舟山、福建等地也已有大量成熟项目实施。本项目工艺路线为主流串联+旁路并联混合架构, 配置 {{ farm.totalSubSystems }} 套独立循环模块和 N+1 备用设备, 关键工艺参数(物料平衡、设备选型、热平衡)严格按照国际公开文献和工业实测数据校准。
 
-@@P@@<strong>结论: 工艺技术上完全可行</strong>。
+{% if warnings.hasDanger %}
+@@P@@⚠ <strong>结论: 工艺路线本身成熟可行, 但本方案的当前配置存在 {{ warnings.count }} 条模型检出的告警, 其中含严重级项</strong>——即在所给配置下, 相关阶段的水质或曝气指标无法稳定达标。本章其余各节的经济性结论均建立在"按该配置算出的数"之上, <strong>在告警处置或书面接受之前, 不应据此判定本方案工艺可行</strong>。逐条内容见 15.5 节。
+{% elif warnings.hasAny %}
+@@P@@<strong>结论: 工艺技术上可行</strong>, 但模型检出 {{ warnings.count }} 条提示级告警, 建议在初步设计阶段一并处置, 详见 15.5 节。
+{% else %}
+@@P@@<strong>结论: 工艺技术上完全可行</strong>。模型未检出配置级告警。
+{% endif %}
 
 @@H3@@16.1.2 经济财务上可行性
 
@@ -2317,7 +2369,7 @@ T7: 满产运营|投产第 3 年起|满产稳产 {{ (finance.params.ramp3*100)|r
 
 <script>
 // =============================================================================
-//   iRAS Report Generator — v1.5
+//   iRAS Report Generator — v2.3.3 (页面版本跟随主页面)
 //   职责:
 //   1. 加载 iRAS 主页面方案数据 (从 localStorage)
 //   2. 用户填写 20 字段项目元数据 (本地存储)
@@ -2326,6 +2378,19 @@ T7: 满产运营|投产第 3 年起|满产稳产 {{ (finance.params.ramp3*100)|r
 // =============================================================================
 
 const SHARE_KEY = 'iRAS_reportExport';
+/* ══ v2.3.3 IRAS_V233_PAGE_VERSION — 下游页版本号跟随主页面 (项目方决定) ══
+   本常量是本页版本号的【单一事实源】; 页面标题里的字面量由门禁 check_doc_version.js
+   与它对齐, 二者不一致即转红。
+   ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
+     "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
+     缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
+const IRAS_PAGE_VERSION = '2.3.3';
+function irasWarnVersionMismatch(dataVersion) {
+  if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
+  return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
+    + dataVersion + ' 生成。缺失字段会走兼容回退, 建议在主页面重新计算并导出。';
+}
+
 const FORM_KEY = 'iRAS_reportForm';
 
 const STATE = {
@@ -2523,7 +2588,7 @@ function renderChapterList() {
     </div>`;
   });
   html += `<div style="font-size:11px; color:#64748b; margin-top:8px; padding-top:8px; border-top:1px dashed #475569;">
-    <strong>v1.5 第一阶段</strong>: 仅第 13 章财务评价完整生成,其他 15 章为占位章节(标题 + 提示),后续 v1.5.x 版本逐章扩充。
+    <strong>模板完成度</strong>: 目前仅第 13 章财务评价完整生成,其他 15 章为占位章节(标题 + 提示),后续 v1.5.x 版本逐章扩充。
   </div></div>`;
   return html;
 }
@@ -3074,8 +3139,15 @@ function buildContext() {
     aop:     designEq.aop || {},
     denitri: designEq.denitri || {},
     sump:    designEq.sump || {},
-    // 投饵参数(用户填的,所有阶段共享的部分)
-    peakFactor: sproc.peakFactor || 1.5,
+    /* 投饵参数(用户填的,所有阶段共享的部分)
+       ⚠ v2.3.3 下游审计修复: 原写 `sproc.peakFactor || 1.5` —— peakFactor 是
+       【阶段级】字段(payload 里 stages[].peakFactor), 不在 proc 下。
+       实测 stages[i].proc.peakFactor 恒为 undefined, 于是这行**永远回落到字面量 1.5**:
+       用户把峰值系数改成 2.0, 报告照印 1.5。与 recDepth_m 那六次是同一形态 ——
+       读错层级 + 字面量兜底 = 静默错值, 没有任何信号。
+       现改为读正确层级, 并保留 proc 与字面量两级兜底(旧方案 JSON 可能只有 proc)。 */
+    peakFactor: (sample.peakFactor != null ? sample.peakFactor
+                 : (sproc.peakFactor != null ? sproc.peakFactor : 1.5)),
     // 各阶段工艺数据(供详细表格)
     perStage: (d.results.perStage || []).map(ps => ({
       stageName: ps.stageName,
@@ -3160,15 +3232,104 @@ function buildContext() {
     tables:     finCalc.tables
   };
 
+  /* ------- warnings 命名空间 (v2.3.3 下游审计批 IRAS_V233_WARN_REPORT) -------
+     立此命名空间的原因: index 侧早已判定"该方案不可行", 而可研报告**照出成本、
+     一个字不提**。二批把告警做成结构化 configWarns 时就写明这是目标形态,
+     但数据当时根本没过桥 —— 本批先补了过桥 (index 的 Y0–Y3 断言锁住), 这里补消费。
+
+     ⚠ 取向: 【显式披露】而非【硬阻断】。
+       不拒绝生成报告 —— "我知道超标, 就是要出个初稿"是正常用法, 挡住它只会让人
+       绕过工具。但也不能不说: 固定新增一节, 有则逐条列、无则明写"无配置级告警",
+       让"这份报告有没有被检出问题"成为**读者一定会看到的事实**, 而不是要去翻的东西。
+     ⚠ 本层不判定、不加工: 判据全在 index 数据层 (结果级 + 零新阈值), 这里只做
+       归集与措辞。若日后有人想在这里加一条"报告侧独有"的判定, 那就是双源的开始。 */
+  const warnings = (function () {
+    const perStage = d.results.perStage || [];
+    const items = [];
+    perStage.forEach(function (ps, i) {
+      const nm = ps.stageName || ('阶段' + (i + 1));
+      (ps.configWarns || []).forEach(function (w) {
+        if (w.code === 'AIR_INTENSITY_OVER') {
+          items.push({
+            stage: nm, level: w.level || 'warn', code: w.code,
+            title: '空气曝气强度超限',
+            detail: '池底布气强度 ' + (w.area != null ? w.area.toFixed(2) : '—') + ' m³/(m²·h)'
+                  + ' 超限值 ' + (w.areaLimit != null ? w.areaLimit : '—')
+                  + '; 体积强度 ' + (w.vol != null ? w.vol.toFixed(2) : '—')
+                  + ' 对限值 ' + (w.volLimit != null ? w.volLimit : '—'),
+            action: (w.maxDensity != null)
+              ? ('该阶段空气曝气可行密度上限约 ' + w.maxDensity.toFixed(1) + ' kg/m³ (当前 '
+                 + (w.density != null ? w.density.toFixed(1) : '—') + '); 应降密度或改纯氧增氧')
+              : '应降低养殖密度或改用纯氧增氧'
+          });
+        } else if (w.code === 'CO2_OVER') {
+          const rc = { stripperOff: '脱气塔未启用', airUnderperf: '曝气吹脱能力不足',
+                       stripperUnderperf: '脱气塔效率不足' }[w.rootCause] || '综合原因';
+          items.push({
+            stage: nm, level: w.level || 'danger', code: w.code,
+            title: '鱼池 CO₂ 稳态超阈',
+            detail: '实算 ' + (w.CO2 != null ? w.CO2.toFixed(1) : '—') + ' mg/L, 阈值 '
+                  + (w.threshold != null ? w.threshold : '—') + ' mg/L; 根因: ' + rc,
+            action: (w.rootCause === 'stripperOff')
+              ? '纯氧模式下 CO₂ 物理上必然积累, 必须启用脱气塔'
+              : '应提高脱气塔效率/气液比, 或加大曝气风量, 或降低养殖密度'
+          });
+        } else {
+          items.push({ stage: nm, level: w.level || 'warn', code: w.code,
+                       title: w.code, detail: '', action: '' });
+        }
+      });
+    });
+    /* 车间 CO₂: 不是告警, 是【设计边界的披露】—— 它决定通风机选型,
+       而通风机在 CAPEX 与 OPEX 两侧都有份, 读者有权知道这个数是怎么来的。 */
+    const room = [];
+    perStage.forEach(function (ps, i) {
+      const ic = ps.indoorCO2;
+      if (!ic || !(ic.co2ToRoom_kg_d > 0)) return;
+      room.push({
+        stage: ps.stageName || ('阶段' + (i + 1)),
+        toRoom: ic.co2ToRoom_kg_d, ppm: ic.co2Room_ppm, limit: ic.co2Limit_ppm,
+        boosted: !!ic.ventBoostedByCO2,
+        ventEff: ic.V_vent_eff_m3h, ventAch: ic.V_vent_ach_m3h, ventFish: ic.V_vent_fish_m3h
+      });
+    });
+    /* v2.3.3 告警迁移批: 阶段级提示告警 (stageWarns)。
+       ⚠ 与 items 分开列: items 是**结构化配置告警**(带 code/rootCause, 有明确处置路径);
+       stage 是**已成文的工程提示**(峰均比、盐度硝化折减、溴酸盐风险、低温等), 数量多、
+       性质杂, 混在一起会淹没前者。报告里分两张表, 前者在前。 */
+    const stage = [];
+    perStage.forEach(function (ps, i) {
+      const nm = ps.stageName || ('阶段' + (i + 1));
+      (ps.stageWarns || []).forEach(function (w) {
+        stage.push({ stage: nm, level: w.level || 'warn', text: String(w.text || '') });
+      });
+    });
+    return {
+      stage: stage,
+      stageCount: stage.length,
+      hasStage: stage.length > 0,
+      hasStageDanger: stage.some(function (x) { return x.level === 'danger'; }),
+      items: items,
+      count: items.length,
+      hasAny: items.length > 0,
+      hasDanger: items.some(function (x) { return x.level === 'danger'; }),
+      room: room,
+      hasRoomCO2: room.length > 0,
+      roomBoosted: room.some(function (x) { return x.boosted; })
+    };
+  })();
+
   // ------- meta 命名空间 -------
   const meta = {
     generatedAt:     new Date().toISOString(),
     irasVersion:     d.irasVersion || '1.5',
-    templateVersion: 'v1.5-alpha-1',
+    /* v2.3.3: 页面版本跟随主页面(项目方决定)。
+       ⚠ 此前写 'v1.5-alpha-1', 与 index 2.3.3 各自演进, 报告页脚长期显示旧版本。 */
+    templateVersion: 'v2.3.3',
     reportNumber:    `iRAS-${d.species}-${d.yieldTons}t-${new Date().toISOString().slice(0,10).replace(/-/g,'')}`
   };
 
-  return { project, workflow, farm, capex, opex, finance, meta };
+  return { project, workflow, farm, capex, opex, finance, meta, warnings };
 }
 
 function guessDefaultPrice(species) {

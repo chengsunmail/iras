@@ -4,7 +4,7 @@
   <!-- 主页 - 工具入口 -->
   <url>
     <loc>https://iras.cn/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -38,52 +38,20 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- 资料库入口 (v1.9.2 新增) -->
-  <url>
-    <loc>https://iras.cn/library.html</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 技术手册 · 在线 HTML 版 (原 PDF 已由资料库在线版取代) -->
+  <!-- 在线技术手册 (v2.3 起; 本旧副本原缺此条 —— v2.3 版 sitemap 不可得, v2.4 补录) -->
   <url>
     <loc>https://iras.cn/library/manual.html</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- 资料库其余文档。⚠ 均未填 lastmod: 这些文件内无日期标记, 文件时间戳不代表真实修改日期,
-       而 Google 对不准确的 lastmod 会在全站范围忽略该字段 —— 编造日期比省略更糟。
-       请按各文档实际最后修改日期补 <lastmod>。 -->
-
-  <!-- 挪威 RAS 运营资料汇编 (13 册) — Smolt/Post-smolt 工程对标包 -->
+  <!-- v1.9 技术手册 (124 页) -->
   <url>
-    <loc>https://iras.cn/library/norway-ras.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- RAS 鱼池水力学与流场控制工程手册 v0.1 -->
-  <url>
-    <loc>https://iras.cn/library/hydraulics.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- RAS 标准操作规程框架与水质参数手册 V1.0 -->
-  <url>
-    <loc>https://iras.cn/library/sop-water-quality.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 循环水养殖到底能不能赚钱 — 中立测算 (检索意图强, 可视情况提到 0.9) -->
-  <url>
-    <loc>https://iras.cn/library/ras-profitability.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://iras.cn/iRAS_技术手册_v1.9_完整版.pdf</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
   </url>
 
 </urlset>

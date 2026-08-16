@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <!--
-  iRAS 设备清单 (Equipment List) — v1.3 配套独立页面
+  iRAS 设备清单 (Equipment List) — v2.3.3
+  ⚠ v2.3.3 起【下游页版本号跟随主页面】(项目方决定): 本页不再各自演进版本号,
+    与 index.html 的 IRAS_META.version 保持一致, 由门禁 check_doc_version.js 锁定。
+    ⚠ 不跟随的两类: ① pidSchema / SUPPORTED_SCHEMA_MAJOR 等【数据契约版本】——
+    它们表达的是"能读哪些格式", 与产品版本无关, 跟着改会破坏向后兼容;
+    ② 注释里的 "// v1.7: ..." 等【史料标注】—— 那是"这行是哪版加的", 改掉就抹掉了来历。
 
   数据源: sessionStorage['iRAS_pidExport'] (从 iRAS 主页面 "导出设备清单" 按钮传入)
          或用户手动加载 JSON 文件
@@ -12,7 +17,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iRAS 设备清单 v1.3</title>
+<title>iRAS 设备清单 v2.3.3</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -212,8 +217,13 @@ function renderAll(data) {
     renderEmpty();
     return;
   }
+  /* v2.3.3 IRAS_V233_PAGE_VERSION: 元信息行带上两个版本, 不一致时显式警示。
+     ⚠ 此前本行只写鱼种/产量/保存时间, 用户拿旧方案在新页面上打开毫无察觉。 */
+  const _vm = irasWarnVersionMismatch(data.irasVersion);
   document.getElementById('metaLine').textContent =
-    `${data.speciesName || data.species} · 年产 ${data.yieldTons} t · 保存时间 ${new Date(data.savedAt).toLocaleString('zh-CN')}`;
+    `${data.speciesName || data.species} · 年产 ${data.yieldTons} t · 保存时间 ${new Date(data.savedAt).toLocaleString('zh-CN')}`
+    + ` · 方案 v${data.irasVersion || '?'} / 本页 v${IRAS_PAGE_VERSION}`
+    + (_vm ? `　${_vm}` : '');
 
   let html = renderSummary(data);
   data.results.perStage.forEach((stage, idx) => {
@@ -363,7 +373,40 @@ function renderStage(stage, idx, data) {
   if (e.tankAirBlower && e.tankAirBlower.enabled) {
     const tabMod = mod && mod.modulePerSpec.tankAirBlower;
     const perUnitSpec = `${(e.tankAirBlower.airFlowM3min||0).toFixed(1)} Nm³/min · ${(e.tankAirBlower.powerKw||0).toFixed(1)} kW`;
-    const note = `风压 ${e.tankAirBlower.pressureKPa} kPa · η ${e.tankAirBlower.etaPct}% · 服务鱼池微孔曝气盘 (air 模式主增氧, 故障即鱼窒息, 必须双机轮换)`;
+    /* v2.3.3 下游审计批② IRAS_V233_SIZING_BASIS —— 补"这台风机为什么是这个风量"。
+       采购方拿到清单只看到风量与功率, 却看不到它是被 O₂ 传质顶大的还是被 CO₂ 吹脱
+       顶大的 —— 而这两者的后续处置完全不同(前者降密度/加深池, 后者上脱气塔)。
+       ⚠ 数据全部取自 index 已导出的 aeration 块, 本页不重算任何一个数。 */
+    const _ae = stage.aeration || null;
+    let sizing = '';
+    if (_ae) {
+      const _by = _ae.sizedBy === 'CO2' ? 'CO₂ 吹脱控制' : 'O₂ 传质控制';
+      sizing = ` · 【选型控制侧: ${_by}】`
+        + ` (O₂ 侧 ${(_ae.airO2_m3h || 0).toFixed(0)} / CO₂ 侧 ${(_ae.airCO2_m3h || 0).toFixed(0)} m³/h, 取大)`
+        + ` · 设计 DO ${_ae.DO_design != null ? _ae.DO_design.toFixed(2) : '—'} mg/L`
+        + `${_ae.DO_designIsUser ? '(用户设定)' : '(留空→鱼种下限)'}`
+        + ` · 实际 OTE ${_ae.OTE != null ? (_ae.OTE * 100).toFixed(2) : '—'}%`
+        + ` (清水基础 ${_ae.OTE_base != null ? (_ae.OTE_base * 100).toFixed(2) : '—'}% × 推动力)`;
+      if (_ae.sizedBy === 'CO2') {
+        sizing += ` · ⚠ 风机已在替脱气塔干活, 比较"放大风机电耗"与"上塔的电耗+CAPEX"`;
+      }
+    }
+    const _ai = stage.aerIntensity || null;
+    let intensity = '';
+    if (_ai) {
+      const _bad = _ai.areaExceeded || _ai.volExceeded;
+      intensity = ` · 池底布气 ${_ai.area != null ? _ai.area.toFixed(2) : '—'}/${_ai.areaLimit} m³/(m²·h)`
+        + ` · 体积 ${_ai.vol != null ? _ai.vol.toFixed(2) : '—'}/${_ai.volLimit} m³/(m³·h)`
+        + (_bad ? ` · ⚠⚠ 曝气强度超限! 该阶段空气曝气可行密度上限约 ${_ai.maxDensity != null ? _ai.maxDensity.toFixed(1) : '—'} kg/m³ (当前 ${_ai.density != null ? _ai.density.toFixed(1) : '—'}) —— 应降密度或改纯氧` : '');
+    }
+    /* v2.3.3 IRAS_V233_BLOWER_PRESSURE: 风压带上【它是怎么来的】。
+       采购方看到"风压 24.7 kPa"无从判断合不合理; 看到"9.81×池深1.5m + 盘阻管阻10"
+       才知道换了盘型或改了池深就必须重算。⚠ 盘阻是待校准项, 一并提示。 */
+    const _pb = e.tankAirBlower.pressureBasis;
+    const note = `风压 ${Number(e.tankAirBlower.pressureKPa || 0).toFixed(1)} kPa`
+      + (_pb ? ` (${_pb})` : '')
+      + ` · η ${e.tankAirBlower.etaPct}% · 服务鱼池微孔曝气盘 (air 模式主增氧, 故障即鱼窒息, 必须双机轮换)`
+      + `${sizing}${intensity}`;
     equipRows.push(rowFromMod('鱼池增氧鼓风机', e.tankAirBlower.tag, tabMod, perUnitSpec, note));
   }
   if (e.skimmer && e.skimmer.enabled) {
@@ -423,6 +466,23 @@ function renderStage(stage, idx, data) {
     pumpRows.push(rowFromMod('NaHCO₃ 加药泵', 'P-802', dm, '小型计量泵', 'pH/碱度维持'));
   }
 
+  /* ══ v2.3.3 下游审计批② IRAS_V233_CAPEX_ITEMS — 自 CAPEX 清单补全遗漏设备 ══
+     本页各组的行此前是【硬编码】的, 于是清单冻结在写它那天的设备集合。
+     审计实测缺 4 台: K-501 蛋分供气风机 · DH-1001 除湿机 · AHU-1002 暖通机组 ·
+     KV-1003 车间通风机 —— 全是 v2.x 后加的。
+     ⚠ 金额层面没有错: finance/report 用聚合值 capex.total, 这四台的钱一直在里面。
+       错的是"清单少四台、总价却对得平" —— **对账对得平, 所以谁也没发现**;
+       只有拿这份清单去询价/招标时才会发现少买了设备。
+     ⇒ 修法不是手工补四行(那只解决今天), 而是**从 index 导出的 capex.items 反向补全**:
+       凡计入 CAPEX、带 ISA 位号、而上方各组未渲染的, 一律自动列出。
+       这样以后 index 新增任何设备都会自己出现, "两份清单各自维护"从根上消掉。
+     门禁 C7 锁死: equipment 渲染的位号集合必须 ⊇ capex.items 中带位号的集合。 */
+  const _listedTags = new Set();
+  [equipRows, pumpRows].forEach(function (g) {
+    (g || []).forEach(function (r) { if (r && r.tag) _listedTags.add(r.tag); });
+  });
+  _listedTags.add('T-101');   // 鱼池行单独渲染, 不在上述数组里
+
   // 热泵
   const thermalRows = [];
   if (t && t.needsThermal && t.heatPumpKWhPerDay > 0) {
@@ -430,6 +490,46 @@ function renderStage(stage, idx, data) {
     const hpMod = mod && mod.modulePerSpec.heatPump;
     thermalRows.push(rowFromMod('热泵机组', 'H-801', hpMod, fmtKw(hpKw),
       `${t.mode === 'cool' ? '🥶 制冷' : '🔥 制热'} · COP=${t.cop ? t.cop.toFixed(2) : '—'} · 日耗 ${t.heatPumpKWhPerDay.toFixed(0)} kWh`));
+  }
+  (thermalRows || []).forEach(function (r) { if (r && r.tag) _listedTags.add(r.tag); });
+
+  /* 自 CAPEX 逐项清单反向补全 (见上方 IRAS_V233_CAPEX_ITEMS 注) */
+  const extraRows = [];
+  {
+    const _items = (stage.capex && Array.isArray(stage.capex.items)) ? stage.capex.items : [];
+    const _fmtY = function (v) {
+      if (!Number.isFinite(v)) return '—';
+      return v >= 10000 ? (v / 10000).toFixed(2) + ' 万元' : Math.round(v) + ' 元';
+    };
+    _items.forEach(function (it) {
+      if (!it || !it.tag || _listedTags.has(it.tag)) return;
+      _listedTags.add(it.tag);
+      /* v2.3.3 下游审计批② IRAS_V233_SIZING_BASIS —— 通风机补"控制项"。
+         KV-1003 的风量可能由【换气次数 ACH】决定, 也可能由【CO₂ 稀释需求】顶大。
+         后者意味着: 一旦改增氧方式或脱气塔配置, 这台风机必须重选。
+         采购方看不到这一点, 就会把一台"被 CO₂ 顶大的风机"当成常规配置照单买。
+         ⚠ 取自 index 已导出的 indoorCO2 块, 本页不重算。 */
+      let _extraSpec = it.spec || '';
+      if (it.tag === 'KV-1003') {
+        const _ic = stage.indoorCO2 || null;
+        if (_ic && Number.isFinite(_ic.V_vent_eff_m3h)) {
+          _extraSpec += ` · 【控制项: ${_ic.ventBoostedByCO2 ? 'CO₂ 稀释需求' : '换气次数 ACH'}】`
+            + ` (CO₂ 需求 ${(_ic.V_vent_fish_m3h || 0).toFixed(0)} / ACH ${(_ic.V_vent_ach_m3h || 0).toFixed(0)} m³/h, 取大)`
+            + ` · 车间稳态 ${_ic.co2Room_ppm != null ? _ic.co2Room_ppm.toFixed(0) : '—'} / 限值 ${_ic.co2Limit_ppm != null ? _ic.co2Limit_ppm.toFixed(0) : '—'} ppm`;
+          if (_ic.ventBoostedByCO2) {
+            _extraSpec += ` · ⚠ 该风机由 CO₂ 负荷顶大, 改增氧方式或脱气塔配置后必须重选, 不可沿用`;
+          }
+        }
+      }
+      extraRows.push({
+        label: String(it.name || '').replace(/\s*\([A-Z]{1,3}-\d{3,4}\)\s*$/, '').trim() || it.tag,
+        tag: it.tag,
+        spec: _extraSpec,
+        price: (Number.isFinite(it.unitPrice) ? Math.round(it.unitPrice) + ' 元/' + (it.unit || '') : '—')
+               + (Number.isFinite(it.qty) ? ' × ' + (it.qty < 10 ? it.qty.toFixed(2) : it.qty.toFixed(0)) : ''),
+        cost: _fmtY(it.cost)
+      });
+    });
   }
 
   return `
@@ -493,6 +593,25 @@ function renderStage(stage, idx, data) {
                 </tr>`).join('')}
             </tbody>
           </table>` : ''}
+        ${extraRows.length > 0 ? `
+          <div class="section-label">🧾 其他设备 (自 CAPEX 逐项清单补全)</div>
+          <table class="equip-table">
+            <thead><tr><th style="width:18%">设备</th><th style="width:10%">位号</th><th style="width:14%">规格</th><th style="width:18%">单价</th><th>设备费</th></tr></thead>
+            <tbody>
+              ${extraRows.map(r => `
+                <tr>
+                  <td>${escapeHtml(r.label)}</td>
+                  <td class="tag">${escapeHtml(r.tag)}</td>
+                  <td class="spec">${escapeHtml(r.spec || '')}</td>
+                  <td class="qty">${escapeHtml(r.price || '')}</td>
+                  <td class="note">${escapeHtml(r.cost || '')}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+          <div style="font-size:11px; color:#94a3b8; margin-top:4px;">
+            本组由 <code>capex.items</code> 自动补全 —— 凡 index 计入 CAPEX 且带 ISA 位号、
+            而上方各组未列出的设备, 一律在此列出。<strong>不是"杂项", 是"清单页还没为它写专门的行"。</strong>
+          </div>` : ''}
       </div>
     </div>`;
 }
@@ -523,6 +642,19 @@ function rowFromVol(label, tag, volume, sizing, note) {
 // 让 P&ID 窗口和设备清单窗口可以同时显示最新数据, 互不干扰.
 // 改用 localStorage (同源跨 tab 共享), 解决某些浏览器 window.open 时 sessionStorage 不继承的问题.
 const SHARE_KEY = 'iRAS_equipmentExport';
+/* ══ v2.3.3 IRAS_V233_PAGE_VERSION — 下游页版本号跟随主页面 (项目方决定) ══
+   本常量是本页版本号的【单一事实源】; 页面标题里的字面量由门禁 check_doc_version.js
+   与它对齐, 二者不一致即转红。
+   ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
+     "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
+     缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
+const IRAS_PAGE_VERSION = '2.3.3';
+function irasWarnVersionMismatch(dataVersion) {
+  if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
+  return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
+    + dataVersion + ' 生成。缺失字段会走兼容回退, 建议在主页面重新计算并导出。';
+}
+
 function tryLoadFromSession() {
   try {
     // 优先 localStorage, 退回 sessionStorage; 兼容老版数据 pidExport

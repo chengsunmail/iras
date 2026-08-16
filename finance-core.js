@@ -138,20 +138,7 @@
     const capexEquip = fin.totalCapexEquip || 0;
     const capexCivil = (fin.totalCapexProject || 0) - capexEquip;
     const fixedAsset = fin.totalCapexProject || 0;
-    // v1.9.2 口径对接: iRAS 主页面自 v1.9.2 起在 OPEX 中新增了维护/保险/补水/排污,
-    //   并在企业侧新增苗种/人工/管理费. 与本模块自带的三个费率存在交叉:
-    //     · 维护   —— 主页面已算, 本模块又有 repairRate → 主页面导出的
-    //                 annualOpexForFinance 已【剔除】维护, 由本模块按 repairRate 算,
-    //                 以保留本模块单独使用时的完整性
-    //     · 苗种   —— 本模块【没有】这一项, 主页面已将其【并入】annualOpexForFinance.
-    //                 漏算会让 IRR 严重失真 (鳗鲡苗种占企业全成本 43%)
-    //     · 人工/管理费 —— 主页面的 annualOpex 本就不含, 由本模块的 laborCost /
-    //                 adminRate 负责, 不冲突. 注意两边口径不同:
-    //                 本模块 adminCost = 收入 × adminRate; 主页面 = 成本 × overheadRate
-    //   向后兼容: 老版本主页面不导出 annualOpexForFinance 时, 回退到 annualOpex.
-    const annualOpexFull = (fin.annualOpexForFinance != null)
-      ? fin.annualOpexForFinance
-      : (fin.annualOpex || 0);
+    const annualOpexFull = fin.annualOpex || 0;
     const workingCapital = annualOpexFull * p.workingCap;
     const totalInvest = fixedAsset + workingCapital;
 
@@ -228,8 +215,6 @@
         year: t, ramp: r, revenue, salesTax, netRevenue,
         variableOpex, fixedOpex, operatingCost,
         repairCost, adminCost, laborCost, opCostTotal,
-        // v1.9.2: 标记本行 OPEX 基数是否已按新口径去重
-        opexBasisV192: (fin.annualOpexForFinance != null),
         dep, interest, loanPrincipalRepay,
         profitBefore, tax, profitNet,
         cfTotal, cfEquity,
