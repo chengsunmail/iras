@@ -28,7 +28,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="孙程 / 海南登登科技咨询有限公司">
 <meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
-<title>iRAS · 可研报告生成器 v2.3.3</title>
+<title>iRAS · 可研报告生成器 v2.4</title>
 <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
 <!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
 <script src="finance-core.js"></script>
@@ -2384,7 +2384,7 @@ const SHARE_KEY = 'iRAS_reportExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.3.3';
+const IRAS_PAGE_VERSION = '2.4';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
@@ -3290,7 +3290,12 @@ function buildContext() {
         stage: ps.stageName || ('阶段' + (i + 1)),
         toRoom: ic.co2ToRoom_kg_d, ppm: ic.co2Room_ppm, limit: ic.co2Limit_ppm,
         boosted: !!ic.ventBoostedByCO2,
-        ventEff: ic.V_vent_eff_m3h, ventAch: ic.V_vent_ach_m3h, ventFish: ic.V_vent_fish_m3h
+        ventEff: ic.V_vent_eff_m3h, ventAch: ic.V_vent_ach_m3h, ventFish: ic.V_vent_fish_m3h,
+        /* v2.4 IRAS_R24_NAT_VENT_CAP: 自然通风档不再"需要多少给多少" ——
+           供风量钳在用户填的 ACH 上, 缺口须显式披露 (它就是整改量)。 */
+        roomMode: ic.roomMode, ventSupply: ic.V_vent_supply_m3h,
+        ventShortfall: ic.V_vent_shortfall_m3h,
+        ventBlower: ic.V_blower_indoor_m3h, ventRequired: ic.V_vent_required_m3h
       });
     });
     /* v2.3.3 告警迁移批: 阶段级提示告警 (stageWarns)。
@@ -3325,7 +3330,7 @@ function buildContext() {
     irasVersion:     d.irasVersion || '1.5',
     /* v2.3.3: 页面版本跟随主页面(项目方决定)。
        ⚠ 此前写 'v1.5-alpha-1', 与 index 2.3.3 各自演进, 报告页脚长期显示旧版本。 */
-    templateVersion: 'v2.3.3',
+    templateVersion: 'v2.4',
     reportNumber:    `iRAS-${d.species}-${d.yieldTons}t-${new Date().toISOString().slice(0,10).replace(/-/g,'')}`
   };
 

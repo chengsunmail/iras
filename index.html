@@ -32,7 +32,7 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.3.3</title>
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.4</title>
 <meta name="description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
@@ -46,7 +46,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.3.3">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.4">
 <meta property="og:description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
@@ -56,14 +56,13 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.3.3">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.4">
 <meta name="twitter:description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
 <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230C9ED5'/%3E%3Cstop offset='1' stop-color='%231A5CD7'/%3E%3C/linearGradient%3E%3Crect width='512' height='512' rx='141' fill='url(%23g)'/%3E%3Cpath d='M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z' fill='%23fff' fill-rule='evenodd'/%3E%3Cpath d='M256 290 H324 L392 401 H324 Z' fill='%23fff'/%3E%3C/svg%3E">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4d8'/%3E%3Ctext x='50' y='62' font-family='-apple-system,sans-serif' font-size='42' font-weight='800' text-anchor='middle' fill='%23fff'%3EiR%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="favicon.png">
 
 <!-- Schema.org 结构化数据 (帮助 Google / 百度更好理解工具性质) -->
 <script type="application/ld+json">
@@ -816,7 +815,7 @@
     <!-- 第 1 行: 标题 + 项目级操作 (保存/加载/导出/P&ID/财务/可研/打印) + 手册 + 帮助 -->
     <div class="py-2 flex items-center justify-between flex-wrap gap-2">
       <div class="flex items-center gap-3">
-        <svg class="w-9 h-9" viewBox="0 0 512 512" role="img" aria-label="iRAS"><defs><linearGradient id="hdrLogo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C9ED5"/><stop offset="1" stop-color="#1A5CD7"/></linearGradient></defs><rect width="512" height="512" rx="141" fill="url(#hdrLogo)"/><path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/><path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/></svg>
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-lg">🌊</div>
         <div>
           <h1 class="text-base md:text-lg font-bold glow-text cursor-pointer" id="titleLink" title="回到顶部">iRAS · 循环水养殖工程设计平台</h1>
           <div id="summaryBadge" class="text-[11px] text-slate-400 mt-0.5"></div>
@@ -995,6 +994,7 @@
           <div><label class="text-[10px] text-slate-400" title="窗墙比">窗墙比</label><input id="g_windowRatio" type="number" step="0.01" min="0" max="0.5" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="新风换气次数 1/h. 实际通风取 max(ACH × 车间体积, 鱼载荷 CO₂ 稀释需求).&#10;默认 1.0 — 依据泳池馆新风标准 0.48 CFM/ft² 湿面积换算 (本模型几何下约 0.9-1.5).&#10;参考: 北欧高保温 0.3-0.5; 国内常规 1.0-2.0; 简易棚 (v2.4 ventilated 档) 自然通风 15-30.&#10;注: 除湿不靠新风, 由机械除湿机承担 (泳池馆除湿机 4-6 ACH 为内循环, 不带新风热负荷).">ACH</label><input id="g_airChangeRate" type="number" step="0.1" min="0.1" max="30" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="车间 CO₂ 设计限值 ppm. 用于按鱼载荷反算新风需求, 给通风量封顶.&#10;参考: OSHA/NIOSH 法定 8h 限值 5000; ASHRAE 建议室外+700 (~1100); 1000-1500 空气沉闷; 1500-2500 头痛嗜睡更常见.&#10;工业厂房间歇作业推荐 1500.">CO₂限值(ppm)</label><input id="g_co2IndoorLimit_ppm" type="number" step="100" min="800" max="5000" class="input-ind !py-1 !text-xs"></div>
+          <div><label class="text-[10px] text-slate-400" title="室外 CO₂ 本底 ppm. 两处消费: (1) 车间新风稀释基准 dC = 车间限值 − 本底; (2) 脱气塔 auto 模式的进风本底.&#10;默认 450 —— 标准大气 + 一般厂区口径.&#10;参考: 全球本底 ≈420 且逐年 +2.5; 城郊 450-500; 城市/工业区实测常年 500-700.&#10;⚠ 取小是不安全方向: 本底越小 dC 越大, 通风量算得越小. 城市或工业园区项目应上调.&#10;⚠ v2.4 起本值同时替代原「脱气塔进风 CO₂ 本底」(co2IntakeCO2_ppm, 已撤销) —— 工艺气路全程不碰车间, 塔进风即室外空气.">室外CO₂(ppm)</label><input id="g_co2Outdoor_ppm" type="number" step="10" min="300" max="5000" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-slate-400" title="脱气塔尾气排入车间的比例 0-1.&#10;0 = 尾气管道直排室外 (现代场典型)&#10;0.2 = 少量泄漏 (默认)&#10;1.0 = 全部排入车间 (简易车间)&#10;影响车间 CO₂ 负荷, 进而影响新风需求.">尾气入室比例</label><input id="g_degasserExhaustIndoorFrac" type="number" step="0.1" min="0" max="1" class="input-ind !py-1 !text-xs"></div>
           <div><label class="text-[10px] text-cyan-300" title="机械除湿机开关.&#10;湿热气候养冷水鱼时通常必配 — 室外空气比车间还湿, 通风无法除湿.&#10;开启后: 车间湿度被控制在目标 RH, 水面凝结减少 → 制冷负荷下降; 但除湿机本身耗电.">💧除湿机</label><select id="g_dehumEnabled" class="input-ind !py-1 !text-xs"><option value="0">不配置</option><option value="1">配置</option></select></div>
           <div><label class="text-[10px] text-slate-400" title="除湿机控制目标相对湿度 %.&#10;泳池馆 ASHRAE 建议 50-60%; RAS 车间可放宽到 65-75% (兼顾能耗).&#10;超过 85% 有霉菌与设备腐蚀风险.">除湿目标RH(%)</label><input id="g_dehumTargetRH" type="number" step="5" min="40" max="90" class="input-ind !py-1 !text-xs"></div>
@@ -1184,12 +1184,9 @@
   <div id="aboutModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" style="display:none;">
     <div class="bg-slate-900 border border-slate-700 rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl">
       <div class="flex justify-between items-start mb-4">
-        <div class="flex items-center gap-3">
-          <svg class="w-10 h-10 shrink-0" viewBox="0 0 512 512" role="img" aria-label="iRAS"><defs><linearGradient id="aboutLogo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C9ED5"/><stop offset="1" stop-color="#1A5CD7"/></linearGradient></defs><rect width="512" height="512" rx="141" fill="url(#aboutLogo)"/><path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/><path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/></svg>
-          <div>
-            <h2 class="text-xl font-bold text-cyan-300">iRAS</h2>
-            <div class="text-sm text-slate-400">循环水养殖工程设计平台</div>
-          </div>
+        <div>
+          <h2 class="text-xl font-bold text-cyan-300">🌊 iRAS</h2>
+          <div class="text-sm text-slate-400">循环水养殖工程设计平台</div>
         </div>
         <button id="btnAboutClose" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
       </div>
@@ -1268,6 +1265,7 @@
       <div class="grid grid-cols-2 gap-1 text-xs">
         <a href="#help-1" class="text-cyan-300 hover:text-cyan-100">1. 软件概述</a>
         <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (89 项)</a>
+        <a href="#help-changelog-v24-anchor" class="block hover:text-rose-300">🚀 v2.4 升级说明 — 四个量的口径单一事实源</a>
         <a href="#help-changelog-v21" class="block hover:text-rose-300">📌 v2.1 升级说明 — 能量守恒修复 · 守恒断言落地</a>
         <a href="#help-changelog-v201" class="block hover:text-sky-300">📌 v2.0.1 升级说明 — 缺陷修复 · 版本号自检</a>
         <a href="#help-changelog-v200" class="block hover:text-emerald-300">📌 v2.0.0 升级说明 — 热平衡架构重构 · 气液接触器 · 规范对标</a>
@@ -1348,6 +1346,43 @@
         <h2 class="text-lg font-bold text-cyan-300">iRAS 是什么</h2>
         <p class="mt-2 text-slate-400 text-sm">iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 碳酸盐平衡求解 (pH/NH3/方解石饱和度, 对照 PyCO2SYS 验证); v1.9.1-v1.9.2 修正液氧/蒸发/通风/泵功率口径, 新增机械除湿机; v1.9.3 自然冷却改为容量判据 (支持部分自然冷却) 与年均工况 24 点数值积分。v2.0 热平衡架构重构 (车间温度改为暖通维持, 首次计入气液接触器热湿交换); v2.1 修复车间显热能量守恒并补齐守恒类断言; v2.2 补配置边界工况 (脱气关/旁路/空气曝气) 并建立登记表声明自校验; v2.3 第七轮审计处置 (head 结构/加载钳制/尾气入室); 并在 v2.3 内继续完成四批工作: 简易模式 (自然通风车间自由空气节点求解, 太阳辐射子系统首次建模)、池内曝气拓扑修正 (air 模式 DO 稳态由传质=耗氧决定) 与曝气强度约束、车间模式三档 (恒温恒湿/自然通风/机械通风) 与车间通风机建模、CO₂ 脱除机制澄清与浅池告警。v2.3.3 字段流转工厂化: 鱼种/阶段字段经声明表 + 工厂进入水质链, 配静态源码扫描断言 M15a–d, 从机制上封住"白名单漏字段"这一复发五次的缺陷模式。1000t 三文鱼综合成本 38.88 元/kg (工艺运行成本) / 43.95 元/kg (企业全成本), 青岛冬工况。</p>
       </section>
+
+      <!-- IRAS_R24_INDEX_CHANGELOG · v2.4 发布批 -->
+      <h2 class="text-2xl font-bold text-cyan-300 border-b-2 border-cyan-600 pb-2 mt-8" id="help-changelog-v24-anchor">🚀 v2.4 · 四个量的口径单一事实源（2026-08-18 · 五批）</h2>
+      <p class="mt-2 mb-4 text-slate-400 text-sm">起因是一份<strong>热平衡专项审计</strong>: 它指出气液接触器的质量流量取错了状态点(用了风机加热后的密度)。复核后发现根因更深 —— <code>airFlowM3h</code> <strong>从来没有声明过参考状态</strong>, 三个产气者各按一套隐含口径, 相加后再乘一个密度, <strong>本就无解</strong>。本版把四个这样的量全部建立单一事实源。</p>
+      <p class="mt-2 mb-4 text-slate-300 text-sm border-l-4 border-cyan-600 pl-3">本轮最重要的一句话(引自审计原文): <strong>守恒断言保证账本自洽, 但保证不了记进账本的那个数是对的。</strong> 无论取哪个密度、扣不扣哪股风, 守恒式两边都会同步变化、残差恒为零 —— 这类缺陷<strong>守恒断言天然抓不到</strong>。本版因此新增一整族「<strong>取值来源</strong>」型断言, 它们不问账本平不平, 只问这个数<strong>是从哪儿来的</strong>。自检 32 → <strong>35</strong>, 门禁判据 136 → <strong>167</strong>。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">① 室外 CO₂ 本底 — 同一物理量的两份口径</h3>
+      <p class="mt-2 text-slate-400 text-sm">热工侧写死 <code>const co2Out_ppm = 450</code>(无 UI、无默认表条目、无范围登记), 而 <code>PROCESS_DEFAULTS.co2IntakeCO2_ppm = 350</code> 是同一物理量的另一份 —— <strong>值还不一样</strong>。后者更麻烦: 它有读取路径且带 300-5000 钳制, 但<strong>根本没有输入框</strong>, 那句钳制<strong>从未执行过</strong>。现统一为 <code>co2Outdoor_ppm</code>(默认 450, UI 可调 300-5000), 两个消费点一律经同一 resolver。⚠ 撤字段时把原注携带的 Fig 10.17 论证(本底 1000 ppm 去除率降 10%)<strong>迁存</strong>到脱气塔气路处 —— 那是「尾气必须排室外」的量化依据, <strong>字段可撤, 依据不可撤</strong>。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">② 工艺风量 — 声明为标准状态 Nm³/h</h3>
+      <p class="mt-2 text-slate-400 text-sm">全库风量一律为 <strong>0 °C · 101.325 kPa</strong> 下的体积流量(<code>1.293 kg/m³ × 0.232 = 0.300 kg O₂/Nm³</code>, 国内曝气设计手册经典常数)。理由: 对外向风机厂家提规格时给的就是 <strong>Nm³/h + 压力</strong>, 质量由该单位本身锁定, 故风量/压力/功率全部同口径、<strong>不做进气温度修正</strong>。<br>接触器质量流因此成为<strong>常数</strong>, v2.2 那段六次不动点迭代<strong>整段删除</strong> —— 它当年确实统一了两侧密度, 但统一到了"风机加热后的密度"这一侧, 而<strong>风机不改变质量流量</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">⚠ 全库 <code>1.2</code> 共 9 处<strong>只改 3 处</strong>: Lewis 类比的车间空气密度、除湿/暖通选型裕度、通风显热的 0.34(=1.2×1006/3600)<strong>均不得改动</strong>。<code>0.23</code> 同理 —— 它与鱼种耗氧系数(鲑 0.20–0.23)数值相近而物理无关。<strong>禁止全局替换</strong>, 由断言 A4d <strong>反向保护</strong>(不该改的必须仍在原位)。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">③ 风机送进车间的那股空气 — 它就是新风</h3>
+      <p class="mt-2 text-slate-400 text-sm">K-101 鱼池增氧鼓风机<strong>没有排气风管</strong>: 吸室外空气、气泡穿过池水、从池面进车间。⇒ 它就是新风, 而此前<strong>一分未计</strong>, 两笔账同时错 —— CO₂ 稀释侧让通风系统重复提供了这部分; 显热侧这股空气已被池水加热到水温饱和(<strong>水侧付过了</strong>), 通风显热又收了一遍。实测在恒温车间占通风需求 <strong>36.9%–44.5%</strong>。现按净额抵扣, 并把「机械换气」与「总换气」拆成两个报告口径。纯氧拓扑下抵扣量恒为 0 ⇒ 13 条数值基线逐位不变。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">④ 自然通风 — 从"需要多少给多少"改为钳在设定 ACH 上</h3>
+      <p class="mt-2 text-slate-400 text-sm">此前自然通风档同样走 <code>max(ACH×V_room, CO₂需求)</code>, 于是用户填 ACH 1 / 2 / 5 <strong>结果完全相同</strong>(室温 8.4 °C · 车间 1500 ppm · 25.03 元/kg)——CO₂ 需求一直顶着, <strong>用户的输入被架空</strong>; 而那 35,414 m³/h <strong>没有风机、零电耗、零 CAPEX</strong>, 等于"选自然通风就能免掉通风机"。物理上站不住: 自然通风由风压/热压驱动, <strong>不会因为室内 CO₂ 高就自己变大</strong>, 且随开口面积与天气跨近两个数量级(温室夏季敞开 45–60、冬季关口约 3)。</p>
+      <p class="mt-2 text-slate-400 text-sm">现钳在用户填的 ACH 上, 不足则<strong>让车间 CO₂ 真的算超标</strong>并给出缺口与两条出路(加大开口 / 改机械通风)。实测 ACH 1 → <strong>4422 ppm</strong>、2 → 2894、5 → 1584、15 → 857、30 → 658 —— <strong>用户填的 ACH 终于有意义了</strong>。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">⑤ 三条车间通风告警 + 一条被否决的候选</h3>
+      <p class="mt-2 text-slate-400 text-sm"><code>ROOM_ACH_TOO_LOW</code>(warn, 阈值 15 取自该档自己的定义注释「简易棚取 15–30」, <strong>零新常数</strong>)· <code>NAT_VENT_SHORTFALL</code>(warn, 给出缺口与出路)· <code>VENT_CTRL_BY_CO2</code>(info, 沿用已有标志, 零新阈值)。<br>⚠ 原遗留清单里的候选项「<strong>车间 CO₂ 超限告警</strong>」<strong>判据恒假, 已改写</strong>: 通风量本就是"恰好把浓度压到限值"的反解, 故 CO₂ 一旦成为控制项, 车间浓度<strong>恒等于限值</strong>(实测四组工况精确 1500)。照原样写会得到一条永远为假的判据。真正要告警的不是浓度, 是<strong>为了不超标所要求的通风量</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">⚠ <code>VENT_CTRL_BY_CO2</code> 的措辞里明确写着<strong>不要为了缩小通风机而开脱气塔</strong> —— 实测在空气曝气下开塔使全场能耗上升 <strong>27–93%</strong>。脱气塔的作用是压低<strong>池水</strong> CO₂(通常配液氧拓扑), 不是省车间通风。这一条拦住的正是"只看通风机风量降了 71%、没看总账"这个推理。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">⑥ 门禁: 防线扩到全局配置层, 并补 U1 的反方向</h3>
+      <p class="mt-2 text-slate-400 text-sm">默认值同步门禁的三条判据此前<strong>全部对准阶段工艺参数表</strong>, 于是<strong>全局热工配置层从来没有门禁</strong>。本版新增 G0–G4, 上线即咬出两条(均 WARN 级, 结构性隐患非数值错): <code>co2IndoorLimit_ppm</code> 的 UI <code>min=800</code> 与代码下钳 <code>600</code> <strong>分居 HTML 属性与代码字面量</strong>; 全局默认里的围护五项<strong>逐值等于「一般工业车间」预设</strong>(改预设表不会自动改默认值)。<br>断言 U2 关掉了 U1 的结构性盲区: U1 是从"有框"一侧起判的三件套, 对「<strong>无框 + 有读取路径 + 有消费点</strong>」这一类<strong>结构上判不到</strong>。U2 要求凡出现在读取路径里的字段, <strong>要么有框, 要么显式登记为 JSON-only 并写明理由</strong>。</p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">⑦ 基线变动: 只有 ② 改数, 且符号随工况方向翻转</h3>
+      <p class="mt-2 text-slate-400 text-sm">五批中只有标准态口径改基线, 52/52 项变动, <code>costPerKg</code> <strong>−0.10 ~ +0.36 元/kg</strong>: <strong>制热工况下降</strong>(青岛冬 −0.102 · 鲈 −0.089 · Bergen −0.013), <strong>制冷工况上升</strong>(海南夏 +0.358 · 三亚 +0.255 · 对虾 +0.175)。与 v2.1/v2.2 守恒修复时一致 —— <strong>单向偏移才说明修错方向</strong>。<br>⚠ <strong>不要引用"最大相对差 13.68%"</strong>: 那一项绝对值仅 +0.024 元/kg, 是小分母造成的假象。<strong>引用变动幅度时必须看绝对值。</strong></p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">⑧ 一个被撤销的批次, 与六次同类错</h3>
+      <p class="mt-2 text-slate-400 text-sm">计划中的第四批「air 模式默认关塔」<strong>核实后撤销</strong> —— 该联动 v2.3.3 已在 <strong>UI 事件层</strong>实现(切到空气曝气时脱气塔自动关闭, 并尊重用户的显式选择), 且由断言 S3 锁住不得下沉计算层。立项时<strong>据一处默认值的字面量推断了系统行为</strong>, 没查 UI 事件层。该行代码已就地留痕防重开。</p>
+      <p class="mt-2 text-slate-400 text-sm">本轮在<strong>六个不同位置</strong>犯了同一形态的错: 为判据或探针挑对象时<strong>用了记忆里的名字而不是先查</strong>。其中两次是<strong>恒真型</strong>(断言宿主函数填错 ⇒ 写了、跑了、全绿, 但从未判过任何东西), 若不跑负对照就会随本版一起交付。⇒ 固化三条纪律: <strong>静态断言必须核实宿主并在找不到目标时判红</strong> · <strong>探针读数"一半对一半空"时先怀疑量具</strong> · <strong>引用变动幅度必须看绝对值</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">⚠ 另有一条<strong>判据本身写错</strong>的教训: 新门禁 G1 第一版写成"UI 范围必须等于消费点钳制", 于是把合规的 800/600 判成红 —— 而既有设计本就是「UI 引导范围」与「模型接受范围」分开存, 二者<strong>允许不等</strong>。差一点逼出一个错误的"修复"。<strong>判据错比代码错更贵: 它会让人去改对的东西。</strong></p>
+
+      <h3 class="mt-4 font-bold text-cyan-300">⑨ 版本号命名空间: 两套编号并存</h3>
+      <p class="mt-2 text-slate-400 text-sm">代码里的 <code>IRAS_V24_*</code> / <code>IRAS_V25_*</code> / <code>IRAS_V26_*</code> 是<strong>内部开发批次号</strong>, 与发布版本号<strong>不是同一序列</strong> —— 那三批成果都随 v2.3.x 发布, 从未独立发版。故本次发布批的新哨兵一律 <code>IRAS_R24_*</code>。旧哨兵<strong>一律不改名</strong>(它们是史料; 本库有过全局替换污染历史叙述的先例)。详见源码顶部的编号说明块。</p>
 
       <!-- IRAS_V233_PAGE_VERSION_BATCH -->
       <h2 class="text-2xl font-bold text-cyan-300 border-b-2 border-cyan-600 pb-2 mt-8">🚀 v2.3.3 版本口径批 · 下游页版本号跟随主页面（2026-08-14）</h2>
@@ -4258,6 +4293,35 @@
    ============================================================================ */
 
 // 版本与版权元数据 (UI 页脚和关于页从此处读取)
+/* ══════════════════════════════════════════════════════════════════════════
+   ⚠ 版本号命名空间: 本库【两套编号并存】, 搜索代码时务必分清
+   ══════════════════════════════════════════════════════════════════════════
+
+   ① 发布版本号  —— IRAS_META.version, 当前 2.4。由 docver 的 19 个登记点统一管辖
+                    (index 3 / manual 4 / 下游四页 9 / README 3)。
+
+   ② 特性批次哨兵 —— 代码里的 IRAS_V21_* / IRAS_V22_* / IRAS_V233_* /
+                    IRAS_V24_* / IRAS_V25_* / IRAS_V26_* 等。
+                    ⚠ 这些数字是【内部开发批次号, 与发布版本号不是同一序列】。
+                      v2.4 / v2.5 / v2.6 三个批次的成果都随 v2.3.x 发布,
+                      从未独立发版 —— ROOM_MODES 的注释即明写「因 v2.4 未独立发布,
+                      实际不存在此类文件」。故 IRAS_V24_SOLAR 指的是 2026-08 的
+                      太阳得热批, 【不是】本次 v2.4 发布。
+
+   ⇒ 于是本次 v2.4 发布批的新哨兵一律用 IRAS_R24_*(R = release),
+     与旧的特性号 IRAS_V24_* 一眼可分。本批共五类:
+       IRAS_R24_CO2_OUTDOOR    室外 CO₂ 本底统一为单一事实源 (R24-1)
+       IRAS_R24_NORMAL_AIR     工艺风量声明为标准状态 Nm³/h (R24-2)
+       IRAS_R24_VENT_NET       风机入室空气计入通风, 净额抵扣 (R24-3)
+       IRAS_R24_NAT_VENT_CAP   自然通风量钳在用户填的 ACH 上 (R24-5)
+       IRAS_R24_VENT_WARNS     三条车间通风告警 (R24-5)
+
+   ⚠ 旧哨兵【一律不改名】。它们是史料 ——「这行是哪一批加的」;
+     73 处机械改名会把来历抹掉, 而本库有 v2.0.0 全局替换污染历史叙述的先例。
+     宁可两套编号并存并在此说清, 也不为统一而改历史。
+   ⚠ check_doc_version 有意【不做全文版本号扫描】(版本演进叙述里本就有大量历史
+     版本号), 故哨兵命名空间落在它的盲区里 —— 只能靠本说明块与评审。
+   ══════════════════════════════════════════════════════════════════════════ */
 const IRAS_META = {
   name: 'iRAS',
   fullName: '循环水养殖工程设计平台',
@@ -4282,7 +4346,7 @@ const IRAS_META = {
        称【v2.3 新基线值】; 两者以 MD5SUMS 区分。
      ── v2.3.3 (2026-08-13, 项目方定版): 字段流转工厂化 (IRAS_V233_FIELD_FLOW)。
        纯结构重构 + 断言 M15a–d, 13 条基线对【v2.3 新基线值】逐位不变。 */
-  version: '2.3.3',
+  version: '2.4',
   releaseDate: '2026-08-13',
   author: '孙程',
   email: '6881509@qq.com',
@@ -4825,6 +4889,16 @@ const PROCESS_DEFAULTS = {
   //    当时判定为「设计选择而非错误」并保持默认不变; v2.0 依教科书上调 G:L 后
   //    该问题自动消解, 无需调整风压。)
   co2StripperEnabled: true,      // 默认开启; 关闭时 CO2 仅靠换水稀释 + 增氧扰动
+  /* ⚠ 勿据本行断言"air 模式默认开塔" —— 本字段【不是】用户实际看到的默认值。
+     v2.3.3四批在 UI 事件层做了 air↔脱气塔联动: 增氧方式切到 air 时脱气塔自动置 false
+     (带 auto-value 样式与提示语), 并以 dataset.userSet 标记尊重用户的显式选择。
+     故走 UI 的真实用户在 air 模式下【默认就是关塔】; 本行的 true 只对
+     "直写 proc 的自检工况 / 方案 JSON" 生效 —— 这正是 13 条基线与 edge 工况
+     逐位不变的原因。
+     ⚠ 该联动【有意不下沉到计算层】, 由断言 S3 静态锁住: 计算层若按 aerationMode
+       猜用户意图, 用户显式选的 "air+开塔" 会被静默改掉。
+     ⚠ v2.4 立项复核时曾据本行误判为"默认开塔导致成本高 9.5-22.3%"并开出 R24-4,
+       核实后撤销。记此一笔以免第三次重开。 */
   // IRAS_CO2_EFF_GTOL_COUPLING_V2 v2.0 新增
   // 脱气效率取值方式:
   //   'manual' (默认) —— 沿用 co2StripperEff, 与 v1.x 完全一致
@@ -4835,9 +4909,16 @@ const PROCESS_DEFAULTS = {
   // IRAS_CO2_DEFAULTS_TEXTBOOK_V2: 1.0 → 1.5 (取教科书设计区间上沿)
   co2PackingHeight_m: 1.5,       // 填料高度 m (Ch.10 p.245: 设计区间 1.0-1.5, 超 1.5-2.0 收益递减)
   co2MaxAttainableEff: 80,       // 该装置 G:L=20 时的最大可达单次去除率 % (Fig 10.13 ≈80%)
-  co2IntakeCO2_ppm: 350,         // 脱气塔【进风】CO₂ 本底 ppm (室外空气≈350-420)
-                                 // ⚠ Fig 10.17: 本底 1000 ppm 时去除率降 10%, 5000 ppm 降 70%
-                                 //   —— 这是「尾气必须排室外、不得回车间」的量化依据
+  /* ══ v2.4 IRAS_R24_CO2_OUTDOOR — co2IntakeCO2_ppm 已撤销 ══
+     原为「脱气塔进风 CO₂ 本底」, 默认 350, 与 calcThermalLoadPoint 里写死的
+     室外本底 450 是【同一个物理量的两份口径】(且本字段无 UI 框, 只能改方案 JSON)。
+     现统一为 GLOBAL_THERMAL_DEFAULTS.co2Outdoor_ppm (默认 450, UI 可调)。
+     ⚠ 分层方案(室外本底 + 塔进风本底两层)已评估后否决: 脱气塔 airPath 硬编码
+       OUTDOOR→OUTDOOR 且无 UI 可改 ⇒「塔吸车间空气」这个场景在模型里不可达,
+       保留一个服务于不可达场景的旋钮, 与 v2.5 撤销 roomMode='open' 同一理由。
+     ⚠ 原注携带的论证【必须留存】, 已迁至 co2StripperSpec.airPath 处:
+       Fig 10.17 本底 1000 ppm 去除率降 10%、5000 ppm 降 70% ——
+       那是「尾气必须排室外、不得回车间」的量化依据, 字段可撤, 依据不可撤。 */
   co2StripperEff: 65,            // 单次脱气效率 (50-85%)
                                  // ⚠ 出处待考: 代码注释原称「G:L=3 浅塔实际 60-70%」但无文献引用。
                                  //   按 Fig 10.14 曲线, G:L=3 应为 48%, G:L=5+1.5m 填料为 65.7%
@@ -5160,11 +5241,45 @@ function co2PackingHeightFactor(h_m) {
   return 1.10;                                                 // 收益递减, 封顶
 }
 
+/* ══ v2.4 IRAS_R24_NORMAL_AIR — 工艺风量的【参考状态】单一事实源 ══
+
+   裁决 (项目方): airFlowM3h 全库一律为【标准状态 Normal】体积流量 Nm³/h,
+   即 0 °C · 101.325 kPa。对外向风机厂家提规格时给的就是 Nm³/h + 压力,
+   机器由厂家按此选型、质量由该单位本身锁定 —— 故模型的风量/压力/功率
+   全部 Normal 口径, 【不做任何进气温度修正】。
+
+   为什么必须显式声明: 本值在选型式与接触器之间会【抵消】——
+     mass = airFlowM3h × RHO_STD_AIR = o2Peak·s / (F_O2_MASS × OTE)
+   所以对"由 O₂ 质量反算风量"的气流 (K-101 曝气 / BF 风机), 取多少都不影响物理;
+   但对"体积比"气流 (脱气塔 flowM3h×G:L / 蛋分 skimmerFlow×skimGtoL) 没有任何
+   参考态可抵消 —— 不声明, 接触器的 mdot 就【无解】。v2.3.3 之前正是无解状态:
+   接触器用 ρ(T_air+ΔT) 取值, 即"风机加热后的密度", 关塔工况偏低 10.4%。
+
+   ⚠ 全库仅此一处密度可用于工艺风量。其余 1.2 严禁改动, 它们不是本量:
+     · beta = h_c/(1.2×1006×0.91) 与 h_c_eff  —— Lewis 类比的【车间空气】(20-28°C)
+     · UA_vent_sens = 0.34×V_room×ACH        —— 0.34 = 1.2×1006/3600, 建筑物理常数
+     · 除湿机/暖通的 ×1.2                     —— 选型【安全裕度】, 不是密度
+   ⚠ 同理 0.232 只用于空气含氧质量分数。o2FishFactor 的 0.20-0.23 是【鱼的耗氧系数】,
+     数值相近、物理无关, 碰它等于改鱼种数据库。
+   由断言 A4a-A4d 静态锁住。 */
+const RHO_STD_AIR = 1.293;   // kg/m³ @ 0°C, 101.325 kPa —— 设计手册通行取整值
+                             // ⚠ 精确值 = 28.96/22.414 = 1.2921, 全库 ρ(T)=353/T_K 式在 0°C 给 1.29233。
+                             //   三者差 ≤0.06%, 属取整差异, 【不是恒等】。断言 A4 按 1e-3 容差校验同源性,
+                             //   容差写宽是有意的: 写死相等会把"手册值 vs 状态方程值"的正常差异判成红。
+const F_O2_MASS   = 0.232;   // 标准状态空气含氧质量分数
+                             // RHO_STD_AIR × F_O2_MASS = 0.300 kg O₂/Nm³ —— 国内曝气设计手册经典常数
+                             // (对照: v2.3.3 用 1.2×0.23 = 0.276, 对应 20 °C 口径的 0.28)
+
 /* 进风 CO₂ 背景浓度折减 (Fig 10.17)。
    教科书: G:L=5 时, 空气本底由 350 ppm 升到 1000 ppm, 去除率由 60% 降到 54%;
    升到 5000 ppm 时降至 18%。故室内空气循环回脱气塔会显著劣化性能 ——
    这正是「排气必须排到室外」的量化依据 (SPEC 前提 A2)。
-   本函数以 350 ppm 为基准。                                              */
+   本函数以 350 ppm 为基准。
+   ⚠ v2.4 IRAS_R24_CO2_OUTDOOR 警示: 下面的 350 是【Fig 10.17 曲线自身的锚点】,
+     不是"室外 CO₂ 本底"的第三份副本 —— 它表达的是"教科书那条曲线是从哪儿起算的",
+     改它等于篡改引用的实验数据。室外本底现由 resolveCO2Outdoor() 单源提供,
+     以 ppm 形式【传入】本函数, 二者不得合并。
+     (默认 450 落在锚点之上 ⇒ 罚分 0.985, 塔效 65.66% → 64.65%, 方向正确。) */
 function co2AmbientPenalty(ppm) {
   const p = (ppm != null && ppm > 0) ? ppm : 350;
   if (p <= 350) return 1.0;
@@ -5175,6 +5290,19 @@ function co2AmbientPenalty(ppm) {
 
 /* 单次去除率 (0–1)。maxAttainable 为该装置在 G/L=20 时的最大可达去除率。
    教科书 Fig 10.13 在 1 m 填料、G/L=20 附近给出约 80% 的单次去除率。 */
+/* ══ v2.4 IRAS_R24_CO2_OUTDOOR — 室外 CO₂ 本底的【唯一解析入口】══
+   两个消费点 (车间稀释基准 dC · 脱气塔 auto 进风本底) 必须走本函数, 不得各自
+   读 proc.co2Outdoor_ppm 再自行钳制 —— 那正是本批要消灭的形态 (原 co2Out_ppm=450
+   与 co2IntakeCO2_ppm=350 就是同一物理量的两份口径, 值还不一样)。
+   ⚠ 钳制放在此处而非 readGlobalThermalConfig: 方案 JSON 经 restoreState 直写
+     globalThermalConfig, 绕过 UI 约束 (v2.3 P1 教训: 加载路径必须与 UI 路径同等设防)。
+   ⚠ 范围 [300, 5000] 沿用已撤销的 co2IntakeCO2_ppm 原口径, 不收紧现有能力。 */
+function resolveCO2Outdoor(proc) {
+  const v = (proc && proc.co2Outdoor_ppm != null)
+    ? proc.co2Outdoor_ppm : GLOBAL_THERMAL_DEFAULTS.co2Outdoor_ppm;
+  return Math.min(Math.max(Number.isFinite(v) ? v : 450, 300), 5000);
+}
+
 function co2StripperEffAuto(gtol, packingHeight_m, ambientPpm, maxAttainable) {
   const maxEff = (maxAttainable != null ? maxAttainable : 0.80);
   const eff = maxEff
@@ -5225,34 +5353,34 @@ function contactorHeatKWhPerDay(eq, thermal, T_water, T_air, RH_air, recovery, b
   /* v2.1 IRAS_V21_BLOWER_HEAT: 进气温度须含风机轴功带来的温升。
      ⚠ 含湿量 W_in 不随温升变化 —— 加热是等湿过程, 绝对含湿量守恒,
        变的是相对湿度。故 W_in 仍按室外状态算, 只有温度抬高。 */
-  const rho_in0 = 353 / (T_air + 273.15);
   let air = 0;
   streams.forEach(function (s) { air += s.airFlowM3h; });
-  const mdot0 = air * rho_in0 / 3600;                 // kg/s (未计温升的估计值)
   const _shaft = Number.isFinite(blowerShaftKw) ? Math.max(blowerShaftKw, 0) : 0;
-  /* v2.2 IRAS_V22_BLOWER_DT_FIXPOINT (第六轮审计 P1): ΔT 与 mdot 必须取同一密度。
-     旧实现 ΔT 按 mdot0(冷密度) 算、焓流按 mdot(热密度) 算, 注入热 = shaft×(mdot/mdot0),
-     丢失 (1−mdot/mdot0) 份轴功 —— 默认工况 1.2% (藏在 A3 的 0.15K 容差内),
-     脱气关闭时风量骤小、ΔT≈30K, 丢 10.1%, 由 edge_no_degasser 触发 A3 显形。
-     现解联立 mdot·cp·ΔT = P_shaft, mdot = air·ρ(T_air+ΔT)/3600:
-     不动点迭代, 压缩因子 ≈ ΔT/T_abs ≈ 0.1, 6 次后误差 < 1e-4 K。 */
-  let dT_blower = (mdot0 > 1e-9) ? _shaft / (mdot0 * 1.006) : 0;   // K (初值)
-  if (mdot0 > 1e-9 && _shaft > 0) {
-    for (let _it = 0; _it < 6; _it++) {
-      const _rho = 353 / (T_air + dT_blower + 273.15);
-      const _md  = air * _rho / 3600;
-      const _next = _shaft / (_md * 1.006);
-      if (Math.abs(_next - dT_blower) < 1e-6) { dT_blower = _next; break; }
-      dT_blower = _next;
-    }
-  }
+  /* ══ v2.4 IRAS_R24_NORMAL_AIR — mdot 是常数, 不再迭代 ══
+     airFlowM3h 已声明为标准状态 Nm³/h ⇒ 质量流 = air × RHO_STD_AIR / 3600,
+     与温度无关。ΔT 直接由能量式求出, mdot·cp·ΔT ≡ P_shaft 【恒成立】,
+     无需求解, 断言 A3 仍逐位闭合。
+
+     ⚠ 史料 (勿因"看不出为什么曾经复杂"而误判): v2.2 IRAS_V22_BLOWER_DT_FIXPOINT
+       在此处有一段六次不动点迭代, 起因是第六轮审计 P1 ——
+       旧实现 ΔT 按 mdot0(冷密度) 算、焓流按 mdot(热密度) 算, 注入热
+       = shaft×(mdot/mdot0), 丢失 (1−mdot/mdot0) 份轴功: 默认工况 1.2%
+       (藏在 A3 的 0.15K 容差内), 脱气关闭时风量骤小、ΔT≈30K 丢 10.1%,
+       由 edge_no_degasser 触发 A3 显形。
+       迭代确实让两侧统一了, 但【统一到了 ρ(T_air+ΔT) 这一侧】—— 即"风机加热后
+       的密度", 而风机不改变质量流量。第八轮热平衡审计据此报出关塔工况偏低 10.4%。
+       根因不是"用了哪个密度", 而是 airFlowM3h 当时【没有声明参考状态】:
+       曝气股隐含 ρ=1.2、CO₂ 侧隐含水温 Vm、脱气塔与蛋分是纯体积比无状态,
+       三种口径相加再乘一个密度, 本就无解。v2.4 声明 Normal 后迭代自然消失。
+     ⚠ 审计建议的 A4 (mdot×3600/air ≡ ρ(T_air)) 【不采纳】—— 它锁的是"实际进气
+       体积"口径, 与 Normal 裁决相反。锁错口径比不锁更糟 (B2)。 */
+  const mdot = air * RHO_STD_AIR / 3600;              // kg/s —— 常数, 与温度无关
+  const dT_blower = (mdot > 1e-9) ? _shaft / (mdot * 1.006) : 0;   // K
   const T_air_in = T_air + dT_blower;
 
   const W_in  = humidityRatio(T_air, RH_air);         // 等湿升温, 绝对含湿量不变
   const W_out = humidityRatio(T_water, 1.0);          // 水温下饱和
   const dh = moistAirEnthalpy(T_water, W_out) - moistAirEnthalpy(T_air_in, W_in);   // kJ/kg
-  const rho_in = 353 / (T_air_in + 273.15);           // 进气密度按实际进气温度 (与 ΔT 同一状态点)
-  const mdot = air * rho_in / 3600;                   // kg/s —— 至此 mdot·cp·ΔT ≡ P_shaft
   const eta = Math.min(Math.max(recovery || 0, 0), 0.95);   // 回收率钳到 [0, 0.95]
   out.airFlowM3h = air;
   out.dh_kJ_kg = dh;
@@ -5280,6 +5408,16 @@ function contactorHeatKWhPerDay(eq, thermal, T_water, T_air, RH_air, recovery, b
 function evapCoeff(v_air) {
   v_air = (v_air != null) ? v_air : 0.15;
   const h_c  = 4.0 + 6.0 * v_air;              // W/m²K,水面对流换热(随风速增强)
+  /* ══ v2.4 IRAS_R24_EVAP_SCOPE — air 模式下本系数的精度【已不重要】(已决取舍) ══
+     第八轮热平衡审计提出: air 模式下 4228 m³/h 气泡穿过池水, 池面被剧烈扰动,
+     实际表面传质系数应显著高于本式给出的静止/微风水面值, 模型未作修正。
+     ⇒ 实测量级对照 (罗非 air+开塔): 接触器路径 44,173 kWh/d 是池面路径 807 kWh/d
+       的 【55 倍】—— 因为气泡自身携带的水汽已由接触器完整计入,
+       本式低估的只是"气泡之外那部分被扰动加强的表面蒸发", 量级在数百 kWh/d 以内。
+     ⇒ 裁决: 【不修正】。air 模式下池面蒸发已非主导路径, β 的精度不再重要。
+       此结论本身有价值 —— 它主动关掉了一个未来的纠缠点, 与"不做养殖照明控光"
+       "苗种期 CO₂ 不独立分档" 同一处置。勿当缺陷去修。
+     ⚠ 本式的 1.2 是【车间空气密度】(20-28°C), 与 RHO_STD_AIR 无关, 由 A4d 反向保护。 */
   const beta = h_c / (1.2 * 1006 * 0.91);      // Lewis 传热传质类比 → m/s
   return Math.max(0.0035, Math.min(beta, 0.010));
 }
@@ -6482,7 +6620,8 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq, si
   //        鳗鲡 536 Heinsbroek 1990, 统一取值).
   const V_vent_ach_m3h = V_room * ACH;                                  // 原 ACH 口径 m³/h
   const co2Limit_ppm   = Math.max(proc.co2IndoorLimit_ppm, 600);
-  const co2Out_ppm     = 450;                                            // 室外本底
+  // v2.4 IRAS_R24_CO2_OUTDOOR: 原为字面量 450 (无 UI、无默认表条目、无 FIELD_SPEC)
+  const co2Out_ppm     = resolveCO2Outdoor(proc);                        // 室外本底
   const dC_g_m3        = Math.max((co2Limit_ppm - co2Out_ppm) * 1e-6 * 44 / 24.45 * 1000, 0.05);
   /* v2.3 IRAS_V23_GTC_SINGLE_SOURCE: 原 `: 0.2` 是死 fallback 携带过期值 ——
      proc 在此处 = {...stage.proc, ...globalThermalConfig} 合并产物, 全局配置
@@ -6561,11 +6700,92 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq, si
   //   除湿不计入新风: 湿热气候通风不能除湿(室外更湿), 干冷气候靠通风除湿仅需约 0.14 ACH.
   //   除湿由机械除湿机承担 (同泳池馆实践: 新风管空气质量, 除湿机 4-6 ACH 内循环不带新风热负荷).
   //   V_vent_moist_m3h 保留为诊断量 (机械除湿负荷指示).
-  const V_vent_eff_m3h = Math.max(V_vent_ach_m3h, V_vent_fish_m3h, 1e-6);
+  /* ══ v2.4 IRAS_R24_VENT_NET — 风机送进车间的室外空气必须计入通风 ══
+     K-101 鱼池增氧鼓风的气路是 OUTDOOR → INDOOR (它没有风管, 尾气从池面进车间),
+     进气侧确认为室外 (项目方裁决: 所有风机进气都自室外)。⇒ 这股空气【就是新风】。
+     v2.3.3 之前它一分未计, 两笔账同时错:
+       (1) CO₂ 稀释侧 —— 它是 450 ppm 室外空气, 车间 CO₂ 质量平衡看不出它与
+           通风口进气有任何区别, 通风系统该补的只是差额;
+       (2) 显热侧 —— 它已在接触器被水加热到水温饱和, 那笔热【水侧付过】;
+           Q_vent_sens 再按 T_air→T_room 收一遍 = 同一份热收两次。
+     实测占比: 恒温 ACH1.0 档 36.9%-44.5%; 自然通风 ACH15 档 4.3%; o2 模式 0。
+
+     ⚠ 与收尾批② 是同一股气流的两个方向: 当年补上了 CO₂ 的【去向】(fracIndoorCO2
+       由质量守恒导出), 但没回头问承载 CO₂ 的【空气本身】该怎么记。
+     ⚠ 裁决 (a) 全给: CO₂ 与显热两笔账同口径抵扣。理由——同一股气流在守恒式里
+       只能有一套口径, 否则 X1-X3 那套断言失去意义。
+     ⚠ 裁决 (b) 【不新增"超额排风热损"项】: 自由空气档 solveRoomAir 已把该气流作为
+       独立股入解 (denomT 含 mEx·cp, 湿平衡含 mEx), 恒温档由 m_indoorExhaust 承载
+       且显热恰为零 (A3 令 T_room=T_w)。再加一项即把 mEx 的焓算第二遍 ——
+       那是收尾批② 的镜像 (当年"两头都不记 = 孤儿项", 这次会变成"两头都记 = 双计"),
+       且守恒断言抓不到 (Q 与 T_room 同步变化, 残差恒零)。
+     ⚠ 基线中性: 13 条基线全 o2 ⇒ 无 sink=INDOOR 的接触水气流 ⇒ 抵扣量 0, 逐位不变。
+       ⇒ 基线在此【什么都保证不了】, 必须靠 air 锚定工况。 */
+  const V_blower_indoor_m3h = (function () {
+    /* 单源: 复用 collectAirStreams 这张气流登记表, 不在此另写一份扫描 ——
+       否则新增气流时两处会漂移 (M15 consumers 清单立起来防的就是这个)。 */
+    let v = 0;
+    try {
+      (collectAirStreams(eq, null) || []).forEach(function (st) {
+        if (st.sink === AIR_NODE.INDOOR && st.contactsWater) v += st.airFlowM3h || 0;
+      });
+    } catch (e) { v = 0; }
+    return v;
+  })();
+  // 车间【需要】的室外空气总量 (需求侧, 诊断量)
+  const V_vent_required_m3h = Math.max(V_vent_ach_m3h, V_vent_fish_m3h, 1e-6);
+
+  /* ══ v2.4 IRAS_R24_NAT_VENT_CAP — 自然通风量必须钳在用户填的 ACH 上 ══
+     裁决 (项目方): 由 CO₂ 反算所【需要】的自然通风量, 若大于用户填的通风量,
+     就报车间 CO₂ 超标, 由用户去调高自然通风或改用机械通风 —— 模型不替他变出风。
+
+     v2.3.3 之前的行为: natural 档同样走 max(ACH×V_room, CO₂需求), 于是
+       · 用户填 ACH 1 / 2 / 5, 结果【完全相同】(T_room 8.4°C · ppm 1500 · 25.03 元/kg)
+         —— 因为 CO₂ 需求 39304 m³/h (ACH 6.05) 顶着, 用户的输入被架空;
+       · 那 35414 m³/h 由谁提供? 没有风机 (M12b 禁止), 零电耗、零 CAPEX
+         —— 模型把"需要多少"当成了"有多少";
+       · 于是 natural 档在成本上永远优于 mechanical (25.03 vs 25.07-25.15),
+         成了一个"选自然通风就能免掉通风机"的套利口子。
+     物理上站不住: 自然通风由风压/热压驱动, 【不会因为室内 CO₂ 高就自己变大】。
+     而且它随天气浮动近两个数量级 —— 温室夏季敞开设计取 45-60 ACH、冬季关口
+     除湿约 3; 同一房间把固定窗玻璃拆掉可从 9 变 66。拿这样一个量去保证
+     CO₂ 限值 (人员暴露口径) 本身就不成立。
+
+     ⇒ natural 档: 围护侧可提供的换气量 ≡ ACH × V_room, 不得被需求顶高。
+       CO₂ 需求超出时不再静默满足, 而是让 co2Room_ppm 真的算超标,
+       由既有断言 X2 与 configWarns 报出。
+     ⇒ 附带效果: ⑥ 号「co2Room_ppm 恒等于限值 ⇒ 判据恒假」的问题, 在 natural 档消失。
+     ⚠ 基线中性: 13 条基线全 conditioned ⇒ 走 else 分支, 逐位不变。
+       edge_room_ventilated (natural + ACH 15) 会变 —— 那正是本条要覆盖的工况。 */
+  const _roomModeEarly = (typeof ROOM_MODES !== 'undefined' && ROOM_MODES.indexOf(proc.roomMode) >= 0)
+    ? proc.roomMode : 'conditioned';
+  const _natVentCapped = (_roomModeEarly === 'natural');
+  /* 围护/通风系统侧【实际能提供】的室外空气量 (不含风机送入那股)。
+     natural: 由开口与风压决定, 用户填的 ACH 就是它的全部, 钳死;
+     其余档: 由通风机补足需求差额。 */
+  const V_vent_supply_m3h = _natVentCapped
+    ? V_vent_ach_m3h
+    : Math.max(V_vent_required_m3h - V_blower_indoor_m3h, 0);
+  // 实际穿堂而过的室外空气总量 —— CO₂ 稀释按它算
+  const V_vent_total_m3h = Math.max(V_vent_supply_m3h + V_blower_indoor_m3h, 1e-6);
+  /* 自然通风不足量 (m³/h): >0 即"用户填的通风量撑不住 CO₂", 供告警与下游披露。
+     ⚠ 只在 natural 档有意义; 其余档由通风机补足, 恒为 0。 */
+  const V_vent_shortfall_m3h = _natVentCapped
+    ? Math.max(V_vent_required_m3h - V_vent_total_m3h, 0) : 0;
+  /* 通风机才要补的那部分。⚠ 本量沿用 V_vent_eff_m3h 这个名字是【有意】的:
+     它的既有消费点 (ventFanSpec 选型 · hvacFresh 风管 CAPEX · UA_vent_sens ·
+     m_air_flow · 断言 M11/M12) 要的全都是"通风机/风管要处理多少", 语义正是本量。
+     新增 V_vent_required_m3h / V_vent_total_m3h 供诊断与 CO₂ 侧使用。 */
+  const V_vent_eff_m3h = V_vent_supply_m3h;
   // CO₂ 需求高于 ACH 口径时, 说明按设定 ACH 换气不足以稀释 CO₂, 已自动加大通风
   const ventBoostedByCO2 = V_vent_fish_m3h > V_vent_ach_m3h * 1.001;
-  // 等效 ACH (供显热与湿平衡共用, 保证质量/能量守恒一致)
-  const ACH_eff = V_room > 0 ? V_vent_eff_m3h / V_room : ACH;
+  /* 等效 ACH (供显热与湿平衡共用, 保证质量/能量守恒一致)。
+     ⚠ ACH_eff 只含【机械通风】—— 它要与 UA_vent_sens / m_air_flow 同源,
+       而风机送进来的那股在接触器与 mEx 里已各自记账, 不得在此重复。
+     ⚠ ACH_total 含风机那股, 供界面显示与结露判定的语境使用:
+       抵扣后 ACH_eff 可能低到 0.3, 但车间实际有 K-101 那股在穿堂, 只报 ACH_eff 会失真。 */
+  const ACH_eff   = V_room > 0 ? V_vent_eff_m3h / V_room : ACH;
+  const ACH_total = V_room > 0 ? V_vent_total_m3h / V_room : ACH;
 
   // 通风等效 UA (显热部分): 0.34 W/(m³·K·ACH) 是 ρ_air × c_p × 1/3600 × 1000
   const UA_vent_sens = includeLoss ? (0.34 * V_room * ACH_eff * (1 - ventHR)) : 0;
@@ -7042,12 +7262,17 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq, si
     Q_loss: Q_pool_loss, poolArea,
     // v1.9.2 通风封顶诊断
     V_vent_ach_m3h, V_vent_fish_m3h, V_vent_moist_m3h, V_vent_eff_m3h, ACH_eff, ventBoostedByCO2,
+    V_vent_required_m3h, V_vent_total_m3h, V_blower_indoor_m3h, ACH_total,   // v2.4 IRAS_R24_VENT_NET
+    V_vent_supply_m3h, V_vent_shortfall_m3h, roomMode,                       // v2.4 IRAS_R24_NAT_VENT_CAP
     /* v2.3.3 IRAS_V233_INDOOR_CO2 — 入室 CO₂ 链的可观测面 (此前整条链零导出)。
        co2Room_ppm 由入室量与【有效通风量】反算, 与 V_vent_fish 用的是同一换算系数
        dC_g_m3, 故当 CO₂ 需求控制通风时它必然等于限值, ACH 控制时必然低于限值
        —— 这正是断言 X2 的判据形状 (≤ 限值), 不是另立一个阈值。 */
-    fracIndoorCO2, co2ToRoom_kg_d, co2Limit_ppm, co2Out_ppm,
-    co2Room_ppm: co2Out_ppm + (co2ToRoom_kg_d * 1000 / 24 / Math.max(V_vent_eff_m3h, 1e-9)) / (dC_g_m3 / Math.max(co2Limit_ppm - co2Out_ppm, 1e-9)),
+    fracIndoorCO2, co2ToRoom_kg_d, co2Limit_ppm,
+    co2Outdoor_ppm: co2Out_ppm,   // v2.4 IRAS_R24_CO2_OUTDOOR: 导出键与字段同名, 全库一个名字
+    // v2.4 IRAS_R24_VENT_NET: 稀释按【穿堂总量】算, 不是机械通风量 ——
+    //   风机送进来的那股同样是 450 ppm 室外空气, 在车间 CO₂ 质量平衡里与通风口进气无异。
+    co2Room_ppm: co2Out_ppm + (co2ToRoom_kg_d * 1000 / 24 / Math.max(V_vent_total_m3h, 1e-9)) / (dC_g_m3 / Math.max(co2Limit_ppm - co2Out_ppm, 1e-9)),
 
     /* ── IRAS_CONTACTOR_ACCOUNTING_V2 (v2.0 第 2 步) ──────────────────
        水侧热平衡【实际计入】的气液接触器风量 (m³/h)。
@@ -7350,7 +7575,9 @@ function tankAerationDesign(sp, proc, load) {
   const OTE_base = Math.max(
     (proc.sotePerMeter / 100) * depth * proc.aerationAlphaBeta
       * Math.pow(1.024, T - 20), 0.005);
-  const airO2_m3h = (load.o2FishPeakHourly || 0) * sAerator / (1.2 * 0.23 * OTE);
+  // v2.4 IRAS_R24_NORMAL_AIR: 1.2×0.23=0.276 (20°C 口径) → RHO_STD_AIR×F_O2_MASS=0.300 (Normal)
+  //   风量数字降 8.0%; 质量流不变 (ρ_ref 在此与接触器之间抵消), 故供氧能力等同。
+  const airO2_m3h = (load.o2FishPeakHourly || 0) * sAerator / (RHO_STD_AIR * F_O2_MASS * OTE);
   const stripperOn = proc.co2StripperEnabled !== false;
   const co2Target = (proc.co2TargetMgL != null && proc.co2TargetMgL > 0)
                     ? proc.co2TargetMgL : co2ThresholdFor(sp);
@@ -7381,7 +7608,10 @@ function tankAerationDesign(sp, proc, load) {
        本会话第六次「猜接口」事故即发生于此: 未读函数体先传了 °C,
        airCO2 爆到 1e10 m³/h, capex 1.7e16。凡调他人函数, 先读签名与函数体首行。 */
     const K0 = iRASCarbonate.K0_W74(T + 273.15, S);              // mol/kg/atm (Weiss 1974, 入参 K)
-    const Vm = 0.022414 * (T + 273.15) / 273.15;                 // m³/mol @1atm
+    /* v2.4 IRAS_R24_NORMAL_AIR: 原按【水温】取摩尔体积, 与 airFlowM3h 的参考态不同源。
+     airFlowM3h 已声明为标准状态 Nm³/h ⇒ 气相载量必须按【每标准 m³】计,
+     否则 kLoad 与它要除的那个风量分属两个状态点。Vm(0°C) = 0.022414 m³/mol。 */
+  const Vm = 0.022414;                                         // m³/mol @ 0°C, 101.325 kPa (Normal)
     /* kLoad: 每 mg/L 水中 CO₂ 对应的气相平衡载量 (g CO₂ / m³ 空气 per mg/L) */
     kLoad = (1 / 44010 / rho / K0) * 44.01 / Vm;
     if (!stripperOn) {
@@ -7536,7 +7766,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
     eta_co2_auto = co2StripperEffAuto(
       proc.co2StripperGtoL,
       proc.co2PackingHeight_m,
-      proc.co2IntakeCO2_ppm,
+      resolveCO2Outdoor(proc),                   // v2.4 IRAS_R24_CO2_OUTDOOR (原 co2IntakeCO2_ppm)
       (proc.co2MaxAttainableEff != null ? proc.co2MaxAttainableEff : 80) / 100);
   }
   const co2EffAuto = (proc.co2StripperEffMode === 'auto') && (eta_co2_auto != null);
@@ -7696,10 +7926,10 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
         原式误用 o2 拓扑, 在高密度下算出 DO→0 的伪值 (密度↑ ⇒ 水体↓ ⇒ 流量↓
         ⇒ 单循环降幅↑), 而同一台按 DO_design 选型的风机在选型侧声称维持 5 mg/L
         —— 两处对同一台设备给出 0.00 与 5.00, 本次修正消除该矛盾。
-        零新常数: 1.2 (空气密度 kg/m³) 与 0.23 (氧质量分数) 与选型侧同源。 */
+        零新常数: RHO_STD_AIR 与 F_O2_MASS 与选型侧同源 (v2.4 IRAS_R24_NORMAL_AIR)。 */
   let tankDO;
   if (proc.aerationMode === 'air' && _aerationDesign && _aerationDesign.OTE_base > 0) {
-    const _otrFull = Math.max(_aerationDesign.airFlowM3h * 1.2 * 0.23
+    const _otrFull = Math.max(_aerationDesign.airFlowM3h * RHO_STD_AIR * F_O2_MASS
                               * _aerationDesign.OTE_base, 1e-9);   // kg O₂/h @ 满推动力
     const _deficit = o2FishPeak / _otrFull * DO_sat;               // mg/L
     tankDO = Math.max(DO_sat - _deficit, 0);
@@ -8645,7 +8875,8 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   const SOTE_coarse = 0.08;
   const bfO2PeakKgH = (load.o2BFPeakHourly || 0) * sBFblow;     // kg/h, 含 safety
   const bfO2Demand = bfO2PeakKgH * 24;                          // kg/d 等效, 给 CAPEX 计价
-  const bfAirFlow_m3min = bfO2PeakKgH / (1.2 * 0.23 * SOTE_coarse) / 60;
+  // v2.4 IRAS_R24_NORMAL_AIR: 与 K-101 同源, 见 RHO_STD_AIR 声明
+  const bfAirFlow_m3min = bfO2PeakKgH / (RHO_STD_AIR * F_O2_MASS * SOTE_coarse) / 60;
   const bfAirFlow_m3s = bfAirFlow_m3min / 60;
   const bfBlowerPower = bfAirFlow_m3s * 50000 / (0.60 * 1000);  // 50 kPa (BF 水深浅), v1.1.2 效率 0.60
   const bfBlowerSpec = {
@@ -8697,6 +8928,13 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
     airFlow: degasAirFlow_m3h,
     // v2.0 气路拓扑（纯元数据，不参与计算）
     airFlowM3h: degasAirFlow_m3h,          // 与 airFlow 同值，仅为单位口径统一
+    /* ⚠ OUTDOOR → OUTDOOR 不是随手写的默认值, 有量化依据 (v2.4 IRAS_R24_CO2_OUTDOOR
+       自 PROCESS_DEFAULTS.co2IntakeCO2_ppm 原注迁来, 该字段已撤销):
+         Timmons Fig 10.17 —— 塔进风 CO₂ 本底 1000 ppm 时单次去除率降约 10%,
+         5000 ppm 时降约 70%。而车间空气正是高 CO₂ 侧 (设计限值 1500 ppm)。
+       ⇒ 尾气【必须排室外、不得回车间】, 进风亦不得取自车间, 否则塔效率自我塌缩。
+       模型据此把塔进风本底与室外本底合并为单一 co2Outdoor_ppm ——
+       该合并【以本条拓扑成立为前提】, 若日后允许塔进风取自车间, 须先拆回两层。 */
     airPath: { source: AIR_NODE.OUTDOOR, sink: AIR_NODE.OUTDOOR, contactsWater: true },
     blowerKw: degasBlowerKw,
     pressure_kPa: co2Pressure_Pa / 1000,
@@ -10452,6 +10690,15 @@ const GLOBAL_THERMAL_DEFAULTS = Object.freeze({
   ventHeatRecovery: 0,
   // v1.9.2: 通风量按需求封顶 (防止车间体积放大导致通风虚高)
   co2IndoorLimit_ppm: 1500,        // 车间 CO₂ 设计限值 ppm (OSHA 法定 5000; ASHRAE 舒适 ~1100; 1500 = 工业厂房间歇作业)
+  /* v2.4 IRAS_R24_CO2_OUTDOOR — 室外 CO₂ 本底 ppm (单一事实源)。
+     合并自: ① calcThermalLoadPoint 里写死的 `const co2Out_ppm = 450`
+             ② PROCESS_DEFAULTS.co2IntakeCO2_ppm = 350 (脱气塔进风本底, 已撤销)
+     两者本是同一物理量的两份口径, 值还不一样。
+     两个消费点: 车间新风需求的稀释基准 dC = (限值 − 本底) · 塔效率 auto 模式的进风本底。
+     ⚠ 取值方向即安全方向: dC = 限值 − 本底, 本底取小 ⇒ dC 偏大 ⇒ 通风量算小。
+       全球本底约 420 且逐年 +2.5;城郊 450-500;城市/工业区实测常年 500-700。
+       450 是"标准大气 + 一般厂区"口径, 项目在城市或工业区应上调。 */
+  co2Outdoor_ppm: 450,
   // v2.1 IRAS_V21_PARAM_GUARD: 默认 0.2 → 0, 与气路拓扑 A5「工艺气路全程不碰车间」对齐。
   //   接触器一直按 100% 室外→室外算热湿交换, 而本参数按 20% 进车间算 CO₂ 新风 ——
   //   同一股尾气两套口径。v2.0 把暖通显热计入能耗后, 该矛盾首次影响成本。
@@ -11193,7 +11440,9 @@ function readStageProcFromInputs(idx, fallbackProc) {
         fallbackProc.co2StripperEffMode || 'manual') === 'auto') ? 'auto' : 'manual',
     co2PackingHeight_m: getNumClamped('co2PackingHeight_m', fallbackProc.co2PackingHeight_m || 1.0, 0.3, 3.0),
     co2MaxAttainableEff: getNumClamped('co2MaxAttainableEff', fallbackProc.co2MaxAttainableEff || 80, 40, 95),
-    co2IntakeCO2_ppm: getNumClamped('co2IntakeCO2_ppm', fallbackProc.co2IntakeCO2_ppm || 350, 300, 5000),
+    /* v2.4 IRAS_R24_CO2_OUTDOOR: co2IntakeCO2_ppm 读取路径已撤 —— 该字段无 UI 框
+       (data-proc-field 命中 0), 此处的 300-5000 钳制【从未执行过】, 恒走 return def。
+       改由 globalThermalConfig.co2Outdoor_ppm 承载, 见 GLOBAL_THERMAL_DEFAULTS。 */
     co2StripperLoadingRate: getNum('co2StripperLoadingRate', fallbackProc.co2StripperLoadingRate || 80),
     // v1.7.x #34: CO2 风压钳制 [0.3, 10] kPa
     //   工程范围: 浅塔 0.5-1.5, 中塔 1.5-3.0, 深塔 3-5, 极端 5-10
@@ -12517,6 +12766,75 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
       });
     }
   }
+
+  /* ══ v2.4 IRAS_R24_VENT_WARNS — 三条车间通风告警 ══
+     全部写在 buildStageWarnings (渲染层会被 W3 判红, 且进不了可研报告)。
+     数据一律取 sim.thermal 已导出量, 本处【不重算】。 */
+  (function () {
+    const _t = (sim && sim.thermal) || null;
+    if (!_t) return;
+    const _isNat = (_t.roomMode === 'natural');
+    const _ach   = (_t.V_room > 0) ? (_t.V_vent_ach_m3h / _t.V_room) : null;
+
+    /* ⑤ ROOM_ACH_TOO_LOW —— 自然通风档换气次数低于该档自己的设计口径下限。
+       ⚠ 阈值 15 不是新常数: ROOM_MODES 对 natural 的定义注释原文即
+         「通风量沿用既有 ACH 机制, 简易棚取 15-30」。判据与被判对象同源。
+       ⚠ level 取 warn 而非 danger: 该组合【有合法工况】——冬季关闭通风口运行的
+         简易棚, ACH 确实会掉到个位数。按纪律 10, 有合法工况就不能判 danger。 */
+    if (_isNat && Number.isFinite(_ach) && _ach < 15) {
+      warns.push({
+        level: 'warn',
+        code: 'ROOM_ACH_TOO_LOW',
+        text: `🌬️ 自然通风车间的换气次数偏低: 当前 ${_ach.toFixed(1)} 次/h, 该档设计口径 15–30。`
+            + `自然通风靠风压/热压换气, ACH 1–2 对应的是气密建筑;`
+            + ` 当前解出室温 ${Number.isFinite(_t.T_room) ? _t.T_room.toFixed(1) : '—'} °C`
+            + `(室外 ${Number.isFinite(_t.T_air) ? _t.T_air.toFixed(1) : '—'} °C), 结露判定与车间 CO₂ 均按此室温给出。`
+            + ` 参考: 温室夏季敞开设计 45–60、冬季关口除湿约 3, 同一栋房子跨度近两个数量级 —— ACH 由开口面积决定, 不是建筑档次。`
+            + ` ⚠ 可忽略的情形: 冬季关闭通风口运行的简易棚。此时请核对结露风险与车间 CO₂ 是否仍可接受。`
+      });
+    }
+
+    /* ⑤b NAT_VENT_SHORTFALL —— 自然通风量撑不住 CO₂ 稀释需求。
+       v2.4 起自然通风量钳在用户填的 ACH 上, 不再被 CO₂ 需求顶高
+       (v2.3.3 之前是"需要多少给多少", 零风机白拿风量)。缺口在此显性化。
+       ⚠ level 取 warn (项目方裁决)。 */
+    if (_isNat && _t.V_vent_shortfall_m3h > 0) {
+      const _need = _t.V_vent_required_m3h || 0;
+      const _have = _t.V_vent_total_m3h || 0;
+      const _needACH = (_t.V_room > 0) ? (_need / _t.V_room) : null;
+      warns.push({
+        level: 'warn',
+        code: 'NAT_VENT_SHORTFALL',
+        text: `🌫️ 自然通风量不足以稀释车间 CO₂: 需 ${_need.toFixed(0)} m³/h, 当前仅 ${_have.toFixed(0)} m³/h`
+            + ` (缺 ${_t.V_vent_shortfall_m3h.toFixed(0)})。车间稳态 CO₂ 将达 `
+            + `${Number.isFinite(_t.co2Room_ppm) ? _t.co2Room_ppm.toFixed(0) : '—'} ppm, 超过设计限值 ${_t.co2Limit_ppm} ppm。`
+            + ` 两条出路: ① 把自然通风量调高到 ${Number.isFinite(_needACH) ? _needACH.toFixed(1) : '—'} 次/h 以上`
+            + `(靠加大开口面积, 温室级敞开可达 45–60); ② 改用机械通风档, 由通风机承担这份风量。`
+            + ` ⚠ 自然通风随天气浮动可达一二十倍, 以它保证 CO₂ 限值 (人员暴露口径) 本身风险较高, 建议按最不利工况校核。`
+      });
+    }
+
+    /* ⑥ VENT_CTRL_BY_CO2 —— 通风量由 CO₂ 稀释控制而非换气次数。
+       ⚠ 判据用已有标志 ventBoostedByCO2, 零新阈值、零新计算。
+       ⚠ 只对【有通风机】的档发: natural 档没有风机, 那一档的同一事实
+         由 ⑤b 承担, 措辞完全不同 (一个是"风机为什么这么大", 一个是"风不够")。
+       ⚠ level 取 info: 通风由 CO₂ 控制【本身不是错误】, 高密度温水鱼就是会这样。
+         它要说的是"这里有个旋钮, 你可能不知道它连着这台风机"。 */
+    if (!_isNat && _t.ventBoostedByCO2) {
+      warns.push({
+        level: 'info',
+        code: 'VENT_CTRL_BY_CO2',
+        text: `🌀 车间通风机风量由 CO₂ 稀释控制, 而非换气次数: 当前 ${(_t.V_vent_eff_m3h||0).toFixed(0)} m³/h,`
+            + ` 而 ACH 口径仅需 ${(_t.V_vent_ach_m3h||0).toFixed(0)} m³/h。`
+            + ` 若认为风机偏大, 可调的是车间 CO₂ 设计限值 (当前 ${_t.co2Limit_ppm} ppm) ——`
+            + ` 现值为工业厂房间歇作业推荐值; OSHA/NIOSH 法定 8h 限值 5000, ASHRAE 舒适建议约 1100,`
+            + ` 1500–2500 区间头痛嗜睡报告增多。⚠ 这是人员暴露口径, 不是自由旋钮。`
+            + ` ⚠ 脱气塔的作用是压低池水 CO₂ (通常配液氧拓扑), 不是省车间通风;`
+            + ` 在空气曝气下开塔会使全场能耗上升 30–90%。`
+            + ` ⚠ 改动增氧方式或脱气塔配置后, 本机必须重选, 不可沿用。`
+      });
+    }
+  })();
 
   return warns;
 }
@@ -14426,9 +14744,26 @@ function buildPIDExport() {
         co2ToRoom_kg_d: sim.thermal.co2ToRoom_kg_d,
         co2Room_ppm:    sim.thermal.co2Room_ppm,
         co2Limit_ppm:   sim.thermal.co2Limit_ppm,
+        /* v2.4 IRAS_R24_CO2_OUTDOOR: 稀释基准 dC = 限值 − 室外本底, 两半必须一起过桥。
+           只过限值不过本底, 采购方看到的"CO₂ 需求 X m³/h"就没有可复核的算式。 */
+        co2Outdoor_ppm: sim.thermal.co2Outdoor_ppm,
         V_vent_fish_m3h: sim.thermal.V_vent_fish_m3h,
         V_vent_ach_m3h:  sim.thermal.V_vent_ach_m3h,
         V_vent_eff_m3h:  sim.thermal.V_vent_eff_m3h,
+        /* v2.4 IRAS_R24_VENT_NET: 抵扣的四个量必须【一起】过桥。
+           只给机械通风量, 采购方看到的风机风量就没有可复核的算式 ——
+           他会问"CO₂ 需求 39304, 为什么风机只有 35414", 而答案 (风机自身送入
+           3890 m³/h 室外空气) 不在页面上。同 R24-1 的 dC 两半必须同行。 */
+        V_vent_required_m3h: sim.thermal.V_vent_required_m3h,
+        V_blower_indoor_m3h: sim.thermal.V_blower_indoor_m3h,
+        V_vent_total_m3h:    sim.thermal.V_vent_total_m3h,
+        ACH_total:           sim.thermal.ACH_total,
+        /* v2.4 IRAS_R24_NAT_VENT_CAP: 自然通风档的供风上限与缺口。
+           报告若只印"需 X / 有 Y"而不印缺口, 读者要自己做减法; 而缺口正是
+           整改量 (要么加大开口、要么装通风机), 是这段披露唯一可执行的数。 */
+        V_vent_supply_m3h:    sim.thermal.V_vent_supply_m3h,
+        V_vent_shortfall_m3h: sim.thermal.V_vent_shortfall_m3h,
+        roomMode:             sim.thermal.roomMode,
         ventBoostedByCO2: !!sim.thermal.ventBoostedByCO2
       } : null,
       equipment: {
@@ -15268,7 +15603,7 @@ function initGlobalThermalUI() {
     'T_source_design_winter','T_source_design_summer','T_source_annual',
     'RH_winter','RH_summer','RH_annual',
     'U_wall','U_roof','U_floor','U_window','windowRatio','airChangeRate','ventHeatRecovery',
-    'co2IndoorLimit_ppm','degasserExhaustIndoorFrac','dehumTargetRH','dehumSMER',
+    'co2IndoorLimit_ppm','co2Outdoor_ppm','degasserExhaustIndoorFrac','dehumTargetRH','dehumSMER',
     'motorEta','pumpHeatRatio',
     'buildingArea_user','buildingHeight','thermalSharingFactor'];
   detailFields.forEach(f => {
@@ -15348,6 +15683,7 @@ function readGlobalThermalConfig() {
   globalThermalConfig.windowRatio = getNum('g_windowRatio', GLOBAL_THERMAL_DEFAULTS.windowRatio);
   globalThermalConfig.airChangeRate = getNum('g_airChangeRate', GLOBAL_THERMAL_DEFAULTS.airChangeRate);
   globalThermalConfig.co2IndoorLimit_ppm = getNum('g_co2IndoorLimit_ppm', GLOBAL_THERMAL_DEFAULTS.co2IndoorLimit_ppm);
+  globalThermalConfig.co2Outdoor_ppm = getNum('g_co2Outdoor_ppm', GLOBAL_THERMAL_DEFAULTS.co2Outdoor_ppm);   // v2.4 IRAS_R24_CO2_OUTDOOR
   globalThermalConfig.degasserExhaustIndoorFrac = getNum('g_degasserExhaustIndoorFrac', GLOBAL_THERMAL_DEFAULTS.degasserExhaustIndoorFrac);
   globalThermalConfig.dehumEnabled  = (document.getElementById('g_dehumEnabled') || {}).value === '1';
   globalThermalConfig.dehumTargetRH = getNum('g_dehumTargetRH', GLOBAL_THERMAL_DEFAULTS.dehumTargetRH);
@@ -15438,7 +15774,7 @@ function bindGlobalThermalEvents() {
     'g_RH_winter','g_RH_summer','g_RH_annual',
     'g_U_wall','g_U_roof','g_U_floor','g_U_window','g_windowRatio',
     'g_airChangeRate','g_ventHeatRecovery','g_poolCover','g_roomMode',
-    'g_co2IndoorLimit_ppm','g_degasserExhaustIndoorFrac',
+    'g_co2IndoorLimit_ppm','g_co2Outdoor_ppm','g_degasserExhaustIndoorFrac',
     'g_dehumEnabled','g_dehumTargetRH','g_dehumSMER','g_dehumHeatDest','g_dehumCondRecovery',
     // v1.9.2 (复审 P2): 自然冷却三参数
     'g_freeCooling','g_fcDesignDT','g_fcEER','g_fcAnnualK',
@@ -16037,24 +16373,24 @@ const SELFTEST_BASELINE = [
   //   产品路径的均值口径才与成本模型自洽。
   { id: 'salmon_qingdao_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 40.37, fullCostPerKg: 45.51, kwhPerKg: 12.24, hpCostPerKg: 1.14 } },
+    expect: { costPerKg: 40.44, fullCostPerKg: 45.59, kwhPerKg: 12.21, hpCostPerKg: 1.15 } },
 
   { id: 'salmon_qingdao_w',  species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: -7, T_source_design_winter: 4,
                T_air_design_summer: -7, T_source_design_summer: 4, RH_winter: 60 },
-    expect: { costPerKg: 38.89, fullCostPerKg: 43.96, kwhPerKg: 11.89, hpCostPerKg: 1.07 } },
+    expect: { costPerKg: 38.78, fullCostPerKg: 43.85, kwhPerKg: 11.76, hpCostPerKg: 1.03 } },
   { id: 'salmon_hainan_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 17, T_source_design_winter: 22,
                T_air_design_summer: 17, T_source_design_summer: 22, RH_winter: 78 },
-    expect: { costPerKg: 40.11, fullCostPerKg: 45.25, kwhPerKg: 13.36, hpCostPerKg: 1.69 } },
+    expect: { costPerKg: 40.04, fullCostPerKg: 45.18, kwhPerKg: 13.29, hpCostPerKg: 1.68 } },
   { id: 'salmon_hainan_s',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 32, T_source_design_winter: 27,
                T_air_design_summer: 32, T_source_design_summer: 27, RH_winter: 78 },
-    expect: { costPerKg: 44.16, fullCostPerKg: 49.56, kwhPerKg: 19.31, hpCostPerKg: 4.65 } },
+    expect: { costPerKg: 44.52, fullCostPerKg: 49.94, kwhPerKg: 19.83, hpCostPerKg: 4.95 } },
   { id: 'salmon_bergen_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 0, T_source_design_winter: 4,
                T_air_design_summer: 0, T_source_design_summer: 4, RH_winter: 75 },
-    expect: { costPerKg: 37.70, fullCostPerKg: 42.69, kwhPerKg: 10.20, hpCostPerKg: 0.18 } },
+    expect: { costPerKg: 37.68, fullCostPerKg: 42.68, kwhPerKg: 10.19, hpCostPerKg: 0.20 } },
   // 各鱼种 (默认气候 = 青岛, 走 UI 默认值)
       /* IRAS_BASELINE_PAIRING_V2 新增: 冷水鱼种 × 热带气候
      当前行业热点（Atlantic Sapphire 佛州 Homestead、宁波象山 Nordic Aqua），
@@ -16064,36 +16400,36 @@ const SELFTEST_BASELINE = [
      此场景此前【无任何基线覆盖】。 */
   { id: 'salmon_sanya_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 42.84, fullCostPerKg: 48.14, kwhPerKg: 16.87, hpCostPerKg: 3.46 } },
+    expect: { costPerKg: 43.09, fullCostPerKg: 48.41, kwhPerKg: 17.18, hpCostPerKg: 3.65 } },
 
   // IRAS_BASELINE_PAIRING_V2: 罗非（28°C）温水淡水，不会在青岛养 → china_shanghai 年均
   { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 30.93, fullCostPerKg: 35.58, kwhPerKg: 9.76, hpCostPerKg: 0.79 } },
+    expect: { costPerKg: 30.93, fullCostPerKg: 35.59, kwhPerKg: 9.78, hpCostPerKg: 0.83 } },
       // IRAS_BASELINE_PAIRING_V2: 大菱鲆（16°C）冷水海水，配对本就合理，仅补年均口径 → china_qingdao 年均
   { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 56.23, fullCostPerKg: 66.42, kwhPerKg: 16.53, hpCostPerKg: 1.75 } },
+    expect: { costPerKg: 56.34, fullCostPerKg: 66.54, kwhPerKg: 16.51, hpCostPerKg: 1.77 } },
       // IRAS_BASELINE_PAIRING_V2: 石斑（27°C）温水海水 → china_sanya 年均
   { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 44.83, fullCostPerKg: 54.54, kwhPerKg: 14.34, hpCostPerKg: 1.74 } },
+    expect: { costPerKg: 44.85, fullCostPerKg: 54.56, kwhPerKg: 14.27, hpCostPerKg: 1.75 } },
       // IRAS_BASELINE_PAIRING_V2: 加州鲈（25°C）温水淡水 → china_shanghai 年均
   { id: 'bass_300',      species: 'bass',     yieldTons: 300,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 46.43, fullCostPerKg: 53.39, kwhPerKg: 12.55, hpCostPerKg: 1.05 } },
+    expect: { costPerKg: 46.34, fullCostPerKg: 53.30, kwhPerKg: 12.58, hpCostPerKg: 1.09 } },
       // IRAS_BASELINE_PAIRING_V2: 鳗鲡（26-28°C）温水淡水 → china_shanghai 年均
   { id: 'eel_200',       species: 'eel',      yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 61.03, fullCostPerKg: 116.99, kwhPerKg: 12.75, hpCostPerKg: 1.00 } },
+    expect: { costPerKg: 61.08, fullCostPerKg: 117.04, kwhPerKg: 12.76, hpCostPerKg: 1.05 } },
       // IRAS_BASELINE_PAIRING_V2: 鳜鱼（26°C）温水淡水 → china_shanghai 年均
   { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 58.68, fullCostPerKg: 70.53, kwhPerKg: 16.15, hpCostPerKg: 1.37 } },
+    expect: { costPerKg: 58.59, fullCostPerKg: 70.44, kwhPerKg: 16.21, hpCostPerKg: 1.43 } },
       // IRAS_BASELINE_PAIRING_V2: 对虾（30°C）温水海水 → china_sanya 年均
   { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 50.49, fullCostPerKg: 67.58, kwhPerKg: 17.62, hpCostPerKg: 1.90 } },
+    expect: { costPerKg: 50.66, fullCostPerKg: 67.76, kwhPerKg: 17.73, hpCostPerKg: 1.99 } },
   // ── 边界工况: 只跑不变量断言 (不比对数值), 用于捕捉 NaN/Infinity 与口径漂移 ──
   { id: 'edge_yield_0',   species: 'salmon', yieldTons: 0,      expect: {} },
   { id: 'edge_yield_tiny',species: 'salmon', yieldTons: 0.001,  expect: {} },
@@ -16155,6 +16491,18 @@ const SELFTEST_BASELINE = [
   { id: 'edge_room_ventilated', species: 'grouper', yieldTons: 200,
     proc: { aerationMode: 'air', co2StripperEnabled: false },
     climate: { roomMode: 'natural', airChangeRate: 15 },
+    expect: {} },
+  /* v2.4 IRAS_R24_NAT_VENT_CAP —— 自然通风【不足】的唯一锚定工况。
+     立此工况的直接原因: 上面那条 edge_room_ventilated 用 ACH 15, 通风充足、
+     无缺口 ⇒ 断言 X2b (超标必须导出缺口) 与 V2c (缺口须等于需求与实际之差)
+     在全库【没有一条可达工况】, 是恒真判据。
+     负对照实测: 把 V_vent_shortfall_m3h 写死 0, 自检仍 PASS 34/34 ——
+     锚写了但走不到, 与 M13/M14 同型。补本条后该负对照当场转红。
+     ⚠ 本工况【故意】让车间 CO₂ 超标 (ACH 2, 罗非高密度关塔), 这是自然通风档
+       钳制后的正常结果, 不是缺陷: 模型不再替用户变出风量, 由 ⑤b 告警报出缺口。 */
+  { id: 'edge_nat_vent_short', species: 'tilapia', yieldTons: 1000,
+    proc: { aerationMode: 'air', co2StripperEnabled: false },
+    climate: { roomMode: 'natural', airChangeRate: 2 },
     expect: {} },
   /* air + 【开塔】—— X 入室 CO₂ 守恒链的唯一锚定工况 (v2.3.3, 遗留 §6-1)。
      立此工况的直接原因与 edge_shrimp_air 同型: 全库既有 air 工况【全部关塔】
@@ -16398,6 +16746,89 @@ function runSelfTest(quiet) {
                   inv.push(tag + ' 能量守恒A3 接触器进气温升 ' + dTb.toFixed(2)
                            + ' K ≠ 轴功推算的 ' + expectDT.toFixed(2)
                            + ' K —— 风机轴功未真正接入接触器');
+                }
+              }
+              /* ══ v2.4 IRAS_R24_NORMAL_AIR — A4a 质量流必须按 Normal 参考态取 ══
+                 A3 只保证"账本自洽": 无论用哪个密度, ΔT 与 mdot 会同步变化, 残差恒为零。
+                 第八轮审计的原话——【守恒断言保证账本自洽, 但保证不了记进账本的那个数
+                 是对的】。A4a 就是补这一刀: 直接锁【取值来源】, 不依赖任何守恒式。
+                 判据是常数比值, 不依赖工况可达性, 因此不会重演 M13/M14 那种"锚写了走不到"。 */
+              /* ══ v2.4 IRAS_R24_VENT_NET — V1-V4: 通风净额抵扣 ══
+                 守恒断言在此处天然无力: 无论扣不扣, B/C 两式都会同步变化, 残差恒为零
+                 (第八轮审计原话——账本自洽 ≠ 记进账本的数是对的)。故必须直接锁【口径】。 */
+              (function () {
+                const vReq = t.V_vent_required_m3h, vBlow = t.V_blower_indoor_m3h;
+                const vMech = t.V_vent_eff_m3h, vTot = t.V_vent_total_m3h;
+                if (![vReq, vBlow, vMech, vTot].every(Number.isFinite)) {
+                  inv.push(tag + ' 通风V0 净额抵扣的四个量未全部导出 —— 判据失去对象');
+                  return;
+                }
+                /* v2.4 IRAS_R24_NAT_VENT_CAP: V1/V2 随口径重写。
+                   natural 档供风量【钳在用户填的 ACH 上】, 不再补足差额 ——
+                   故 V1 必须按档分派, 不能沿用"机械通风 = 需求 − 抵扣"这一式。 */
+                const vAch = t.V_vent_ach_m3h, vSup = t.V_vent_supply_m3h;
+                const vShort = t.V_vent_shortfall_m3h;
+                const isNat = (t.roomMode === 'natural');
+                if (![vAch, vSup, vShort].every(Number.isFinite)) {
+                  inv.push(tag + ' 通风V0b 钳制相关量未导出 —— 判据失去对象');
+                  return;
+                }
+                // V1 供风量: natural 钳在 ACH 上; 其余档由风机补足需求差额
+                const expectSup = isNat ? vAch : Math.max(vReq - vBlow, 0);
+                if (Math.abs(vSup - expectSup) > 1e-6) {
+                  inv.push(tag + ' 通风V1 供风量 ' + vSup.toFixed(1) + ' ≠ '
+                           + (isNat ? ('自然通风上限 ACH×V_room = ' + vAch.toFixed(1))
+                                    : ('需求 ' + vReq.toFixed(1) + ' − 风机送入 ' + vBlow.toFixed(1))));
+                }
+                // V2 穿堂总量 = 供风 + 风机送入
+                if (Math.abs(vTot - Math.max(vSup + vBlow, 1e-6)) > 1e-6) {
+                  inv.push(tag + ' 通风V2 穿堂总量 ' + vTot.toFixed(1) + ' ≠ 供风 '
+                           + vSup.toFixed(1) + ' + 风机送入 ' + vBlow.toFixed(1));
+                }
+                /* V2b 自然通风【不得被需求顶高】—— 这是本条裁决的全部内容,
+                   也是 v2.3.3 那个"零风机白拿 35414 m³/h"套利口子的封堵点。 */
+                if (isNat && vTot > vAch + vBlow + 1e-6) {
+                  inv.push(tag + ' 通风V2b 自然通风档穿堂量 ' + vTot.toFixed(1)
+                           + ' 超过 ACH 上限 ' + (vAch + vBlow).toFixed(1)
+                           + ' —— 自然通风不会因 CO₂ 需求自己变大, 缺口须报超标而非静默满足');
+                }
+                // V2c 不足量只在 natural 档非零, 且必须等于需求与实际的差
+                const expectShort = isNat ? Math.max(vReq - vTot, 0) : 0;
+                if (Math.abs(vShort - expectShort) > 1e-6) {
+                  inv.push(tag + ' 通风V2c 不足量 ' + vShort.toFixed(1) + ' ≠ ' + expectShort.toFixed(1));
+                }
+                // V3 抵扣量必须与气流登记表一致 —— 防在别处另算一份
+                let vReg = 0;
+                try {
+                  (collectAirStreams(r.eq, null) || []).forEach(function (st) {
+                    if (st.sink === AIR_NODE.INDOOR && st.contactsWater) vReg += st.airFlowM3h || 0;
+                  });
+                } catch (e) { vReg = NaN; }
+                if (Number.isFinite(vReg) && Math.abs(vBlow - vReg) > 1e-6) {
+                  inv.push(tag + ' 通风V3 抵扣量 ' + vBlow.toFixed(1)
+                           + ' ≠ 气流登记表中 sink=INDOOR 且接触水的合计 ' + vReg.toFixed(1)
+                           + ' —— 抵扣量必须单源自 collectAirStreams');
+                }
+                /* V4 o2 拓扑必须零抵扣 —— 这是 13 条基线"逐位不变"的【前提】。
+                   若哪天 o2 模式下冒出 sink=INDOOR 的接触水气流, 基线会静默漂移,
+                   而基线断言只会说"数变了", 不会说"因为通风口径变了"。 */
+                /* ⚠ 判据取【气路拓扑本身】, 不去猜 aerationSpec 上有没有 isAir 标志位:
+                     air 与否由 airPath.sink 决定, 用它做判据即与被判对象同源。
+                     (初版写 aerationSpec.isAir —— 该字段不存在, V4 在全部 air 工况误报。) */
+                const hasIndoorStream = !!(r.eq && r.eq.aerationSpec && r.eq.aerationSpec.airPath
+                  && r.eq.aerationSpec.airPath.sink === AIR_NODE.INDOOR);
+                if (!hasIndoorStream && vBlow > 1e-6) {
+                  inv.push(tag + ' 通风V4 非 air 拓扑却有 ' + vBlow.toFixed(1)
+                           + ' m³/h 入室接触水气流 —— 基线中性前提被打破');
+                }
+              })();
+              const airT = t.contactorAirFlowM3h;
+              if (Number.isFinite(airT) && airT > 1e-6 && Number.isFinite(md2) && md2 > 0) {
+                const rhoUsed = md2 * 3600 / airT;
+                if (Math.abs(rhoUsed - RHO_STD_AIR) > 1e-6) {
+                  inv.push(tag + ' 取值来源A4a 接触器质量流按 ρ=' + rhoUsed.toFixed(4)
+                           + ' 取, 应为 Normal 参考态 ' + RHO_STD_AIR
+                           + ' —— airFlowM3h 是 Nm³/h, 不得按进气或加热后密度换算');
                 }
               }
             })();
@@ -16956,12 +17387,53 @@ function runSelfTest(quiet) {
                 }
                 if (Number.isFinite(_T.co2Room_ppm) && Number.isFinite(_T.co2Limit_ppm)
                     && (_T.co2ToRoom_kg_d > 0)) {
+                  /* ══ v2.4 IRAS_R24_NAT_VENT_CAP — X2 按车间档分派 ══
+                     X2 原判据"超标 = 模型没按 CO₂ 校核新风"只对【模型能自己加大新风】
+                     的档成立。自然通风档钳制落地后, 模型【有意】不再补足差额:
+                     超标是用户把通风量填小了的结果, 不是模型缺陷。
+                     ⚠ 但这不是给 natural 档发豁免 —— 豁免会让 X2 在该档变成恒真。
+                       改为【替换义务】: 超标时必须导出不足量, 用户才知道差多少、要补多少。
+                       判据强度不降, 只是换了被判对象。 */
+                  const _isNat = (_T.roomMode === 'natural');
                   if (_T.co2Room_ppm > _T.co2Limit_ppm * 1.001) {
-                    inv.push(tag + ' 入室X2 车间稳态 CO₂ ' + _T.co2Room_ppm.toFixed(0)
-                             + ' ppm > 设计限值 ' + _T.co2Limit_ppm
-                             + ' —— 新风量未按入室 CO₂ 校核 (通风机选小)');
+                    if (_isNat) {
+                      if (!(_T.V_vent_shortfall_m3h > 0)) {
+                        inv.push(tag + ' 入室X2b 自然通风档车间 CO₂ ' + _T.co2Room_ppm.toFixed(0)
+                                 + ' ppm 超限值 ' + _T.co2Limit_ppm
+                                 + ' 却未导出通风不足量 —— 用户无从知道要把通风量调高多少');
+                      }
+                    } else {
+                      inv.push(tag + ' 入室X2 车间稳态 CO₂ ' + _T.co2Room_ppm.toFixed(0)
+                               + ' ppm > 设计限值 ' + _T.co2Limit_ppm
+                               + ' —— 新风量未按入室 CO₂ 校核 (通风机选小)');
+                    }
+                  } else if (_isNat && _T.V_vent_shortfall_m3h > 0) {
+                    /* 反向: 不超标却报不足量 —— 两个量必须同进同退, 否则告警会虚报 */
+                    inv.push(tag + ' 入室X2c 自然通风档未超标却报不足量 '
+                             + _T.V_vent_shortfall_m3h.toFixed(1) + ' m³/h');
                   }
                 }
+                /* ══ v2.4 IRAS_R24_VENT_WARNS — W4: 三条通风告警的【存在性 ⇔ 判据】 ══
+                   负对照实测: 把 ⑤b 的判据整条禁用, 自检仍 PASS 35/35 ——
+                   告警写了没人查, 与"锚写了走不到"是同一族。故双向判:
+                   条件成立必须有告警, 条件不成立必须没有 (防虚报)。 */
+                (function () {
+                  const _sw = (r.sim && Array.isArray(r.sim.stageWarns)) ? r.sim.stageWarns : null;
+                  if (!_sw) { inv.push(tag + ' 通风W4 stageWarns 未导出 —— 告警存在性无从判定'); return; }
+                  const has = function (c) { return _sw.some(function (w) { return w && w.code === c; }); };
+                  const _nat = (_T.roomMode === 'natural');
+                  const _achCfg = (_T.V_room > 0) ? (_T.V_vent_ach_m3h / _T.V_room) : null;
+                  const pairs = [
+                    ['ROOM_ACH_TOO_LOW',   _nat && Number.isFinite(_achCfg) && _achCfg < 15],
+                    ['NAT_VENT_SHORTFALL', _nat && _T.V_vent_shortfall_m3h > 0],
+                    ['VENT_CTRL_BY_CO2',   !_nat && !!_T.ventBoostedByCO2]
+                  ];
+                  pairs.forEach(function (pr) {
+                    const should = pr[1], is = has(pr[0]);
+                    if (should && !is) inv.push(tag + ' 通风W4 条件成立却无告警 ' + pr[0]);
+                    if (!should && is) inv.push(tag + ' 通风W4 条件不成立却报了告警 ' + pr[0] + ' (虚报)');
+                  });
+                })();
                 /* X2 锚: air+开塔 必须真的有 CO₂ 入室。这是缺陷本体的定位点 ——
                    修复前此工况 co2ToRoom_kg_d 恒为 0、V_vent_fish 恒为 0。 */
                 if (c.id === 'edge_air_stripper_on' ) {
@@ -17421,6 +17893,40 @@ function runSelfTest(quiet) {
         if (!(f in PROCESS_DEFAULTS)) badU.push('U1 ' + f + ' 不在 PROCESS_DEFAULTS');
         if (!(f in FIELD_SPEC)) badU.push('U1 ' + f + ' 不在 FIELD_SPEC (无钳制)');
       });
+      /* ══ v2.4 R24-7 — U2: U1 的【反方向】══
+         U1 是从"有框"一侧起判的三件套, 对「无框 + 有读取路径 + 有消费点」
+         这一类【结构上判不到】。v2.4 R24-1 撤销的 co2IntakeCO2_ppm 正是此类:
+         readStageProcFromInputs 里写着 getNumClamped('co2IntakeCO2_ppm', …, 300, 5000),
+         而 data-proc-field 命中 0 ⇒ 那句钳制【从未执行过】, 该字段只能改方案 JSON,
+         且 UI 上没有任何痕迹说明它存在。
+         ⇒ U2: 凡出现在读取路径里的字段, 必须【要么有框, 要么显式登记为 JSON-only】。
+           登记表就在下面, 每一项都要写清"为什么不给框" —— 逼出理由, 而不是默认放行。 */
+      const JSON_ONLY = {
+        poolDepth:            '兼容旧方案的别名字段, 现值由 stage.poolDepth_m 提供, 不新开 UI',
+        o2BypassPumpEta:      '旁路泵效率, 仅 bypass 拓扑消费; 与 o2ConeTopology 联动灰显, 待并入氧锥参数组',
+        aopO3Dose_gm3:        'AOP 臭氧投加量, 高级氧化模块尚未开放 UI (功能未上线, 非遗漏)',
+        co2MaxAttainableEff:  '脱气塔理论上限效率, 属模型常数而非工程可调项; 开放会与 co2StripperEff 形成双口径'
+      };
+      try {
+        const rdAll = rd || '';
+        const seen = {};
+        const reGet = /get(?:Num|Bool|Str|Sel)\w*\('([A-Za-z_][A-Za-z0-9_]*)'/g;
+        let mg;
+        while ((mg = reGet.exec(rdAll))) seen[mg[1]] = 1;
+        const names = Object.keys(seen);
+        if (names.length < 20) {
+          badU.push('U2 读取路径只解析到 ' + names.length + ' 个字段 —— 疑似解析失效, 按红处理 (防恒真)');
+        }
+        names.forEach(function (f) {
+          if (html.indexOf('data-proc-field="' + f + '"') >= 0) return;   // 有框, U1 管
+          if (JSON_ONLY[f]) return;                                        // 已显式登记
+          badU.push('U2 ' + f + ' 出现在读取路径但【无 UI 框】且未登记为 JSON-only'
+                  + ' —— 该字段的钳制/默认对用户不可见, 也不会被执行 (同 co2IntakeCO2_ppm)');
+        });
+        Object.keys(JSON_ONLY).forEach(function (f) {
+          if (!seen[f]) badU.push('U2 JSON-only 登记表里的 ' + f + ' 已不在读取路径 —— 登记表该清理了');
+        });
+      } catch (e) { badU.push('U2 断言自身异常: ' + (e && e.message)); }
     } catch (e) { badU.push('U1 断言自身异常: ' + (e && e.message)); }
     const rowU = { id: 'aeration_ui_wiring', ok: badU.length === 0 };
     if (badU.length) rowU.invariants = badU.slice(0, 8);
@@ -17471,6 +17977,150 @@ function runSelfTest(quiet) {
     if (badX.length) rowX.invariants = badX.slice(0, 6);
     rowX.ok ? out.pass++ : out.fail++;
     out.results.push(rowX);
+
+  /* ══ v2.4 IRAS_R24_CO2_OUTDOOR — 断言 R1: 室外 CO₂ 本底的单源锁 ══
+     本批合并的正是【同一物理量的两份口径】(热工侧写死 450 / PROCESS_DEFAULTS 350),
+     而两份口径当年也不是有人故意写的 —— 是两个消费点各自就地取值, 各自自洽。
+     故合并之后必须锁住形态, 否则第三份随时长出来。
+     R1a 消费点不得裸读 proc.co2Outdoor_ppm, 必须经 resolveCO2Outdoor();
+     R1b 消费点不得再出现字面量 450 / 350 作为本底;
+     R1c resolver 必须存在且带钳制 (方案 JSON 直写 globalThermalConfig 会绕过 UI 约束);
+     R1d 撤销的 co2IntakeCO2_ppm 不得在【可执行代码】里复活 (注释/史料不判)。
+     与 M15/W3/X3 同机制: 静态 .toString() 扫描, 不依赖工况可达性。 */
+  (function () {
+    const badR = [];
+    try {
+      const strip = function (src) {
+        return String(src).replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/\/\/[^\n]*/g, ' ');
+      };
+      if (typeof resolveCO2Outdoor !== 'function') {
+        badR.push('R1c resolveCO2Outdoor 缺失 —— 室外本底失去唯一解析入口');
+      } else {
+        const rsrc = strip(resolveCO2Outdoor.toString());
+        if (rsrc.indexOf('300') < 0 || rsrc.indexOf('5000') < 0) {
+          badR.push('R1c resolveCO2Outdoor 未带 [300,5000] 钳制 —— 方案 JSON 直写会绕过 UI 约束');
+        }
+      }
+      const consumers = [
+        ['calcThermalLoadPoint', typeof calcThermalLoadPoint === 'function' ? calcThermalLoadPoint : null],
+        ['simulateWaterQualityProcess', typeof simulateWaterQualityProcess === 'function' ? simulateWaterQualityProcess : null]
+      ];
+      consumers.forEach(function (c) {
+        if (!c[1]) { badR.push('R1 ' + c[0] + ' 缺失'); return; }
+        const src = strip(c[1].toString());
+        if (src.indexOf('co2Outdoor_ppm') >= 0 && src.indexOf('resolveCO2Outdoor') < 0) {
+          badR.push('R1a ' + c[0] + ' 裸读 co2Outdoor_ppm —— 必须经 resolveCO2Outdoor()');
+        }
+        if (/co2Out_ppm\s*=\s*(450|350)\b/.test(src)) {
+          badR.push('R1b ' + c[0] + ' 出现字面量本底 —— 第二份口径复活');
+        }
+        if (src.indexOf('co2IntakeCO2_ppm') >= 0) {
+          badR.push('R1d ' + c[0] + ' 引用已撤销的 co2IntakeCO2_ppm');
+        }
+      });
+      /* R1e: dC 的两半必须一起过桥 —— 只过限值不过本底, 下游拿到的风量无从复核。 */
+      const bsrc = (typeof buildPIDExport === 'function') ? strip(buildPIDExport.toString()) : '';
+      if (!bsrc) badR.push('R1e buildPIDExport 缺失');
+      else if (bsrc.indexOf('co2Limit_ppm') >= 0 && bsrc.indexOf('co2Outdoor_ppm') < 0) {
+        badR.push('R1e 产出面只过桥 co2Limit_ppm 而漏 co2Outdoor_ppm —— 稀释基准 dC 的两半必须同行');
+      }
+    } catch (e) { badR.push('R1 断言自身异常: ' + (e && e.message)); }
+    const rowR = { id: 'co2_outdoor_single_source', ok: badR.length === 0 };
+    if (badR.length) rowR.invariants = badR.slice(0, 6);
+    rowR.ok ? out.pass++ : out.fail++;
+    out.results.push(rowR);
+  })();
+
+  /* ══ v2.4 IRAS_R24_NORMAL_AIR — 断言 A4b/A4c/A4d: 参考态的静态锁 ══
+     A4a 锁住了"接触器用哪个密度", 但锁不住【产气侧】——
+     若有人把 airO2 的除数改回 1.2, mdot 仍恒等于 RHO_STD_AIR, A4a 照样绿,
+     而风量数字与功率已经偏 8%。故产气侧必须单独静态扫描。
+     A4d 反向保护: 全库还有 6 处 1.2 是【不该改】的 (Lewis 类比 ×2 · 选型裕度 ×4)
+     与 1 处 0.34 (=1.2×1006/3600 建筑物理常数)。本库有过 v2.0.0 全局替换污染
+     历史叙述的先例, A4d 就是防同一只手滑。 */
+  (function () {
+    const badA = [];
+    try {
+      const strip = function (src) {
+        return String(src).replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/\/\/[^\n]*/g, ' ');
+      };
+      if (RHO_STD_AIR !== 1.293) badA.push('A4 RHO_STD_AIR 应为 1.293 (0°C,101.325kPa), 实为 ' + RHO_STD_AIR);
+      if (F_O2_MASS !== 0.232)   badA.push('A4 F_O2_MASS 应为 0.232 (标准态含氧质量分数), 实为 ' + F_O2_MASS);
+      /* 同源性校验: 1.293 是手册取整值, 353/273.15 = 1.29233 是状态方程值,
+         差 0.052% 属正常取整差异。容差 1e-3 (0.08%) 只拦"换成了另一个物理量"
+         这一级的错误 (如误填 1.2 = 20°C 值, 差 7.2%, 必被拦下)。 */
+      if (Math.abs(RHO_STD_AIR - 353 / 273.15) > 1e-3) {
+        badA.push('A4 RHO_STD_AIR ' + RHO_STD_AIR + ' 与全库密度式 353/T_K 在 0°C 的 '
+                  + (353 / 273.15).toFixed(5) + ' 相差超过取整容差 —— 疑似换成了另一个参考态');
+      }
+      /* A4b 产气侧: 凡由 O₂ 质量反算风量者, 除数必须引常量, 禁字面量 */
+      const producers = [
+        ['tankAerationDesign', typeof tankAerationDesign === 'function' ? tankAerationDesign : null],
+        ['simulateWaterQualityProcess', typeof simulateWaterQualityProcess === 'function' ? simulateWaterQualityProcess : null],
+        ['calcEquipment', typeof calcEquipment === 'function' ? calcEquipment : null]
+      ];
+      producers.forEach(function (c) {
+        if (!c[1]) return;
+        const src = strip(c[1].toString());
+        if (/1\.2\s*\*\s*0\.23(?!\d)/.test(src) || /0\.23\s*\*\s*1\.2(?!\d)/.test(src)) {
+          badA.push('A4b ' + c[0] + ' 出现字面量 1.2×0.23 —— 参考态退回 20°C 口径, 与 Normal 裁决冲突');
+        }
+      });
+      /* A4c CO₂ 侧摩尔体积必须标准态 —— 按水温取即与 airFlowM3h 分属两个状态点。
+         ⚠ 本条初版只扫 simulateWaterQualityProcess, 而 Vm 实际在 tankAerationDesign 里,
+           负对照 NA3 (Vm 退回按水温) 【没能转红】—— 判据对准了错的对象, 恒真。
+           这正是 M13/M14 那一族。现改为扫全部产气函数, 并加"判据必须找得到对象"的反恒真保护:
+           找不到 Vm 赋值时【报红而非静默通过】, 因为那意味着判据失去了被判对象。 */
+      let vmSeen = 0;
+      producers.forEach(function (c) {
+        if (!c[1]) return;
+        const src = strip(c[1].toString());
+        const m = src.match(/Vm\s*=\s*0\.022414\s*(\*?)/);
+        if (!m) return;
+        vmSeen++;
+        if (m[1] === '*') {
+          badA.push('A4c ' + c[0] + ' 的 Vm 退回按温度换算 —— airFlowM3h 是 Nm³/h, 气相载量必须按每标准 m³ 计');
+        }
+      });
+      if (vmSeen === 0) {
+        badA.push('A4c 全部产气函数中均未找到 Vm = 0.022414 赋值 —— 判据失去被判对象, 按红处理 (防恒真)');
+      }
+      /* A4d 反向保护: 不该改的那些 1.2 / 0.34 必须仍在原位 */
+      /* ⚠ 宿主函数必须【核实】过, 不能凭印象填 —— A4c 初版与本条初版都栽在这里:
+           beta 在 evapCoeff (不是 contactorNetHeat), h_c_eff 与 0.34 都在 calcThermalLoadPoint。
+           填错宿主 ⇒ 扫不到 ⇒ 判据恒真。故下面每条都加"函数必须存在"的前置报红。 */
+      const keep = [
+        ['evapCoeff/beta', typeof evapCoeff === 'function' ? evapCoeff : null,
+         /1\.2\s*\*\s*1006/, 'Lewis 类比的车间空气密度 1.2 (20-28°C 室内空气, 不是工艺风量参考态)'],
+        ['calcThermalLoadPoint/h_c_eff', typeof calcThermalLoadPoint === 'function' ? calcThermalLoadPoint : null,
+         /1\.2\s*\*\s*1006/, 'Lewis 类比反推的 1.2'],
+        ['calcThermalLoadPoint/UA_vent', typeof calcThermalLoadPoint === 'function' ? calcThermalLoadPoint : null,
+         /0\.34\s*\*/, 'UA_vent 的建筑物理常数 0.34 (=1.2×1006/3600)']
+      ];
+      keep.forEach(function (k) {
+        if (!k[1]) { badA.push('A4d 宿主函数 ' + k[0] + ' 不存在 —— 判据失去对象, 按红处理 (防恒真)'); return; }
+        if (!k[2].test(strip(k[1].toString()))) {
+          badA.push('A4d ' + k[0] + ' 的 ' + k[3] + ' 不见了 —— 误改即为全局替换事故 (参见 v2.0.0 版本号全局替换污染历史叙述)');
+        }
+      });
+      /* A4d 续: 鱼种耗氧系数不得被当成含氧质量分数改掉 */
+      try {
+        const anyDb = (typeof SPECIES_DB === 'object' && SPECIES_DB) ? SPECIES_DB : null;
+        if (anyDb) {
+          Object.keys(anyDb).forEach(function (k) {
+            const f = anyDb[k] && anyDb[k].o2FishFactor;
+            if (Number.isFinite(f) && Math.abs(f - F_O2_MASS) < 1e-9) {
+              badA.push('A4d 鱼种 ' + k + ' 的 o2FishFactor 等于 F_O2_MASS —— 疑似被含氧质量分数误替换');
+            }
+          });
+        }
+      } catch (e) { /* SPECIES_DB 结构变动不作为失败 */ }
+    } catch (e) { badA.push('A4 断言自身异常: ' + (e && e.message)); }
+    const rowA = { id: 'normal_air_reference_state', ok: badA.length === 0 };
+    if (badA.length) rowA.invariants = badA.slice(0, 6);
+    rowA.ok ? out.pass++ : out.fail++;
+    out.results.push(rowA);
+  })();
   })();
 
 

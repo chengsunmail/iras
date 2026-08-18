@@ -17,7 +17,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iRAS 设备清单 v2.3.3</title>
+<title>iRAS 设备清单 v2.4</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -515,7 +515,25 @@ function renderStage(stage, idx, data) {
         if (_ic && Number.isFinite(_ic.V_vent_eff_m3h)) {
           _extraSpec += ` · 【控制项: ${_ic.ventBoostedByCO2 ? 'CO₂ 稀释需求' : '换气次数 ACH'}】`
             + ` (CO₂ 需求 ${(_ic.V_vent_fish_m3h || 0).toFixed(0)} / ACH ${(_ic.V_vent_ach_m3h || 0).toFixed(0)} m³/h, 取大)`
-            + ` · 车间稳态 ${_ic.co2Room_ppm != null ? _ic.co2Room_ppm.toFixed(0) : '—'} / 限值 ${_ic.co2Limit_ppm != null ? _ic.co2Limit_ppm.toFixed(0) : '—'} ppm`;
+            + ` · 车间稳态 ${_ic.co2Room_ppm != null ? _ic.co2Room_ppm.toFixed(0) : '—'} / 限值 ${_ic.co2Limit_ppm != null ? _ic.co2Limit_ppm.toFixed(0) : '—'} ppm`
+            /* v2.4 IRAS_R24_CO2_OUTDOOR: 印出稀释基准的【两半】。
+               只给"CO₂ 需求 X m³/h"而不给 dC = 限值 − 室外本底, 采购方无从复核这个风量。
+               室外本底在城市/工业园区实测常年 500-700, 与默认 450 差出的风量可达 10%+。 */
+            + ((_ic.co2Outdoor_ppm != null)
+                ? ` (稀释基准 dC = ${_ic.co2Limit_ppm.toFixed(0)} − 室外本底 ${_ic.co2Outdoor_ppm.toFixed(0)} = ${(_ic.co2Limit_ppm - _ic.co2Outdoor_ppm).toFixed(0)} ppm)`
+                : '');
+          /* v2.4 IRAS_R24_VENT_NET: 印出净额抵扣的完整算式。
+             K-101 鱼池增氧鼓风的气路是 OUTDOOR → INDOOR —— 它吸室外空气、穿过池水、
+             从池面进车间, 所以【它本身就是新风】, 通风机只需补差额。
+             不印这一行, 采购方会看到"CO₂ 需求 39304 m³/h"却拿到一台 35414 m³/h 的风机,
+             无从判断这是设计裕度、笔误, 还是别的什么。 */
+          if (Number.isFinite(_ic.V_blower_indoor_m3h) && _ic.V_blower_indoor_m3h > 0) {
+            _extraSpec += ` · 【净额】需求 ${(_ic.V_vent_required_m3h || 0).toFixed(0)}`
+              + ` − 增氧风机自室外送入车间 ${_ic.V_blower_indoor_m3h.toFixed(0)}`
+              + ` = 本机 ${(_ic.V_vent_eff_m3h || 0).toFixed(0)} m³/h`
+              + ` (车间实际换气 ${(_ic.ACH_total || 0).toFixed(2)} 次/h, 其中本机 ${(_ic.V_vent_total_m3h ? (_ic.V_vent_eff_m3h / _ic.V_vent_total_m3h * 100) : 0).toFixed(0)}%)`
+              + ` · ⚠ 增氧鼓风停机时本机风量须按 ${(_ic.V_vent_required_m3h || 0).toFixed(0)} m³/h 复核`;
+          }
           if (_ic.ventBoostedByCO2) {
             _extraSpec += ` · ⚠ 该风机由 CO₂ 负荷顶大, 改增氧方式或脱气塔配置后必须重选, 不可沿用`;
           }
@@ -648,7 +666,7 @@ const SHARE_KEY = 'iRAS_equipmentExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.3.3';
+const IRAS_PAGE_VERSION = '2.4';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
