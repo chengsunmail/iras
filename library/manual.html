@@ -2,12 +2,12 @@
 <html lang="zh-CN"><!-- IRAS_MANUAL_V2_0 --><!-- IRAS_MANUAL_CH29_V2_0 --><!-- IRAS_MANUAL_CH16_V2_0 --><!-- IRAS_DOC_FC_CONTACTOR_V2 -->
 <head>
 <meta charset="UTF-8">
-<title>iRAS 技术手册 v2.3 完整版</title><!-- IRAS_V23_MANUAL_VERSION -->
+<title>iRAS 技术手册 v2.4 完整版</title><!-- IRAS_V23_MANUAL_VERSION IRAS_R24_MANUAL_VERSION -->
 <style>
 @page {
   size: A4;
   margin: 2.5cm 2cm 2.5cm 2cm;
-  @top-center { content: "iRAS · RAS 工程设计技术手册 v2.1 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
+  @top-center { content: "iRAS · RAS 工程设计技术手册 v2.4 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
   @bottom-right { content: "第 " counter(page) " 页 / 共 " counter(pages) " 页"; font-size: 9pt; color: #666; }
 }
 body { font-family: 'Noto Sans CJK SC', sans-serif; font-size: 10.5pt; line-height: 1.5; color: #222; }
@@ -189,7 +189,7 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <button id="navToggle" onclick="document.body.classList.toggle('nav-open')" title="目录 (快捷键 M)">☰</button>
 <nav id="manualNav">
   <div class="nvhead">
-    <b>iRAS 技术手册 v2.1</b>
+    <b>iRAS 技术手册 v2.4</b>
     <input id="nvFilter" type="search" placeholder="过滤章节… (/ 聚焦)" autocomplete="off">
   </div>
   <div class="nvlist">
@@ -651,8 +651,8 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <div class="cover">
   <div style="font-size:14pt; color:#666; margin-bottom:8pt;">iRAS</div>
   <div class="title">循环水养殖系统 (RAS)<br>工程设计技术手册</div>
-  <div class="subtitle">完整版 · v2.3</div>
-  <div class="version">版本: v2.3 · 2026 年 8 月</div>
+  <div class="subtitle">完整版 · v2.4</div>
+  <div class="version">版本: v2.4 · 2026 年 8 月</div>
   <div style="font-size:11pt; color:#666; margin-top:20pt;">
     物理框架重构 · 文献校准 · 工业实测对齐<br>
     全局气候 + 围护 · 多模块并联 · P&amp;ID 自动生成 · 投资财务评价<br>
@@ -666,7 +666,10 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     工况覆盖补盲 · 登记表声明自校验 · UI 审计 · 字段范围单一事实源
     <!-- IRAS_V233_MANUAL_OVERVIEW -->
     <br>
-    <strong>字段流转工厂化 · 结构化配置告警 · 空气曝气设计工况点与脱气塔决策</strong>
+    字段流转工厂化 · 结构化配置告警 · 空气曝气设计工况点与脱气塔决策
+    <!-- IRAS_R24_MANUAL_OVERVIEW -->
+    <br>
+    <strong>四个量的口径单一事实源 · 标准状态风量 · 通风净额与自然通风上限 · 取值来源型断言</strong>
   </div>
   <div class="footer">
     海南登登科技咨询有限公司 · 孙程<br>
@@ -4041,7 +4044,8 @@ BF 池填料容积 = TAN 负荷 ÷ VTR(T, S)
 
 <div class="formula-block">
 BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
-风量 = O₂_Peak × safetyBFblow / (1.2 × 0.23 × SOTE)    SOTE=8%<br>
+风量 = O₂_Peak × safetyBFblow / (RHO_STD_AIR × F_O2_MASS × SOTE)    SOTE=8%<br>
+<span style="font-size:9pt;color:#888;">v2.4: 1.293 × 0.232 = 0.300 kg O₂/Nm³ (标准状态 Nm³/h 口径, 见 15.6b); v2.3.3 及以前为 1.2 × 0.23 = 0.276</span><br>
 风机功率 = 风量(m³/s) × 50000 / (0.60 × 1000)    (50kPa, η=0.60)
 </div>
 
@@ -4535,7 +4539,7 @@ CO₂ 通常按阈值的 60-80% 设计。</p>
 <tr><td>设计 DO</td><td>5.00 mg/L</td><td><code>designDO_mgL</code> 留空 ⇒ 回落 <code>DOmin_abs</code></td></tr>
 <tr><td>OTE_base / OTE</td><td>8.63% / <strong>2.22%</strong></td><td>15.2 公式</td></tr>
 <tr><td>峰值耗氧 OCR</td><td>30.55 kg O₂/h</td><td>负荷模型 (<code>o2FishPeakHourly</code>)</td></tr>
-<tr><td><strong>O₂ 侧风量</strong></td><td>30.55 × 1.10 / (1.2 × 0.23 × 0.0222) = <strong>5,476 m³/h</strong></td><td>—</td></tr>
+<tr><td><strong>O₂ 侧风量</strong></td><td>30.55 × 1.10 / (1.293 × 0.232 × 0.0222) = <strong>5,038 Nm³/h</strong><br><span style="font-size:9pt;color:#888;">v2.4 标准状态口径 (0.300 kg O₂/Nm³)。v2.3.3 及以前按 1.2×0.23=0.276 得 5,476 m³/h —— <strong>数字降 8.0%, 但送出的氧质量不变</strong>: 参考态在选型式与接触器之间会抵消, 见 15.6b.2</span></td><td>—</td></tr>
 <tr><td>CO₂ 日产</td><td>1,115 kg/d</td><td>负荷模型 (<code>co2Daily</code>)</td></tr>
 <tr><td>设计 CO₂</td><td>22.5 mg/L</td><td><code>co2TargetMgL</code> 留空 ⇒ 温水阈值 30 × 海水折减 0.75</td></tr>
 <tr><td>亨利载量 kLoad</td><td>1.430 g/m³ per mg/L</td><td>K0_W74 (27 °C, 30‰)</td></tr>
@@ -5187,10 +5191,18 @@ kW<sub>i</sub> × η<sub>i</sub> = Q·Δp 即气侧有用功，与 η 无关；�
 须解联立：</p>
 
 <pre>   mdot · c_p · ΔT = P_shaft
-   mdot = V̇_air · ρ(T_air + ΔT) / 3600        ρ = 353/(T+273.15)
+   mdot = V̇_air · RHO_STD_AIR / 3600          ← v2.4: 常数, 与温度无关
+   ΔT   = P_shaft / (mdot · c_p)               ← 直接求, 无需迭代</pre>
 
-解法：不动点迭代，压缩因子 ≈ ΔT/T_abs ≈ 0.1，6 次后误差 &lt; 1e-4 K。
-实测：青岛设计冬进气 −7 → −3.5 °C。</pre>
+<div class="note-box"><b>v2.4: 不再需要迭代。</b> 风量已声明为<b>标准状态 Nm³/h</b>(见 15.6b),
+质量流成为常数 ⇒ <code>mdot·c_p·ΔT ≡ P_shaft</code> 恒成立, 断言 A3 逐位不变。
+<br>⚠ <b>史料</b>: v2.2–v2.3.3 此处是
+<code>mdot = V̇_air · ρ(T_air + ΔT)/3600</code> 的<b>六次不动点迭代</b>
+(压缩因子 ≈ ΔT/T_abs ≈ 0.1, 6 次后误差 &lt; 1e-4 K)。它当年修的是第六轮审计 P1
+——温升按冷密度算、焓流按热密度算, 丢失部分轴功。迭代确实让两侧统一了,
+但<b>统一到了「风机加热后的密度」这一侧</b>, 而<b>风机不改变质量流量</b>;
+关塔工况风量骤小、温升可达 30 K, 该取法使质量流<b>偏低 10.4%</b>。
+根因不是"用了哪个密度", 是风量当时<b>没有声明参考状态</b>。</div>
 
 <p style="background:#fff8e1; padding:6pt; border-left:4px solid #f59e0b;">
 ⚠ <b>v2.2 修订二：ΔT 与 mdot 必须取同一密度。</b>旧实现 ΔT 按冷密度 mdot₀ 算、
@@ -6870,13 +6882,17 @@ poolArea = V_tank / 池深&nbsp;&nbsp;→&nbsp;&nbsp;A_building = 1.6 × poolAre
 V_vent = max( ACH × V_room , V_CO₂ )
 </div>
 
+<p style="font-size:9.5pt;color:#888;">⚠ <b>v2.4 起本式已被 28.7 取代</b>, 本节保留为口径演进记录。
+两点变化: (1) 风机送进车间的室外空气<b>计入本式</b>, 通风系统只补差额(28.7.1);
+(2) <b>自然通风档不再取 max</b> —— 供风量钳在用户填的 ACH 上, 不足则报 CO₂ 超标(28.7.3)。</p>
+
 <p>ACH 保留为用户可调的设计参数 (默认 1.0), CO₂ 稀释需求作为<strong>下限</strong>, 保证空气质量不会因为车间估小而失守:</p>
 
 <div class="formula-block">
 V_CO₂ (m³/h) = CO₂产量 × 投饵量 × 尾气入室比例 / ΔC / 24<br>
 &nbsp;&nbsp;CO₂产量 = 500 g / kg 饲料<br>
 &nbsp;&nbsp;ΔC = (CO₂限值 − 450 ppm) × 10⁻⁶ × 44 / 24.45 × 1000&nbsp;&nbsp;(g/m³)<br>
-&nbsp;&nbsp;450 ppm = 室外本底
+&nbsp;&nbsp;450 ppm = 室外本底 <span style="color:#888;">(v2.4 起为可调字段 <code>co2Outdoor_ppm</code>, 范围 300–5000; 城市/工业区实测常年 500–700, 取小是不安全方向)</span>
 </div>
 
 <table>
@@ -6884,7 +6900,7 @@ V_CO₂ (m³/h) = CO₂产量 × 投饵量 × 尾气入室比例 / ΔC / 24<br>
 <tr><td>CO₂ 产量系数</td><td>500 g/kg 饲料</td><td>大西洋鲑 409 (Terjesen 2013) / smolt 550 (Vinci 2004) / 鳗鲡 536 (Heinsbroek 1990), 统一取值</td></tr>
 <tr><td>车间 CO₂ 限值</td><td>1500 ppm</td><td>OSHA 法定 8h 限值 5000 过宽松; ASHRAE 舒适 1000–1200 是办公室标准, 对工业厂房间歇作业过严; 1500 落在"空气沉闷"与"头痛嗜睡"的分界</td></tr>
 <tr><td>脱气塔尾气入室比例</td><td>0.2</td><td>现代场脱气塔尾气管道直排室外, 仅少量泄漏。老场或敞开式脱气应调高至 0.6–1.0</td></tr>
-<tr><td>ACH 默认值</td><td>1.0</td><td>泳池馆新风标准 0.48 CFM/ft² 湿面积 = 8.78 m³/(h·m²), 按本模型几何换算约 <strong>0.9–1.5 ACH</strong></td></tr>
+<tr><td>ACH 默认值</td><td>1.0</td><td>泳池馆新风标准 0.48 CFM/ft² 湿面积 = 8.78 m³/(h·m²), 按本模型几何换算约 <strong>0.9–1.5 ACH</strong>。<br>⚠ <b>该值是「新风换气次数」, 不是围护渗透风</b>; 自然通风档的设计口径是 <b>15–30</b>, 与本默认值差一个量级 —— 见 28.7.3 与 15.9(拆两维已决定不做, 缺气密性数据)</td></tr>
 </table>
 
 <p>ACH 默认 1.0 在 v1.9.2 之前是<strong>没有出处的经验值</strong>, 现在有了可追溯的标准依据。</p>
@@ -8516,7 +8532,7 @@ C4 另配两份取样: A 只带 warn 级、B 必带 danger 级, 后者专验结�
 <tr><td>co2StripperEffMode <span class="tag-new">v2.0.0</span></td><td>枚举</td><td>manual</td><td>脱气塔</td><td>manual = 沿用 co2StripperEff（与 v1.x 逐位一致）；auto = 按 Timmons Ch.10 Fig 10.13/10.14/10.17 曲线自动算</td></tr>
 <tr><td>co2PackingHeight_m <span class="tag-new">v2.0.0</span></td><td>数值</td><td>1.5</td><td>脱气塔</td><td>填料层高度 m，范围 0.3–3.0。Ch.10 p.245：设计高度限于 1.0–1.5 m，超 1.5–2.0 m 收益递减。⚠ 填料深度超 1 m 时建议水力负荷取偏低端以降低风机背压</td></tr>
 <tr><td>co2MaxAttainableEff <span class="tag-new">v2.0.0</span></td><td>数值</td><td>80</td><td>脱气塔</td><td>该装置在 G:L = 20 时的最大可达单次去除率 %（Fig 10.13 约 80%）</td></tr>
-<tr><td>co2IntakeCO2_ppm <span class="tag-new">v2.0.0</span></td><td>数值</td><td>350</td><td>脱气塔</td><td>脱气塔<strong>进风</strong> CO₂ 本底 ppm。Fig 10.17：本底 1000 ppm 时去除率降 10%，5000 ppm 降 70% —— 这是「尾气必须排室外」的量化依据</td></tr>
+<tr><td>co2Outdoor_ppm <span class="tag-new">v2.4</span></td><td>数值</td><td>450</td><td>全局</td><td><strong>室外 CO₂ 本底 ppm</strong>，范围 300–5000。两个消费点：车间新风稀释基准 <code>dC = 车间限值 − 本底</code>；脱气塔 auto 模式的进风本底。<br>⚠ <strong>v2.4 起本字段替代已撤销的 <code>co2IntakeCO2_ppm</code></strong>（原默认 350，无 UI 框，其钳制从未执行过）—— 二者本是同一物理量的两份口径、值还不一样。合并前提：工艺气路全程不碰车间，塔进风即室外空气（Fig 10.17：进风本底 1000 ppm 时去除率降 10%、5000 ppm 降 70%，这是「尾气必须排室外、不得回车间」的量化依据；若日后允许塔进风取自车间，须拆回两层）。<br>⚠ 取小是<strong>不安全方向</strong>：本底越小 dC 越大、通风量算得越小。全球本底≈420 且逐年 +2.5；城郊 450–500；城市/工业区实测常年 500–700</td></tr>
 <tr><td>fcDesignDT_K <span class="tag-new">v1.9.3</span></td><td>数值</td><td>留空=自动</td><td>围护区</td><td>自然冷却<strong>设计温差</strong> K —— 单独扛满设计负荷所需的冷源-水温差。留空按热源自动取：空气 11 / 水·海水 4 / 地源 6。取代 v1.9.2 的 <code>freeCoolingApproach_K</code>（语义由「阈值」变为「换热能力刻度」）</td></tr>
 <tr><td>fcAnnualK_air <span class="tag-new">v1.9.3</span></td><td>数值</td><td>0.65</td><td>围护区</td><td>年化正弦振幅折减，仅作用于空气源；水/海水/地源固定 1.0。见 D 节</td></tr>
 <tr><td>freeCoolingEER</td><td>数值</td><td>20</td><td>围护区</td><td>自然冷却设计点 EER，仅含冷源侧风机与泵的增量功率。干冷器 15-25，板换+冷源水可更高</td></tr>
