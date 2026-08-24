@@ -32,7 +32,7 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.4</title>
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.5</title>
 <meta name="description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
@@ -46,25 +46,32 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.4">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.5">
 <meta property="og:description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v2.4">
+<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v2.5">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.4">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.5">
 <meta name="twitter:description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
 <!-- Favicon -->
 <!-- IRAS_R24_LOGO (v2.3.3 logo 批, 补入 —— 该批未进 project content, v2.4 起点缺它) -->
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230C9ED5'/%3E%3Cstop offset='1' stop-color='%231A5CD7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='141' fill='url(%23g)'/%3E%3Cpath d='M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z' fill='%23fff' fill-rule='evenodd'/%3E%3Cpath d='M256 290 H324 L392 401 H324 Z' fill='%23fff'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="favicon-180.png">   <!-- iOS 主屏标准尺寸 -->
+<!-- v2.5 IRAS_V25_LOGO_IR: logo 改为 iR (原为孤立的 R, 读不出品牌名)。
+     ⚠ 单一事实源是 logo-master.svg —— 下面这条 data URI 是它的【派生物】,
+       由 tools/check_logo_sync.js 锁定二者一致 (漂移即 FAIL)。改 logo 只改母版。
+     ⚠ 全尺寸统一用母版, 不设简化版。16px 下 i 的点会与竖笔并成一根竖线 ——
+       这是有意接受的代价: 品牌一致优先, 且该尺寸上起作用的是色块轮廓而非字形。
+     ⚠ favicon.ico 是【手工封装】的 PNG-in-ICO (16/32/48/64/128 全部来自母版):
+       PIL 的 ICO 保存会把一张图重采样到各尺寸, 此处逐尺寸单独栅格化以保清晰。 -->
+<link rel="icon" href="favicon.ico" sizes="any">                      <!-- 内含 16/32/48/64/128 -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='#0C9ED5'/%3E%3Cstop%20offset='1'%20stop-color='#1A5CD7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20rx='141'%20fill='url(#g)'/%3E%3Crect%20x='97.1'%20y='204.7'%20width='53'%20height='193.4'%20rx='11'%20fill='#fff'/%3E%3Ccircle%20cx='123.6'%20cy='168.8'%20r='30'%20fill='#fff'/%3E%3Cg%20transform='translate(58.7,5.1)%20scale(0.98)'%3E%3Cpath%20d='M128%20111%20H264%20A98%2098%200%200%201%20264%20307%20H205%20V401%20H128%20Z%20M205%20179%20H256%20A30%2030%200%200%201%20256%20239%20H205%20Z'%20fill='#fff'%20fill-rule='evenodd'/%3E%3Cpath%20d='M256%20290%20H324%20L392%20401%20H324%20Z'%20fill='#fff'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="favicon180.png">   <!-- iOS 主屏; v2.5 修正: 原写 favicon-180.png, 库内实际文件名无连字符 -> 404 -->
 
 <!-- Schema.org 结构化数据 (帮助 Google / 百度更好理解工具性质) -->
 <script type="application/ld+json">
@@ -817,7 +824,7 @@
     <!-- 第 1 行: 标题 + 项目级操作 (保存/加载/导出/P&ID/财务/可研/打印) + 手册 + 帮助 -->
     <div class="py-2 flex items-center justify-between flex-wrap gap-2">
       <div class="flex items-center gap-3">
-        <svg class="w-9 h-9 rounded-lg" viewBox="0 0 512 512" role="img" aria-label="iRAS"><defs><linearGradient id="irasHd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C9ED5"/><stop offset="1" stop-color="#1A5CD7"/></linearGradient></defs><rect width="512" height="512" rx="141" fill="url(#irasHd)"/><path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/><path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/></svg>
+        <svg class="w-9 h-9 rounded-lg" viewBox="0 0 512 512" role="img" aria-label="iRAS"><defs><linearGradient id="irasHd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C9ED5"/><stop offset="1" stop-color="#1A5CD7"/></linearGradient></defs><rect width="512" height="512" rx="141" fill="url(#irasHd)"/><rect x="97.1" y="204.7" width="53" height="193.4" rx="11" fill="#fff"/><circle cx="123.6" cy="168.8" r="30" fill="#fff"/><g transform="translate(58.7,5.1) scale(0.98)"><path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/><path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/></g></svg>
         <div>
           <h1 class="text-base md:text-lg font-bold glow-text cursor-pointer" id="titleLink" title="回到顶部">iRAS · 循环水养殖工程设计平台</h1>
           <div id="summaryBadge" class="text-[11px] text-slate-400 mt-0.5"></div>
@@ -1187,7 +1194,7 @@
     <div class="bg-slate-900 border border-slate-700 rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl">
       <div class="flex justify-between items-start mb-4">
         <div>
-          <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2"><svg class="w-6 h-6 rounded" viewBox="0 0 512 512" role="img" aria-label="iRAS"><defs><linearGradient id="irasAb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C9ED5"/><stop offset="1" stop-color="#1A5CD7"/></linearGradient></defs><rect width="512" height="512" rx="141" fill="url(#irasAb)"/><path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/><path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/></svg>iRAS</h2>
+          <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2"><svg class="w-6 h-6 rounded" viewBox="0 0 512 512" role="img" aria-label="iRAS"><defs><linearGradient id="irasAb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C9ED5"/><stop offset="1" stop-color="#1A5CD7"/></linearGradient></defs><rect width="512" height="512" rx="141" fill="url(#irasAb)"/><rect x="97.1" y="204.7" width="53" height="193.4" rx="11" fill="#fff"/><circle cx="123.6" cy="168.8" r="30" fill="#fff"/><g transform="translate(58.7,5.1) scale(0.98)"><path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/><path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/></g></svg>iRAS</h2>
           <div class="text-sm text-slate-400">循环水养殖工程设计平台</div>
         </div>
         <button id="btnAboutClose" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
@@ -1348,6 +1355,73 @@
         <h2 class="text-lg font-bold text-cyan-300">iRAS 是什么</h2>
         <p class="mt-2 text-slate-400 text-sm">iRAS 是面向中国设计院、水产养殖工程师、高校研究者的循环水养殖 (RAS) / 工厂化养殖工程设计开源工具,覆盖工艺设计→P&ID 工艺图→设备清单→投资概算→16 章可研报告完整工作流。支持大西洋三文鱼、罗非鱼、对虾、石斑鱼、大菱鲆等 8 种主流鱼种。AGPL v3 永久免费。v1.9 碳酸盐平衡求解 (pH/NH3/方解石饱和度, 对照 PyCO2SYS 验证); v1.9.1-v1.9.2 修正液氧/蒸发/通风/泵功率口径, 新增机械除湿机; v1.9.3 自然冷却改为容量判据 (支持部分自然冷却) 与年均工况 24 点数值积分。v2.0 热平衡架构重构 (车间温度改为暖通维持, 首次计入气液接触器热湿交换); v2.1 修复车间显热能量守恒并补齐守恒类断言; v2.2 补配置边界工况 (脱气关/旁路/空气曝气) 并建立登记表声明自校验; v2.3 第七轮审计处置 (head 结构/加载钳制/尾气入室); 并在 v2.3 内继续完成四批工作: 简易模式 (自然通风车间自由空气节点求解, 太阳辐射子系统首次建模)、池内曝气拓扑修正 (air 模式 DO 稳态由传质=耗氧决定) 与曝气强度约束、车间模式三档 (恒温恒湿/自然通风/机械通风) 与车间通风机建模、CO₂ 脱除机制澄清与浅池告警。v2.3.3 字段流转工厂化: 鱼种/阶段字段经声明表 + 工厂进入水质链, 配静态源码扫描断言 M15a–d, 从机制上封住"白名单漏字段"这一复发五次的缺陷模式。1000t 三文鱼综合成本 38.88 元/kg (工艺运行成本) / 43.95 元/kg (企业全成本), 青岛冬工况。</p>
       </section>
+
+      <!-- IRAS_V25_INDEX_CHANGELOG · v2.5 发布批 -->
+      <h2 class="text-2xl font-bold text-cyan-300 border-b-2 border-cyan-600 pb-2 mt-8" id="help-changelog-v25-anchor">🚀 v2.5 · 沿程口径归位:算出来的那个数，未必是它标签上那个点（2026-08-23 · 第八轮审计）</h2>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">本版主题只有一件事:把几个<strong>算在了错误位置</strong>的量放回它该在的节点。
+      外部审计七条 + 复核追加三条, 共十四个批次。<strong>自检 35 → 42, 13 条数值基线两次有意变更、
+      其余批次逐位不变</strong>。</p>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed"><strong>本版最重要的一句话:集总口径下算出来的那个数, 未必是它标签上写的那个点的值。</strong>
+      与 v2.4 那族「取值来源型断言」治的是同一个病 —— 这次是<strong>取值位置</strong>。
+      守恒断言依然全绿, 因为账本两边同步变化; 标签错了, 守恒式看不见。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">① 沿程七个节点的 pH / Ω / NH₃ 是从鱼池复制的</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">逐节点展开时只覆写各自改变的 CO₂/TAN/TSS/NO₃/DO, 五个碳酸盐字段<strong>原封不动复制</strong>。
+      后果: 脱气塔节点 CO₂ 降 65%, 真实 pH 升 0.33、Ω 由 0.75 升到 1.52(<strong>跨过饱和线</strong>),
+      而界面上七个节点全标"欠饱和"; 生物滤池节点 TAN 降了 70% 而 NH₃-N 是绝对值没跟着变, 偏高 3.4 倍。
+      重算需要该节点的 (碱度, CO₂) <strong>两个</strong>量 —— 碱度沿程不守恒, 生物滤池每硝化 1 mg/L 氨氮耗 7.14 mg/L 碱度。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">② CO₂ 稳态式算出来的不是鱼池, 是脱气塔进水</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">呼吸产 CO₂ 在鱼池、硝化产 CO₂ 在生物滤池, 而生物滤池位于鱼池<strong>下游</strong>、脱气塔<strong>上游</strong>。
+      链式重导给出 <code>C_塔前 = Δ_总/(η + η_换水)</code> —— <strong>恰好等于原集总式的值</strong> ——
+      与 <code>C_鱼池 = C_塔前 − δ_n</code>。即原式算的那个量, 标签贴错了地方。
+      鱼池 CO₂ 实测降 15–28%(纯氧)/ 23–39%(空气曝气)。
+      按<strong>双报</strong>落地: 鱼类福利判据取鱼池值, 同时导出脱气塔进水浓度作设备选型口径 ——
+      原实现把两个工程量混在一个数里, <strong>用鱼的限值去卡一个鱼接触不到的浓度</strong>。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">③ MBBR 曝气: 风机按 DO=0 选型, 而实际驱动力几乎为零</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">标准氧转移效率的定义条件是清水 20°C <strong>溶解氧为零</strong>, 即驱动力最大点;
+      而实际 MBBR 内溶解氧 5–12 mg/L, 实算<strong>实际效率仅 0.35–0.5%</strong>, 按 8% 选出的风量与它能传的氧无关。
+      新口径<strong>把因果倒过来</strong>: 风量由<strong>载体流化</strong>决定(Norsk Vann 导则: 供气量不应低于
+      10–15 m³/h·m² 池底), 溶解氧由质量平衡<strong>算出来</strong> —— 解是两端点的加权平均, 数学上跑不出窗口,
+      不需要任何钳制或地板。冷水鱼种电耗 +1.9~2.4%, 暖水鱼种 <strong>−3.4~−4.6%</strong>(原按清水口径虚高三倍多)。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">④ 五处"某个量算了一半"</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">本版十四批里有<strong>五批</strong>是同一个模式 —— 一个量在这个账本里有、在那个账本里没有:</p>
+      <ul class="mt-2 text-slate-300 text-sm leading-relaxed list-disc pl-6 space-y-1">
+        <li><strong>碱度收支缺排水出口项</strong>: 补水按 100 mg/L 进、系统水按 150 出, 换水实际是碱度<strong>净汇</strong>而模型记成<strong>净源</strong> ⇒ 碳酸氢钠投加量低估 5–35%</li>
+        <li><strong>MBBR 曝气吹脱 CO₂</strong>: 风机选了型、电耗算了、气路登记了接触水, 唯独 CO₂ 那份没人管</li>
+        <li><strong>生物滤池异养呼吸产的 CO₂</strong>: 注释写着"含<strong>池内</strong>异养", 而生物滤池内那份整项缺失 —— 实测占滤池产 CO₂ 的<strong>四成</strong></li>
+        <li><strong>生物滤池对溶解性 COD 的去除</strong>: 算了异养耗氧、也算了异养产 CO₂, <strong>唯独没扣底物</strong></li>
+        <li><strong>气相载量型效率未计碳酸盐缓冲</strong>: 算出的是从总无机碳里转移走的<strong>质量</strong>, 却当作自由 CO₂ 的降幅用</li>
+      </ul>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">⇒ 反复到第五次时才立了<strong>白名单断言</strong>: 凡接触水的气流, 要么在 CO₂ 分解里有份额,
+      要么显式登记为「有意不计 + 理由」。<strong>它不判"不计是否正确", 只判"有没有做过这个决定"</strong> ——
+      判据的力量在于把<strong>沉默的遗漏</strong>变成<strong>显式的取舍</strong>。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">⑤ 淡水方解石饱和度: 四个鱼种从"算不出"到"方向还反了"</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">钙按海水恒定比例反推 ⇒ 淡水钙恒为 0, Ω 直接算不出, <strong>四个淡水鱼种全场 n/a</strong>(占鱼种库一半)。
+      开放钙硬度输入后, 未加活度修正的实现给出 Ω = 1.22–1.76(<strong>过饱和, 会结垢</strong>),
+      而 Langelier 饱和指数独立算出 0.40–0.70(<strong>欠饱和, 会溶蚀</strong>)—— <strong>方向相反</strong>。
+      而"溶蚀混凝土池体、池壁起砂"正是本模型该提示的工程问题, <strong>不修正等于把它藏起来还反着说</strong>。
+      加 Davies 活度修正后落到 0.58–1.06, 与该指数同侧同量级。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">⑥ 外部口径交叉验证: 内部自洽挡不住"一致地偏离物理"</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">本版新增两条<strong>拿库外通行量来对</strong>的断言 —— 缓冲因子换算成海洋化学的
+      <strong>Revelle 因子</strong>须落在典型区间 8–15(实测 13.9); 淡水 Ω 须与
+      <strong>Langelier 饱和指数</strong>同侧且在一个数量级内。
+      库内多数断言查的是<strong>内部自洽</strong>, 而内部自洽<strong>挡不住整套实现一致地偏离物理</strong> ——
+      淡水 Ω 那一版方向反了的实现, 若只跑内部断言会<strong>全绿通过</strong>。</p>
+
+      <h3 class="text-lg font-semibold text-cyan-200 mt-6 mb-2">⑦ 两条流程门禁: 台账与 logo 也需要有人看着</h3>
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed">交接台账的门禁基线本版<strong>过期六次</strong>(锚点计数、断言总数、字段计数), 每次都是加完东西忘了同步,
+      而<strong>没有任何门禁在看台账</strong> —— 版本一致性检查查的是<strong>一致性</strong>不是<strong>新鲜度</strong>。
+      新增台账门禁后, 其中三次是被工具抓的。同期发现 logo 有<strong>四份拷贝</strong>(favicon 内联 + 三处可见 SVG),
+      而首版门禁只锁了其中一份 —— 若照那样收工, 换 logo 后页头两处仍是旧图而<strong>全绿</strong>。</p>
+
+      <p class="mt-2 text-slate-300 text-sm leading-relaxed"><strong>本版遗留</strong>: 生物滤池模型重构已立范围书(硝化面速率动力学 + 溶解性 COD 按降解性拆分 +
+      字段改名 + 淡水蛋分默认值, <strong>四件事必须同批</strong>, 共用同一套化学计量);
+      三个待标定系数中 <code>bfAlpha</code> 是唯一进成本链的, 最该先标定。详见交接文档。</p>
 
       <!-- IRAS_R24_INDEX_CHANGELOG · v2.4 发布批 -->
       <h2 class="text-2xl font-bold text-cyan-300 border-b-2 border-cyan-600 pb-2 mt-8" id="help-changelog-v24-anchor">🚀 v2.4 · 四个量的口径单一事实源（2026-08-18 · 五批）</h2>
@@ -1557,7 +1631,7 @@
       <p class="mt-2 text-slate-400 text-sm">aerationMode 选择器随每次计算结果着色, title 给出本阶段池底布气实测值与 air 模式可行密度上限(活数据, 经 renderStageWarnings 每次 recompute 刷新, 无陈旧问题)。<strong>有意不做自动切换</strong>: 不替用户改配置, 增氧方式是工程决策——模型的职责是把不可行性摆到明处, 不是代替拍板。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">④ 验证与顺带发现</h3>
-      <p class="mt-2 text-slate-400 text-sm">负对照 3/3 精确转红: 撤数据层标志 → W1⇔+锚咬(FAIL 24/28)· 渲染退回旧读法 → W3 咬 · 判据改错(阈值×10)→ W2⇔+锚咬。顺带发现: <code>edge_yield_tiny</code> 的鱼池 CO₂ 实际在 21.5–23.7 mg/L、略超阈值 20——该工况的 CO2_OVER 标志为真且 W2 一致性通过, 行为正确; 此前无人知道这个边界工况处于超标状态, <strong>结构化导出的第一天就多看见了一件事</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm">负对照 3/3 精确转红: 撤数据层标志 → W1⇔+锚咬(FAIL 24/28)· 渲染退回旧读法 → W3 咬 · 判据改错(阈值×10)→ W2⇔+锚咬。顺带发现: <code>edge_yield_tiny</code> 的鱼池 CO₂ 实际在 21.5–23.7 mg/L、略超阈值 20——该工况的 CO2_OVER 标志为真且 W2 一致性通过, 行为正确; 此前无人知道这个边界工况处于超标状态, <strong>结构化导出的第一天就多看见了一件事</strong>。<span class="text-amber-300/80">⚠ v2.5 补注: 链式重导 (审计 B8) 后该工况鱼池 CO₂ 已降到阈值内, 当前<strong>只有 <code>edge_no_degasser</code> 触发 CO2_OVER</strong>。本段保留为当时的记录, 结论不再描述现状。</span></p>
 
       <!-- IRAS_ROOM_MODE_3_DOC -->
       <h2 class="text-2xl font-bold text-cyan-300 border-b-2 border-cyan-600 pb-2 mt-8">🚀 车间模式三档 + 车间通风机（2026-08-13）</h2>
@@ -2208,7 +2282,7 @@
 
       <h3 class="mt-4 font-bold text-amber-300">J. 水质告警: NH₃ 按鱼种 + Ω 方解石</h3>
       <p class="mt-2 text-slate-400 text-sm"><strong>NH₃ 着色阈值</strong>: 鱼种限值表 <code>NH3_LIMIT_UG_L</code> 早已存在 (鲑 12.5 / 大菱鲆 20 / 石斑 30 / 鲈·鳜·虾 50 / 鳗 60 / 罗非 100 μg/L), 同一行 tooltip 也写着「三文鱼 12.5」, 但<strong>判据写死 25 μg/L</strong> —— 最敏感的鲑科用了 2× 宽松阈值。改为三档: 超限值红 / 超半限值黄 / 其余绿。</p>
-      <p class="mt-2 text-slate-400 text-sm"><strong>方解石饱和度 Ω</strong>: 此前<strong>界面上完全没有显示</strong> —— 不是缺告警, 是连数字都看不到 (它已算出并进导出载荷)。现补一行并按 &lt;0.8 危险 / &lt;1.0 警戒着色。实测<strong>海水鱼种几乎全程欠饱和</strong>: 三文鱼 0.45–0.58、大菱鲆 0.37–0.56、对虾 0.78–1.29 (仅苗种期达标)。这是模型算出的真实状态 —— 高密度 RAS 中 CO₂ 累积压低 pH、CO₃²⁻ 占比骤降。<strong>工程后果: Ω &lt; 1 时水对碳酸钙不饱和, 持续溶蚀混凝土池体与水泥基砂浆</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm" data-anchor="omega-seawater" data-omega-min="0.55" data-omega-max="1.53" data-omega-species="salmon,turbot,grouper,shrimp"><strong>方解石饱和度 Ω</strong>: 此前<strong>界面上完全没有显示</strong> —— 不是缺告警, 是连数字都看不到 (它已算出并进导出载荷)。现补一行并按 &lt;0.8 危险 / &lt;1.0 警戒着色。实测<strong>海水鱼种多数阶段欠饱和</strong>: 三文鱼 0.55–0.72、大菱鲆 0.56–0.75、石斑 0.63–0.81、对虾 0.90–1.53 (<strong>对虾苗种期 1.53 为过饱和</strong>, 其余全部 Ω &lt; 1)。<span class="text-amber-300/80">⚠ 本段数值随 v2.5 链式重导 (审计 B8) 更新过一次 —— 旧值 0.37–1.29 是集总口径下的鱼池 CO₂ 偏高所致。现由自检断言 N2 锚定, 数值再变会当场转红。</span>这是模型算出的真实状态 —— 高密度 RAS 中 CO₂ 累积压低 pH、CO₃²⁻ 占比骤降。<strong>工程后果: Ω &lt; 1 时水对碳酸钙不饱和, 持续溶蚀混凝土池体与水泥基砂浆</strong>。</p>
       <p class="mt-2 text-xs text-slate-500">⚠ 蒸发计入补水 (审计 P3 第三项) <strong>经实测后决定不做</strong>: 蒸发仅占补水 0.06%–0.32% (青岛 1.48 / Doha 0.92 / 三亚 0.29 m³·d⁻¹ vs 补水 461), 折算成本 &lt; 0.001 元/kg, 而改动会使 12 条基线与三份文档数字再重算一遍。⚠ 该结论依赖<strong>默认 poolCover=partial 且换水率 5%/d</strong>;敞开池面 + 干热气候 + 低换水率时占比会显著上升。</p>
 
       <h3 class="mt-4 font-bold text-amber-300">K. 已修: 上述盲区</h3>
@@ -3334,6 +3408,60 @@
 <td class="py-1 text-slate-400 text-[11px]">集成型默认 2 min (UV 反应器内反应秒级); 分体型默认 8 min (含 O3 接触池); Schrader 2010 实测 1 min 接触 geosmin 去除 86-92%</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfAirFlux</td>
+<td class="py-1 pr-3 text-slate-200">MBBR 流化通量</td>
+<td class="py-1 pr-3 text-slate-400">m³/(h·m²)</td>
+<td class="py-1 pr-3 text-emerald-300/90">10</td>
+<td class="py-1 pr-3 text-slate-400">2–20</td>
+<td class="py-1 pr-3 text-slate-300">v2.5 决定 BF 风机选型;MBBR 内 DO 由此反算而非输入</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>Norsk Vann 168/2009</b>:为保证良好混合，供气量不应低于 10–15 m³/h·m² 池底（随载体而定）⇒ <b>10–15 是下限区间不是典型值</b>。次级参考：Aquacultural Engineering 实测表观气速 &lt; 5 m/h 时 TAN 去除率下降。⚠ 表观气速不是合格的放大准则，深池浅池同通量下混合强度不同，本模型未修正</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfDepth</td>
+<td class="py-1 pr-3 text-slate-200">MBBR 池水深</td>
+<td class="py-1 pr-3 text-slate-400">m</td>
+<td class="py-1 pr-3 text-emerald-300/90">3</td>
+<td class="py-1 pr-3 text-slate-400">2–6</td>
+<td class="py-1 pr-3 text-slate-300">v2.5 三处同源：池底面积、气液平衡（中点压力）、风机压力</td>
+<td class="py-1 text-slate-400 text-[11px]">v2.5 前风机压力硬编码 50 kPa（≈5 m 水柱），与 3 m 默认自相矛盾，现已单源化</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfDOMin</td>
+<td class="py-1 pr-3 text-slate-200">MBBR 最低运行 DO</td>
+<td class="py-1 pr-3 text-slate-400">mg/L</td>
+<td class="py-1 pr-3 text-emerald-300/90">4</td>
+<td class="py-1 pr-3 text-slate-400">2–8</td>
+<td class="py-1 pr-3 text-slate-300">v2.5 算出的 DO 低于此值只告警，<b>不自动加风</b></td>
+<td class="py-1 text-slate-400 text-[11px]">告警给出「需把通量提到 X、届时功率 Y」，让用户做有标价的选择。有意不自动调整：自动加风会悄悄改掉用户设定的流化通量</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfAlpha</td>
+<td class="py-1 pr-3 text-slate-200">BF 传氧修正 α</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.85</td>
+<td class="py-1 pr-3 text-slate-400">0.5–1.0</td>
+<td class="py-1 pr-3 text-slate-300">v2.5 实际 SOTE = 1.2%/m × 水深 × α × 驱动力 × θ^(T−20)</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠ 待标定项</b>，无 RAS 直接出处。市政取 0.5–0.7，RAS 水质更洁净故取 0.85。与 <code>co2StripApproach</code> 同处境。<br>驱动力项是 v2.5 新增——此前 SOTE 写死 8%，而 8% 的标准定义是清水 20°C <b>DO=0</b>，等价于按驱动力最大点选型</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfCo2Approach</td>
+<td class="py-1 pr-3 text-slate-200">BF 吹脱逼近系数</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.23</td>
+<td class="py-1 pr-3 text-slate-400">0–1</td>
+<td class="py-1 pr-3 text-slate-300">v2.5 MBBR 曝气对 CO₂ 的气液平衡逼近程度</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠ 待标定项</b>，有出处但样本单一。手册实测「粗孔盘仅达理论平衡约 23%、细孔盘 93%」，<b>0.23 正是为粗孔盘记的</b>。<br>⚠ 与脱气塔的 <code>co2StripApproach</code>（0.5）<b>有意分开</b>：塔是填料逆流，MBBR 是池内粗孔鼓泡，共用一个数等于宣称两者传质逼近程度相同</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">mbbrCovered</td>
+<td class="py-1 pr-3 text-slate-200">MBBR 加盖外排</td>
+<td class="py-1 pr-3 text-slate-400">T/F</td>
+<td class="py-1 pr-3 text-emerald-300/90">true</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-slate-300">v2.5 曝气尾气去向；true=加盖接风管外排，false=敞口入室</td>
+<td class="py-1 text-slate-400 text-[11px]">与布置无关——同厅照样可加盖外排；敞口时 0.50 t/d 水汽进厅 ≈ 342 kWh/d 潜热（池面蒸发项的 1.35 倍），全库热泵电费最大变动 12.3%</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">co2StripperEnabled</td>
 <td class="py-1 pr-3 text-slate-200">CO₂ 脱气塔启用</td>
 <td class="py-1 pr-3 text-slate-400">T/F</td>
@@ -4188,7 +4316,7 @@
   /* ---- 核心求解器: (总碱度, 溶解 CO2) → pH ----
    * TA, CO2aq 单位 mol/kg-SW; T 单位 degC; S 单位 psu。
    * SWS 标度求解, 返回 NBS 标度 pH + 完整物种分布。*/
-  function solve(TA, CO2aq, Tc, S) {
+  function solve(TA, CO2aq, Tc, S, CaOverride, ionicI) {
     const T = Tc + 273.15;
     const [K1, K2] = K1K2_M10(T, S);
     const KW = KW_M79(T, S);
@@ -4201,6 +4329,21 @@
       + (KB > 0 ? KB * TB / (KB + H) : 0)              // B(OH)4-
       + KW / H - H - TA;                               // OH- - H+ - TA
     let lo = pow(10, -12), hi = pow(10, -2), Hm = 0;   // [H+] 范围 (pH 2..12)
+    /* v2.5 IRAS_V25_PH_BRACKET (第八轮审计 B7) — 二分区间的边界断言。
+       taOf 在 H 上单调递减 ⇒ 合法括号要求 taOf(lo) > 0 且 taOf(hi) < 0。
+       真解落在 [2, 12] 之外时, 二分会静默收敛到端点, 返回一个【看着正常的 pH】
+       (11.999 / 2.001), 调用方无从分辨那是解还是钳位产物。
+       ⚠ 现状: 在 iRAS 当前输入域内【够不到】—— alkTarget 钳在 [20, 400],
+         即使 CO₂ 恰为 0, alk=400 也只到 pH_sws 11.53; 低端有 alk ≥ 20 兜着,
+         下不到 5 以下; pH 模式走 solveAlk 代数直解不经二分。
+         故本条是【防御性】的: 防的是将来放宽 clamp、或本模块被 iRAS 之外的
+         调用方复用。不写自检工况 —— 没有工况能走到, 写了也是惰性断言
+         (M13/M14 的老教训); 改由 index.html 的单元级断言 N1 直接调本函数覆盖。
+       ⚠ 不抛异常: 调用方是 try/catch 静默降级的, 抛出会让 pH 字段直接消失,
+         把"可疑的数"换成"没有数", 更难排查。改为随返回值带出 boundaryHit。 */
+    const _fLo = taOf(lo), _fHi = taOf(hi);
+    const boundaryHit = !(_fLo > 0 && _fHi < 0);
+    const boundaryDir = boundaryHit ? (_fLo <= 0 ? 'high' : 'low') : null;
     // taOf 在该范围内 H 单调递减
     for (let i = 0; i < 100; i++) {
       Hm = sqrt(lo * hi);                              // 几何二分 (H 跨多个数量级)
@@ -4222,16 +4365,78 @@
     const HCO3 = K1 * CO2aq / H_sws;
     const CO3 = K1 * K2 * CO2aq / (H_sws * H_sws);
     const DIC = CO2aq + HCO3 + CO3;
-    const omega = (S > 0) ? (Ca_RT67(S) * CO3 / Ksp_calcite_M83(T, S)) : null;  // 方解石饱和度 (海水)
+    /* v2.5 IRAS_V25_CA_INPUT: Ca 可由调用方给定 (mol/kg-SW), 缺省时按盐度反推。
+       原式 S = 0 直接返回 null ⇒ 淡水 Ω 算不出, 而淡水 RAS 的碳酸钙溶蚀是真实工程问题。
+       ⚠ Ksp 在 S = 0 【没有问题】: Mucci 1983 的盐度项在 S=0 干净归零,
+         外推给 pKsp = 8.480, 与 Plummer-Busenberg 1982 的淡水热力学值吻合。
+         卡点从来只在 Ca, 不在 Ksp。
+       ⚠ 【仍未处理】低离子强度的活度修正: 本式按【浓度】计算, 而 Ksp 在 S=0 退化为
+         活度标度的热力学常数。淡水 I ≈ 0.01 M 时 Davies 给 γ(二价) ≈ 0.66,
+         两个二价离子相乘 ≈ 0.44 ⇒ 淡水 Ω 会【高估约 2 倍】。海水不受影响
+         (Mucci 的 Ksp 本就是该盐度下的化学计量常数, 活度已含在内)。
+         故淡水 Ω 目前只可用于【定性判断欠饱和/过饱和的方向】, 不可作定量依据。 */
+    const _CaUse = (CaOverride != null && CaOverride > 0) ? CaOverride
+                 : ((S > 0) ? Ca_RT67(S) : null);
+    /* v2.5 IRAS_V25_CA_ACTIVITY: 淡水乘 Davies 活度系数 γ², 海水不乘 (见 daviesGamma 注释) */
+    let _gamma2 = 1;
+    if (S <= 0 && _CaUse != null && ionicI != null && ionicI > 0) {
+      const _g = daviesGamma(ionicI, 2, Tc);
+      _gamma2 = _g * _g;
+    }
+    const omega = (_CaUse != null)
+      ? (_gamma2 * _CaUse * CO3 / Ksp_calcite_M83(T, S)) : null;
     return {
       pH: pH_free, pH_free, pH_sws, pH_nbs, H_sws, fH,
       CO2aq, HCO3, CO3, DIC, omega_calcite: omega,
+      boundaryHit, boundaryDir,                        // v2.5 B7: 真解是否落在 [2,12] 之外
       K1, K2, KW, KB, KH: K0_W74(T, S)
     };
   }
 
   // 钙 (Riley-Tongudai 1967) 和方解石溶度积 (Mucci 1983, 1 atm) - 饱和指数用
   function Ca_RT67(S) { return 0.02128 / 40.087 * S / 1.80655; }                // mol/kg-SW
+  /* ---- Davies 活度系数 (低离子强度) ----
+     v2.5 IRAS_V25_CA_ACTIVITY
+       log γ = -A·z²·(√I/(1+√I) - 0.3·I),  A(T) = 0.4918 + 6.6e-4·T + 4.87e-6·T²
+     【为什么淡水必须修正】Mucci 1983 的 Ksp 在 S>0 是该盐度下的【化学计量常数】
+       (按总浓度定义, 活度已含在拟合里); 而 S=0 时盐度项归零, 它退化为
+       【活度标度】的热力学常数 (pKsp 8.480, 与 Plummer-Busenberg 1982 吻合)。
+       故淡水必须把浓度乘活度系数才能与该 Ksp 对齐:
+         Ω = a(Ca)·a(CO3)/Ksp = γ²·[Ca]·[CO3]/Ksp
+     【实证 —— 这不是理论洁癖】不修正时模型给淡水 Ω = 1.22–1.76 (过饱和, 会结垢),
+       而 Langelier 饱和指数独立算出 LSI = -0.16 ~ -0.39 ⇒ Ω ≈ 0.40–0.70
+       (欠饱和, 会溶蚀) —— <b>定性结论相反</b>。乘 γ² ≈ 0.58 后落到 0.58–1.00,
+       与 LSI 同侧同量级。而"溶蚀混凝土池体、池壁起砂"正是本模型要提示的工程问题,
+       不修正等于把它藏起来。
+     ⚠ 海水【不修正】: 那里 Ksp 是化学计量常数, 再乘活度系数就是重复计算。
+     ⚠ 残余不确定度: K1/K2 (Millero 2010) 在 S=0 的标度约定未经独立核对,
+       若它们也是活度标度, 则由其解出的 [CO3] 已含活度, 本修正会略微过头。
+       LSI 交叉验证表明总方向与量级正确, 但淡水 Ω 仍应视为【±30% 量级的估计】。 */
+  function daviesGamma(I, z, Tc) {
+    if (!(I > 0)) return 1;
+    const A = 0.4918 + 6.6e-4 * Tc + 4.87e-6 * Tc * Tc;
+    const si = sqrt(I);
+    return pow(10, -A * z * z * (si / (1 + si) - 0.3 * I));
+  }
+  /* 离子强度估算 (mol/L) —— 由已知的碱度与钙硬度 + 电荷平衡推出。
+     I = 0.5·Σci·zi²; 已知 Ca²⁺ 与 HCO3⁻, 差额由一价离子 (Na⁺ 或 Cl⁻) 补平。
+     ⚠ 这是【估算】: 未计 Mg²⁺、SO4²⁻ 等。典型 RAS 补水 I ≈ 0.004 M,
+       与常用经验式 I ≈ 2.5e-5 × TDS 在 TDS 160 mg/L 处一致。 */
+  function ionicStrengthFW(alk_mgL_CaCO3, caHard_mgL_CaCO3) {
+    const mHCO3 = (alk_mgL_CaCO3 > 0 ? alk_mgL_CaCO3 : 0) / 50043;      // mol/L
+    const mCa = (caHard_mgL_CaCO3 > 0 ? caHard_mgL_CaCO3 : 0) / 100090; // mol/L
+    return 0.5 * (4 * mCa + mHCO3 + Math.abs(mHCO3 - 2 * mCa));
+  }
+
+  /* v2.5 IRAS_V25_CA_INPUT: 钙硬度 (mg/L as CaCO3) → Ca (mol/kg-SW)
+     工程上钙硬度本就是常测项, 试剂盒读数即此单位。换算关系:
+       钙硬度(as CaCO3) = [Ca2+] mg/L × 2.497   (100.09/40.078)
+     再按简单盐度密度式 rho = 1 + 8e-4·S 折成 mol/kg-SW, 与本模块其他换算同源。 */
+  function caFromHardness(hardness_mgL_CaCO3, S) {
+    if (!(hardness_mgL_CaCO3 > 0)) return null;
+    const ca_mgL = hardness_mgL_CaCO3 / 2.497;
+    return ca_mgL / 40078 / (1 + 0.0008 * S);
+  }
   function Ksp_calcite_M83(Tc, S) {                                             // (mol/kg-SW)^2, 1 atm
     const T = (typeof Tc === 'number' && Tc < 200) ? Tc + 273.15 : Tc;         // 接受 degC 或 K
     let lg = -171.9065 - 0.077993 * T + 2839.319 / T + 71.595 * log10(T)
@@ -4272,6 +4477,52 @@
       + (KB > 0 ? KB * TB / (KB + H) : 0) + KW / H - H;       // mol/kg-SW
   }
 
+  /* ---- 反向: 总碱度 + 总无机碳 → 溶解 CO2 (mol/kg-SW) ----
+     v2.5 IRAS_V25_CO2_BUFFER
+     【用途】CO2 被气相吹走时, TA【不变】而 DIC 减少 —— CO2 与气相交换是碱度中性的。
+       平衡随即右移 (HCO3- + H+ -> CO2 + H2O), 一部分重碳酸盐转回自由 CO2 补上,
+       故【自由 CO2 的下降小于被吹走的质量】。要算出真实降幅, 必须由 (TA, DIC_new) 反解。
+     【为什么必须反解而不能代数直解】solveAlk 能直解是因为目标 pH 已知 ⇒ [H+] 已知;
+       此处 DIC 已知而 [H+] 未知, 且 DIC(CO2) 是 CO2 与 H 的耦合式, 无闭式反函数。
+       故用二分 —— 与 solve() 同款几何二分, 因 CO2 跨多个数量级。
+     【单调性依据】固定 TA 时 DIC 随 CO2aq 严格单调增: CO2 增加使 H 增加,
+       碳酸盐各项按 K1·CO2/H 与 2K1K2·CO2/H^2 分配, 总量仍随 CO2 增。二分因此适用。
+     ⚠ 区间 [1e-12, 1e-1] mol/kg 覆盖 pH 约 2..12 对应的 CO2 范围; 与 solve() 的
+       pH 区间同源。落在区间外时返回端点 —— 与 solve() 的 boundaryHit 同一处境,
+       调用方须自行判断合理性 (本模块不抛异常, 调用方多为静默降级路径)。 */
+  function co2FromDIC(TA, DIC, Tc, S) {
+    let lo = 1e-12, hi = 1e-1, m = 0;
+    for (let i = 0; i < 200; i++) {
+      m = sqrt(lo * hi);
+      if (solve(TA, m, Tc, S).DIC > DIC) hi = m; else lo = m;
+    }
+    return m;
+  }
+
+  /* ---- 碳酸盐缓冲因子: 吹走单位质量 CO2 时, 自由 CO2 实际下降的倒数 ----
+     v2.5 IRAS_V25_CO2_BUFFER
+       factor = ΔDIC / Δ[CO2]  (>= 1)
+     它就是海洋化学的 Revelle 因子换个写法:
+       Revelle = (Δ[CO2]/[CO2]) / (ΔDIC/DIC)  ⇒  factor = DIC / ([CO2] × Revelle)
+     实测本模型工况 Revelle ≈ 13.9 (pH 7.22, 海水), 落在海洋典型 8-15 内 —— 独立旁证。
+     【物理含义】自由 CO2 只占 DIC 约 6%, 却吸收了 84% 的 DIC 变化: 小池子被大池子撑着。
+     【用法】凡按【气相载量】算出的移除量 (kLoad × 风量 × 逼近), 得到的是从 DIC 里
+       转移走的【质量】, 若直接当作自由 CO2 的降幅使用, 等价于假设 factor = 1.0,
+       会系统性高估去除率。淡水 ≈1.02 (可忽略), 海水 150 mg/L 碱度 ≈1.12-1.18。
+     ⚠ 而脱气塔的 η 来自【实测进出水自由 CO2 之比】, 本就是"表观"口径,
+       缓冲已含在那个实测数里 —— 【不可】再乘一次, 否则重复计算。
+     ⚠ dm 取小值求导数: 实测 1 mg/L 步长给 1.201, 0.01 mg/L 给 1.183, 差 1.6%。
+       默认 1e-3 mg/L 当量, 已足够收敛且不触及二分精度下限。 */
+  function co2BufferFactor(TA, CO2aq, Tc, S, dm) {
+    const r0 = solve(TA, CO2aq, Tc, S);
+    const d = (dm != null ? dm : 1e-3) / 44010 / (1 + 0.0008 * S);   // mol/kg 当量
+    if (!(r0.DIC > d)) return 1;
+    const c1 = co2FromDIC(TA, r0.DIC - d, Tc, S);
+    const drop = CO2aq - c1;
+    if (!(drop > 0)) return 1;
+    return d / drop;
+  }
+
   // 非离子化氨 (剧毒) 占 TAN 比例 f = [NH3]/TAN = Ka/(Ka+[H+]_SWS), 用 SWS 标度 Ka 和 H
   function nh3Fraction(H_sws, Tc, S) {
     const Ka = Ka_NH3_SWS(Tc + 273.15, S);   // CW95, SWS 标度; 物理比例与标度无关
@@ -4279,7 +4530,10 @@
   }
 
   const api = {
+    co2FromDIC, co2BufferFactor,      // v2.5 IRAS_V25_CO2_BUFFER
     solve, solveAlk, nh3Fraction, bufferBeta, Ca_RT67, Ksp_calcite_M83,
+    caFromHardness,                   // v2.5 IRAS_V25_CA_INPUT
+    daviesGamma, ionicStrengthFW,     // v2.5 IRAS_V25_CA_ACTIVITY
     K0_W74, K1K2_M10, KW_M79, KB_SWS, KB_TOT_D90b, KS_FREE_D90a, KF_FREE_DR79,
     fH_TWB82, Ka_NH3_CW95_TOT, Ka_NH3_SWS, boronTotal, sulfateTotal, fluorideTotal, ionicStrength
   };
@@ -4348,8 +4602,8 @@ const IRAS_META = {
        称【v2.3 新基线值】; 两者以 MD5SUMS 区分。
      ── v2.3.3 (2026-08-13, 项目方定版): 字段流转工厂化 (IRAS_V233_FIELD_FLOW)。
        纯结构重构 + 断言 M15a–d, 13 条基线对【v2.3 新基线值】逐位不变。 */
-  version: '2.4',
-  releaseDate: '2026-08-13',
+  version: '2.5',
+  releaseDate: '2026-08-23',
   author: '孙程',
   email: '6881509@qq.com',
   company: '海南登登科技咨询有限公司',
@@ -4818,6 +5072,29 @@ const PROCESS_DEFAULTS = {
   skimmerEnabled: true,
   skimmerMode: 'ozone',          // 'air' 空气, 'ozone' 臭氧
   skimmerFlowPct: 20,            // 旁路流量占循环流量的百分比 (典型 15-30%)
+  /* ══ v2.5 IRAS_V25_BF_DOM — 生物滤池对溶解性有机物的去除 (此前【整项缺失】) ══
+     【缺陷】原去除路径注释原文: "DOM: 蛋分(旁路) + AOP(旁路, 仅小比例) + 换水" ——
+       【没有生物滤池】。沿程七个节点中只有蛋分节点动 DOM, 而异养菌吃掉的底物
+       本该从水里消失(变成 CO₂ + 污泥, 污泥经微滤机与换水排出)。
+       模型算了异养耗氧(o2DOMDaily)、v2.5 也补了异养产 CO₂ —— 【唯独没扣底物】。
+     【为什么默认只有 2.5% 而不是 50%】η 是【单程】去除率, 而水一天过 60–144 次。
+       50%/程 意味着日削减 2^60 量级, 稳态被压到 1.8–2.6 mg/L ——
+       而文献实测淡水 RAS 溶解态 COD 为 35.6 mg O₂/L (DTU Aqua 中试, 虹鳟)。
+       反推可复现该值的单程去除率 ≈ 2.6%。实测扫描 (关蛋分):
+         η=2% → 45–63 mg/L ; 2.5% → 36–50 ; 5% → 18–26 ; 10% → 9–13 ; 50% → 1.8–2.6
+     【为什么它比 biofilterTAN(70%) 小 30 倍, 却不矛盾】
+       · TAN 处于一级动力学区, 0.5 mg/L 时生物膜远未吃饱, 单程能吃掉一大截;
+       · 溶解性 COD 中【大部分是难降解组分】, 易降解的很快被吃光, 剩下的过多少次都不动。
+       ⇒ 2.5% 不是"滤池效率低", 而是"底物大部分吃不动"。
+     【与蛋分的量纲对照】蛋分系统级 = 旁路比 20% × 单程 40% = 8%/程, 同一口径可直接比。
+       MBBR 约为其 1/3: 蛋分靠气泡吸附【表面活性】组分(效率高但只处理旁路),
+       MBBR 靠生物膜吃【可降解】组分(全流量但底物大部分吃不动)。
+     ⚠ 【本值是两件事挤在一起的产物】= 可降解占比 × 可降解部分的去除率。
+       正确做法是拆成两层(bCOD/rCOD), 已排入 HANDOFF §5.1 大批次;
+       在此之前本参数是一个【等效值】, 调它时请知道调的是这个乘积。
+     ⚠ 该量以 mg O₂/L 计, 即【溶解性 COD】—— 字段名 DOM 是历史遗留,
+       将与降解性拆分同批重命名(见 §5.1), 此处不单独改名以免白付导出面变更的代价。 */
+  bfDOMEff: 2.5,                 // % 生物滤池对溶解性 COD 的【单程】去除率
   skimmerDOMEffAir: 40,          // 空气模式 单次通过 DOM 去除率 30-50%
   // v2.1 IRAS_V21_SKIMMER_BLOWER: 供气动力 —— 此前只有支路泵、没有风机,
   //   而泡沫分离的效率由【气量】决定 (没有气就没有泡沫), 属独立 OPEX 漏项。
@@ -4891,6 +5168,86 @@ const PROCESS_DEFAULTS = {
   //    当时判定为「设计选择而非错误」并保持默认不变; v2.0 依教科书上调 G:L 后
   //    该问题自动消解, 无需调整风压。)
   co2StripperEnabled: true,      // 默认开启; 关闭时 CO2 仅靠换水稀释 + 增氧扰动
+  /* ══ v2.5 IRAS_V25_MBBR_COVER — MBBR 是否加盖并接排风外排 (第八轮审计 B9) ══
+     MBBR 粗孔曝气的尾气【离开水面后去哪儿】是一个真实的项目级选择, 此前被硬编码为
+     \"外排\" (bfBlowerSpec.airPath.sink 写死 OUTDOOR)。两种做法都常见:
+       true  (默认) 加盖 + 集气罩 + 风管外排 —— 尾气及其水汽、CO₂ 全部离开建筑;
+       false        敞口 MBBR, 尾气在车间水面破裂进入车间空气。
+     ⚠ 这【不是】布置问题: MBBR 与鱼池同厅与否, 只决定风机电机废热去哪个房间
+       (heatVia), 不决定气去哪儿。同厅照样可以加盖外排。两个决策相互独立。
+     ⚠ 量级 (实测, 三文鱼 1000t 成鱼期): 敞口时 0.50 t/d 水汽进厅 ⇒ 342 kWh/d 潜热,
+       是整个池面蒸发项 (254 kWh/d) 的 1.35 倍。翻此开关 13 条基线【52/52 全变】,
+       最大相对差 12.28% (eel_200 的 hpCostPerKg)。故默认 true = 保持既有行为,
+       基线逐位不变; 选 false 的用户自己承担那 12%, 而不是被默认值悄悄承担。
+     ⚠ 与 BF_CO2_STRIP 的耦合 (审计 B10): 当前 BF_CO2_STRIP=0, 该气流【不含 CO₂】,
+       故本开关目前只动水汽, 不动 fracIndoorCO2 (X1–X3 断言面不受影响)。
+       若将来承认 η_BF ≈ 4–13%, 敞口工况下那部分 CO₂ 将入室 —— 粗算约 198 kg/d,
+       按 1500 ppm 反算需额外约 4,000 m³/h 新风 (现有机械新风 4,642)。届时两条
+       必须同批处置, 否则又是一个\"水侧算了移除、室侧不算入室\"的孤儿项。 */
+  mbbrCovered: true,             // 默认加盖外排 (基线口径); false = 敞口, 尾气入室
+
+  /* ══ v2.5 IRAS_V25_BF_AERATION — MBBR 曝气改为【流化驱动、DO 为结果】 ══
+     【原模型的三处错】
+       ① 风机按 o2BFDaily 选型, SOTE 写死 8% —— 而 SOTE 的标准定义是清水 20°C
+          【DO=0】1 atm, 即驱动力最大的那个点。实际 MBBR 里 DO 是 5–12 mg/L,
+          驱动力只剩一小截: 实算冷水纯氧工况实际 SOTE 仅 0.35–0.5%, 要供上得 17–23 倍风量。
+          ⇒ 按 8% 选出来的风量, 与它实际能传的氧无关。
+       ② 沿程 BF 节点把全部 o2BFDaily 从水里扣掉, 等于假设 MBBR 是密闭罐没有曝气;
+          而同一份 o2BFDaily 已经拿去选了风机 —— 同一股氧算了两遍。
+       ③ 兜底 Math.max(bfDOout, 2.0) 是 ② 的创可贴, 地板生效时【凭空造氧】
+          (实测 5 条工况, 最大 29.4 kg/d 无供给项), 由断言 O1b 抓出。
+
+     【新口径: 把因果倒过来】
+       风量由【流化】决定 (Norsk Vann: 混合可能成为供气量的控制性因素),
+       DO 由质量平衡【算出来】:
+         Q(DO_in − DO_out) − R_生物膜 + M·k·(β·Cs_深度 − DO_out) = 0
+         ⇒ DO_out = (Q·DO_in − R + M·k·β·Cs_深度) / (Q + M·k)
+       风量→0 时落在"不曝气值", 风量→∞ 时趋于平衡 DO, 【天然夹在窗口内】——
+       不需要任何钳制或地板, 数学上跑不出去 (它是两个端点的加权平均)。
+       ⚠ 反过来做 (输入目标 DO 反算风量) 会有 1/(Cs−DO) 的渐近线: 实算三文鱼
+         DO 从 7 到 9 风量 3,914 → 334,042 Nm³/h, 且 DO=4 在 24 个工况里 18 个不可达。
+         故【不采用】那个方向。 */
+  bfAirFlux: 10,                 // m³ 空气/(h·m² 池底) — 流化通量, 见下方出处
+  /* 【出处】Norsk Vann Rapport 168/2009《Veiledning for dimensjonering av avløpsrenseanlegg》
+       (Ødegaard, Rusten, Storhaug, Paulsrud) 原文:
+       "I enkelte tilfeller kan nødvendig grad av omrøring bli dimensjonerende for
+        lufttilførselen. For å sikre god omrøring bør lufttilførselen aldri settes
+        lavere enn 10–15 m³ luft/h · m² bunnflate i reaktor (avhengig av bærer)."
+       ⇒ 10–15 是【下限区间】而非典型值; "avhengig av bærer" ⇒ 随载体类型变, 故开为输入。
+     【次级参考】Aquacultural Engineering《Mixing and scale affect MBBR performance》实测:
+       表观气速低于 5 m/h 时小试与中试的 TAN 去除率均下降 —— 那是【性能开始劣化的点】,
+       导则的 10–15 是在它之上留了余量。两者层级不同, 勿混用。
+     ⚠ 允许下探到 2 是【用户选择】(可用于机械搅拌或低密度载体工况), 低于 10 会出提示性告警。
+     ⚠ Limitations: 同一篇实测明确指出【表观气速不是水产 MBBR 合适的放大准则】——
+       保持几何相似放大时注入深度增加, 相同表观气速下所需能量更高, 而该量不含这一点。
+       本模型把水深开为输入, 但通量本身【不随水深修正】, 属固有近似。 */
+  bfDepth: 3,                    // m, MBBR 池水深 — 同时驱动池底面积、气液平衡与风机压力
+  /* ⚠ 单源: 原风机压力硬编码 50000 Pa (≈5 m 水柱), 与 3 m 默认水深自相矛盾。
+     现改为 bfDepth × 9.81 kPa + 15 kPa 管损, 水深一处改、三处跟着走。 */
+  bfDOMin: 4,                    // mg/L, MBBR 最低运行 DO — 低于此值【只告警, 不自动加风】
+  /* ⚠ 有意不自动调整: 自动加风会把用户设定的流化通量悄悄改掉, 且代价可能极大
+     (实测石斑幼鱼期要达到 DO=4 需通量 40.9, 远超导则区间, 功率由 9 kW 涨到 38 kW)。
+     告警里给出"需通量 X / 届时功率 Y", 让用户做一个【有标价的选择】。 */
+  bfAlpha: 0.85,                 // 传氧修正 α (清水→实际水) — ⚠ 无 RAS 出处, 待标定
+  /* ══ v2.5 IRAS_V25_BF_CO2 — MBBR 曝气对 CO₂ 的吹脱 (原审计 B10, 此前写死 0) ══
+     【为什么此前是 0】v1.9 定 BF_CO2_STRIP=0, 注释写"保守, 脱气塔选型偏安全"。
+       该判断是对的 —— 承认吹脱之后, 塔的进水负荷确实下降(实测 salmon 成鱼期 9.53 → 8.48),
+       塔可以选小一档。所以旧值不是错, 是留了余量。
+     【为什么现在能算了】CO₂ 与 O₂ 的驱动力差一个数量级:
+         O₂  水中 5–12 mg/L, 与空气平衡 6–12  ⇒ 驱动力【几乎为零】
+         CO₂ 水中 7–13 mg/L, 与空气平衡 ~0.6  ⇒ 驱动力【几乎是全量】
+       同一股气几乎加不进氧, 却能有效吹走 CO₂。曝气改流化驱动后风量已知(且比旧的
+       供氧驱动风量大 69%), 用 iRAS 现成的气相载量式 kLoad 即可算出, 不引入新机理。
+     【为什么单开一个逼近系数, 不复用 co2StripApproach】
+       塔是填料逆流, MBBR 是池内粗孔鼓泡, 气液接触方式不同。手册 3507 行自己记着:
+       "实测粗孔盘仅达理论平衡约 23%、细孔盘可达 93%" —— 23% 正是【为粗孔盘记的】。
+       复用塔的 0.5 等于宣称两者传质逼近程度相同, 属"拿来源不同的数字当系数"。
+     ⚠ 与 co2StripApproach 同处境: 待标定项。0.23 有出处但样本单一。
+     ⚠ 与 mbbrCovered 耦合: 吹掉的 CO₂ 随尾气走 —— 加盖外排则离开建筑,
+       敞口则进车间并计入新风。三条(B8 归位 / B9 尾气去向 / 本条)至此在一个式子里闭合。 */
+  bfCo2Approach: 0.23,           // MBBR 粗孔曝气对 CO₂ 的气液平衡逼近系数
+  /* ⚠ 与 co2StripApproach 同处境: 市政取 0.5–0.7, RAS 水质更洁净故取 0.85,
+     但【无直接实测支撑】。β=0.95(盐度/表面张力)、θ=1.024、粗孔盘 1.2%/m 走固定常数。 */
   /* ⚠ 勿据本行断言"air 模式默认开塔" —— 本字段【不是】用户实际看到的默认值。
      v2.3.3四批在 UI 事件层做了 air↔脱气塔联动: 增氧方式切到 air 时脱气塔自动置 false
      (带 auto-value 样式与提示语), 并以 dataset.userSet 标记尊重用户的显式选择。
@@ -4937,6 +5294,30 @@ const PROCESS_DEFAULTS = {
   /* v2.3二批 IRAS_V23B_AIR_SIZING — 曝气风量物理选型参数 (air 模式) */
   sotePerMeter: 6.5,             // 微孔盘清水标准 SOTE %/m 水深 (EPA/ASCE 典型 5-7)
   aerationAlphaBeta: 0.75,       // α(工艺水污染)×β(盐度) 综合折减, RAS 0.7-0.85
+  /* ══ v2.5 IRAS_V25_CA_INPUT — 钙硬度开放为输入 (第八轮审计 B6) ══
+     【原缺陷】Ca 由 Ca_RT67(S) 按【海水恒定比例】反推 ⇒ 淡水 S=0 时 Ca ≡ 0,
+       方解石饱和度 Ω 直接算不出 —— 罗非/加州鲈/鳜/鳗【四个淡水鱼种全场 n/a】,
+       占鱼种库的一半。而注释里自己写着淡水 RAS 的碳酸钙溶蚀(溶蚀混凝土池体、
+       池壁起砂)是真实工程问题, 恰恰算不了。
+     【海水反推是对的, 不动】Ca_RT67(35) 给出 412 mg/L Ca²⁺, 与文献典型海水
+       约 400 mg/L 直接吻合。⚠ 勿绕道"总硬度×比例"去校核: 海水硬度以 Mg 为主
+       (Mg²⁺ ≈ 1290 vs Ca²⁺ ≈ 412), 钙只占总硬度约 1/5, 而 2/3 那个经验比例是
+       【淡水】的 —— 本会话曾借错该口径, 得出"差 4 倍"的假结论。
+     【新增口径】caMode = 'auto' 时: S > 0 走 Ca_RT67 (海水, 行为不变);
+       S = 0 走本字段按水源类型给的默认值。caMode = 'manual' 时一律用用户值。
+     【单位】mg/L as CaCO₃ (钙硬度) —— 工程上钙硬度本就是常测项, 试剂盒读数即此单位。
+       换算: 钙硬度(as CaCO₃) = [Ca²⁺] × 2.497。
+     【默认值出处】USGS 硬度分级: 0–60 软 / 61–120 中等 / 121–180 硬 / >180 极硬。
+       水产目标区间 (SRAC 464): 游离钙 40–100 mg/L 即钙硬度 100–250 mg/L CaCO₃,
+       其中 100 mg/L 游离钙恰与鱼血钙浓度相当。Boyd: 养殖上一般希望
+       硬度 > 50 (鱼) / > 80 (甲壳类) mg/L。
+       取 90 (中等硬度地下水) 为默认 —— RAS 补水多为井水, 且落在水产可接受区间内。
+     ⚠ 【尚未处理】低离子强度下的活度修正: 淡水 I ≈ 0.01 M, Davies 式给
+       γ(二价) ≈ 0.66, 两个二价离子相乘 ≈ 0.44 ⇒ 按浓度算的 Ω 会【高估约 2 倍】。
+       Ksp 本身在 S=0 没问题 (Mucci 外推给 pKsp 8.480, 与 Plummer-Busenberg 淡水
+       热力学值吻合), 卡点只在活度系数。见下一批。 */
+  caMode: 'auto',                // 'auto' = 海水按盐度反推 / 淡水用下方默认; 'manual' = 一律用用户值
+  caHardness: 90,                // mg/L as CaCO₃ (钙硬度), 淡水默认取中等硬度地下水
   co2StripApproach: 0.5,         // 气泡出水对 Henry 平衡的逼近系数 (工程 0.4-0.7)
   co2TargetMgL: null,            // CO₂ 选型目标 mg/L; null=取鱼种阈值(海水折减后)
   /* v2.3.3五批 IRAS_V233_AIR_DESIGN_PT: 空气曝气【设计工况点】—— 池内设计 DO。
@@ -6064,10 +6445,40 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
   //   2 mol CO2 / mol TAN-N × 44.01/14.01 = 6.286 g CO2/g TAN-N
   //   v1.7 之前只算呼吸, 漏算硝化产 CO2, 导致 CO2 脱气塔规格偏小 30-50%
   //   BF_CO2_STRIP = BF 内 CO2 自带脱气信用 (v1.9 Phase 1 设 0, 即假设硝化 CO2 全部到主回路, 脱气塔保守选型)
-  const CO2_PER_TANN = 6.286, BF_CO2_STRIP = 0;
+  /* ══ v2.5 IRAS_V25_CHAIN_CO2 (审计 B8 · 决策 D2) — 两个系数的归位 ══
+     CO2_PER_TANN / BF_CO2_STRIP 原为本函数内的局部字面量。链式口径下, 硝化产 CO₂
+     必须能在【生物滤池节点】被单独取用 (它产在那儿, 不产在鱼池), 故:
+       · 系数提升为模块级单源常数 (与 v2.5 的 ALK_PER_TANN 同款处置);
+       · BF_CO2_STRIP 的语义本就是"MBBR 内自带脱气、never 进主回路的那一份",
+         现在它只乘在硝化项上并单独导出 —— 名称所指与实现位置终于一致。
+         将来要开它 (审计 B10) 只需改这一个数, 不必在两套口径之间翻译。
+     ⚠ co2Daily 的【值与含义都不变】: 仍是"进入主回路的 CO₂ 总量"。
+       本改动只是把它拆成两个具名分量并导出, 供水质链按节点分配。 */
+  const CO2_PER_TANN = CO2_PER_TANN_G, BF_CO2_STRIP = BF_CO2_STRIP_FRAC;
   // v1.9.2: o2FishDaily 含池内异养耗氧, 故本式的 CO₂ 也自动含池内异养呼吸产的 CO₂
   //   (好氧异养分解有机物 RQ ≈ 1, 与鱼呼吸同口径, 用同一 1.375 换算系数合理)
-  const co2Daily      = o2FishDaily * 1.375 + tanDaily * CO2_PER_TANN * (1 - BF_CO2_STRIP);  // kg/d (池内呼吸 + 硝化)
+  /* v2.5 IRAS_V25_CHAIN_CO2: 按【产生位置】拆分, 供 simulateWaterQualityProcess 分配到节点。
+       co2RespDaily     鱼池 (鱼呼吸 + 池内异养) —— 汇入链上的【鱼池】节点
+       co2NitriLoopDaily 生物滤池 (硝化, 扣除 BF 内自带脱气) —— 汇入链上的【MBBR】节点
+     两者之和恒等于 co2Daily (断言 X4c 锁), 故一切既有消费点逐位不变。 */
+  const co2RespDaily      = o2FishDaily * 1.375;                                   // kg/d (鱼池侧)
+  const co2NitriGrossDaily = tanDaily * CO2_PER_TANN;                              // kg/d (硝化毛产)
+  /* ══ v2.5 IRAS_V25_BF_HETERO — 生物滤池异养呼吸的 CO₂ (此前【整项缺失】) ══
+     【缺陷】上方注释写着"o2FishDaily 含池内异养耗氧, 故本式的 CO₂ 也自动含池内异养
+       呼吸产的 CO₂"—— 关键词是【池内】。而 o2DOMDaily (生物滤池内的异养耗氧) 是
+       【单独一项】, 进 o2BFDaily 参与风机选型, 但它的 CO₂ 一分都没进 co2Daily。
+       ⇒ 氧账本里有、碳账本里没有 —— 又一个"一半算了一半没算"。
+       ⚠ N4 抓不到它: N4 查的是【移除】路径有没有进分解, 这是【产生】项, 不在其视野。
+     【实测锚定】Summerfelt 2004 实测滤池产 CO₂ 4.1±0.2 mg/L, 拆解为
+       硝化 0.51 mg/L TAN × 5.9 = 3.0 与异养 1.45 mg/L DO × 1.38 = 2.0 ——
+       【异养占四成】。补此项后本模型算出 3.1–4.7 mg/L, 落入实测区间;
+       只算硝化则 1.7–3.1, 偏低三到四成。
+     【归位】它产在生物滤池, 故与硝化项一同汇入链上的【MBBR 节点】, 不进鱼池节点。
+     ⚠ BF_CO2_STRIP 同样作用于它: "MBBR 内自带脱气、never 进主回路的那一份"
+       对异养产的 CO₂ 与硝化产的 CO₂ 一视同仁。 */
+  const co2HeteroBFGrossDaily = o2DOMDaily * CO2_PER_O2_HETERO_BF;                 // kg/d (BF 异养毛产)
+  const co2NitriLoopDaily = (co2NitriGrossDaily + co2HeteroBFGrossDaily) * (1 - BF_CO2_STRIP);
+  const co2Daily      = co2RespDaily + co2NitriLoopDaily;  // kg/d (池内呼吸 + 生物滤池产)
 
   // ====【小时峰值 - 设备选型基准, 含 peakFactor】====
   // 物理: 投喂后 2-4h 代谢响应窗口内的小时级峰值
@@ -6121,6 +6532,8 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
 
     // 日总量 (kg/d, 不含 peakFactor) - 用于 OPEX/排污/化学品/沿程水质
     tanDaily, tssDaily, domDaily, co2Daily,
+    /* v2.5 IRAS_V25_CHAIN_CO2: CO₂ 按产生位置的分量 (co2Resp + co2NitriLoop ≡ co2Daily) */
+    co2RespDaily, co2NitriGrossDaily, co2NitriLoopDaily,
     o2FishDaily, o2NitriDaily, o2DOMDaily, o2DailyTotal, o2BFDaily,
 
     // 小时峰值 (kg/h, 含 peakFactor) - 用于设备容量选型
@@ -6671,11 +7084,27 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq, si
       && eq.aerationSpec.airPath.contactsWater
       && eq.aerationSpec.airFlowM3h > 0);
   const _sAer = _hasIndoorAeration ? 1 : 0;
-  /* ⚠ 单源: fracAer 只从水侧 sim 取, 不在此处另算一份 —— 若 sim 缺失 (pass 1 粗算,
-     eq 尚未算出时) 退化为 0, 与该时点 eq=null ⇒ _sAer=0 的语义一致。 */
+  /* ⚠ 单源: 份额只从水侧 sim 取, 不在此处另算一份 —— 若 sim 缺失 (pass 1 粗算,
+     eq 尚未算出时) 退化为 0, 与该时点 eq=null ⇒ _sAer=0 的语义一致。
+     ══ v2.5 IRAS_V25_CO2_DILUTION (审计 B4 连带) ══
+       原式 `_fracAer × sAer + (1 − _fracAer) × degasFrac` 的第二项默认
+       "剩下的全是塔的"。补回换水项后这不成立 —— 换水带走的 CO₂ 随排水离场,
+       一克也不进车间, 却被这一项乘了 degasFrac 送进去。改读显式的 fracTower,
+       换水份额自动落到"哪儿都不去"(× 0), 不需要额外的减法。
+       旧载荷 (无 fracTower) 回退到 1 − fracAer, 与 v2.4 逐位一致。 */
   const _fracAer = (sim && sim.co2Removal && Number.isFinite(sim.co2Removal.fracAer))
     ? sim.co2Removal.fracAer : 0;
-  const fracIndoorCO2 = _fracAer * _sAer + (1 - _fracAer) * degasFrac;
+  const _fracTower = (sim && sim.co2Removal && Number.isFinite(sim.co2Removal.fracTower))
+    ? sim.co2Removal.fracTower : (1 - _fracAer);
+  /* v2.5 IRAS_V25_BF_CO2: 第四支 —— MBBR 曝气吹掉的 CO₂ 随 BF 尾气走,
+     去向由 mbbrCovered 决定 (加盖外排 ⇒ 0 入室; 敞口 ⇒ 全部入室)。
+     ⚠ 与 B9 在此闭合: 那一批只处理了水汽, CO₂ 那时还是 0 所以看不出来;
+       现在承认吹脱, 敞口工况的入室 CO₂ 必须跟着算, 否则又是"水侧算了移除、室侧不算入室"。 */
+  const _fracBF = (sim && sim.co2Removal && Number.isFinite(sim.co2Removal.fracBF))
+    ? sim.co2Removal.fracBF : 0;
+  const _bfCovered = !(stage && stage.proc && stage.proc.mbbrCovered === false);
+  const fracIndoorCO2 = _fracAer * _sAer + _fracTower * degasFrac
+                      + _fracBF * (_bfCovered ? 0 : 1);
   const V_vent_fish_m3h = (feedForVent > 0)
     ? (CO2_PER_FEED_G * feedForVent * fracIndoorCO2) / dC_g_m3 / 24
     : 0;
@@ -7385,6 +7814,33 @@ function calcThermalLoadPoint(flowData, proc, stage, V_systemTotal, load, eq, si
       即 0.5 mol CaCO₃ 当量 → 50/84 = 0.595)
      NaHCO₃ 用量 = 碱度需求(kg CaCO₃) / 0.595
    ============================================================================ */
+/* v2.5 IRAS_V25_CHAIN_PH: 硝化碱度消耗系数提升为模块级单源常数.
+   原先 7.14 只是 calcAlkalinity 里的一个字面量; 沿程逐节点 pH 重算 (审计 B1) 需要
+   同一个系数把 TA 在生物滤池节点扣下来. 两处各写一个 7.14 = 又一个\"同一常数两处实现\"
+   (与已处置的 co2DailyAvg / CO2_PER_TANN 同族), 故此处单源, 两边引用. */
+const ALK_PER_TANN = 7.14;        // g CaCO₃ 碱度 / g TAN-N 被硝化
+/* v2.5 IRAS_V25_BF_HETERO: 生物滤池【异养】呼吸的 CO₂ 产率 (g CO₂ / g O₂ 消耗)。
+   出处: Summerfelt et al. 2004《Design implication of carbon dioxide production within
+   biofilters contained in recirculating salmonid culture systems》(Aquacultural Engineering) ——
+   Freshwater Institute 商业规模鲑鱼 RAS 实测: 滤池内异养呼吸每消耗 1 mg/L 溶氧
+   再贡献 1.38 mg/L CO₂ (该值由跨滤池溶氧降幅减去硝化耗氧估得)。
+   ⚠ 与鱼池侧的 1.375 (RQ≈1) 数值接近但【口径不同】: 那个是"每 kg 耗氧产多少 CO₂"的
+     呼吸商换算, 这个是同一篇实测拆解出的滤池异养项。两者同源于 RQ≈1 的化学计量,
+     数值相近是意料之中, 但引用出处必须分开写 —— 不可互相顶替。 */
+const CO2_PER_O2_HETERO_BF = 1.38;   // g CO₂ / g O₂ (Summerfelt 2004, BF 异养)
+/* v2.5 IRAS_V25_CHAIN_CO2 (审计 B8/B10): 硝化产 CO₂ 的两个系数提升为模块级单源。
+   CO2_PER_TANN_G  硝化化学计量 NH₄⁺ + 2HCO₃⁻ + 2O₂ → NO₃⁻ + 2CO₂:
+                   2 mol CO₂ / mol TAN-N × 44.01/14.01 = 6.286 g CO₂/g TAN-N
+   BF_CO2_STRIP_FRAC  MBBR 内粗孔曝气自带的脱气信用 —— 该份 CO₂ 在生物滤池就被
+                   吹脱, 从不进入主回路。v1.9 Phase 1 取 0 (保守: 脱气塔按全量选型)。
+                   ⚠ 保持 0 是【显式取舍】不是遗漏: 按本模型自身的气相载量式估算,
+                     等效单程去除率约 4%–13%, 取值取决于粗孔盘的气液平衡逼近系数,
+                     而该系数尚无标定值 (手册对 co2StripApproach 的判词同款)。
+                     见审计 B10 与 report.html 5.3.3 的口径说明段。 */
+/* v2.5 IRAS_V25_CHAIN_CO2: W5 锚定打点 —— 见 runSelfTest 的 ph7_warning_anchor。 */
+var __iRAS_ph7WarnSeen = false;
+const CO2_PER_TANN_G = 6.286;     // g CO₂ / g TAN-N 被硝化
+const BF_CO2_STRIP_FRAC = 0;      // MBBR 内自带脱气份额 (0 = 全量进主回路, 保守)
 function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   const denitriFlowRatio = proc.denitriFlowPct / 100;
   const eta_denitri = proc.denitriEff / 100;
@@ -7416,8 +7872,16 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   //   ⚠ 边界: TAN 发散时 (η=0 且换水=0) 上面的浓度是钳制产物, 不能用来反算.
   //     此时没有硝化菌 ⇒ 硝化量为 0 ⇒ 不耗碱. 与水质侧的处理保持一致.
   const _tanDiverged = !!(sim && sim.divergent && sim.divergent.indexOf('TAN') >= 0);
-  const _tanExportKgD = (!_tanDiverged && _tanConc != null && _dischV != null)
-                      ? (_tanConc * _dischV / 1000) : 0;
+  /* v2.5 IRAS_V25_MASS_BALANCE (断言 A3 咬出): 优先取排水模块【已经算好】的外排量。
+     原式用【鱼池】浓度 × 排水量自算, 而排水实际取自末节点 (lastNode_disch),
+     浓度低于鱼池 ⇒ 两个模块对同一股排水给出不同的 TAN 外排量 (实测差 0.16%)。
+     数值上微不足道, 但它是「同一个量两处实现」——正是本库反复咬出的那类漂移源。
+     单源: 排水模块。sim 缺失时才回退到自算式。 */
+  const _tanExportDisch = (sim && sim.discharge && isFinite(sim.discharge.TAN_kg_d))
+                        ? sim.discharge.TAN_kg_d : null;
+  const _tanExportKgD = _tanDiverged ? 0
+                      : (_tanExportDisch != null ? _tanExportDisch
+                        : ((_tanConc != null && _dischV != null) ? (_tanConc * _dischV / 1000) : 0));
   const tanNitrified = _tanDiverged ? 0 : Math.max(load.tanDaily - _tanExportKgD, 0);  // kg TAN-N/d
 
   // 反硝化 NO3-N 量:
@@ -7446,7 +7910,7 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   //   理论极限 3.57 = 1 当量 OH⁻ / mol N. 工程实测 2.5-3.0, 中位 2.8
   //   用户可在 proc.denitriAlkRecovery 覆盖 (UI 暂未开放)
   const denitriAlkCoef = (proc && proc.denitriAlkRecovery) || 2.8;
-  const alkConsumed  = tanNitrified * 7.14;
+  const alkConsumed  = tanNitrified * ALK_PER_TANN;   // v2.5: 7.14 → 模块级单源常数
   const alkRecovered = no3Denitrified * denitriAlkCoef;
   const alkNetDemand = alkConsumed - alkRecovered;
 
@@ -7456,8 +7920,25 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   const exchangeVolume = V_for_exchange * exchangeDailyFrac;   // m³/d
   const alkFromMakeup = exchangeVolume * (proc.alkSource != null ? proc.alkSource : 100) / 1000;
 
+  /* ══ v2.5 IRAS_V25_MASS_BALANCE — 排水带走的碱度 (断言 A1 咬出) ══
+     系统碱度守恒:  投加 = 硝化消耗 − 反硝化回收 − 补水带入 + 【排水带出】
+     最后一项此前【整项缺失】: 只记了补水进项, 没记排水出项。
+     补水按 alkSource (默认 100) 进来, 系统水按【维持碱度】(默认 150) 出去
+     ⇒ 换水实际是碱度的【净汇】(−50×V), 而模型把它记成净源 (+100×V)。
+     实测 NaHCO₃ 投加量系统性低估 5–35% (典型 9–13%), 低负荷阶段偏得更多
+     (排水占比相对硝化更大)。后果落在 naHCO3Cost → OPEX。
+     ⚠ 基数必须是【系统实际维持的碱度】而不是 proc.alkTarget:
+       pH 模式下维持的是 solveAlk 反求出的 alkRequired, 取错基数直接错 (断言 A2 锁)。
+     ⚠ 排水量取 sim.discharge (水质链单源), 与 A1/A3 同源; sim 缺失时回退到
+       本函数自算的 exchangeVolume —— 两者同口径, 回退不改语义。 */
+  const _TAheld = (sim && sim.phMode && isFinite(sim.alkRequired))
+    ? sim.alkRequired : proc.alkTarget;
+  const _dischV_alk = (sim && sim.discharge && isFinite(sim.discharge.V_m3_d))
+    ? sim.discharge.V_m3_d : exchangeVolume;
+  const alkExport = _dischV_alk * (isFinite(_TAheld) ? _TAheld : 0) / 1000;   // kg CaCO₃/d
+
   // 投加需求
-  const alkToAdd = Math.max(0, alkNetDemand - alkFromMakeup);
+  const alkToAdd = Math.max(0, alkNetDemand + alkExport - alkFromMakeup);
   const naHCO3Demand = alkToAdd / 0.595;                        // kg/d
 
   // v1.9.2 修复 (审计 P4): 出口有限性兜底.
@@ -7468,7 +7949,7 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
   return {
     alkConsumed: _fin(alkConsumed), alkRecovered: _fin(alkRecovered),
     alkNetDemand: _fin(alkNetDemand),
-    alkFromMakeup: _fin(alkFromMakeup), alkToAdd: _fin(alkToAdd),
+    alkFromMakeup: _fin(alkFromMakeup), alkExport: _fin(alkExport), alkToAdd: _fin(alkToAdd),
     naHCO3Demand: _fin(naHCO3Demand),
     no3Denitrified: _fin(no3Denitrified),
     alkTarget: proc.alkTarget, alkSource: proc.alkSource
@@ -7632,7 +8113,7 @@ function tankAerationDesign(sp, proc, load) {
            sizedBy: airCO2_m3h > airO2_m3h ? 'CO2' : 'O2' };
 }
 
-function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
+function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eqPrev) {
   // ── v1.9.2 (复审 P4 残留): 零流量短路 ──
   //   产量输入框被清空 (yieldTons=0) 时 flowM3h=0 → cyclesPerDay=0 → tanPerCycle=0/0=NaN,
   //   沿程各节点的 TAN/TSS/NO3/DOM/Geosmin/NH3_N 全变 NaN.
@@ -7654,7 +8135,14 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
       configWarns: [],   // v2.3.3二批: 空场无配置告警, 但导出面结构必须完整 (W0)
       /* v2.3.3 IRAS_V233_INDOOR_CO2: 同上 —— 空场没有 CO₂ 产量, 但导出面必须完整 (X0)。
          X0 上线当天即咬中此处缺失: 与 W0 当年"空场骨架漏导出"是同一课。 */
-      co2Removal: { etaTower: 0, etaAer: 0, etaTotal: 0, fracAer: 0,
+      /* ⚠ v2.5: 本骨架【第二次】因新增字段而落后于主路径, 由 N4b 咬出。
+         B4 加了 etaDil/fracTower/fracDil, B10 加了 etaBF/fracBF —— 两次都没同步这里。
+         注释上方记着"X0 上线当天即咬中此处缺失", 说明这是个【结构性易漏点】:
+         空场骨架是手写的字段清单, 主路径每加一个字段它就落后一次。
+         ⇒ 治本是让骨架由主路径的字段集派生, 而不是两处各写一份 (已记入遗留)。 */
+      co2Removal: { etaTower: 0, etaTowerOnly: 0, etaFallback: 0, etaAer: 0,
+                    etaDil: 0, etaBF: 0, etaTotal: 0,
+                    fracAer: 0, fracTower: 0, fracDil: 0, fracBF: 0,
                     mode: proc.aerationMode, stripperOn: proc.co2StripperEnabled !== false },
       divergent: [],
       denitri: { flow: 0, inletNO3: 0, outletNO3: 0, removal: 0, systemRemoval: 0 },
@@ -7803,28 +8291,198 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
                   / Math.max(flowData.flowM3h, 1e-6);
   }
   const eta_co2_tower = co2StripperOn ? (co2EffAuto ? eta_co2_auto : eta_co2_manual) : 0;
+  /* v2.5 IRAS_V25_CHAIN_CO2: 把 fallback 抽成具名分量 —— 链式解需要按【汇点位置】
+     分组, 而 fallback (增氧锥附带解吸) 与脱气塔同在 MBBR 下游, 池内曝气在鱼池。
+     取值逻辑与下方 eta_co2 逐字等价: 关塔且非 air 模式时才有 fallback。 */
+  const eta_co2_fallback = (!co2StripperOn && eta_co2_air == null)
+    ? ((proc.co2FallbackEff) / 100) : 0;
   const eta_co2 = co2StripperOn
     ? (eta_co2_tower + (eta_co2_air || 0))
     : (eta_co2_air != null ? eta_co2_air
                            : ((proc.co2FallbackEff) / 100));  // o2 模式附带解吸, 默认 5%
+  const V_replace_m3_d = V_total * exchangeDaily;   // m³/d, 换水量 (B4/X1b 共用单源)
   /* CO₂ 移除路径分解 —— 供热工侧算入室量, 且是守恒断言 X1–X3 的受检面。
      fracAer = 曝气移除占总移除的份额。稳态下总移除 ≡ 总产量, 故它同时就是
-     "曝气带走的 CO₂ 占产量的份额" —— 不需要知道绝对量, 也不引入新常数。 */
-  const _etaSum = eta_co2_tower + (eta_co2_air || 0);
+     "曝气带走的 CO₂ 占产量的份额" —— 不需要知道绝对量, 也不引入新常数。
+     ══ v2.5 IRAS_V25_CO2_DILUTION (审计 B4 的连带) — 换水项必须进本分解 ══
+       B4 把换水稀释补回稳态式后, "产量 ≡ 塔移除 + 曝气移除"这条前提【不再成立】,
+       变成 "产量 ≡ 塔移除 + 曝气移除 + 换水带走"。若本分解不同步:
+         · fracAer 分母缺一项 ⇒ 高估曝气份额;
+         · 更要紧的是 (1 − fracAer) 被整体当成"塔的份额"并乘 degasFrac 送进车间,
+           而换水带走的那部分是【随排水离场】的, 一克也不进车间 —— 等于把水里
+           排掉的 CO₂ 算进了车间空气。方向虽保守 (多算新风), 但口径是错的,
+           且正是纪律 10b: 稳态式改了口径, 依赖该口径的下游没跟上。
+       故换水以【等效单程去除率】进入同一个分解 (与曝气项同款处理):
+         移除_换水 = C × V_replace = C × Q×24 × [V_replace/(Q×24)]  ⇒ η_dil = V_replace/(Q×24)
+       三份额之和恒为 1, 由断言 X1b 锁住。
+     ⚠ η_dil 【不并入 eta_co2】: eta_co2 是"气相带走"的单程率, 沿程节点用它算
+       脱气塔出水 CO₂ (CO2 × (1−η))。把换水掺进去会让脱气塔节点凭空多降一点,
+       与 co2StripperSpec 选型口径脱节。稳态式与分解各自显式相加, 不共用一个符号。
+     ⚠ 基线中性: 13 条基线全 o2+开塔 ⇒ fracAer = 0, 且 fracTower×degasFrac 中
+       degasFrac 默认 0 ⇒ fracIndoorCO2 恒为 0, 逐位不变 (实测 52/52)。 */
+  const eta_co2_dil = (flowData.flowM3h > 1e-9)
+    ? V_replace_m3_d / (flowData.flowM3h * 24) : 0;      // 等效单程去除率 (换水)
+  /* v2.5 IRAS_V25_CHAIN_CO2: fallback (关塔时增氧锥附带解吸) 此前【不在分解里】——
+     o2+关塔 工况下它承担几乎全部移除, 却既不是 tower 也不是 aer, X1b 会因
+     fracDil 独自凑够 1 而误判为闭合。现与脱气塔归为同一类"脱气类气相移除"
+     (两者同在 MBBR 下游、同按 degasFrac 计入室份额), 记入 fracTower。
+     ⚠ 这也恢复了 v2.5 B4 之前的入室语义: 彼时 (1 − fracAer) 整体乘 degasFrac,
+       关塔工况下 fallback 那份本就走 degasFrac。B4 改成显式 fracTower 时把它漏了,
+       degasFrac > 0 的关塔工况会静默变成 0 入室。此处一并补回。 */
+  /* ══ v2.5 IRAS_V25_BF_CO2 — MBBR 曝气对 CO₂ 的吹脱 (原审计 B10) ══
+     ⚠ 位置: 必须在 co2Removal 之前 —— 初版放在链式解那里, 而 co2Removal 更早引用它,
+       let 的暂时性死区直接抛 ReferenceError, 整个 simulate 失败: 基线 52/52 变动 100%、
+       Ω 全线算不出、pH 告警全灭。三条断言 (N2/W5/U2) 同时报, 才定位到是异常不是算错。
+     汇点位置: 在 MBBR 节点【δ_n 加入之后、脱气塔之前】, 故它乘在 Bf 上而不是并进 _etaDown。
+     链式: 鱼池(+δ_r, ×A) → MBBR(+δ_n, ×Bf) → 塔/锥/换水(×B)
+       C_in = Bf·B·(δ_r·A + δ_n) / (1 − A·Bf·B)
+     ⇒ 只需把原式里的 B 换成 Bf·B, 形状不变。
+     ⚠ 用 iRAS 现成的气相载量式: η = 风量 × kLoad × 逼近系数 / 水量 —— 与鱼池曝气同源。
+       CO₂ 是【气相载量控制】(气泡离开液面前已被 CO₂ 饱和), 故与水深无关, 只取亨利平衡载量。
+       这一点 1606 行有专门记录: 曾误判为缺陷、实为两种传质机制的正确区分, 勿"修正"。
+     ⚠ kLoad 在此重算而非取 eqPrev: 纯氧模式下 tankAerationDesign 可能不返回它。
+       两处必须同值, 由断言 N4 锁住 (eqPrev 有值时逐位比对)。 */
+  let eta_co2_bf = 0, _bfKLoad = null;   // v2.5: 缓冲修正后重赋值
+  if (typeof iRASCarbonate !== 'undefined' && iRASCarbonate.K0_W74
+      && eqPrev && eqPrev.bfBlowerSpec && Number.isFinite(eqPrev.bfBlowerSpec.airFlowM3h)
+      && flowData.flowM3h > 1e-9) {
+    try {
+      const _rhoC = 1 + 0.0008 * S;
+      const _K0 = iRASCarbonate.K0_W74(T + 273.15, S);          // ⚠ 入参 Kelvin
+      _bfKLoad = (1 / 44010 / _rhoC / _K0) * 44.01 / 0.022414;  // g CO₂/Nm³ per (mg/L)
+      const _ap = (proc.bfCo2Approach != null) ? proc.bfCo2Approach : 0.23;
+      eta_co2_bf = Math.min(
+        eqPrev.bfBlowerSpec.airFlowM3h * _bfKLoad * _ap / flowData.flowM3h, 0.95);
+      if (!(eta_co2_bf >= 0)) eta_co2_bf = 0;
+    } catch (e) { eta_co2_bf = 0; }
+  }
+  const eta_co2_gasDown = eta_co2_tower + eta_co2_fallback;   // 脱气类 (塔 + 锥附带解吸)
+  /* ══════════════════════════════════════════════════════════════════════════
+     v2.5 IRAS_V25_CHAIN_CO2 — 溶解 CO₂ 稳态解按【产生位置】重导  (第八轮审计 B8)
+     ─────────────────────────────────────────────────────────────────────────
+     【缺陷】原式 C = Δ_总/(Q×24×η + V_replace) 把呼吸与硝化合并成一个源, 隐含
+       "全部产量都发生在鱼池"。但硝化 CO₂ 产在 MBBR —— 链上位于鱼池【下游】、
+       脱气塔【上游】。于是原式给出的从来不是鱼池浓度, 而是【脱气塔进水】浓度:
+         C_塔前 = Δ_总/(η + η_dil)        ← 恰好等于原式的值
+         C_鱼池 = C_塔前 − δ_n            ← 差一个整的硝化单程增量
+       实测 δ_n = 1.1–3.5 mg/L, 占 15–28% (o2) / 23–39% (air)。
+       方向对 CO₂ 与 Ω 保守, 对 NH₃ 【不保守】(低估 pH ⇒ 低估 fNH₃)。
+
+     【推导】两类汇点位置不同, 不能再合并成一个 η:
+         η_a  池内曝气 (air 模式 K-101) —— 汇点在【鱼池】
+         η_d  脱气塔 + 增氧锥附带解吸 + 换水 —— 汇点在【MBBR 下游】
+       令 A = 1 − η_a, B = 1 − η_d:
+         C_in  = B (δ_r·A + δ_n) / (1 − A·B)      回水 (增氧后, 最低浓度)
+         C_鱼池 = (C_in + δ_r) · A
+         C_塔前 = C_鱼池 + δ_n
+       o2 模式是 η_a = 0 ⇒ A = 1 的特例, 退化为 C_塔前 = Δ_总/η_d ——
+       与 v2.5 原式逐位相同 (断言 X4b 锁此回归锚)。一套公式覆盖两档, 无 if 分支
+       (与 v2.4 取消 fracIndoorCO2 三分特判同款处置)。
+
+     【D1-c 双报】C_鱼池 与 C_塔前 是两个不同的工程量, 现在拆开各归其位:
+       · C_鱼池 → 鱼类福利判据 (CO2_OVER 告警、pH/Ω/NH₃、报告第 5 章水质)
+       · C_塔前 → 脱气塔进水/选型口径 (导出 co2StripperInlet_mgL, 进设备清单与报告)
+       原实现把两者混在一个数里, 用鱼的限值去卡一个鱼接触不到的浓度。
+
+     ⚠ η_a > 1 的处置 (方案 §6 列为必须项): v2.3.3 注释明确"等效单程移除系数 >1
+       只表示移除快于一个循环周期, 此处不钳制"。该处置在集总式下无害, 但链式下
+       A = 1 − η_a < 0 会给出【负浓度】。故此处对两个 η 各自钳到 0.95:
+       钳制发生时导出 co2ChainClamped 供断言与告警, 不静默。
+     ══════════════════════════════════════════════════════════════════════════ */
+  const _perPass = 1000 / Math.max(flowData.flowM3h * 24, 1e-9);   // kg/d → mg/L 单程增量
+  const _dTotal = (load.co2Daily || 0) * _perPass;                 // mg/L
+  /* 旧载荷 (v2.5 及以前) 没有 co2NitriLoopDaily ⇒ δ_n = 0 ⇒ 整式退化为集总式,
+     与 v2.5 逐位一致。不猜、不反算 —— 缺字段就是"不知道硝化占多少"。 */
+  const _dNitri = (load.co2NitriLoopDaily != null ? load.co2NitriLoopDaily : 0) * _perPass;
+  const _dResp  = Math.max(_dTotal - _dNitri, 0);                  // 鱼池侧单程增量
+  let _etaTankRaw = eta_co2_air || 0;                              // 汇点=鱼池 (v2.5: 缓冲修正后可重赋值)
+  const _etaDownRaw = eta_co2_tower + eta_co2_fallback + eta_co2_dil;  // 汇点=MBBR 下游
+  /* η > 1 的处置: 【下钳通过率到 0】而不是上钳 η 到某个 0.9x。
+     A = 1 − η 是"一次通过后剩下的份额", 物理下限就是 0 (完全移除), 取 0 即是
+     η → ∞ 的正确极限: B = 0 ⇒ C_in = 0 ⇒ 鱼池只见到自己这一程的产量 δ_r。
+     ⚠ 曾试过上钳 0.95, 那是错的: edge_yield_tiny (产量 1 kg) 下 η_dil 达 196
+       (换水量远大于循环量 —— 流量趋零而水体有下限的退化产物), 上钳会把
+       CO₂ 抬到 14.7 mg/L, 比不钳还离谱。下钳到 0 则给出该极限下的正确形态。
+     ⚠ 但 η_dil ≫ 1 时"换水只在下游扣"这个建模前提本身已失效 (稀释同时发生在池内),
+       故仍标 co2ChainClamped, 并让 X4b 回归锚在该档不判 —— 退化区不假装精确。 */
+  const co2ChainClamped = (_etaTankRaw > 1) || (_etaDownRaw > 1);
+  const _A = Math.max(1 - _etaTankRaw, 0), _Bdown = Math.max(1 - _etaDownRaw, 0);
+  /* ⚠ 下面这两个是【未经缓冲修正】的通过率, 只用于求 _co2_tank0(不动点迭代的起点)。
+     链上任何节点、任何导出面都【不得】用它们 —— 必须用下方的 _Bf2 / _B2。
+     初版漏改了生物滤池节点, 由 X4a「节点与导出面不同源」当场咬出(差 0.23%)。
+     故命名带 0 后缀, 让误用在代码里显眼。 */
+  const _Bf0 = Math.max(1 - eta_co2_bf, 0);
+  const _B0 = _Bf0 * _Bdown;                                     // MBBR 吹脱 × 下游移除 (未修正)
+  /* 1 − A·B = 0 只在【完全没有移除路径】(两个 η 皆 0, 含换水为 0) 时出现 ——
+     此时 CO₂ 无稳态、随时间发散, 与 TAN 的 _DIVERGE_R 处置同源。
+     此处给极小值下钳: 算出天文数字 + 下方告警, 比"看似合理的假数"安全。 */
+  /* ══ v2.5 IRAS_V25_CO2_BUFFER — 气相载量型 η 的碳酸盐缓冲修正 ══
+     按【气相载量】算出的 η(MBBR 吹脱 eta_co2_bf、air 模式池内曝气 eta_co2_air)
+     给出的是从 DIC 里转移走的【质量】; 直接当作自由 CO₂ 的降幅用 = 假设缓冲因子 1.0。
+     实际 CO₂ 被吹走后碳酸盐右移, 重碳酸盐转回补上 ⇒ 自由 CO₂ 降幅【小于】被吹走的质量。
+       η_表观 = η_质量 / 缓冲因子
+     ⚠ 脱气塔与 fallback 【不修正】: 它们的 η 来自实测进出水自由 CO₂ 之比, 本就是表观口径,
+       缓冲已含在那个数里, 再除一次就是重复计算。这是本修正最容易出错的地方。
+     ⚠ 缓冲因子依赖 CO₂ 浓度, 而 CO₂ 又依赖 η —— 循环。用【单次不动点迭代】:
+       先按质量口径解一次得到 co2_tank_0, 由它求缓冲因子, 修正 η 后重解。
+       实测第二次迭代对 co2_tank 的改变 < 0.3%(见 HANDOFF §4.11), 故取一次。
+     ⚠ 淡水缓冲因子 ≈1.02, 修正后几乎不变; 海水 1.14–1.28, 这才是主战场。 */
+  const _chainDen0 = Math.max(1 - _A * _B0, 1e-9);
+  const _co2_tank0 = (_B0 * (_dResp * _A + _dNitri) / _chainDen0 + _dResp) * _A;
+  let co2BufferF = 1;
+  /* ⚠ 碱度基数取 proc.alkTarget 而【不是】TA_tank_molkg:
+     后者在下方碳酸盐块才赋值, 此处引用会命中 let 的暂时性死区 ——
+     本会话第二次犯同一个错(前一次是 co2Removal 引用 eta_co2_bf), 症状同样是
+     整个 simulate 抛异常、allResults 全为 null。凡跨块引用 let, 先确认声明位置。
+     ⚠ pH 模式下系统维持的是 solveAlk 反求的 alkRequired 而非 alkTarget, 此处取不到;
+     缓冲因子对碱度的敏感度是二阶(150→300 才从 1.18 到 1.6), 该近似的误差远小于
+     逼近系数本身的不确定度。已记入遗留。 */
+  const _bufAlk = (proc.alkTarget != null && proc.alkTarget > 0) ? proc.alkTarget : 150;
+  if (typeof iRASCarbonate !== 'undefined' && iRASCarbonate.co2BufferFactor
+      && _co2_tank0 > 1e-9) {
+    try {
+      co2BufferF = iRASCarbonate.co2BufferFactor(
+        _bufAlk / 50043 / (1 + 0.0008 * S), _co2_tank0 / 44010 / (1 + 0.0008 * S), T, S);
+      if (!(co2BufferF >= 1)) co2BufferF = 1;
+    } catch (e) { co2BufferF = 1; }
+  }
+  if (co2BufferF > 1) {
+    eta_co2_bf = eta_co2_bf / co2BufferF;
+    _etaTankRaw = _etaTankRaw / co2BufferF;          // air 模式池内曝气, 同为气相载量型
+  }
+  const _A2 = Math.max(1 - _etaTankRaw, 0);
+  const _Bf2 = Math.max(1 - eta_co2_bf, 0);
+  const _B2 = _Bf2 * _Bdown;
+  const _chainDen = Math.max(1 - _A2 * _B2, 1e-9);
+  const co2_in    = _B2 * (_dResp * _A2 + _dNitri) / _chainDen;     // 回水 (增氧后)
+  const co2_tank  = (co2_in + _dResp) * _A2;                        // 鱼池出水 (鱼类福利判据点)
+  const co2_bfOut = (co2_tank + _dNitri) * _Bf2;                    // 脱气塔进水 (设备选型口径, 已扣 MBBR 吹脱)
+  const co2_bfStripped = (co2_tank + _dNitri) * eta_co2_bf;        // mg/L 单程, MBBR 吹掉的量
+
+  /* ══ v2.5 IRAS_V25_BF_CO2 — 第四条移除路径必须进分解 ══
+     MBBR 曝气吹脱是【第四个汇点】。不登记进来的话, X1b 的份额闭合是"假绿":
+     三条路径各自归一化到 1, 而实际有四条 —— 断言不知道自己漏了一条。
+     这正是 X1b 当初立起来要防的情形 (「将来再加一条移除路径而忘了进分解, 当场咬住」),
+     现在轮到它自己被验证。
+     ⚠ 入室份额: MBBR 吹掉的 CO₂ 随【BF 尾气】走, 去向由 mbbrCovered 决定 ——
+       加盖外排(默认) ⇒ 一克不进车间; 敞口 ⇒ 全部入室。与 B9 在此闭合。 */
+  const _etaSum = eta_co2_gasDown + (eta_co2_air || 0) + eta_co2_dil + (eta_co2_bf || 0);
   const co2Removal = {
-    etaTower: eta_co2_tower,
+    etaTower: eta_co2_gasDown,              // v2.5: 含 fallback (关塔时的锥附带解吸)
+    etaTowerOnly: eta_co2_tower,            // 纯塔 (诊断用, 与 co2StripperSpec 同源)
+    etaFallback: eta_co2_fallback,
     etaAer:   (eta_co2_air || 0),
-    etaTotal: eta_co2,
+    etaDil:   eta_co2_dil,                  // v2.5 B4: 换水的等效单程去除率
+    etaBF:    (eta_co2_bf || 0),            // v2.5 B10: MBBR 曝气吹脱
+    etaTotal: eta_co2,                      // 气相移除合计 (不含换水) —— 沿程节点与选型用
     fracAer:  (_etaSum > 1e-12) ? (eta_co2_air || 0) / _etaSum : 0,
+    fracTower:(_etaSum > 1e-12) ? eta_co2_gasDown / _etaSum : 0,
+    fracDil:  (_etaSum > 1e-12) ? eta_co2_dil / _etaSum : 0,
+    fracBF:   (_etaSum > 1e-12) ? (eta_co2_bf || 0) / _etaSum : 0,
     mode:     proc.aerationMode,
     stripperOn: co2StripperOn
   };
-  // 稳态浓度: C_tank = Δ_per_day / (Q × 24 × η_co2)  → mg/L
-  // ⚠ 简化: 公式略去换水稀释项. 严格质量守恒应为
-  //     C_tank = Δ_per_day / (Q × 24 × η_co2 + V_replace)
-  //   工程上 V_replace (几百 m³/d) ≪ Q×24×η_co2 (几十万 m³/d × 0.75), 偏差 < 1%, 可忽略.
-  //   与 TAN/TSS/DOM/NO3 (用 dilutionPerCycle 的递归公式) 口径不严格一致, 但数值差异在精度范围内.
-  const co2_tank = load.co2Daily * 1e6 / Math.max(flowData.flowM3h * 24 * 1000 * eta_co2, 1);
+
 
   // ---- 精确循环方程 ----
   // 循环稳态: C_in = (C_in + Δ) × R  →  C_in = Δ×R/(1-R),  C_out = Δ/(1-R)
@@ -7872,7 +8530,10 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
 
   // DOM: 蛋分(旁路) + AOP(旁路, 仅小比例) + 换水
   // v1.1 修复: AOP 对 DOM 用 aopDOMRemoval (≈5%), 不再误用 geosmin 系数 (90%)
-  const R_dom = (1 - eta_skim_DOM_sys) * (1 - aopFlowRatio * eta_aopDOM) * (1 - dilutionPerCycle);
+  /* v2.5 IRAS_V25_BF_DOM: 生物滤池是【主流】去除路径 —— 不乘旁路比, 全流量通过。 */
+  const eta_bioDOM = Math.min(Math.max((proc.bfDOMEff != null ? proc.bfDOMEff : 2.5) / 100, 0), 0.95);
+  const R_dom = (1 - eta_skim_DOM_sys) * (1 - eta_bioDOM)
+              * (1 - aopFlowRatio * eta_aopDOM) * (1 - dilutionPerCycle);
   const domOut = _solveSteady(domPerCycle, R_dom, 'DOM');
 
   // NO3: BF 硝化产生, 反硝化(旁路) + 换水 去除
@@ -7982,6 +8643,10 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   //      平衡常数: Millero (2010), S=0-50; 已对照 PyCO2SYS 验证 (max|ΔpH|=1e-5)
   //      碳酸模块加载失败时降级到 v1.7 行为 (pH 等字段缺失, UI 不显示但不报错)
   let pH_tank, nh3n_tank, fNH3_tank, omega_tank, beta_tank, alkReq_tank, phMode_tank;
+  /* v2.5 IRAS_V25_CHAIN_PH (审计 B1): 鱼池总碱度提升到函数作用域 —— 沿程逐节点重算
+     必须从【同一个 TA】起步 (pH 模式下它来自 solveAlk, 不是 alkTarget), 否则鱼池节点
+     自身的重算值就会与本块的输出不一致. 单源: 本块写, 沿程块只读. */
+  let TA_tank_molkg = null, _CaMolkg = null, _ionicI = null;   // v2.5: 钙口径 / 离子强度, 沿程链复用
   if (typeof iRASCarbonate !== 'undefined' && iRASCarbonate) {
     try {
       const rho = 1 + 0.0008 * S;                                  // kg/L (简化盐度密度公式, T 影响对 pH 可忽略)
@@ -7994,7 +8659,22 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
       } else {
         TA_molkg = (proc.alkTarget) / 50043 / rho;          // 正向模式: 持碱度设定值
       }
-      const cb = iRASCarbonate.solve(Math.max(TA_molkg, 1e-9), CO2_molkg, T, S);
+      /* v2.5 IRAS_V25_CA_INPUT: 钙用量口径 —— manual 一律用用户值; auto 时
+         S>0 走 Ca_RT67(海水, 行为不变), S=0 用水源默认的钙硬度。
+         ⚠ 单源: 此处算一次, 沿程链复用同一个 _CaMolkg —— 沿程各节点盐度不变,
+           钙也不变(曝气/脱气/硝化都不动 Ca), 逐节点重算既无必要也是双副本。 */
+      _CaMolkg = (proc.caMode === 'manual' || S <= 0)
+        ? iRASCarbonate.caFromHardness(proc.caHardness, S)
+        : null;
+      /* v2.5 IRAS_V25_CA_ACTIVITY: 淡水离子强度 —— 只在 S<=0 时算,
+         海水的 Ksp 是化学计量常数, 传了也不会用 (solve 内部按 S<=0 判)。
+         碱度基数用【本阶段实际维持的碱度】: alk 模式 = alkTarget, pH 模式 = 反求值,
+         此处 TA_molkg 已算出, 直接折回 mg/L, 不再取 proc.alkTarget —— 与 A2 同源。 */
+      _ionicI = (S <= 0)
+        ? iRASCarbonate.ionicStrengthFW(Math.max(TA_molkg, 0) * 50043 * rho, proc.caHardness)
+        : null;
+      TA_tank_molkg = Math.max(TA_molkg, 1e-9);                    // v2.5: 沿程重算的起点
+      const cb = iRASCarbonate.solve(Math.max(TA_molkg, 1e-9), CO2_molkg, T, S, _CaMolkg, _ionicI);
       pH_tank   = cb.pH;                                           // free/浓度标度 (pH 模式下 = 目标值)
       fNH3_tank = iRASCarbonate.nh3Fraction(cb.H_sws, T, S);
       nh3n_tank = tan_tank * fNH3_tank;                            // mg/L NH3-N = 鱼池 TAN × 非离子化比例
@@ -8044,7 +8724,35 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   //   Δ_DO_BF = (o2BFDaily kg/d) × 1e6 / (Q m³/h × 24 × 1000 L/d) → mg/L
   //   出水 DO = 进水 DO - Δ_DO_BF, 下限保护 BF 自身曝气 (DO > 2 mg/L 维持硝化菌)
   const bfDODrop = (load.o2BFDaily || 0) * 1e6 / Math.max(flowData.flowM3h * 24 * 1000, 1);  // mg/L
-  const bfDOout = Math.max(s.DO - bfDODrop, 2.0);  // BF 自带粗孔曝气, 出水 DO 至少 2 维持菌活性
+  /* ══ v2.5 IRAS_V25_BF_AERATION — MBBR 内 DO 由质量平衡解出 ══
+       Q(DO_in − DO_out) − R + M·k·(β·Cs_深度 − DO_out) = 0
+       ⇒ DO_out = (Q·DO_in − R + M·k·β·Cs_深度) / (Q + M·k)
+     其中 M = 风量×24×ρ_空气×f_O2 (kg O₂/d 进风口),
+          k = 1.2%/m × 水深 × α × θ^(T−20) / Cs_20  (无量纲, per mg/L)
+     解是【两个端点的加权平均】: 风量→0 落在不曝气值 (Q·DO_in−R)/Q,
+     风量→∞ 趋于平衡 DO β·Cs_深度。⇒ 数学上跑不出窗口, 不需要地板或钳制。
+     ⚠ 删除了原来的 Math.max(..., 2.0): 那条地板在 5 条工况上生效并【凭空造氧】
+       (最大 29.4 kg/d 无供给项), 由断言 O1b 抓出。新解自带边界, 地板既无必要也有害。
+     ⚠ pass 1 (eqPrev 未传) 退化到旧式: 此时仅用于粗算 TSS, 不影响最终结果。 */
+  let bfDOout, bfO2FromAir = 0, bfDOeq = null;
+  const _bfSpec = eqPrev && eqPrev.bfBlowerSpec;
+  if (_bfSpec && Number.isFinite(_bfSpec.airFlowM3h) && _bfSpec.airFlowM3h > 0
+      && Number.isFinite(DO_sat) && DO_sat > 0 && flowData.flowM3h > 1e-9) {
+    const _dep = _bfSpec.depth_m || 3;
+    const _alpha = (proc.bfAlpha != null && proc.bfAlpha > 0) ? proc.bfAlpha : 0.85;
+    const BETA = 0.95, THETA_O2 = 1.024, SOTE_PER_M = 0.012, CS20 = 9.09;
+    const RHO_A = (typeof RHO_STD_AIR !== 'undefined') ? RHO_STD_AIR : 1.293;
+    const FO2 = (typeof F_O2_MASS !== 'undefined') ? F_O2_MASS : 0.2315;
+    const _Pmid = (101.3 + 0.5 * _dep * 9.81) / 101.3;      // 扩散器中点压力修正
+    bfDOeq = BETA * DO_sat * _Pmid;                          // 平衡 DO (曝气的渐近目标)
+    const _M = _bfSpec.airFlowM3h * 24 * RHO_A * FO2;        // kg O₂/d 进风口
+    const _k = SOTE_PER_M * _dep * _alpha * Math.pow(THETA_O2, T - 20) / CS20;
+    const _a = flowData.flowM3h * 24 / 1000;                 // kg/d per mg/L
+    bfDOout = (_a * s.DO - (load.o2BFDaily || 0) + _M * _k * bfDOeq) / (_a + _M * _k);
+    bfO2FromAir = _M * _k * (bfDOeq - bfDOout);              // kg/d 实际由空气传入
+  } else {
+    bfDOout = Math.max(s.DO - bfDODrop, 0);                  // pass 1 粗算路径
+  }
   s = {...s, id: 'bio', name: '生物滤池', icon: '🦠',
     desc: `硝化 ${proc.biofilterTAN.toFixed(0)}% · TAN→NO₃⁻ · 粗孔曝气`,
     TAN: s.TAN * (1 - eta_bio),
@@ -8059,6 +8767,16 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
     //   denitriInletNO3 = 115.7 mg/L (应为 4.1), 进而使碱度回收 > 硝化消耗,
     //   NaHCO₃ 投加量被算成 0 —— 模型给出"不用加碱"的危险结论, 而实际 pH 会崩.
     NO3: s.NO3 + s.TAN * eta_bio,
+    /* v2.5 IRAS_V25_CHAIN_CO2 (审计 B8): 硝化产 CO₂ 【产在本节点】, 不产在鱼池。
+       此前整条链上 CO₂ 从鱼池到脱气塔是平的 —— 系统级 co2Daily 算了这份,
+       节点级没加, 是与 v2.0 Q_air_gain、v2.1 蛋分气流同族的"两头不记"。
+       δ_n 已扣除 BF_CO2_STRIP_FRAC (MBBR 内自带脱气那份从不进主回路)。
+       ⚠ v2.5 IRAS_V25_BF_CO2: 本节点【先加硝化产 CO₂, 再扣曝气吹脱】——
+         MBBR 的粗孔曝气对 CO₂ 是有效的 (CO₂ 与空气的平衡值 ~0.6 mg/L, 驱动力几乎是全量,
+         与 O₂ 那种"水已近饱和、驱动力几乎为零"正相反)。乘 _Bf 与稳态解同源。
+       ⚠ 本节点出水 = 脱气塔进水 (与 co2_bfOut 同值, X4a 锁)。注意加了吹脱之后,
+         它【不一定】还是全场 CO₂ 最高点: 吹脱强时可低于鱼池出水。 */
+    CO2: (s.CO2 + _dNitri) * _Bf2,   // v2.5: 用【缓冲修正后】的通过率, 与稳态解同源 (X4a 锁)
     DO: bfDOout
   };
   stages.push({...s});
@@ -8067,18 +8785,23 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
   // 物理: 填料塔气液逆流, G:L=5-10, 单次去除 60-85%
   // 脱气塔关闭时仍保留节点但 desc 标"未启用", CO2 维持鱼池浓度
   // v1.3.x: CO2 提前到 UV 之前 (与 P&ID 主流路径 RDF→MBBR→CO2→集水池 一致)
+  /* v2.5 IRAS_V25_CHAIN_CO2: 本节点只施加【下游气相移除】(塔 + 关塔时的锥附带解吸)。
+     此前用的是 eta_co2 = 塔 + 池内曝气 —— 但池内曝气的汇点在【鱼池】, 把它记在
+     脱气塔节点上等于让塔替鱼池的鼓风机干活, air 模式下该节点浓度会偏低。
+     o2 模式 eta_co2_air 为 null ⇒ 两者恒等, 故 13 条基线的节点值逐位不变。
+     ⚠ 换水稀释不在此节点施加: 它是全链分布的, 已由稳态解承载 (见 co2_in 推导)。 */
   if (co2StripperOn) {
     s = {...s, id: 'co2strip', name: 'CO₂ 脱气塔', icon: '🌫️',
-      desc: `填料塔 · G:L=${proc.co2StripperGtoL} · CO₂↓${(eta_co2*100).toFixed(0)}%`,
-      CO2: s.CO2 * (1 - eta_co2)
+      desc: `填料塔 · G:L=${proc.co2StripperGtoL} · CO₂↓${(eta_co2_gasDown*100).toFixed(0)}%`,
+      CO2: s.CO2 * (1 - eta_co2_gasDown)
     };
     stages.push({...s});
   } else {
     // 关闭时显示一个"虚拟"节点, 提示用户脱气未启用
     // v1.1.2 修复: 用 eta_co2 (已经基于 proc.co2FallbackEff 算好), 与稳态计算一致
     s = {...s, id: 'co2strip', name: 'CO₂ 脱气 (未启用)', icon: '⊘',
-      desc: `换水 + 增氧扰动 · 微弱去除 ${(eta_co2*100).toFixed(0)}%`,
-      CO2: s.CO2 * (1 - eta_co2)
+      desc: `换水 + 增氧扰动 · 微弱去除 ${(eta_co2_gasDown*100).toFixed(0)}%`,
+      CO2: s.CO2 * (1 - eta_co2_gasDown)
     };
     stages.push({...s});
   }
@@ -8098,6 +8821,98 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
     DO: DO_sat_target
   };
   stages.push({...s});
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     v2.5 IRAS_V25_CHAIN_PH — 沿程碳酸盐逐节点重算  (第八轮审计 B1)
+     ─────────────────────────────────────────────────────────────────────────
+     【缺陷】沿程节点用 `s = {...s, ...}` 逐节点展开, 每个节点只覆写自己改变的
+       CO2/TAN/TSS/NO3/DO, 于是 pH / fNH3 / NH3_N / Ω / β 五个字段【原封不动地
+       从鱼池复制到全部七个节点】—— 它们从来没有被重算过. 后果:
+         · 脱气塔节点 CO₂ 降 65%, 真实 pH 升 0.33、Ω 升 2.0×(实测 0.75 → 1.52,
+           【跨过饱和线】), 表里显示的仍是鱼池的 7.17 / 0.58 —— 界面上七个节点
+           全标\"欠饱和\", 而正确答案是只有脱气塔上游欠饱和.
+         · 生物滤池节点 TAN 降了 70%, 而 NH3_N 是个【绝对值】没跟着变, 同一行里
+           TAN=0.15 与 NH3_N=(按 TAN=0.49 算的值) 自相矛盾, 偏高 3.4×.
+       设计判据取的是 tank 值, 不受影响; 但沿程表是工具的第一屏.
+
+     【口径】逐节点重算需要该节点的 (TA, CO2) 两个量, 不是只换 CO2:
+       · CO2  —— 直接取节点自己的值 (脱气塔节点已经降过).
+       · TA   —— 沿程【不守恒】: 生物滤池每硝化 1 mg/L TAN 消耗 ALK_PER_TANN
+                 mg/L CaCO₃ 碱度. 单次通过只压 pH 约 0.01 (数值上次要), 但不写出来
+                 就是又一个\"节点内部自相矛盾\"—— 与本条要修的缺陷同族.
+                 起点 TA_tank_molkg 由上方碳酸盐块单源提供 (pH 模式下来自 solveAlk).
+       · 其余节点 (RDF/蛋分/UV/增氧) 两个量都不变 ⇒ 重算结果 ≡ 上游节点, 表上仍是
+         一样的数 —— 这是【算出来的相同】, 不是复制的相同.
+
+     【不变量】鱼池节点用与上方完全相同的 (TA, CO2) 重算, solve() 确定性 ⇒ 逐位
+       复现原值. 故本改动【不触及任何设计判据、导出面与基线】(waterQuality 取 tank,
+       报告第 5 章亦然), 只修沿程表的下游六个节点.
+
+     ⚠ 未处置 (审计 B8, 需单独决策): CO2 在链上从鱼池到脱气塔是平的, 而
+       co2Daily 含硝化产 CO₂ —— 系统级算了、节点级没加. 严格链式下
+       C_鱼池 = C_塔前 − Δ_硝化, 即当前标\"鱼池\"的 CO₂ 实为【脱气塔进水】口径.
+       方向对 pH/Ω 保守、对 NH₃ 不保守. 本次不动物理, 只修显示.
+     ══════════════════════════════════════════════════════════════════════════ */
+  if (typeof iRASCarbonate !== 'undefined' && iRASCarbonate && TA_tank_molkg != null) {
+    try {
+      const _rho = 1 + 0.0008 * S;
+      let _TA = TA_tank_molkg;                      // mol/kg-SW, 沿程递减
+      let _TANprev = null;
+      for (let _i = 0; _i < stages.length; _i++) {
+        const nd = stages[_i];
+        // 硝化扣碱: 只在 TAN 下降的节点 (生物滤池) 触发
+        if (_TANprev != null && Number.isFinite(nd.TAN) && nd.TAN < _TANprev - 1e-12) {
+          _TA = Math.max(_TA - (_TANprev - nd.TAN) * ALK_PER_TANN / 50043 / _rho, 1e-9);
+        }
+        if (Number.isFinite(nd.TAN)) _TANprev = nd.TAN;
+        if (!Number.isFinite(nd.CO2)) continue;
+        const _c = nd.CO2 / 44010 / _rho;
+        const _cb = iRASCarbonate.solve(_TA, _c, T, S, _CaMolkg, _ionicI);   // v2.5: 同一钙/离子强度口径
+        const _f  = iRASCarbonate.nh3Fraction(_cb.H_sws, T, S);
+        nd.pH    = _cb.pH;
+        nd.fNH3  = _f;
+        nd.NH3_N = Number.isFinite(nd.TAN) ? nd.TAN * _f : nd.NH3_N;
+        nd.omega = _cb.omega_calcite;
+        nd.beta  = iRASCarbonate.bufferBeta(_TA, _c, T, S);
+        /* v2.5 IRAS_V25_PH_BRACKET (审计 B7): 真解落在二分区间 [pH 2,12] 之外时,
+           求解器会静默返回端点值。挂到节点上, 由渲染层出告警 —— 宁可说"这个数不可信",
+           也不要给一个看着正常的钳位产物。当前输入域够不到, 属防御性。 */
+        if (_cb.boundaryHit) nd.pHBoundary = _cb.boundaryDir;
+        nd.alkNode = _TA * 50043 * _rho;            // mg/L CaCO₃, 该节点总碱度 (供 UI/审计)
+        /* alkRequired / pHTarget / pHMode 是【鱼池口径的设计量】(持目标 pH 所需碱度),
+           被 {...s} 复制到了下游每个节点. 与 pH 复制同族, 一并只留在鱼池. */
+        if (nd.id !== 'tank') { nd.alkRequired = undefined; nd.pHTarget = undefined; }
+      }
+    } catch (e) { /* 与上方碳酸盐块一致: 失败则保持复制值, 不阻断主流程 */ }
+  }
+
+  /* ══ v2.5 IRAS_V25_NH3_PEAK — NH₃ 峰值节点定位  (第八轮审计 B5) ══
+     模型把 pH / NH₃ 报在【鱼池出水】. 该点全场 CO₂ 最高、pH 最低, 对 Ω 和 CO₂ 都是
+     最保守的一点 —— 但对 NH₃【不保守】: 同一点 TAN 最高而 fNH₃ 最低, 两个偏差方向相反.
+     真正的 NH₃ 峰在哪一点必须沿程算. 闭式 (缓冲区内 fNH₃ ∝ 1/[H⁺] ∝ 1/CO₂):
+         NH₃(塔后) / NH₃(池) ≈ (1 − η_bio) / (1 − η_co2)
+     ⇒ 判据: 鱼池是 NH₃ 峰值, 当且仅当 η_bio > η_co2.
+     默认 70% vs 65% 只富余 5 个百分点; 而脱气塔 auto 上限 co2MaxAttainableEff=80%,
+     biofilterTAN 的 UI 提示又写明\"海水/低温→降\" —— 判据在【推荐输入范围内】就会翻号,
+     角落工况 (η_bio 15% / η_co2 85%) 实测塔后 NH₃ 是池值的 5.4×.
+     此处【不引入任何新阈值】: 直接取沿程实算 NH3_N 的最大值与鱼池比较, 判据自证.
+     (B1 修好之前这段做不了 —— 那时七个节点的 NH3_N 全是同一个复制值.) */
+  let nh3Peak = null;
+  {
+    const _tk = stages[0];
+    if (_tk && Number.isFinite(_tk.NH3_N)) {
+      let _mx = _tk;
+      for (let _i = 1; _i < stages.length; _i++) {
+        if (Number.isFinite(stages[_i].NH3_N) && stages[_i].NH3_N > _mx.NH3_N) _mx = stages[_i];
+      }
+      nh3Peak = {
+        id: _mx.id, name: _mx.name, value: _mx.NH3_N,
+        tankValue: _tk.NH3_N,
+        ratio: (_tk.NH3_N > 1e-12) ? (_mx.NH3_N / _tk.NH3_N) : 1,
+        atTank: _mx.id === 'tank'
+      };
+    }
+  }
 
   // ---- 反硝化支路 (v1.1: P&ID 规范化) ----
   // 工程上反硝化取水点在 BF 之后, 因为 BF 把 TAN 全部硝化为 NO3
@@ -8202,6 +9017,15 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
       density: aerIntensity.density, maxDensity: aerIntensity.maxDensity
     });
   }
+  /* v2.5 IRAS_V25_CHAIN_CO2 (审计 B8): 链式解在单程移除率 ≥ 1 时失去物理意义
+     (A = 1 − η < 0 ⇒ 负浓度)。v2.3.3 对 η > 1 的处置是"不钳制"—— 那在集总式下
+     无害, 链式下不行。此处钳到 0.95 并【显式标记】, 不静默。 */
+  if (co2ChainClamped) {
+    configWarns.push({
+      code: 'CO2_CHAIN_CLAMPED', level: 'warn',
+      etaTank: _etaTankRaw, etaDown: _etaDownRaw
+    });
+  }
   {
     const _tank = stages[0];   // stages[0] 恒为鱼池 (id:'tank', 本函数自建顺序)
     if (_tank && Number.isFinite(_tank.CO2) && Number.isFinite(CO2_threshold)
@@ -8224,8 +9048,19 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal) {
     stages, DO_sat, DO_sat_target, eta_uv_system,
     DO_threshold, CO2_threshold, TAN_threshold, TSS_threshold, isWarmWater: isWarm,
     configWarns,                            // v2.3.3二批: 结构化配置告警 (W0–W3)
+    nh3Peak,                                // v2.5 B5: 沿程 NH₃ 峰值节点 (判据 η_bio > η_co2 的自证面)
+    bfDOeq, bfO2FromAir,                    // v2.5 IRAS_V25_BF_AERATION: 平衡 DO / 空气实际传入的氧
+    eta_co2_bf, co2_bfStripped, bfKLoad: _bfKLoad,   // v2.5 IRAS_V25_BF_CO2
+    co2BufferF,                             // v2.5 IRAS_V25_CO2_BUFFER: 碳酸盐缓冲因子 (已应用于气相载量型 η)
     // IRAS_CO2_EFF_GTOL_COUPLING_V2 诊断
     co2EffUsed: eta_co2,                    // 实际采用的单次去除率 (0-1)
+    /* v2.5 IRAS_V25_CHAIN_CO2 (审计 B8 · 决策 D1-c): 鱼池与塔前是两个工程量, 各归其位。
+       co2StripperInlet_mgL 是脱气塔【进水】浓度 = 全场 CO₂ 最高点 = 生物滤池出水,
+       用于脱气塔进水口径与设备清单; 鱼类福利判据仍取 stages[0].CO2 (鱼池)。 */
+    co2StripperInlet_mgL: co2_bfOut,
+    co2ReturnWater_mgL: co2_in,             // 回水 (增氧后, 全场最低) —— 诊断/沿程闭合用
+    co2NitriStep_mgL: _dNitri,              // 生物滤池节点的硝化 CO₂ 单程增量 (X4a 受检面)
+    co2ChainClamped,                        // η > 0.95 被钳 (链式解在 η≥1 时失效, 不静默)
     co2StripperOn,                          // v2.3二批: M8 断言判据 (air+关塔时闭环校验)
     aeration: (typeof _aerationDesign !== 'undefined') ? _aerationDesign : null,
     aerIntensity,                           // v2.5: 曝气强度 + air 模式最大可行密度
@@ -8713,7 +9548,21 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   const isAir = proc.aerationMode === 'air';
   const o2AbsEff = isAir ? 1.0 : (proc.o2AbsorptionEff) / 100;
   // 设备峰值供氧能力 (kg/h)
-  const o2PeakSupplyKgH = (load.o2FishPeakHourly || 0) * sAerator / o2AbsEff;
+  /* ══ v2.5 IRAS_V25_BF_AERATION — 氧账本拆两支 (断言 O2 咬出) ══
+     生物膜需氧 o2BFDaily 有【两个来源】, 此前两个模块对"谁供给它"说法不一致:
+       · 水质侧: 沿程 BF 节点把它【全部从水里扣掉】⇒ 氧锥必须替它补;
+       · 设备侧: o2PeakSupplyKgH 只按 o2FishPeakHourly 选型 ⇒ 氧锥不管它。
+     曝气改为流化驱动后这笔账才算得清: 空气传入 bfO2FromAir(闭式解给出),
+     其余 (o2BFDaily − bfO2FromAir) 由水带入 —— 那份才是氧锥要替生物膜补的。
+     ⚠ 按【同一峰值口径】折算: 用日均占比 × o2BFPeakHourly, 与 o2FishPeakHourly 同源;
+       不能拿日均量直接加到小时峰值上 (那正是 v2.2 co2DailyAvg 那类口径混用)。
+     ⚠ pass 1 时 sim 尚无 bfO2FromAir ⇒ 占比退化为 1 (全部由水供, 最保守),
+       pass 3 用 pass 2 的 sim 收敛到真值。 */
+  const _bfFromWaterFrac = ((load.o2BFDaily || 0) > 1e-9 && sim && Number.isFinite(sim.bfO2FromAir))
+    ? Math.max(0, Math.min(1, 1 - sim.bfO2FromAir / load.o2BFDaily)) : 1;
+  const o2BFFromWaterPeakKgH = (load.o2BFPeakHourly || 0) * _bfFromWaterFrac;
+  const o2PeakSupplyKgH = ((load.o2FishPeakHourly || 0) + o2BFFromWaterPeakKgH)
+                          * sAerator / o2AbsEff;
   // 峰值持续 24h 的等效日量(kg/d)—— 仅限 CAPEX / 设备容量口径。
   // 注意:含 peakFactor × sAerator 选型余量。禁止用于液氧采购/OPEX 或基准值,
   // 那些请用下方的 o2ConsumptionDaily / o2ConsumptionDailyAvg。
@@ -8874,24 +9723,54 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // ═══════════════════════════════════════════════════════════
   // 物理: 硝化菌耗氧即时响应, 风机必须扛峰值
   // 粗孔盘 SOTE ≈ 8% (比微孔 18% 低), 还兼填料搅拌
-  const SOTE_coarse = 0.08;
-  const bfO2PeakKgH = (load.o2BFPeakHourly || 0) * sBFblow;     // kg/h, 含 safety
-  const bfO2Demand = bfO2PeakKgH * 24;                          // kg/d 等效, 给 CAPEX 计价
-  // v2.4 IRAS_R24_NORMAL_AIR: 与 K-101 同源, 见 RHO_STD_AIR 声明
-  const bfAirFlow_m3min = bfO2PeakKgH / (RHO_STD_AIR * F_O2_MASS * SOTE_coarse) / 60;
+  /* ══ v2.5 IRAS_V25_BF_AERATION — 风机改由【流化】驱动 ══
+     旧式: bfAirFlow = o2峰值 / (ρ·f_O2·SOTE), SOTE 写死 8%。
+     8% 是【清水 20°C DO=0】的标准值, 即驱动力最大点; 实际 MBBR 内 DO 5–12 mg/L,
+     实算冷水纯氧工况实际 SOTE 仅 0.35–0.5% ⇒ 按 8% 选出的风量与它能传的氧无关。
+     新式按 Norsk Vann: 流化通量 × 池底面积。DO 不再是输入, 而是由质量平衡算出 (见水质链)。
+     ⚠ 池底面积用 V_BF(池总容积, 含填料+水) ÷ 水深 —— 与 systemVolume 的 V_BF 同源。
+     ⚠ 风压随水深走, 不再硬编码 50 kPa (那是 ≈5 m 水柱, 与 3 m 默认水深矛盾)。 */
+  const bfDepth_m = (proc.bfDepth != null && proc.bfDepth > 0) ? proc.bfDepth : 3;
+  const bfFlux = (proc.bfAirFlux != null && proc.bfAirFlux > 0) ? proc.bfAirFlux : 10;
+  const bfFill = Math.max((proc.bfFillRatio || 50) / 100, 0.05);
+  const bfTankVol = bioVolume / bfFill;                         // m³, 池总容积
+  const bfFloorArea = bfTankVol / bfDepth_m;                    // m², 池底面积
+  const bfAirFlow_m3h = bfFlux * bfFloorArea;                   // Nm³/h, 流化驱动
+  const bfAirFlow_m3min = bfAirFlow_m3h / 60;
   const bfAirFlow_m3s = bfAirFlow_m3min / 60;
-  const bfBlowerPower = bfAirFlow_m3s * 50000 / (0.60 * 1000);  // 50 kPa (BF 水深浅), v1.1.2 效率 0.60
+  const bfBlowerPressPa = bfDepth_m * 9810 + 15000;             // 水柱 + 管路/扩散器损失
+  const bfBlowerPower = bfAirFlow_m3s * bfBlowerPressPa / (0.60 * 1000);
+  /* 保留供氧口径的等效量, 仅用于【对照与告警】, 不再参与选型 */
+  const SOTE_coarse = 0.08;
+  const bfO2PeakKgH = (load.o2BFPeakHourly || 0) * sBFblow;
+  const bfO2Demand = bfO2PeakKgH * 24;
   const bfBlowerSpec = {
-    basis: `小时峰值 ${(load.o2BFPeakHourly||0).toFixed(2)} kg/h × safety ${sBFblow}`,
+    basis: `流化 ${bfFlux} m³/(h·m²) × 池底 ${bfFloorArea.toFixed(0)} m² (水深 ${bfDepth_m} m) · Norsk Vann 168/2009`,
     o2PeakKgH: bfO2PeakKgH,
     o2Demand: bfO2Demand,
     airFlow: bfAirFlow_m3min,
     power: bfBlowerPower,
+    // v2.5 IRAS_V25_BF_AERATION: 选型依据与几何 (供水质链算 DO / 供告警引用)
+    driver: 'fluidisation',
+    fluxUsed: bfFlux,
+    depth_m: bfDepth_m,
+    floorArea_m2: bfFloorArea,
+    tankVol_m3: bfTankVol,
+    pressurePa: bfBlowerPressPa,
     // v2.0 气路拓扑（纯元数据，不参与计算）
     // ⚠ airFlow 历史单位为 m³/min，与 co2StripperSpec.airFlow (m³/h) 不一致，
     //   原字段保留不动，此处另给归一值
     airFlowM3h: bfAirFlow_m3min * 60,
-    airPath: { source: AIR_NODE.OUTDOOR, sink: AIR_NODE.OUTDOOR, contactsWater: true }
+    /* v2.5 IRAS_V25_MBBR_COVER (审计 B9): sink 由 proc.mbbrCovered 决定, 不再写死。
+       加盖外排 (默认) → OUTDOOR: 尾气及其水汽/CO₂ 离开建筑;
+       敞口         → INDOOR : 尾气在车间水面破裂, 水汽进车间空气 (由
+                               m_indoorExhaust_kgs / solveRoomAir 的 m_ex_kgs 承接,
+                               并从新风需求里抵扣 V_blower_indoor_m3h —— 三个消费点
+                               都走 collectAirStreams 单源, 本处改一处即全链生效)。
+       ⚠ source 恒为 OUTDOOR: 风机吸的是室外新风, 与尾气去向无关。 */
+    airPath: { source: AIR_NODE.OUTDOOR,
+               sink: (proc && proc.mbbrCovered === false) ? AIR_NODE.INDOOR : AIR_NODE.OUTDOOR,
+               contactsWater: true }
   };
 
   // ─── CO₂ 脱气塔 (v1.1: 独立设备, 完整建模) ──────────────────
@@ -8972,7 +9851,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   //       fillRatio=50% (Rusten 2006 工业惯例) → V_BF = 2 × bioVolume
   //       fillRatio=70% (高密度装填)             → V_BF = 1.43 × bioVolume
   const fillRatio = (proc.bfFillRatio / 100);    // 防过低
-  const V_BF_water  = bioVolume / fillRatio;                            // m³
+  const V_BF_water  = bioVolume / fillRatio;                            // m³ = BF 池总容积 (空床)
   const V_skim      = skimmerOn ? skimmerVolume : 0;                  // 蛋分塔 (已是水容积)
   const V_UV        = 5;                                              // UV 流通式, 内水量极小
   const V_AOP       = aopOn ? aopVolume : 0;                          // v1.1.2: aopVolume 已是真实水量 (HRT 8min)
@@ -9000,6 +9879,12 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   return {
     // 慢动力学设备 (基于日量 × safety)
     rdfFlow, bioVolume, bioDesignTAN,
+    /* v2.5 修正: BF 池总容积(空床) —— 供 EBCT 判据使用。
+       此前 EBCT 用 bioVolume(填料【净】体积) 当分子, 而 EBCT 的定义是
+       Empty Bed Contact Time, 分子必须是【空床】即反应器容积。
+       50% 填充率下 EBCT 被低估整整一倍 ⇒ P3 那条"去除率与接触时间不自洽"
+       告警系统性误报。单源取此处的 V_BF_water, 不在告警层第三次重算。 */
+    bfTankVolume: V_BF_water,
     uvFlow, uvPower,
     vtr_T: vtr_T * 1000, vdr_T: vdr_T * 1000,
     tempCorrectionNit, salCorrectionNit, tempCorrectionDen,
@@ -9012,6 +9897,7 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
 
     // 快动力学设备 (基于小时峰值 × safety)
     aerationSpec, ventFanSpec, o2Demand, o2PeakSupplyKgH, isAir,
+    o2BFFromWaterPeakKgH, bfFromWaterFrac: _bfFromWaterFrac,   // v2.5: 氧账本两支
     // 液氧消耗口径(不含选型余量)—— 供 OPEX / 基准值使用
     o2ConsumptionDaily, o2ConsumptionDailyAvg, o2AbsEff,
     bfBlowerSpec,
@@ -11077,6 +11963,12 @@ const FIELD_SPEC = {
   aopDOMRemoval:              { min: 0,      max: 20,     step: 1,      clamp: [0, 100] },
   aopHRT_min:                 { min: 1,      max: 30,     step: 0.5,    clamp: [1, 30] },
   bfFillRatio:                { min: 20,     max: 75,     step: 5,      clamp: [20, 80] },
+  /* v2.5 IRAS_V25_BF_AERATION */
+  bfAirFlux:                  { min: 2,      max: 20,     step: 1,      clamp: [2, 20] },
+  bfDepth:                    { min: 2,      max: 6,      step: 0.5,    clamp: [1.5, 8] },
+  bfDOMin:                    { min: 2,      max: 8,      step: 0.5,    clamp: [1, 12] },
+  bfAlpha:                    { min: 0.5,    max: 1,      step: 0.05,   clamp: [0.3, 1] },
+  bfCo2Approach:              { min: 0,      max: 1,      step: 0.05,   clamp: [0, 1] },
   /* v2.2 IRAS_V22_CLAMP_HARD_BOUND: clamp 下限 30 来自【消费处硬约束】
      Math.max(η/100, 0.3), 非 UI 范围 ——
      第一批只按 UI ∪ getNumClamped 取并集得 [0,100], 与消费处不一致,
@@ -11091,6 +11983,8 @@ const FIELD_SPEC = {
   /* v2.3二批 IRAS_V23B_AIR_SIZING (无 UI 入口, 供 JSON 调参; 钳制经 ensureStageProc 全路径生效) */
   sotePerMeter:               { min: 3,      max: 9,      step: 0.5,    clamp: [1, 15] },
   aerationAlphaBeta:          { min: 0.4,    max: 1,      step: 0.05,   clamp: [0.2, 1] },
+  bfDOMEff:                   { min: 0,      max: 20,     step: 0.5,    clamp: [0, 100] },
+  caHardness:                 { min: 0,      max: 500,    step: 10,     clamp: [0, 2000] },
   co2StripApproach:           { min: 0.2,    max: 0.9,    step: 0.05,   clamp: [0.05, 1] },
   /* v2.3.3四批: CO₂ 选型目标浓度。哨兵字段 —— 默认 null = 取鱼种阈值
      (co2ThresholdFor: Timmons 分档 × 海水折减), 故 optionalDefault。
@@ -11375,6 +12269,12 @@ function readStageProcFromInputs(idx, fallbackProc) {
     VDR20: getNum('VDR20', fallbackProc.VDR20),
     // v1.5.1 (B45): BF 填料率钳到 [20, 80] (物理:工业惯例 40-70, 极端 20-80)
     bfFillRatio: getNumClamped('bfFillRatio', fallbackProc.bfFillRatio || 50, 20, 80),
+    // v2.5 IRAS_V25_BF_AERATION
+    bfAirFlux: getNumClamped('bfAirFlux', fallbackProc.bfAirFlux != null ? fallbackProc.bfAirFlux : 10, 2, 20),
+    bfDepth:   getNumClamped('bfDepth',   fallbackProc.bfDepth   != null ? fallbackProc.bfDepth   : 3, 1.5, 8),
+    bfDOMin:   getNumClamped('bfDOMin',   fallbackProc.bfDOMin   != null ? fallbackProc.bfDOMin   : 4, 1, 12),
+    bfAlpha:   getNumClamped('bfAlpha',   fallbackProc.bfAlpha   != null ? fallbackProc.bfAlpha   : 0.85, 0.3, 1),
+    bfCo2Approach: getNumClamped('bfCo2Approach', fallbackProc.bfCo2Approach != null ? fallbackProc.bfCo2Approach : 0.23, 0, 1),
     thetaNit: getNum('thetaNit', fallbackProc.thetaNit),
     thetaDen: getNum('thetaDen', fallbackProc.thetaDen),
     o2DOMfactor: getNum('o2DOMfactor', fallbackProc.o2DOMfactor != null ? fallbackProc.o2DOMfactor : 0.10),
@@ -11403,6 +12303,7 @@ function readStageProcFromInputs(idx, fallbackProc) {
     // v1.5.1 (B45): 蛋分旁路流量比钳到 [0, 50]
     skimmerFlowPct: getNumClamped('skimmerFlowPct', fallbackProc.skimmerFlowPct, 0, 50),
     // v1.5.1 (B45): 蛋分 DOM/TSS 去除率钳到 [0, 100]
+    bfDOMEff: getNumClamped('bfDOMEff', fallbackProc.bfDOMEff != null ? fallbackProc.bfDOMEff : 2.5, 0, 100),
     skimmerDOMEffAir: getNumClamped('skimmerDOMEffAir', fallbackProc.skimmerDOMEffAir, 0, 100),
     skimmerDOMEffOzone: getNumClamped('skimmerDOMEffOzone', fallbackProc.skimmerDOMEffOzone, 0, 100),
     skimmerTSSEff: getNumClamped('skimmerTSSEff', fallbackProc.skimmerTSSEff || 40, 0, 100),
@@ -11421,6 +12322,9 @@ function readStageProcFromInputs(idx, fallbackProc) {
     aopHRT_min: _aopHRT,
     // v1.1.2: CO₂ 脱气塔 (默认值更新, 加风压/效率)
     co2StripperEnabled: getBool('co2StripperEnabled', fallbackProc.co2StripperEnabled !== false),
+    /* v2.5 IRAS_V25_MBBR_COVER: 布尔字段, 与 co2StripperEnabled 同款 —— 不经数值钳制
+       (上方 clamp 循环按 typeof dv === 'number' 分派, 布尔有意豁免)。 */
+    mbbrCovered: getBool('mbbrCovered', fallbackProc.mbbrCovered !== false),
     // v1.5.1 (B45): CO2 脱气率钳到 [0, 100]
     co2StripperEff: getNumClamped('co2StripperEff', fallbackProc.co2StripperEff || 65, 0, 100),
     co2StripperGtoL: getNum('co2StripperGtoL', fallbackProc.co2StripperGtoL || 3),
@@ -11434,6 +12338,11 @@ function readStageProcFromInputs(idx, fallbackProc) {
     /* v2.3.3: 三个曝气常数补 UI 入口 (此前仅 JSON 可调) —— 纪律 10d: 加了 UI 必须接读取路径 */
     sotePerMeter: getNumClamped('sotePerMeter', fallbackProc.sotePerMeter, 1, 15),
     aerationAlphaBeta: getNumClamped('aerationAlphaBeta', fallbackProc.aerationAlphaBeta, 0.2, 1),
+    /* v2.5 IRAS_V25_CA_INPUT: caMode 是选择器(字符串), 与 aopType 同款读法;
+       caHardness 走数值钳制。⚠ 二者【必须同时读】—— 只读其一会让 manual 模式
+       在 caMode 缺失时静默回落 auto, 与"用户明确填了值却不生效"是同一类坑。 */
+    caMode: (getStr('caMode', fallbackProc.caMode || 'auto') === 'manual') ? 'manual' : 'auto',
+    caHardness: getNumClamped('caHardness', fallbackProc.caHardness != null ? fallbackProc.caHardness : 90, 0, 2000),
     co2StripApproach: getNumClamped('co2StripApproach', fallbackProc.co2StripApproach, 0.05, 1),
     tankAirBlowerPressure_kPa: getNum('tankAirBlowerPressure_kPa', fallbackProc.tankAirBlowerPressure_kPa != null ? fallbackProc.tankAirBlowerPressure_kPa : null),
     designDO_mgL: getNum('designDO_mgL', fallbackProc.designDO_mgL != null ? fallbackProc.designDO_mgL : null),
@@ -11564,6 +12473,14 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-slate-400" title="标准 VTR @ 20°C, 单位 g TAN/(m³·d) [= 0.001 × kg/(m³·d)]&#10;范围: 300-800 g/(m³·d) = 0.3-0.8 kg/(m³·d)&#10;默认: 500 = 0.5 kg/(m³·d)&#10;含义: 生物滤池 20°C 淡水基准 TAN 去除速率&#10;手册第 10.2 节用 kg/(m³·d), UI 用 g/(m³·d) 便于输入大数&#10;何时调: MBBR 高比表面积 600-800, 普通 K1 400-600" for="f_${idx}_VTR20">VTR₂₀ g/(m³·d)</label><input id="f_${idx}_VTR20" data-proc-stage="${idx}" data-proc-field="VTR20" type="number" ${fieldSpecAttrs('VTR20')} value="${stage.proc.VTR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="标准 VDR @ 20°C (g/m³·d)&#10;范围: 500-1200&#10;默认: 800&#10;含义: 反硝化反应器 20°C 基准 NO₃⁻ 去除速率&#10;何时调: 固定床 600-1000, 流化床 1000-1200" for="f_${idx}_VDR20">VDR₂₀(g/m³·d)</label><input id="f_${idx}_VDR20" data-proc-stage="${idx}" data-proc-field="VDR20" type="number" ${fieldSpecAttrs('VDR20')} value="${stage.proc.VDR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="MBBR 填料填充率 (%)&#10;范围: 30-70&#10;默认: 50 (Rusten 2006 工程惯例)&#10;含义: 填料净体积占池总容积比例&#10;影响: 决定 BF 池总容积 V_BF = bioVolume / fillRatio&#10;V_BF/bioVolume 比值:&#10;  50% → 2.00&#10;  60% → 1.67&#10;  70% → 1.43&#10;何时调:&#10;  K1/K3 标准填料: 50%&#10;  高密度装填 (国内某些低成本项目): 60-65%&#10;  低密度均匀曝气: 35-40%" for="f_${idx}_bfFillRatio">BF填充率(%)</label><input id="f_${idx}_bfFillRatio" data-proc-stage="${idx}" data-proc-field="bfFillRatio" type="number" ${fieldSpecAttrs('bfFillRatio')} value="${stage.proc.bfFillRatio != null ? stage.proc.bfFillRatio : PROCESS_DEFAULTS.bfFillRatio}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="MBBR 流化空气通量 m³/(h·m² 池底)&#10;默认: 10&#10;范围: 2-20&#10;&#10;【出处】Norsk Vann 168/2009 导则原文: 为保证良好混合, 供气量不应低于 10-15 m³/h·m² 池底 (随载体而定)。&#10;⇒ 10-15 是【下限区间】, 不是典型值。&#10;&#10;【次级参考】Aquacultural Engineering 实测: 表观气速低于 5 m/h 时 TAN 去除率下降 —— 那是性能劣化点, 导则的 10-15 在其上留了余量。&#10;&#10;⚠ 本值直接决定风机选型与 MBBR 内 DO。低于 10 会出提示性告警。&#10;⚠ 表观气速不是合格的放大准则: 同一通量下深池比浅池所需能量更高, 本模型未修正。" for="f_${idx}_bfAirFlux">BF流化通量</label><input id="f_${idx}_bfAirFlux" data-proc-stage="${idx}" data-proc-field="bfAirFlux" type="number" ${fieldSpecAttrs('bfAirFlux')} value="${stage.proc.bfAirFlux != null ? stage.proc.bfAirFlux : PROCESS_DEFAULTS.bfAirFlux}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="MBBR 池水深 m&#10;默认: 3&#10;范围: 2-6&#10;&#10;三处同源: ①池底面积 = V_BF / 水深 → 决定流化风量; ②气液平衡 DO (中点压力修正); ③风机压力 = 水深×9.81 kPa + 15 kPa 管损。&#10;&#10;⚠ v2.5 前风机压力硬编码 50 kPa (≈5 m 水柱), 与 3 m 默认水深自相矛盾, 现已单源化。" for="f_${idx}_bfDepth">BF池水深(m)</label><input id="f_${idx}_bfDepth" data-proc-stage="${idx}" data-proc-field="bfDepth" type="number" ${fieldSpecAttrs('bfDepth')} value="${stage.proc.bfDepth != null ? stage.proc.bfDepth : PROCESS_DEFAULTS.bfDepth}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="MBBR 最低运行 DO mg/L&#10;默认: 4&#10;范围: 2-8&#10;&#10;算出的 MBBR 内 DO 低于此值时【只告警, 不自动加风】—— 告警会给出"需把通量提到 X、届时功率 Y", 由你决定是否加曝气。&#10;&#10;⚠ 有意不自动调整: 自动加风会悄悄改掉你设定的流化通量, 且代价可能极大 (实测石斑幼鱼期达到 DO=4 需通量 40.9, 远超导则区间)。" for="f_${idx}_bfDOMin">BF最低DO</label><input id="f_${idx}_bfDOMin" data-proc-stage="${idx}" data-proc-field="bfDOMin" type="number" ${fieldSpecAttrs('bfDOMin')} value="${stage.proc.bfDOMin != null ? stage.proc.bfDOMin : PROCESS_DEFAULTS.bfDOMin}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="传氧修正系数 α (清水 → 实际水)&#10;默认: 0.85&#10;范围: 0.5-1.0&#10;&#10;⚠ 无 RAS 直接出处, 属待标定项 (与 co2StripApproach 同处境)。市政取 0.5-0.7, RAS 水质更洁净故取 0.85。&#10;&#10;实际 SOTE = 1.2%/m × 水深 × α × 驱动力 × θ^(T-20)&#10;其中驱动力 = (β·Cs_水深 − DO)/Cs_20 —— 这一项是 v2.5 新增, 此前 SOTE 写死 8% 不含驱动力, 等价于按 DO=0 选型。" for="f_${idx}_bfAlpha">BF传氧α</label><input id="f_${idx}_bfAlpha" data-proc-stage="${idx}" data-proc-field="bfAlpha" type="number" ${fieldSpecAttrs('bfAlpha')} value="${stage.proc.bfAlpha != null ? stage.proc.bfAlpha : PROCESS_DEFAULTS.bfAlpha}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="MBBR 曝气对 CO₂ 的气液平衡逼近系数&#10;默认: 0.23&#10;范围: 0-1&#10;&#10;⚠ 与脱气塔的 co2StripApproach 【有意分开】: 塔是填料逆流, MBBR 是池内粗孔鼓泡, 气液接触方式不同。&#10;手册实测: 粗孔盘仅达理论平衡约 23%, 细孔盘可达 93% —— 0.23 正是为粗孔盘记的。&#10;&#10;⚠ 待标定项 (与 co2StripApproach 同处境)。&#10;&#10;物理: CO₂ 与空气的平衡值仅约 0.6 mg/L, 而水中 7-13 mg/L ⇒ 驱动力几乎是全量; 与 O₂ 那种'水已近饱和、驱动力几乎为零'正相反。同一股气几乎加不进氧, 却能有效吹走 CO₂。&#10;&#10;⚠ 吹掉的 CO₂ 随 BF 尾气走: 加盖外排则离开建筑, 敞口则进车间并计入新风。" for="f_${idx}_bfCo2Approach">BF吹脱逼近</label><input id="f_${idx}_bfCo2Approach" data-proc-stage="${idx}" data-proc-field="bfCo2Approach" type="number" ${fieldSpecAttrs('bfCo2Approach')} value="${stage.proc.bfCo2Approach != null ? stage.proc.bfCo2Approach : PROCESS_DEFAULTS.bfCo2Approach}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="生物滤池对溶解性 COD 的【单程】去除率 %&#10;默认: 2.5&#10;范围: 0-20&#10;&#10;⚠ 这是【单程】值, 而水一天过 60-144 次。50%/程 会把稳态压到 1.8-2.6 mg/L, 比文献低 20 倍。&#10;&#10;【标定依据】DTU Aqua 淡水虹鳟中试 RAS 实测溶解态 COD = 35.6 mg O₂/L; 反推可复现该值的单程去除率约 2.6%。&#10;实测扫描(关蛋分): 2%→45-63 · 2.5%→36-50 · 5%→18-26 · 10%→9-13 · 50%→1.8-2.6 mg/L&#10;&#10;【为什么比 biofilterTAN(70%) 小 30 倍】TAN 在一级动力学区, 生物膜远未吃饱; 而溶解性 COD 大部分是难降解组分, 易降解的很快吃光, 剩下的过多少次都不动。&#10;⇒ 不是滤池效率低, 是底物大部分吃不动。&#10;&#10;【与蛋分对照】蛋分系统级 = 旁路 20% × 单程 40% = 8%/程, 同口径可直接比; MBBR 约为其 1/3。&#10;&#10;⚠ 本值是【可降解占比 × 可降解部分去除率】的乘积, 属等效值。拆成 bCOD/rCOD 两层已排入大批次。" for="f_${idx}_bfDOMEff">BF溶解COD去除%</label><input id="f_${idx}_bfDOMEff" data-proc-stage="${idx}" data-proc-field="bfDOMEff" type="number" ${fieldSpecAttrs('bfDOMEff')} value="${stage.proc.bfDOMEff != null ? stage.proc.bfDOMEff : PROCESS_DEFAULTS.bfDOMEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-emerald-300" title="钙用量口径&#10;默认: 自动&#10;&#10;自动 — 海水(盐度&gt;0)按 Riley &amp; Tongudai 1967 的海水恒定比例反推; 淡水(盐度=0)用下方钙硬度默认值&#10;手动 — 一律使用下方钙硬度输入值&#10;&#10;⚠ v2.5 前淡水 Ca 恒为 0 ⇒ 方解石饱和度 Ω 直接算不出, 四个淡水鱼种(罗非/加州鲈/鳜/鳗)全场 n/a &#10;⚠ 海水反推经文献核对: Ca_RT67(35) 给 412 mg/L Ca²⁺, 与典型海水约 400 mg/L 吻合, 故海水档行为不变。" for="f_${idx}_caMode">钙口径</label><select id="f_${idx}_caMode" data-proc-stage="${idx}" data-proc-field="caMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="auto" ${stage.proc.caMode!=="manual"?"selected":""}>自动(海水反推)</option><option value="manual" ${stage.proc.caMode==="manual"?"selected":""}>手动指定</option></select></div>
+      <div><label class="text-[10px] text-slate-400" title="钙硬度 mg/L as CaCO₃&#10;默认: 90 (中等硬度地下水)&#10;范围: 0-500&#10;&#10;工程上钙硬度本就是常测项, 试剂盒读数即此单位。换算: 钙硬度 = [Ca²⁺] × 2.497&#10;&#10;【USGS 硬度分级】0-60 软水 / 61-120 中等 / 121-180 硬水 / &gt;180 极硬&#10;【水产目标区间 SRAC 464】游离钙 40-100 mg/L 即钙硬度 100-250; 100 mg/L 游离钙恰与鱼血钙浓度相当&#10;【Boyd】养殖上一般希望硬度 &gt; 50 (鱼) / &gt; 80 (甲壳类)&#10;&#10;⚠ 淡水 Ω 目前只可用于【定性判断欠饱和/过饱和方向】: 低离子强度的活度修正尚未实现, 按浓度算的 Ω 会高估约 2 倍。海水不受影响。" for="f_${idx}_caHardness">钙硬度(CaCO₃)</label><input id="f_${idx}_caHardness" data-proc-stage="${idx}" data-proc-field="caHardness" type="number" ${fieldSpecAttrs('caHardness')} value="${stage.proc.caHardness != null ? stage.proc.caHardness : PROCESS_DEFAULTS.caHardness}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="硝化温度修正系数&#10;范围: 1.06-1.12&#10;默认: 1.10&#10;含义: Arrhenius θ, 温度每变 10°C VTR 按 θ^(ΔT/10) 倍变&#10;何时调: 一般不调" for="f_${idx}_thetaNit">θ_nit</label><input id="f_${idx}_thetaNit" data-proc-stage="${idx}" data-proc-field="thetaNit" type="number" ${fieldSpecAttrs('thetaNit')} value="${stage.proc.thetaNit}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="反硝化温度修正系数&#10;范围: 1.05-1.10&#10;默认: 1.08&#10;含义: 反硝化的 Arrhenius θ&#10;何时调: 一般不调" for="f_${idx}_thetaDen">θ_den</label><input id="f_${idx}_thetaDen" data-proc-stage="${idx}" data-proc-field="thetaDen" type="number" ${fieldSpecAttrs('thetaDen')} value="${stage.proc.thetaDen}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="鱼【生理】耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.18-0.45&#10;默认: 自动 (o2BaseFactor × Q10^((tempOpt−metabRefTemp)/10))&#10;含义: 清水条件下鱼本身的代谢耗氧, 物种实测值&#10;&#10;⚠ 池内实际耗氧 = 本值 + TSS 依赖的池内异养附加&#10;   (悬浮固体上附着的异养菌在池内直接耗氧, 同样由氧锥供给)&#10;   附加量随鱼池 TSS 上升, 见全局参数 o2TssSlope&#10;何时调: 极端品种或新种时手填; 留空恢复自动" for="f_${idx}_o2FishFactor">鱼生理耗氧</label><input id="f_${idx}_o2FishFactor" data-proc-stage="${idx}" data-proc-field="o2FishFactor" type="number" ${fieldSpecAttrs('o2FishFactor')} placeholder="自动" value="${(stage.proc.o2FishFactor!=null && !isNaN(stage.proc.o2FishFactor)) ? stage.proc.o2FishFactor : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -11625,6 +12542,7 @@ function renderStageBlock(idx, stage) {
       <div data-aeration-air><label class="text-[10px] text-amber-300" title="曝气盘阻 + 管路阻 (kPa)&#10;默认: 10 (盘 5 + 管 5)&#10;K-101 风压 = 9.81 × 池深 + 本值&#10;⚠ 盘阻随盘型跨一个数量级: 低阻膜盘 2.2-4.8 · 常规微孔/刚玉盘 3.5-5 · 纳米管等高阻型需 30-50&#10;管路 ≤50 m 取 5; 过长或弯头多取 8-10&#10;出处: 罗茨风机厂家选型口径 (管路默认 5 + 曝气盘默认 5)&#10;⚠ 待产业校准项 —— 选定盘型后应据厂家阻力曲线覆盖本值" for="f_${idx}_tankAirDiffuserLoss_kPa">盘阻+管阻(kPa)</label><input id="f_${idx}_tankAirDiffuserLoss_kPa" data-proc-stage="${idx}" data-proc-field="tankAirDiffuserLoss_kPa" type="number" ${fieldSpecAttrs('tankAirDiffuserLoss_kPa')} value="${stage.proc.tankAirDiffuserLoss_kPa != null ? stage.proc.tankAirDiffuserLoss_kPa : PROCESS_DEFAULTS.tankAirDiffuserLoss_kPa}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air><label class="text-[10px] text-amber-300" title="K-101 风机全压 (kPa) — 显式覆盖&#10;留空 = 按 9.81 × 池深 + 盘阻管阻 自动算 (推荐)&#10;⚠ v2.3.3 之前此处写死 70 kPa 且与池深无关 —— 而 70 对应约 7 m 深池,空气曝气实际只用于 1.0-2.5 m 浅池, 全库实测风机功率高估 2.84 倍&#10;典型值: 1.5 m 池约 25 · 2.0 m 池约 30 · 2.5 m 池约 35&#10;⚠ 与脱气塔风机 (2.5 kPa) 、车间通风机 (0.25 kPa) 差两到三个数量级, 不可混用" for="f_${idx}_tankAirBlowerPressure_kPa">K-101全压(kPa)</label><input id="f_${idx}_tankAirBlowerPressure_kPa" data-proc-stage="${idx}" data-proc-field="tankAirBlowerPressure_kPa" type="number" ${fieldSpecAttrs('tankAirBlowerPressure_kPa')} placeholder="留空=按池深算" value="${stage.proc.tankAirBlowerPressure_kPa != null ? stage.proc.tankAirBlowerPressure_kPa : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-aeration-air><label class="text-[10px] text-amber-300" title="微孔盘清水 SOTE (%/m 水深)&#10;默认: 6.5 (EPA/ASCE 典型 5-7)&#10;⚠ 这【不是】实际吸收效率 —— 它是清水标准态(20°C/零盐度/洁净水/初始 DO=0)下的值,养殖池四个条件一个都不满足&#10;实际 OTE = 本值 × 水深 × αβ × 1.024^(T-20) × 推动力, 石斑成鱼期实算仅 2.22%&#10;粗孔盘取低端; 详见手册 15.2 与 15.3b" for="f_${idx}_sotePerMeter">清水SOTE(%/m)</label><input id="f_${idx}_sotePerMeter" data-proc-stage="${idx}" data-proc-field="sotePerMeter" type="number" ${fieldSpecAttrs('sotePerMeter')} value="${stage.proc.sotePerMeter != null ? stage.proc.sotePerMeter : PROCESS_DEFAULTS.sotePerMeter}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air><label class="text-[10px] text-amber-300" title="α·β 综合折减 (—)&#10;默认: 0.75&#10;α = 工艺水污染对传质的折减; β = 盐度对饱和浓度的折减&#10;RAS 一般 0.7-0.85: 高 DOM / 高投饵负荷取低端, 淡水清洁系统取高端&#10;⚠ 直接乘进 OTE, 与风量成反比" for="f_${idx}_aerationAlphaBeta">α·β 折减</label><input id="f_${idx}_aerationAlphaBeta" data-proc-stage="${idx}" data-proc-field="aerationAlphaBeta" type="number" ${fieldSpecAttrs('aerationAlphaBeta')} value="${stage.proc.aerationAlphaBeta != null ? stage.proc.aerationAlphaBeta : PROCESS_DEFAULTS.aerationAlphaBeta}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air data-air-stripoff-only><label class="text-[10px] text-amber-300" title="CO₂ 亨利平衡逼近系数 (—)&#10;默认: 0.5 &#10;⚠ 【无成文出处, 待校准】—— 气泡停留时间有限, 离水时并未与水达到平衡&#10;本质由气泡尺寸与停留时间决定, 不是通用常数: 实测粗孔盘仅达理论平衡约 23%,细孔盘可达 93% (非养殖场景, 仅供判断调整方向)&#10;⚠ 文献里的"CO₂ 吹脱效率"多为【碳酸平衡重建后的表观值】, 与本系数不同口径, 不可直接套用&#10;敏感度: 0.5→0.3 则 CO₂ 侧风量涨 1.67 倍&#10;⚠ 它同时决定 air+开塔 的入室 CO₂ 份额 ⇒ 车间新风量与通风机选型" for="f_${idx}_co2StripApproach">CO₂逼近系数</label><input id="f_${idx}_co2StripApproach" data-proc-stage="${idx}" data-proc-field="co2StripApproach" type="number" ${fieldSpecAttrs('co2StripApproach')} value="${stage.proc.co2StripApproach != null ? stage.proc.co2StripApproach : PROCESS_DEFAULTS.co2StripApproach}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">🌫️ <b>CO₂ 脱气塔</b> (v1.1.2: 独立设备 + 风机参数可调)</div>
+      <div data-common><label class="text-[10px] text-emerald-300" title="MBBR 是否加盖并接排风外排。&#10;默认: 加盖外排&#10;&#10;加盖外排 — 曝气尾气及其水汽/CO₂ 全部离开建筑 (基线口径)&#10;敞口     — 尾气在车间水面破裂, 水汽进入车间空气, 加重除湿/暖通负荷&#10;&#10;⚠ 这不是布置问题: MBBR 与鱼池同厅与否只决定风机电机废热去哪个房间, 不决定气去哪儿。同厅照样可以加盖外排。&#10;⚠ 量级 (三文鱼 1000t 成鱼期): 敞口时 0.50 t/d 水汽进厅 ≈ 342 kWh/d 潜热, 是池面蒸发项的 1.35 倍。全库工况热泵电费最大变动 12.3%。">MBBR加盖</label><select data-proc-stage="${idx}" data-proc-field="mbbrCovered" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.mbbrCovered!==false?'selected':''}>加盖外排</option><option value="false" ${stage.proc.mbbrCovered===false?'selected':''}>敞口(尾气入室)</option></select></div>
       <div data-common><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔启用/停用. 关闭时 CO₂ 仅靠换水稀释, 高密度场会严重超标">CO₂脱气启用</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.co2StripperEnabled!==false?'selected':''}>启用</option><option value="false" ${stage.proc.co2StripperEnabled===false?'selected':''}>停用</option></select></div>
       <div><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔单次效率 (%)&#10;范围: 50-85&#10;默认: 65&#10;含义: 单次脱气效率, G:L=3 浅塔约 60-70%" for="f_${idx}_co2StripperEff">脱气效率(%)</label><input id="f_${idx}_co2StripperEff" data-proc-stage="${idx}" data-proc-field="co2StripperEff" type="number" ${fieldSpecAttrs('co2StripperEff')} value="${stage.proc.co2StripperEff != null ? stage.proc.co2StripperEff : PROCESS_DEFAULTS.co2StripperEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="气液比 G:L (×)&#10;范围: 5-20 (Timmons Ch.10 p.244)&#10;默认: 5 (对标教科书下沿 5:1)&#10;含义: 风量/水量比&#10;⚠ 教科书 CO₂ 汽提推荐 5:1-20:1; 常规曝气才 &lt;3:1&#10;Karimi 2020 实测: G:L&gt;5 无显著额外去除; Summerfelt 2003 最优 5.1&#10;⚠ 热损与 G:L 成线性 —— 调高同时增大风机电耗与接触器热损" for="f_${idx}_co2StripperGtoL">G:L 比</label><input id="f_${idx}_co2StripperGtoL" data-proc-stage="${idx}" data-proc-field="co2StripperGtoL" type="number" ${fieldSpecAttrs('co2StripperGtoL')} value="${stage.proc.co2StripperGtoL != null ? stage.proc.co2StripperGtoL : PROCESS_DEFAULTS.co2StripperGtoL}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="脱气效率取值方式&#10;manual: 直接用上面填的「脱气效率」(与 v1.x 一致, 默认)&#10;auto: 按 G:L / 填料高度 / 进风 CO₂ 本底自动算 (Timmons Ch.10 Fig 10.13/10.14/10.17)&#10;⚠ v1.x 中效率与 G:L 是两个独立参数, 调高 G:L 只涨电耗不涨去除率 —— auto 修正此问题">效率取值</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEffMode" class="stg-proc-input input-ind !py-1 !text-xs"><option value="manual" ${stage.proc.co2StripperEffMode!=="auto"?"selected":""}>手工指定</option><option value="auto" ${stage.proc.co2StripperEffMode==="auto"?"selected":""}>按曲线自动</option></select></div><div><label class="text-[10px] text-emerald-300" title="填料层高度 (m)&#10;范围: 0.3-3.0&#10;默认: 1.5&#10;Timmons Ch.10 p.245: 设计高度一般限于 1.0-1.5 m,&#10;因为超过 1.5-2.0 m 后去除性能收益递减&#10;⚠ 填料深度超 1 m 时, 建议水力负荷取偏低端以降低风机背压" for="f_${idx}_co2PackingHeight_m">填料高度(m)</label><input id="f_${idx}_co2PackingHeight_m" data-proc-stage="${idx}" data-proc-field="co2PackingHeight_m" type="number" ${fieldSpecAttrs('co2PackingHeight_m')} value="${stage.proc.co2PackingHeight_m != null ? stage.proc.co2PackingHeight_m : PROCESS_DEFAULTS.co2PackingHeight_m}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="脱气塔风机全压 (kPa)&#10;范围: 0.3-10&#10;默认: 2.5&#10;构成: 填料层压降 (化工准则 0.2-0.4 kPa/m) + 布水器 + 风管 + 过滤器 + 排风管&#10;⚠ 与曝气风机不同 —— 曝气要克服水深静压 (约 10 kPa/m 水柱), 脱气只克服流动阻力&#10;整机对标: Summerfelt 2009 为 5-15 kW/1000 m³/h 循环水量" for="f_${idx}_co2BlowerPressure_kPa">风机全压(kPa)</label><input id="f_${idx}_co2BlowerPressure_kPa" data-proc-stage="${idx}" data-proc-field="co2BlowerPressure_kPa" type="number" ${fieldSpecAttrs('co2BlowerPressure_kPa')} value="${stage.proc.co2BlowerPressure_kPa != null ? stage.proc.co2BlowerPressure_kPa : PROCESS_DEFAULTS.co2BlowerPressure_kPa}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="风机效率 (%)&#10;范围: 30-90&#10;默认: 60&#10;含义: 风机轴功率/电功率总效率 (含电机)&#10;再生式风机 45-65%, 离心风机 60-75%, 罗茨 50-70%" for="f_${idx}_co2BlowerEfficiency">风机效率(%)</label><input id="f_${idx}_co2BlowerEfficiency" data-proc-stage="${idx}" data-proc-field="co2BlowerEfficiency" type="number" ${fieldSpecAttrs('co2BlowerEfficiency')} value="${stage.proc.co2BlowerEfficiency != null ? stage.proc.co2BlowerEfficiency : PROCESS_DEFAULTS.co2BlowerEfficiency}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div><label class="text-[10px] text-emerald-300" title="水力负荷 m³/(m²·h)&#10;范围: 20-250&#10;默认: 80&#10;决定塔截面积 → CAPEX&#10;Timmons Ch.10 p.245: 17-24 L/(m²·s) = 61-86 m³/(m²·h)&#10;⚠ 填料深度超 1 m 时建议取偏低端 (降低风机背压)" for="f_${idx}_co2StripperLoadingRate">水力负荷</label><input id="f_${idx}_co2StripperLoadingRate" data-proc-stage="${idx}" data-proc-field="co2StripperLoadingRate" type="number" ${fieldSpecAttrs('co2StripperLoadingRate')} value="${stage.proc.co2StripperLoadingRate != null ? stage.proc.co2StripperLoadingRate : PROCESS_DEFAULTS.co2StripperLoadingRate}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div class="col-span-2 text-[10px] leading-relaxed px-1 py-1 rounded bg-slate-900/40 border border-slate-700/50" data-co2diag="${idx}"></div>
@@ -11831,7 +12749,7 @@ function renderFlow(idx, sim) {
           <div class="param-row flex justify-between py-0.5"><span class="text-slate-400">Geosmin</span><span class="${(st.Geosmin||0)>10?'badge-danger':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.Geosmin||0,2)}</span></div>
           <div class="param-row flex justify-between py-0.5" title="DO 阈值 ${(sim.DO_threshold||WATER_LIMITS.tankDO_min).toFixed(2)} mg/L = max(绝对下限 ${WATER_LIMITS.tankDO_min}, 饱和度 × 鱼种内置比例)"><span class="text-slate-400">DO</span><span class="${st.DO<(sim.DO_threshold||WATER_LIMITS.tankDO_min)?'badge-danger':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.DO,1)}</span></div>
           <div class="param-row flex justify-between py-0.5" title="CO₂ 阈值 ${sim.CO2_threshold||WATER_LIMITS.tankCO2_max_freshwater} mg/L (淡水 20 / 海水 15, 按盐度判定)"><span class="text-slate-400">CO₂</span><span class="${st.CO2>(sim.CO2_threshold||WATER_LIMITS.tankCO2_max_freshwater)?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.CO2,1)}</span></div>
-          ${st.pH!==undefined?`<div class="param-row flex justify-between py-0.5" title="稳态 pH (free/浓度标度), 来自碳酸盐平衡: 碱度 + CO₂.${st.beta!==undefined?` 缓冲强度 β≈${st.beta.toFixed(0)} mg/L CaCO₃ per pH (越大越稳定).`:''}"><span class="text-slate-400">pH</span><span class="${st.pH<6.5?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.pH,2)}</span></div>`:''}
+          ${st.pH!==undefined?`<div class="param-row flex justify-between py-0.5" title="稳态 pH (free/浓度标度), 来自碳酸盐平衡: 碱度 + CO₂.${st.alkNode!==undefined?` 本节点总碱度 ${st.alkNode.toFixed(0)} mg/L CaCO₃ (v2.5: 沿程不守恒 — 生物滤池每硝化 1 mg/L TAN 耗 7.14 mg/L CaCO₃).`:''}${st.beta!==undefined?` 缓冲强度 β≈${st.beta.toFixed(0)} mg/L CaCO₃ per pH (越大越稳定).`:''}"><span class="text-slate-400">pH</span><span class="${st.pH<6.5?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.pH,2)}</span></div>`:''}
           ${st.NH3_N!==undefined?`<div class="param-row flex justify-between py-0.5" title="非离子化 NH₃-N (剧毒). 占 TAN 比例 fNH3 = ${st.fNH3!==undefined?(st.fNH3*100).toFixed(2):'-'}%, 随 pH 和 T 急剧上升.&#10;鱼种长期上限: 三文鱼 12.5 / 大菱鲆 20 / 石斑 30 / 加州鲈·鳜·对虾 50 / 鳗鲡 60 / 罗非 100 μg/L.&#10;v1.9.3: 着色按【当前鱼种】限值三档 —— 超限值红, 超半限值黄, 其余绿 (此前写死 25 μg/L, 使最敏感的鲑科用了 2× 宽松阈值)"><span class="text-slate-400">NH₃-N</span><span class="${(function(){var lim=(typeof NH3_LIMIT_UG_L!=='undefined'&&NH3_LIMIT_UG_L[currentSpecies]!=null)?NH3_LIMIT_UG_L[currentSpecies]:25;var v=st.NH3_N*1000;return v>lim?'badge-danger':(v>lim*0.5?'badge-warn':'badge-ok');})()} px-1.5 rounded font-mono">${fmt(st.NH3_N*1000,1)} μg/L</span></div>`:''}
           ${(st.omega!==undefined && st.omega!==null && isFinite(st.omega))?`<div class="param-row flex justify-between py-0.5" title="方解石饱和度 Ω (仅海水/半咸水; 淡水不适用).&#10;Ω = [Ca²⁺][CO₃²⁻] / Ksp(方解石).&#10;Ω &lt; 1 表示水对碳酸钙【不饱和】, 会持续溶蚀混凝土池体与水泥基砂浆 (长期导致池壁起砂、露筋), 对贝类/甲壳类还影响钙化.&#10;RAS 中 Ω 偏低的主因: 高密度养殖 CO₂ 累积压低 pH → CO₃²⁻ 占比骤降.&#10;对策: 提高碱度 / 强化脱气 / 投加碳酸盐.&#10;v1.9.3 新增显示 —— 此前该值已算出并进导出载荷, 但界面上看不到."><span class="text-slate-400">Ω 方解石</span><span class="${st.omega<0.8?'badge-danger':(st.omega<1?'badge-warn':'badge-ok')} px-1.5 rounded font-mono">${fmt(st.omega,2)}${st.omega<1?' 欠饱和':''}</span></div>`:''}
           ${(st.alkRequired!==undefined && st.pHMode)?`<div class="param-row flex justify-between py-0.5" title="持目标 pH 模式: 在稳态 CO₂ 下维持 pH=${st.pHTarget!==undefined?st.pHTarget.toFixed(1):''} 所需的碱度设定值. NaHCO₃ 投加速率主要由硝化驱动 (不受 pH 模式影响)."><span class="text-slate-400">碱度需</span><span class="${(st.alkRequired>600||st.alkRequired<=10)?'badge-warn':'badge-ok'} px-1.5 rounded font-mono">${fmt(st.alkRequired,0)}</span></div>`:''}
@@ -12484,7 +13402,15 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
       const _byCO2 = sim && sim.aeration && sim.aeration.sizedBy === 'CO2';
       warns.push({
         level: 'warn',
-        text: `♻️ <b>空气曝气模式下脱气塔通常冗余</b>: 曝气本身即脱气, 关塔后鱼池 CO₂ 仍在阈值内 (实测 20.5 vs 22.5 mg/L)。`
+        /* v2.5 数字扫尾: 原文案硬写"实测 20.5 vs 22.5 mg/L" —— 那是 v2.3 二批某个特定
+           工况(石斑 20 kg/m³)的冻结快照, 与用户当前工况无关, 且 v2.5 链式重导后已不可复现。
+           改为直接报【本阶段自己的】实算值: 既不会再过期, 对用户也更有用。 */
+        text: `♻️ <b>空气曝气模式下脱气塔通常冗余</b>: 曝气本身即脱气`
+            + ((sim && sim.stages && sim.stages[0] && Number.isFinite(sim.stages[0].CO2)
+                && Number.isFinite(sim.CO2_threshold))
+                ? `，本阶段关塔后鱼池 CO₂ 实算 <b>${sim.stages[0].CO2.toFixed(1)}</b> mg/L`
+                  + `（阈值 ${sim.CO2_threshold} mg/L，${sim.stages[0].CO2 <= sim.CO2_threshold ? '仍在阈值内' : '<b>已超标</b>'}）`
+                : '') + `。`
             + `<br>　　唯一合理用途: 当风量被 <b>CO₂ 侧</b>控制时, 加塔可卸掉 CO₂ 负担、降低池内曝气强度`
             + (_byCO2 ? `（本阶段风量<b>正由 CO₂ 控制</b>, 该用途成立）` : `（本阶段风量由 O₂ 控制, <b>开塔不会减少风量</b>, 纯属多花钱）`)
             + `。`
@@ -12593,6 +13519,171 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
       }
     }
 
+    /* ── v2.5 (第八轮审计 B5): NH₃ 峰值不在鱼池 ──
+       判据 η_bio > η_co2 翻号时, 全场最高的非离子化氨出现在【脱气塔之后】而非鱼池:
+       那里 TAN 已降但 pH 已升, 而 fNH₃ 对 pH 高度敏感. 阈值不是新引入的 —— 直接比较
+       沿程实算值 (见 sim.nh3Peak). 工程上鱼在池里, 设计取池值本身合理, 但此时【池值
+       不再是全场包络】, 管路/集水池段的实际暴露更高, 必须显式说出来. */
+    if (sim.nh3Peak && !sim.nh3Peak.atTank && sim.nh3Peak.ratio > 1.05) {
+      const _np = sim.nh3Peak;
+      const _eb = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN : null;
+      const _ec = (sim.co2EffUsed != null) ? sim.co2EffUsed * 100 : null;
+      warns.push({
+        level: _np.ratio > 2 ? 'danger' : 'warn',
+        text: `🧪 <b>NH₃ 峰值不在鱼池，而在「${_np.name}」节点</b>`
+            + `（${(_np.value * 1000).toFixed(1)} μg/L，为鱼池值的 <b>${_np.ratio.toFixed(2)}×</b>）<br>`
+            + `　　成因：脱气塔降 CO₂ 使 pH 上升，而非离子化氨占比 fNH₃ ∝ 1/[H⁺]，`
+            + `上升速度快于生物滤池对 TAN 的削减。闭式判据：`
+            + `<b>NH₃(塔后)/NH₃(池) ≈ (1−η_bio)/(1−η_co2)</b>，`
+            + `即<b>仅当 η_bio &gt; η_co2 时鱼池才是全场 NH₃ 峰值</b>`
+            + (_eb != null && _ec != null ? `（本阶段 η_bio=${_eb.toFixed(0)}%，η_co2=${_ec.toFixed(0)}%）` : '')
+            + `。<br>`
+            + `　　工程含义：鱼在池里，<b>设计判据取池值仍然合理</b>，但池值此时<b>不是全场包络</b>——`
+            + `脱气塔后至回池段（集水池、增氧锥、回水管）的实际 NH₃ 暴露更高，`
+            + `该段若有滞留（事故池、缓冲池、检修停留）需按峰值节点校核。<br>`
+            + `　　消解：提高 <code>biofilterTAN</code> 至高于 η_co2，或降低脱气塔效率/G:L。`
+      });
+    }
+
+    /* ── v2.5 (第八轮审计 B2): pH 未反馈给硝化速率 ──
+       biofilterTAN 是用户给的常数效率, 与 pH 无关; 而硝化速率对 pH 高度敏感.
+       高 CO₂ 工况下模型会同时输出\"pH 6.9\"与\"硝化效率 70%\"—— 两个数在物理上不相容,
+       且偏差方向【乐观】(真实硝化更慢 ⇒ 真实 TAN/NH₃ 更高).
+       本版【只告警不折减】: 硬套一个来源不同的 f(pH) 折减曲线比宽带更糟 (同浅池 CO₂ 处置).
+       ⚠ 该反馈在实现上不成环 —— pH 只依赖 (alkTarget, co2_tank), 而 co2Daily 用的是
+         【产生的】TAN 不是被硝化的 TAN, 故 f(pH) 是单次前推, 无需迭代. 排下一版. */
+    if (tank && Number.isFinite(tank.pH) && tank.pH < 7.0) {
+      /* v2.5: W5 锚定用的打点 —— 自检遍历全部工况后校验"至少有一条走到过这里"。
+         全局标志而非返回值: 告警在渲染层构造, 与自检不在同一调用链上。 */
+      try { __iRAS_ph7WarnSeen = true; } catch (e) { /* 非自检环境无此变量, 忽略 */ }
+      const _eb2 = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN : null;
+      warns.push({
+        level: tank.pH < 6.5 ? 'danger' : 'warn',
+        text: `⚗️ <b>pH = ${tank.pH.toFixed(2)} &lt; 7.0，硝化效率应下调，但<u>本模型未计入</u></b><br>`
+            + `　　硝化菌 pH 最适区间约 7.5–8.5，pH 低于 7.0 时硝化速率显著下降`
+            + `（文献报道近似线性，量级为每降 1 个 pH 单位损失约 10–15% 效率）。<br>`
+            + `　　而 <code>biofilterTAN</code>`
+            + (_eb2 != null ? `（当前 ${_eb2.toFixed(0)}%）` : '')
+            + ` 是<b>用户给定的常数</b>，与 pH 无关 —— 模型此处同时输出`
+            + `“pH ${tank.pH.toFixed(2)}”与“硝化效率 ${_eb2 != null ? _eb2.toFixed(0) : '—'}%”，`
+            + `两者在物理上不相容，且<b>偏差方向偏乐观</b>（真实硝化更慢 ⇒ 真实 TAN 与 NH₃ 高于本表）。<br>`
+            + `　　处置：手动下调 <code>biofilterTAN</code>，或提高碱度设定值 / 强化 CO₂ 脱气把 pH 拉回 7.0 以上。`
+            + `<br>　　（本版只提示不折减：硬套一条来源不同的 f(pH) 曲线比明确宽带更糟。）`
+      });
+    }
+
+    /* ── v2.5 (第八轮审计 B7): pH 求解越界 ──
+       carbonate.solve 在 pH_SWS ∈ [2,12] 上二分。真解在区间外时会静默收敛到端点,
+       返回一个【看着正常】的 pH (11.999 / 2.001)。当前输入域够不到 (alkTarget 钳在
+       [20,400], 即使 CO₂ 恰为 0 也只到 pH_sws 11.53), 故本告警平时不会出现 ——
+       它防的是放宽 clamp 或方案 JSON 绕过钳制的将来。 */
+    {
+      const _ob = (sim.stages || []).filter(function (n) { return n && n.pHBoundary; });
+      if (_ob.length) {
+        const _dir = _ob[0].pHBoundary === 'high' ? '高于 12' : '低于 2';
+        warns.push({
+          level: 'danger',
+          text: `🧮 <b>pH 求解越界，下方 pH / Ω / NH₃ 均不可信</b><br>`
+              + `　　碳酸盐平衡在 pH 2–12 区间内二分求解，本工况的真实解<b>${_dir}</b>，`
+              + `求解器返回的是<b>区间端点值</b>而非真解 —— 数字看着正常，但没有物理意义。<br>`
+              + `　　涉及节点：${_ob.map(function (n) { return n.name; }).join('、')}。<br>`
+              + `　　成因通常是碱度设定值或 CO₂ 浓度被置到工程范围之外`
+              + `（正常工况下本告警不会出现）。请检查碱度设定值与脱气效率。`
+        });
+      }
+    }
+
+    /* ── v2.5 IRAS_V25_BF_AERATION: MBBR 运行 DO 低于设定下限 ──
+       ⚠ 只告警, 【不自动加风】—— 自动调整会把用户设定的流化通量悄悄改掉,
+         而代价可能极大 (实测石斑幼鱼期达到 DO=4 需通量 40.9, 远超 Norsk Vann 的 10–15)。
+         故给出"需把通量提到 X、届时功率 Y", 让用户做一个【有标价的选择】。 */
+    {
+      const _bio = (sim.stages || []).filter(function (n) { return n.id === 'bio'; })[0];
+      const _bs = eq && eq.bfBlowerSpec;
+      const _dmin = (stage.proc && stage.proc.bfDOMin != null) ? stage.proc.bfDOMin : 4;
+      if (_bio && Number.isFinite(_bio.DO) && _bio.DO < _dmin - 1e-9
+          && _bs && Number.isFinite(sim.bfDOeq)) {
+        let _need = null, _needKw = null;
+        if (sim.bfDOeq > _dmin) {
+          const _up = (sim.stages || []).filter(function (n) { return n.id === 'skim' || n.id === 'rdf'; }).pop();
+          const _a = (_fd && _fd.flowM3h ? _fd.flowM3h : 0) * 24 / 1000;   // ⚠ 本函数第六参数名为 _fd 不是 flowData
+          const _alpha = (stage.proc.bfAlpha != null) ? stage.proc.bfAlpha : 0.85;
+          const _k = 0.012 * (_bs.depth_m || 3) * _alpha * Math.pow(1.024, (stage.tempOpt || 15) - 20) / 9.09;
+          const _Mn = (_a * (_dmin - (_up ? _up.DO : _bio.DO)) + (load.o2BFDaily || 0)) / (_k * (sim.bfDOeq - _dmin));
+          const _airN = _Mn / (24 * RHO_STD_AIR * F_O2_MASS);   // v2.5: 同上, 告警文案也须单源
+          _need = _airN / Math.max(_bs.floorArea_m2 || 1, 1e-6);
+          _needKw = _airN / 3600 * (_bs.pressurePa || 45000) / 600;
+        }
+        warns.push({
+          level: _bio.DO < _dmin * 0.6 ? 'danger' : 'warn',
+          text: `🫧 <b>MBBR 内 DO 实算 ${_bio.DO.toFixed(2)} mg/L，低于设定下限 ${_dmin}</b><br>`
+              + `　　当前按流化通量 <b>${(_bs.fluxUsed || 10)} m³/(h·m²)</b> × 池底 ${(_bs.floorArea_m2 || 0).toFixed(0)} m²`
+              + ` 得风量 ${(_bs.airFlowM3h || 0).toFixed(0)} Nm³/h；`
+              + `进水 DO 扣掉生物膜耗氧后，曝气传入不足以维持到 ${_dmin}。<br>`
+              + (_need != null
+                 ? `　　<b>若要达到 ${_dmin} mg/L：通量需提到约 ${_need.toFixed(1)} m³/(h·m²)，风机功率约 ${_needKw.toFixed(0)} kW</b>`
+                   + `（现 ${(_bs.power || 0).toFixed(0)} kW）。`
+                   + (_need > 15 ? `<br>　　⚠ 该值已<b>远超 Norsk Vann 168/2009 的 10–15 区间</b>——`
+                       + `暖水高盐 + 高密度工况靠加风顶 DO 不经济，工程上更可能是<b>加大池容</b>（降低单位面积负荷）`
+                       + `或<b>提高进水 DO</b>。` : '')
+                 : `　　⚠ 该工况的<b>平衡 DO 仅 ${sim.bfDOeq.toFixed(2)}</b>，低于设定下限 ——`
+                   + `无论加多大风量都达不到，必须改工艺（加大池容 / 提高进水 DO / 降温降盐）。`)
+              + `<br>　　<b>本模型不会自动加风</b>，是否加曝气由你决定。`
+        });
+      }
+      /* 流化通量低于 Norsk Vann 下限区间 —— 提示性，不阻断 */
+      if (_bs && Number.isFinite(_bs.fluxUsed) && _bs.fluxUsed < 10) {
+        warns.push({
+          level: 'warn',
+          text: `🌀 <b>流化通量 ${_bs.fluxUsed} m³/(h·m²) 低于设计导则下限</b><br>`
+              + `　　Norsk Vann 168/2009：<i>为保证良好混合，供气量不应低于 10–15 m³/h·m² 池底（随载体而定）</i>。<br>`
+              + `　　通量不足时填料流化不充分，出现死区、生物膜过厚、比表面积打折——`
+              + `实测表观气速低于 5 m/h 时 TAN 去除率明显下降。<br>`
+              + `　　允许下调是为机械搅拌或低密度载体工况保留的选项；常规 MBBR 请勿低于 10。`
+        });
+      }
+    }
+
+    /* ── v2.5 IRAS_V25_CO2_BUFFER: kLoad 型 η 未计入碳酸盐缓冲 ──
+       【只告警不折减】,与 B2(pH→硝化)同一处置口径。
+       按【气相载量】算出的 η(MBBR 吹脱、air 模式池内曝气)给出的是从 DIC 里转移走的
+       【质量】,而模型把它当作自由 CO₂ 的降幅用 —— 等价于假设缓冲因子 = 1.0。
+       实际 CO₂ 被吹走后碳酸盐右移(HCO₃⁻ + H⁺ → CO₂ + H₂O),一部分重碳酸盐转回,
+       自由 CO₂ 的降幅【小于】被吹走的质量 ⇒ 这两个 η 被系统性高估。
+       ⚠ 脱气塔的 η 不在此列: 它来自实测进出水自由 CO₂ 之比,本就是"表观"口径,
+         缓冲已含在那个数里,再乘一次就是重复计算。
+       ⚠ 淡水缓冲因子 ≈1.02 可忽略,故只在偏差有实质意义时提示。 */
+    {
+      const _cb = (typeof iRASCarbonate !== 'undefined' && iRASCarbonate.co2BufferFactor)
+        ? iRASCarbonate : null;
+      const _tk0 = (sim.stages || [])[0];
+      const _etaK = (sim.eta_co2_bf || 0) + ((sim.co2Removal || {}).etaAer || 0);
+      if (_cb && _tk0 && Number.isFinite(_tk0.CO2) && _tk0.CO2 > 0
+          && Number.isFinite(_tk0.alkNode) && _etaK > 1e-6) {
+        try {
+          const _S = stage.salinity || 0, _rho = 1 + 0.0008 * _S;
+          const _f = _cb.co2BufferFactor(_tk0.alkNode / 50043 / _rho,
+                                         _tk0.CO2 / 44010 / _rho,
+                                         stage.tempOpt || 15, _S);
+          if (_f > 1.05) {
+            warns.push({
+              level: 'warn',
+              text: `🧊 <b>按气相载量算出的 CO₂ 去除率未计入碳酸盐缓冲，高估约 ${((_f - 1) * 100).toFixed(0)}%</b><br>`
+                  + `　　本阶段缓冲因子 <b>${_f.toFixed(2)}</b>（碱度 ${_tk0.alkNode.toFixed(0)} mg/L CaCO₃、盐度 ${_S}）。`
+                  + `CO₂ 被吹走后碳酸盐平衡右移，重碳酸盐转回补上，`
+                  + `<b>自由 CO₂ 的实际降幅小于被吹走的质量</b>。<br>`
+                  + `　　受影响的是<b>按气相载量算的 η</b>：MBBR 曝气吹脱 ${((sim.eta_co2_bf||0)*100).toFixed(1)}%`
+                  + `${((sim.co2Removal||{}).etaAer ? `、池内曝气 ${(((sim.co2Removal||{}).etaAer)*100).toFixed(1)}%` : '')}。`
+                  + `<b>脱气塔不受影响</b>——它的效率来自实测进出水浓度比，缓冲已含在内。<br>`
+                  + `　　后果：鱼池与塔前 CO₂ 略偏低（量级约 ${((_f - 1) * (sim.eta_co2_bf || 0) * 100).toFixed(1)}% 的浓度）。`
+                  + `<b>本版只提示不折减</b>，修正需重跑基线。`
+                  + `<br>　　依据：Colt 等 2012 —— 基于总碳酸盐变化的真实脱碳量大于表观值，海水高碱度下尤甚。`
+            });
+          }
+        } catch (e) { /* 缓冲因子算不出不阻断主流程 */ }
+      }
+    }
+
     // v1.9.2 (审计 P3): 无稳态解告警 —— 必须在任何浓度类告警之前, 因为此时所有浓度都不可信
     if (sim.divergent && sim.divergent.length) {
       warns.push({
@@ -12619,7 +13710,12 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
     //   (η > 80% 需极低进水 TAN 或多级串联, 单级很难达到.)
     try {
       const _etaIn  = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN / 100 : 0.7;
-      const _bioVol = (eq && eq.bioVolume) || 0;
+      /* v2.5 修正 (用户实测报错): EBCT = Empty Bed Contact Time —— 分子是【空床】容积,
+         即 BF 池总容积 V_BF = bioVolume / fillRatio, 不是填料净体积 bioVolume。
+         原式用净体积, 50% 填充率下 EBCT 低估一倍 ⇒ 本告警系统性误报。
+         实例: 888 m³ 填料 @ 77,615 m³/h 原算 0.69 min(触发告警), 实为 1.37 min(不触发)。
+         ⚠ 单源: 取 eq.bfTankVolume(= calcEquipmentSpec 里的 V_BF_water), 不在此重算。 */
+      const _bioVol = (eq && eq.bfTankVolume) || ((eq && eq.bioVolume) || 0) / 0.5;
       // v1.9.2 (复审): rdfFlow = 循环流量 × 安全系数 1.10, 略大于实际进 BF 流量,
       //   EBCT 因此偏小约 9% (偏保守, 无害). fallback 改用 load.flowM3h ——
       //   原写的 stageFarm.flowM3h 字段不存在, 是死代码.
@@ -12637,7 +13733,8 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
             level: 'warn',
             text: `⚗️ <b>生物滤池去除率与接触时间可能不自洽</b>：`
                 + `设定单次通过去除率 <b>${(_etaIn*100).toFixed(0)}%</b>，`
-                + `而 ${_bioVol.toFixed(0)} m³ 填料在 ${_flow.toFixed(0)} m³/h 流量下`
+                + `而 BF 池总容积 ${_bioVol.toFixed(0)} m³（填料净 ${((eq&&eq.bioVolume)||0).toFixed(0)} m³ ÷ 填充率）`
+                + `在 ${_flow.toFixed(0)} m³/h 流量下`
                 + `空床接触时间仅 <b>${_ebct.toFixed(1)} min</b>，`
                 + `该接触时间经验上单级可达约 ${(_etaMax*100).toFixed(0)}%。<br>`
                 + `　　注意 <code>biofilterTAN</code>(单次去除率，决定池内浓度) 与 `
@@ -13962,7 +15059,10 @@ function recomputeAll() {
     let eq = calcEquipmentSpec(load, flowData, proc, sim, stage);
     let V_total = eq.systemVolume ? eq.systemVolume.V_total : flowData.volume;
     // Pass 2: 用精确 V_total + eq 重算 sim/alk/thermal
-    sim = simulateWaterQualityProcess(load, flowData, sp, proc, V_total);
+    /* v2.5 IRAS_V25_BF_AERATION: pass 2 起把 pass 1 的 eq 传进去 —— MBBR 的 DO 闭式解
+       需要池底面积(来自 bioVolume), 而 bioVolume 不依赖 DO, 故一次回代即收敛, 无需新增 pass。
+       pass 1 时 eqPrev 为 undefined ⇒ 退化到旧的"全量从水里扣"式(仅用于粗算 TSS)。 */
+    sim = simulateWaterQualityProcess(load, flowData, sp, proc, V_total, eq);
     sim.alk = calcAlkalinity(load, flowData, proc, sim, V_total);
     sim.thermal = calcThermalLoad(flowData, proc, stage, V_total, load, eq, sim);
     // Pass 3 (Bug 28): 在 pass 2 后用更新的 sim 重算 eq
@@ -14775,6 +15875,10 @@ function buildPIDExport() {
         co2:       eq.co2StripperSpec && eq.co2StripperSpec.enabled ? {
                      tag: 'C-501', enabled: true, eff: stage.proc.co2StripperEff, gToL: stage.proc.co2StripperGtoL,
                      loadingRate: stage.proc.co2StripperLoadingRate,
+                     /* v2.5 IRAS_V25_CHAIN_CO2 (D1-c): 塔【进水】浓度 = 生物滤池出水 =
+                        全场 CO₂ 最高点。此前下游只能看到鱼池浓度, 而选塔要看进水 ——
+                        两个量在 v2.5 及以前是同一个数 (集总口径), 现已分开。 */
+                     inletCO2_mgL: (sim && sim.co2StripperInlet_mgL != null) ? sim.co2StripperInlet_mgL : null,
                      spec: eq.co2StripperSpec
                    } : { tag: 'C-501', enabled: false },
         o2cone:    eq.aerationSpec ? {
@@ -14823,7 +15927,15 @@ function buildPIDExport() {
                      methanolKgD: eq.methanolDemand
                    } : { tag: 'R-801', enabled: false },
         ozoneGen:  { tag: 'G-901', totalKgD: eq.totalOzoneKg, powerKw: eq.ozoneGeneratorPower },
-        bfBlower:  { tag: 'K-302', spec: eq.bfBlowerSpec || {} },
+        /* v2.5 IRAS_V25_BF_AERATION: 只导出 P&ID / 设备表真正会用的字段。
+           driver / fluxUsed / floorArea_m2 / tankVol_m3 是【选型中间量】,
+           供 index 内部的水质链与告警使用, 下游无人消费 —— 全量下传会撑破
+           C8 死负载棘轮(实测 10 → 19)。棘轮的用意正是拦这个: 导出面只放被消费的东西。 */
+        bfBlower:  { tag: 'K-302', spec: (function (b) {
+                       if (!b) return {};
+                       return { basis: b.basis, airFlow: b.airFlow, airFlowM3h: b.airFlowM3h,
+                                power: b.power, airPath: b.airPath };
+                     })(eq.bfBlowerSpec) },
         // v1.7: 鱼池增氧鼓风机 K-101 (仅 air 模式启用; o2 模式时 enabled=false, P&ID 不画)
         //       与 K-302 BF 风机区别: K-101 服务鱼池 (微孔曝气盘, 高压), K-302 服务 BF (粗孔曝气, 低压)
         tankAirBlower: (eq.isAir && eq.aerationSpec && eq.aerationSpec.blowerPowerKw > 0) ? {
@@ -16375,24 +17487,24 @@ const SELFTEST_BASELINE = [
   //   产品路径的均值口径才与成本模型自洽。
   { id: 'salmon_qingdao_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 40.44, fullCostPerKg: 45.59, kwhPerKg: 12.21, hpCostPerKg: 1.15 } },
+    expect: { costPerKg: 40.80, fullCostPerKg: 45.97, kwhPerKg: 12.48, hpCostPerKg: 1.17 } },
 
   { id: 'salmon_qingdao_w',  species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: -7, T_source_design_winter: 4,
                T_air_design_summer: -7, T_source_design_summer: 4, RH_winter: 60 },
-    expect: { costPerKg: 38.78, fullCostPerKg: 43.85, kwhPerKg: 11.76, hpCostPerKg: 1.03 } },
+    expect: { costPerKg: 39.12, fullCostPerKg: 44.20, kwhPerKg: 12.03, hpCostPerKg: 1.05 } },
   { id: 'salmon_hainan_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 17, T_source_design_winter: 22,
                T_air_design_summer: 17, T_source_design_summer: 22, RH_winter: 78 },
-    expect: { costPerKg: 40.04, fullCostPerKg: 45.18, kwhPerKg: 13.29, hpCostPerKg: 1.68 } },
+    expect: { costPerKg: 40.39, fullCostPerKg: 45.55, kwhPerKg: 13.57, hpCostPerKg: 1.71 } },
   { id: 'salmon_hainan_s',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 32, T_source_design_winter: 27,
                T_air_design_summer: 32, T_source_design_summer: 27, RH_winter: 78 },
-    expect: { costPerKg: 44.52, fullCostPerKg: 49.94, kwhPerKg: 19.83, hpCostPerKg: 4.95 } },
+    expect: { costPerKg: 44.94, fullCostPerKg: 50.38, kwhPerKg: 20.21, hpCostPerKg: 5.02 } },
   { id: 'salmon_bergen_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 0, T_source_design_winter: 4,
                T_air_design_summer: 0, T_source_design_summer: 4, RH_winter: 75 },
-    expect: { costPerKg: 37.68, fullCostPerKg: 42.68, kwhPerKg: 10.19, hpCostPerKg: 0.20 } },
+    expect: { costPerKg: 38.01, fullCostPerKg: 43.02, kwhPerKg: 10.44, hpCostPerKg: 0.21 } },
   // 各鱼种 (默认气候 = 青岛, 走 UI 默认值)
       /* IRAS_BASELINE_PAIRING_V2 新增: 冷水鱼种 × 热带气候
      当前行业热点（Atlantic Sapphire 佛州 Homestead、宁波象山 Nordic Aqua），
@@ -16402,36 +17514,36 @@ const SELFTEST_BASELINE = [
      此场景此前【无任何基线覆盖】。 */
   { id: 'salmon_sanya_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 43.09, fullCostPerKg: 48.41, kwhPerKg: 17.18, hpCostPerKg: 3.65 } },
+    expect: { costPerKg: 43.49, fullCostPerKg: 48.83, kwhPerKg: 17.53, hpCostPerKg: 3.71 } },
 
   // IRAS_BASELINE_PAIRING_V2: 罗非（28°C）温水淡水，不会在青岛养 → china_shanghai 年均
   { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 30.93, fullCostPerKg: 35.59, kwhPerKg: 9.78, hpCostPerKg: 0.83 } },
+    expect: { costPerKg: 30.57, fullCostPerKg: 35.21, kwhPerKg: 9.33, hpCostPerKg: 0.82 } },
       // IRAS_BASELINE_PAIRING_V2: 大菱鲆（16°C）冷水海水，配对本就合理，仅补年均口径 → china_qingdao 年均
   { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 56.34, fullCostPerKg: 66.54, kwhPerKg: 16.51, hpCostPerKg: 1.77 } },
+    expect: { costPerKg: 56.90, fullCostPerKg: 67.12, kwhPerKg: 16.91, hpCostPerKg: 1.80 } },
       // IRAS_BASELINE_PAIRING_V2: 石斑（27°C）温水海水 → china_sanya 年均
   { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 44.85, fullCostPerKg: 54.56, kwhPerKg: 14.27, hpCostPerKg: 1.75 } },
+    expect: { costPerKg: 44.51, fullCostPerKg: 54.20, kwhPerKg: 13.79, hpCostPerKg: 1.72 } },
       // IRAS_BASELINE_PAIRING_V2: 加州鲈（25°C）温水淡水 → china_shanghai 年均
   { id: 'bass_300',      species: 'bass',     yieldTons: 300,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 46.34, fullCostPerKg: 53.30, kwhPerKg: 12.58, hpCostPerKg: 1.09 } },
+    expect: { costPerKg: 46.24, fullCostPerKg: 53.19, kwhPerKg: 12.25, hpCostPerKg: 1.07 } },
       // IRAS_BASELINE_PAIRING_V2: 鳗鲡（26-28°C）温水淡水 → china_shanghai 年均
   { id: 'eel_200',       species: 'eel',      yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 61.08, fullCostPerKg: 117.04, kwhPerKg: 12.76, hpCostPerKg: 1.05 } },
+    expect: { costPerKg: 60.53, fullCostPerKg: 116.47, kwhPerKg: 12.20, hpCostPerKg: 1.02 } },
       // IRAS_BASELINE_PAIRING_V2: 鳜鱼（26°C）温水淡水 → china_shanghai 年均
   { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 58.59, fullCostPerKg: 70.44, kwhPerKg: 16.21, hpCostPerKg: 1.43 } },
+    expect: { costPerKg: 58.31, fullCostPerKg: 70.14, kwhPerKg: 15.86, hpCostPerKg: 1.42 } },
       // IRAS_BASELINE_PAIRING_V2: 对虾（30°C）温水海水 → china_sanya 年均
   { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 50.66, fullCostPerKg: 67.76, kwhPerKg: 17.73, hpCostPerKg: 1.99 } },
+    expect: { costPerKg: 50.44, fullCostPerKg: 67.53, kwhPerKg: 17.26, hpCostPerKg: 1.98 } },
   // ── 边界工况: 只跑不变量断言 (不比对数值), 用于捕捉 NaN/Infinity 与口径漂移 ──
   { id: 'edge_yield_0',   species: 'salmon', yieldTons: 0,      expect: {} },
   { id: 'edge_yield_tiny',species: 'salmon', yieldTons: 0.001,  expect: {} },
@@ -16446,6 +17558,16 @@ const SELFTEST_BASELINE = [
     proc: { o2ConeTopology: 'bypass' },  expect: {} },
   { id: 'edge_air_aeration', species: 'tilapia', yieldTons: 1000,
     proc: { aerationMode: 'air' },       expect: {} },
+  /* v2.5 IRAS_V25_MBBR_COVER (审计 B9): 敞口 MBBR —— 全库唯一带 sink=INDOOR 且
+     非 air 模式的接触水气流。立此工况的理由与 v2.3.3 的 X 锚同款: 恒温档的
+     m_indoorExhaust_kgs、自由空气档的 m_ex_kgs、新风抵扣 V_blower_indoor_m3h
+     三个消费点此前【只有 air 模式的 K-101 能走到】, o2 模式全库零覆盖 ——
+     断言写了也走不到 (M13/M14 的老教训)。expect 留空: 只跑不变量, 不比数值。
+     ⚠ 同时给一条 ventilated 档, 因为两档走的是【两个不同的消费点】。 */
+  { id: 'edge_mbbr_open',    species: 'salmon',  yieldTons: 1000,
+    proc: { mbbrCovered: false },        expect: {} },
+  { id: 'edge_mbbr_open_vent', species: 'tilapia', yieldTons: 1000,
+    proc: { mbbrCovered: false }, climate: { roomMode: 'ventilated' }, expect: {} },
   /* ── v2.3 IRAS_V23_HOSTILE_JSON: 越界方案 JSON 工况 ──
      第七轮审计 P1: v2.2 撤消费处 `|| 默认` 时把 Math.max 取值域守卫一并删了
      (两者写法相似、位置相邻, 但一个是真相源问题、一个是校验边界问题),
@@ -16811,18 +17933,36 @@ function runSelfTest(quiet) {
                            + ' ≠ 气流登记表中 sink=INDOOR 且接触水的合计 ' + vReg.toFixed(1)
                            + ' —— 抵扣量必须单源自 collectAirStreams');
                 }
-                /* V4 o2 拓扑必须零抵扣 —— 这是 13 条基线"逐位不变"的【前提】。
-                   若哪天 o2 模式下冒出 sink=INDOOR 的接触水气流, 基线会静默漂移,
-                   而基线断言只会说"数变了", 不会说"因为通风口径变了"。 */
-                /* ⚠ 判据取【气路拓扑本身】, 不去猜 aerationSpec 上有没有 isAir 标志位:
+                /* V4 入室接触水气流必须【逐股可追溯到一个显式配置】——
+                   这是 13 条基线"逐位不变"的前提: 若哪天冒出一股没人声明的
+                   sink=INDOOR 接触水气流, 基线会静默漂移, 而基线断言只会说
+                   "数变了", 不会说"因为通风口径变了"。
+                   ⚠ 判据取【气路拓扑本身】, 不去猜 aerationSpec 上有没有 isAir 标志位:
                      air 与否由 airPath.sink 决定, 用它做判据即与被判对象同源。
-                     (初版写 aerationSpec.isAir —— 该字段不存在, V4 在全部 air 工况误报。) */
-                const hasIndoorStream = !!(r.eq && r.eq.aerationSpec && r.eq.aerationSpec.airPath
-                  && r.eq.aerationSpec.airPath.sink === AIR_NODE.INDOOR);
-                if (!hasIndoorStream && vBlow > 1e-6) {
-                  inv.push(tag + ' 通风V4 非 air 拓扑却有 ' + vBlow.toFixed(1)
-                           + ' m³/h 入室接触水气流 —— 基线中性前提被打破');
+                     (初版写 aerationSpec.isAir —— 该字段不存在, V4 在全部 air 工况误报。)
+                   ⚠ v2.5 IRAS_V25_MBBR_COVER: 合法来源从一个变成两个 (K-101 air 模式 /
+                     敞口 MBBR)。原判据是"只要 K-101 是 indoor 就放行整个合计",
+                     加了第二个来源后对 edge_mbbr_open 误报。借这次改为【逐股白名单】——
+                     比原判据更强: 原判据下, air 工况里再混进第三股无声明的入室气流
+                     是抓不到的。 */
+                const _permitIndoor = {};
+                if (r.eq && r.eq.aerationSpec && r.eq.aerationSpec.airPath
+                    && r.eq.aerationSpec.airPath.sink === AIR_NODE.INDOOR) {
+                  _permitIndoor.tankAirBlower = 'air 模式池内曝气 K-101';
                 }
+                if (r.stage && r.stage.proc && r.stage.proc.mbbrCovered === false) {
+                  _permitIndoor.bfBlower = '敞口 MBBR (mbbrCovered=false)';
+                }
+                try {
+                  (collectAirStreams(r.eq, null) || []).forEach(function (st) {
+                    if (st.sink !== AIR_NODE.INDOOR || !st.contactsWater) return;
+                    if (!_permitIndoor[st.id]) {
+                      inv.push(tag + ' 通风V4 入室接触水气流 ' + st.id + ' ('
+                               + (st.airFlowM3h || 0).toFixed(1) + ' m³/h) 无显式配置来源'
+                               + ' —— 基线中性前提被打破');
+                    }
+                  });
+                } catch (e) { inv.push(tag + ' 通风V4 自身异常: ' + (e && e.message)); }
               })();
               const airT = t.contactorAirFlowM3h;
               if (Number.isFinite(airT) && airT > 1e-6 && Number.isFinite(md2) && md2 > 0) {
@@ -17152,6 +18292,431 @@ function runSelfTest(quiet) {
                     'M3 氧供给 液氧=鱼呼吸/吸收率');
               }
 
+              /* ══ v2.5 IRAS_V25_CHAIN_CO2 — X4 溶解 CO₂ 链式守恒 (审计 B8) ══
+                 X4a 塔前 ≡ (鱼池 + δ_n) × (1 − η_BF): 硝化 CO₂ 必须【恰好】产在生物滤池节点,
+                     同节点的曝气吹脱一并计入。撤掉节点阶跃、或把 δ_n 加回鱼池, 本条当场转红。
+                     (v2.5 前 η_BF ≡ 0, 退化为 塔前 − 鱼池 ≡ δ_n。)
+                 X4b 回归锚 (o2 档): 塔前 ≡ Δ_总/(η_气相下游 + η_换水) —— 这正是 v2.5
+                     及以前那个集总公式的值。它保证"重导没有改变塔前口径", 把改动
+                     严格限制在【鱼池 vs 塔前的归属】上, 而不是顺手改了总量平衡。
+                     ⚠ 只在 o2 档判: air 模式两个汇点位置不同, 集总式本就不成立。
+                 X4c 分量守恒: co2RespDaily + co2NitriLoopDaily ≡ co2Daily。
+                     防"拆分了但拆漏/拆重", 也锁住 BF_CO2_STRIP 搬位置后没改变总量。
+                 X4d 单调: 回水 ≤ 鱼池。⚠ v2.5 起【不再要求 塔前 ≥ 鱼池】——
+                     MBBR 吹脱强时塔前可低于鱼池出水, 那是正确行为不是拓扑错。 */
+              if (SM && SM.stages && SM.stages[0] && Number.isFinite(SM.co2StripperInlet_mgL)) {
+                const _tk = SM.stages[0].CO2;
+                const _bf = (SM.stages.find(function (n) { return n.id === 'bio'; }) || {}).CO2;
+                const _dn = SM.co2NitriStep_mgL;
+                if (Number.isFinite(_dn) && Number.isFinite(_tk)) {
+                  /* ⚠ v2.5 IRAS_V25_BF_CO2 改口径: 原判据是【塔前 − 鱼池 ≡ δ_n】,
+                     那是在"MBBR 只加不减"的前提下写的。承认曝气吹脱后:
+                       塔前 = (鱼池 + δ_n) × (1 − η_BF)
+                     η_BF = 0 时退化回原式, 故 v2.5 之前的行为不变。
+                     ⇒ 判据仍然锁住"硝化 CO₂ 恰好产在本节点、不多不少",
+                       只是把同节点的吹脱一并计入 —— 撤掉节点阶跃仍会当场转红。 */
+                  const _bfPass = Number.isFinite(SM.eta_co2_bf) ? (1 - SM.eta_co2_bf) : 1;
+                  const _wantInlet = (_tk + _dn) * _bfPass;
+                  if (Math.abs(SM.co2StripperInlet_mgL - _wantInlet) > 1e-9 * Math.max(1, _wantInlet)) {
+                    inv.push(tag + ' 物质M X4a 塔前 ' + SM.co2StripperInlet_mgL.toFixed(6)
+                             + ' ≠ (鱼池 ' + _tk.toFixed(6) + ' + 硝化增量 ' + _dn.toFixed(6)
+                             + ') × (1−η_BF ' + (SM.eta_co2_bf || 0).toFixed(6) + ') = '
+                             + _wantInlet.toFixed(6) + ' —— 硝化 CO₂ 的产生位置或吹脱接错了');
+                  }
+                  if (Number.isFinite(_bf) && Math.abs(_bf - SM.co2StripperInlet_mgL) > 1e-9) {
+                    inv.push(tag + ' 物质M X4a 沿程生物滤池节点 ' + _bf.toFixed(6)
+                             + ' ≠ 导出的塔前浓度 ' + SM.co2StripperInlet_mgL.toFixed(6)
+                             + ' —— 节点与导出面不同源');
+                  }
+                }
+                // X4b 回归锚: o2 档必须复现 v2.5 集总式
+                const _CRx = SM.co2Removal || {};
+                if (r.stage && r.stage.proc && r.stage.proc.aerationMode !== 'air'
+                    && SM.co2ChainClamped !== true
+                    && r.load && Number.isFinite(r.load.co2Daily)
+                    && r.flowData && r.flowData.flowM3h > 0
+                    && Number.isFinite(_CRx.etaTower) && Number.isFinite(_CRx.etaDil)) {
+                  /* ⚠ v2.5 IRAS_V25_BF_CO2: 回归锚只在【MBBR 不吹脱】时成立。
+                     承认吹脱后, 移除路径多了一条, 全环稳态整体下移 ——
+                     塔前浓度必然低于集总式, 这不是"总量平衡被改变", 是多了个汇点。
+                     故 η_BF > 0 时本条不判, 改由 X1b 的份额闭合承担 (四份额之和 ≡ 1)。 */
+                  const _etaD = _CRx.etaTower + _CRx.etaDil;
+                  if (_etaD > 1e-9 && !(SM.eta_co2_bf > 1e-12)) {
+                    const _want = r.load.co2Daily * 1000 / (r.flowData.flowM3h * 24) / _etaD;
+                    if (Math.abs(SM.co2StripperInlet_mgL - _want) / Math.max(_want, 1e-9) > 1e-9) {
+                      inv.push(tag + ' 物质M X4b o2 档塔前 ' + SM.co2StripperInlet_mgL.toFixed(6)
+                               + ' ≠ 集总式回归锚 ' + _want.toFixed(6)
+                               + ' —— 重导改变了总量平衡, 不只是归属');
+                    }
+                  }
+                }
+                // X4c 分量守恒
+                if (r.load && Number.isFinite(r.load.co2RespDaily)
+                    && Number.isFinite(r.load.co2NitriLoopDaily) && Number.isFinite(r.load.co2Daily)) {
+                  const _sumC = r.load.co2RespDaily + r.load.co2NitriLoopDaily;
+                  if (Math.abs(_sumC - r.load.co2Daily) > 1e-9) {
+                    inv.push(tag + ' 物质M X4c 呼吸 + 硝化 ' + _sumC.toFixed(9)
+                             + ' ≠ co2Daily ' + r.load.co2Daily.toFixed(9));
+                  }
+                }
+                /* X4d 塔前必须是全场 CO₂ 最高点 —— 它是链上最后一个产生位置之后、
+                   第一个下游汇点之前的那一点, 拓扑上必然最高。
+                   ⚠ 【不判】鱼池与回水的高低: 二者顺序随汇点位置而变 ——
+                     o2 档汇点全在下游 ⇒ 回水 < 鱼池;
+                     air 档池内曝气把鱼池压到最低 ⇒ 鱼池 < 回水 (edge_shrimp_air 实证)。
+                     初版把 o2 档的顺序当成普遍规律写进断言, 四条 air 工况全误报 ——
+                     与 V4 初版"只认 K-101"同型的过度特化。 */
+                /* ⚠ v2.5 IRAS_V25_BF_CO2 再放宽: MBBR 现在【既是产生点也是汇点】——
+                   吹脱强时塔前可低于鱼池出水, 那是正确行为不是拓扑错。
+                   故 η_BF > 0 时不判本条。这是本断言第二次因过度特化而放宽:
+                   第一次是把 o2 档的顺序当普遍规律, 第二次是把"MBBR 只产不除"当前提。
+                   ⇒ 单调性类断言天生脆弱, 拓扑一变就要重审。 */
+                if (Number.isFinite(SM.co2ReturnWater_mgL) && Number.isFinite(_tk)
+                    && !(SM.eta_co2_bf > 1e-12)) {
+                  const _mx = Math.max(_tk, SM.co2ReturnWater_mgL);
+                  if (SM.co2StripperInlet_mgL < _mx - 1e-9) {
+                    inv.push(tag + ' 物质M X4d 塔前 ' + SM.co2StripperInlet_mgL.toFixed(3)
+                             + ' 不是全场最高点 (鱼池 ' + _tk.toFixed(3)
+                             + ' / 回水 ' + SM.co2ReturnWater_mgL.toFixed(3)
+                             + ') —— 汇点位置接错了');
+                  }
+                }
+                /* X4f 三点非负 —— 链式解在 η > 1 时会给出【负浓度】, 而负浓度不会
+                   被 X4d (只查顺序) 或 X4a (只查差值) 抓到: 三个点一起变负时
+                   顺序和差值都仍然自洽。负对照实证: 撤掉 A/B 的下钳后
+                   edge_yield_tiny 鱼池 CO₂ = −2.64 mg/L, 而 39 条自检【全绿】。
+                   ⇒ 顺序类断言不能替代取值域断言。 */
+                [['塔前', SM.co2StripperInlet_mgL], ['鱼池', _tk],
+                 ['回水', SM.co2ReturnWater_mgL]].forEach(function (pt) {
+                  if (!Number.isFinite(pt[1]) || pt[1] < -1e-9) {
+                    inv.push(tag + ' 物质M X4f ' + pt[0] + ' CO₂ = ' + pt[1]
+                             + ' —— 非有限或为负 (链式解在 η > 1 时失效, 下钳失守)');
+                  }
+                });
+                // X4e 钳制不得静默: η > 0.95 时链式解失效, 必须有标记
+                if (SM.co2ChainClamped === true && !((SM.configWarns || [])
+                    .some(function (w) { return w && w.code === 'CO2_CHAIN_CLAMPED'; }))) {
+                  inv.push(tag + ' 物质M X4e co2ChainClamped 为真却无 CO2_CHAIN_CLAMPED 标志 —— 钳制被静默');
+                }
+              }
+
+              /* ══════════════════════════════════════════════════════════════
+                 v2.5 IRAS_V25_MASS_BALANCE — 氧平衡 O1–O3 · 碱度平衡 A1–A3
+                 ─────────────────────────────────────────────────────────────
+                 【为什么立这一族】index.html 自己记着:「现有断言覆盖能量/水量/
+                 登记/资本, 没有一条物质平衡断言 —— 今天闭合是因为公式恰好写对,
+                 不是因为有东西防止它写错。」X1b 补上了 CO₂ 那一条, 氧与碱度仍是空的。
+
+                 【非同义反复的判据】被比的两边必须来自【不同的计算链】。
+                 反例就在本库里: 既有的碱度断言
+                   rel(alkToAdd, max(0, alkNetDemand − alkFromMakeup))
+                 是把上一行刚算完的赋值原样验一遍, 没有独立信息源, 永远绿。
+                 又如 bioVolume × VTR ≡ tanDaily × sBio —— 注释自己判过「校核它没有意义」。
+                 下面每一条都注明它的第二信息源是谁。
+                 ══════════════════════════════════════════════════════════════ */
+              try {
+                const _L = r.load, _A = (SM && SM.alk) || null, _D = (SM && SM.discharge) || null;
+                const _Q = (r.flowData && r.flowData.flowM3h) || 0;
+                const _kg = function (dDO) { return dDO * _Q * 24 / 1000; };  // mg/L → kg/d
+
+                /* ── O1 DO 环路闭合 ──
+                   第二信息源: 沿程链的【浓度】表示 vs 负荷账本的【质量流】表示。
+                   ⚠ 诚实说明: 常态下这条是构造性闭合 (鱼池 DO 由目标饱和度倒扣得到),
+                     其信息量【全部集中在钳制探测上】—— bfDOout 有一条
+                     Math.max(s.DO − bfDODrop, 2.0) 的地板, 一旦生效, 模型就【凭空造氧】
+                     而账面上没有任何供给项。与 X4f 抓 η>1 负浓度同族:
+                     顺序/闭合类断言抓不到钳制, 必须单独查取值域。 */
+                if (SM && SM.stages && SM.stages.length && _Q > 1e-9 && _L) {
+                  const _st = SM.stages;
+                  let _sum = 0;
+                  for (let _i = 1; _i < _st.length; _i++) {
+                    if (Number.isFinite(_st[_i].DO) && Number.isFinite(_st[_i - 1].DO)) {
+                      _sum += _st[_i].DO - _st[_i - 1].DO;
+                    }
+                  }
+                  // 回池段: 末节点 → 鱼池节点, 闭合一圈
+                  const _last = _st[_st.length - 1].DO, _tank = _st[0].DO;
+                  if (Number.isFinite(_last) && Number.isFinite(_tank)) {
+                    const _loop = _sum + (_tank - _last);
+                    if (Math.abs(_loop) > 1e-6) {
+                      inv.push(tag + ' 物质O O1 DO 环路不闭合: Σ ΔDO = ' + _loop.toFixed(9)
+                               + ' mg/L (应为 0) —— 有节点在链外增减了溶氧');
+                    }
+                  }
+                  /* O1b 生物滤池 DO 必须落在【物理可达窗口】内。
+                     ⚠ v2.5 改口径: 旧判据假设 BF 只扣不加 (出水 = 进水 − 全部需氧),
+                       撞到 2.0 地板即报"凭空造氧"。改为流化驱动的平衡节点后,
+                       BF 【确实会】从空气得到氧, 旧判据对全部工况误报 —— 判据本身过时了,
+                       不是模型错。新判据锁住解的【边界】而非某个点值:
+                         窗口 = [不曝气值, 平衡 DO]  (曝气量 0 → ∞ 的两个端点)
+                       闭式解是这两端的加权平均, 越界即说明公式或输入被改坏。 */
+                  const _bio = _st.filter(function (n) { return n.id === 'bio'; })[0];
+                  const _up = _st.filter(function (n) { return n.id === 'skim' || n.id === 'rdf'; }).pop();
+                  if (_bio && _up && Number.isFinite(_bio.DO) && Number.isFinite(_up.DO)
+                      && Number.isFinite(SM.bfDOeq)) {
+                    const _drop = (_L.o2BFDaily || 0) * 1e6 / Math.max(_Q * 24 * 1000, 1);
+                    const _noAir = _up.DO - _drop, _eqDO = SM.bfDOeq;
+                    const _lo = Math.min(_noAir, _eqDO) - 1e-6, _hi = Math.max(_noAir, _eqDO) + 1e-6;
+                    if (_bio.DO < _lo || _bio.DO > _hi) {
+                      inv.push(tag + ' 物质O O1b 生物滤池 DO ' + _bio.DO.toFixed(3)
+                               + ' 越出可达窗口 [' + Math.min(_noAir, _eqDO).toFixed(3) + ', '
+                               + Math.max(_noAir, _eqDO).toFixed(3) + '] —— 不曝气值与平衡值之间'
+                               + ' (风量 0 → ∞ 的两端), 越界说明闭式解被改坏');
+                    }
+                  }
+                }
+
+                /* ── O2 供氧 ⇄ 需氧 跨模块同源 ──
+                   第二信息源: 设备侧选型链 (calcEquipmentSpec) vs 水质侧闭式解 (simulateWaterQualityProcess)。
+                   ⚠ v2.5 改口径: 旧判据比的是"增氧节点补的量 vs o2FishDaily", 那是在
+                     曝气尚未建模时的写法 —— 当时生物膜的氧全部从水里扣, 而设备侧不认。
+                     现在曝气改为流化驱动, 生物膜的氧分两支: 空气传入 bfO2FromAir,
+                     其余由水带入并最终由氧锥补。判据因此改为锁【两个模块用的是同一个占比】:
+                       水质侧: 1 − bfO2FromAir / o2BFDaily
+                       设备侧: eq.bfFromWaterFrac  (进 o2PeakSupplyKgH 的那个)
+                     这才是非同义反复的部分 —— 两条链各自算出占比, 必须相等。 */
+                if (EQ && SM && _L && (_L.o2BFDaily || 0) > 1e-9
+                    && Number.isFinite(SM.bfO2FromAir) && Number.isFinite(EQ.bfFromWaterFrac)) {
+                  const _fracWater = Math.max(0, Math.min(1, 1 - SM.bfO2FromAir / _L.o2BFDaily));
+                  if (Math.abs(_fracWater - EQ.bfFromWaterFrac) > 1e-9) {
+                    inv.push(tag + ' 物质O O2 生物膜需氧的两支占比不同源: 水质侧算出由水供 '
+                             + (_fracWater * 100).toFixed(4) + '%, 设备侧选型用 '
+                             + (EQ.bfFromWaterFrac * 100).toFixed(4)
+                             + '% —— 氧锥选型与沿程 DO 建在不同的账本上');
+                  }
+                  /* O2c 占比必须真的【被消费】——
+                     ⚠ 本条是负对照逼出来的: 把 o2BFFromWaterPeakKgH 归零而不动导出的占比,
+                       O2 照样绿。因为 O2 只比"两个模块算出的占比相等", 没比"设备侧用了它"。
+                       这与死负载棘轮治的是同一个病: 声明了不等于消费了。 */
+                  if (Number.isFinite(EQ.o2BFFromWaterPeakKgH) && Number.isFinite(_L.o2BFPeakHourly)) {
+                    const _wantPk = _L.o2BFPeakHourly * EQ.bfFromWaterFrac;
+                    if (Math.abs(EQ.o2BFFromWaterPeakKgH - _wantPk) > 1e-9) {
+                      inv.push(tag + ' 物质O O2c 氧锥选型未消费该占比: 导出 '
+                               + EQ.o2BFFromWaterPeakKgH.toFixed(6) + ' ≠ o2BFPeakHourly × 占比 = '
+                               + _wantPk.toFixed(6) + ' kg/h —— 占比声明了但没进选型');
+                    }
+                  }
+
+                  /* O2b 空气传入量不得超过生物膜需氧 (超出即意味着曝气在向水中【净充氧】,
+                     那时 BF 段 DO 应上升 —— 与沿程解一致性由 O1b 的窗口判据兜住) */
+                  /* 容差 1e-3 kg/d: 闭式解在 DO 恰好落在平衡点时会有浮点噪声
+                     (实测 edge_yield_tiny 出现 −0.000), 那不是越界。 */
+                  if (SM.bfO2FromAir < -1e-3) {
+                    inv.push(tag + ' 物质O O2b 空气传入氧为负 ' + SM.bfO2FromAir.toFixed(3)
+                             + ' kg/d —— 闭式解越过平衡点, 应由 O1b 窗口判据同时报出');
+                  }
+                }
+
+                /* ── N4 接触水气流 ⇄ CO₂ 分解 登记表 ──
+                   【为什么立】同一个洞已经出现【四次】:
+                     v2.0 Q_air_gain 孤儿项 · v2.1 蛋分气流未登记 ·
+                     v2.5 B10 MBBR 吹脱从未计入 · 现在是蛋分的 CO₂。
+                   每次都是"某台设备的某股气流, 一半算了一半没算":
+                   风机选了型、电耗算了、气路登记了 contactsWater, 唯独 CO₂ 那份没人管。
+                   ⇒ 一条条补是补不完的。改为【白名单登记】: 凡接触水的气流,
+                     要么在 co2Removal 里有对应份额, 要么显式登记为"有意不计 + 理由"。
+                     将来再加任何接触水设备, 不登记就转红 —— 与 V4 逐股白名单同型。
+                   ⚠ 本条不判"不计是否正确", 只判"有没有做过这个决定"。
+                     判据的力量在于把【沉默的遗漏】变成【显式的取舍】。 */
+                if (EQ && SM && SM.co2Removal && typeof collectAirStreams === 'function') {
+                  /* 已在 co2Removal 里有份额的气流 */
+                  const CO2_ACCOUNTED = {
+                    tankAirBlower: 'fracAer  (池内曝气, air 模式)',
+                    bfBlower:      'fracBF   (MBBR 曝气吹脱, v2.5 B10)',
+                    degasser:      'fracTower(脱气塔; 含关塔时增氧锥的附带解吸 fallback)'
+                  };
+                  /* ⚠ 键名必须是 collectAirStreams 里 push 的【气流 id】。
+                     初版写 co2Blower(设备名), 而 id 是 degasser ⇒ 全库误报。
+                     这是本轮第三次"猜字段名不读定义"(前两次: skimmerHRT / 1.293×0.2315),
+                     而库内早有记录的第六次事故也是同一类(K0_W74 传 °C 而非 K)。
+                     ⇒ 凡引用他处定义的标识符, 先 grep 出定义点, 不凭印象写。 */
+                  /* 有意不计, 必须写明理由 —— 理由本身就是可审计的产物 */
+                  const CO2_INTENTIONALLY_OMITTED = {
+                    skimmerBlower:
+                      '蛋白分离器: 文献确证其对 CO₂ 脱除有正向贡献 (Barrut 2012; Orellana & Wecker 2013), '
+                      + '但未检索到可用的【单程去除率】—— 能查到的是能效 (0.023 kg CO₂/kWh) 或标准传质速率, '
+                      + '几何依赖强, 不能直接折成 η。按 MBBR 同口径 (逼近 0.23) 粗估 η ≈ 2.6%, 属二阶项; '
+                      + '略去方向【保守】(塔前浓度偏高 ⇒ 脱气塔选型偏大)。'
+                      + '若将来取得实测单程去除率, 按 bfCo2Approach 同款新建 skimmerCo2Approach 即可。'
+                  };
+                  try {
+                    (collectAirStreams(EQ, null) || []).forEach(function (st) {
+                      if (!st || !st.contactsWater) return;
+                      if (!(st.airFlowM3h > 1e-9)) return;
+                      if (CO2_ACCOUNTED[st.id] || CO2_INTENTIONALLY_OMITTED[st.id]) return;
+                      inv.push(tag + ' 物质M N4 接触水气流「' + st.id + '」('
+                               + st.airFlowM3h.toFixed(0) + ' Nm³/h) 既未进 CO₂ 分解, '
+                               + '也未登记为有意不计 —— 该气流对 CO₂ 的影响【没人做过决定】。'
+                               + ' 请在 CO2_ACCOUNTED 或 CO2_INTENTIONALLY_OMITTED 中登记。');
+                    });
+                  } catch (e) { inv.push(tag + ' 物质M N4 自身异常: ' + (e && e.message)); }
+                  /* N4b 登记表不得与实现脱节: 声明有份额的, co2Removal 里必须真的有那个键。
+                     ⚠ 退化工况 (edge_yield_0: 产量为 0, 无流量无负荷) 下 co2Removal 整体为空,
+                       那不是"脱节"而是"没有东西可分解"。以 etaTotal 是否成形作为门槛,
+                       与 X1b 的"空场不判"同款处置 —— 退化区不假装精确。 */
+                  const _CRn = SM.co2Removal;
+                  if (Number.isFinite(_CRn.etaTotal))
+                  [['tankAirBlower', 'fracAer'], ['bfBlower', 'fracBF'], ['degasser', 'fracTower']]
+                    .forEach(function (pair) {
+                      if (!Number.isFinite(_CRn[pair[1]])) {
+                        inv.push(tag + ' 物质M N4b 登记表称「' + pair[0] + '」的份额是 '
+                                 + pair[1] + ', 但 co2Removal 里没有该字段 —— 登记表与实现脱节');
+                      }
+                    });
+                }
+
+                /* ── N3 曝气物理口径【必须被消费】(negA/negB 捕手) ──
+                   【为什么单立一族】负对照 6 条里有 2 条没能转红:
+                     negA 把风机选型退回"供氧驱动 + SOTE 写死 8%";
+                     negB 把传氧系数 k 退回不含水深/α/温度的固定值。
+                   这两个正是 v2.5 曝气重构的核心, 而 O1/O2 一条都抓不到 ——
+                   根因: 那两条锁的是【各模块之间自洽】, 而 negA/negB 改的是
+                   【全模型共同采用的物理口径】, 两边同步退回则自洽性依然成立。
+                   ⇒ 守恒断言看不见标签错误 (与 B8「集总口径算出来的不是它标签上那个点」同一教训)。
+
+                   【本族的性质, 不夸大】这不是"独立验证物理正确"——做不到。
+                   它锁的是【输入必须真的进入计算】: 用户填的 bfAirFlux / bfDepth / bfAlpha
+                   必须能从输出反解出来。口径一旦退回旧式, 这些输入就会失去影响力, 本族当场转红。
+                   与 O2c 同族 (声明 ≠ 消费), 也与死负载棘轮同族。 */
+                if (EQ && EQ.bfBlowerSpec && SM && r.stage && r.stage.proc) {
+                  const _b = EQ.bfBlowerSpec, _pc = r.stage.proc;
+                  /* N3a 风量必须由【流化】驱动: 风量 ≡ 用户填的通量 × 池底面积 */
+                  if (_b.driver !== 'fluidisation') {
+                    inv.push(tag + ' 物质O N3a bfBlowerSpec.driver = ' + _b.driver
+                             + ' ≠ fluidisation —— 风机选型口径被改回供氧驱动');
+                  }
+                  if (Number.isFinite(_b.airFlowM3h) && Number.isFinite(_b.floorArea_m2)
+                      && Number.isFinite(_pc.bfAirFlux)) {
+                    const _wantAir = _pc.bfAirFlux * _b.floorArea_m2;
+                    if (Math.abs(_b.airFlowM3h - _wantAir) > 1e-6 * Math.max(1, _wantAir)) {
+                      inv.push(tag + ' 物质O N3a 风量 ' + _b.airFlowM3h.toFixed(3)
+                               + ' ≠ bfAirFlux(' + _pc.bfAirFlux + ') × 池底 '
+                               + _b.floorArea_m2.toFixed(3) + ' = ' + _wantAir.toFixed(3)
+                               + ' —— 用户填的流化通量没有进选型');
+                    }
+                  }
+                  /* N3b 风压必须由【水深】导出, 不得回到硬编码常数 */
+                  if (Number.isFinite(_b.pressurePa) && Number.isFinite(_b.depth_m)) {
+                    const _wantP = _b.depth_m * 9810 + 15000;
+                    if (Math.abs(_b.pressurePa - _wantP) > 1e-6) {
+                      inv.push(tag + ' 物质O N3b 风压 ' + _b.pressurePa.toFixed(0)
+                               + ' Pa ≠ 水深(' + _b.depth_m + ' m)×9810+15000 = ' + _wantP.toFixed(0)
+                               + ' —— 水深没有驱动风压 (v2.5 前是硬编码 50000)');
+                    }
+                  }
+                  /* N3c 传氧系数必须含【水深 × α × 温度】三项。
+                     从导出量反解 k: bfO2FromAir = M·k·(平衡DO − 出水DO)
+                     ⇒ k_实 = bfO2FromAir / (M · ΔDO), 必须等于 0.012·深·α·θ^(T−20)/9.09。
+                     negB 把 k 退回 0.08/Cs20 (丢掉深/α/θ) 时, 本条当场转红。
+                     ⚠ ΔDO ≈ 0 时反解病态, 跳过 (那时曝气本就无净传氧)。 */
+                  if (Number.isFinite(SM.bfO2FromAir) && Number.isFinite(SM.bfDOeq)
+                      && Number.isFinite(_b.airFlowM3h) && Number.isFinite(_b.depth_m)) {
+                    const _bio = (SM.stages || []).filter(function (n) { return n.id === 'bio'; })[0];
+                    if (_bio && Number.isFinite(_bio.DO)) {
+                      const _dDO = SM.bfDOeq - _bio.DO;
+                      /* ⚠ 必须引具名常数: 初版硬写 1.293×0.2315, 而库内 F_O2_MASS = 0.232,
+                         差 0.216% ⇒ 断言因【自己的字面量】全库误报。断言本身也得单源 ——
+                         这正是它要防的那类错。 */
+                      const _M = _b.airFlowM3h * 24 * RHO_STD_AIR * F_O2_MASS;
+                      if (Math.abs(_dDO) > 1e-3 && _M > 1e-9) {
+                        const _kAct = SM.bfO2FromAir / (_M * _dDO);
+                        const _alpha = (_pc.bfAlpha != null) ? _pc.bfAlpha : 0.85;
+                        const _kWant = 0.012 * _b.depth_m * _alpha
+                                     * Math.pow(1.024, (r.stage.tempOpt || 15) - 20) / 9.09;
+                        if (Math.abs(_kAct - _kWant) > 1e-9 * Math.max(1, Math.abs(_kWant))) {
+                          inv.push(tag + ' 物质O N3c 传氧系数反解 ' + _kAct.toExponential(6)
+                                   + ' ≠ 0.012×水深(' + _b.depth_m + ')×α(' + _alpha
+                                   + ')×θ^(T−20)/9.09 = ' + _kWant.toExponential(6)
+                                   + ' —— 水深/α/温度三项中有项没进传氧计算 (口径被改回固定 SOTE)');
+                        }
+                      }
+                    }
+                  }
+                }
+
+                /* ── O3 峰均口径同构 ──
+                   第二信息源: 设计口径 o2DailyTotal 的分量构成 vs 日均口径 o2DailyTotalAvg。
+                   ⚠ 这条是 v2.2 已经开过的处方: 删 co2DailyAvg 时的注释写明
+                     「设计口径已修而日均口径未跟上, 同一公式两处实现」,
+                     并要求「同步建立峰均一致性断言」—— 从未实现。o2 这边正是同构的两份。
+                   判据: 两个总量各自等于自己三个分量之和 (分量若少写一项, 和就对不上)。 */
+                if (_L) {
+                  const _pairs = [
+                    ['O3a 设计口径', _L.o2DailyTotal,
+                      (_L.o2FishDaily || 0) + (_L.o2NitriDaily || 0) + (_L.o2DOMDaily || 0)],
+                    ['O3b 日均口径', _L.o2DailyTotalAvg,
+                      (_L.o2FishDailyAvg || 0) + (_L.o2NitriDailyAvg || 0) + (_L.o2DOMDailyAvg || 0)],
+                    ['O3c BF 分项', _L.o2BFDaily, (_L.o2NitriDaily || 0) + (_L.o2DOMDaily || 0)],
+                    ['O3d BF 日均', _L.o2BFDailyAvg, (_L.o2NitriDailyAvg || 0) + (_L.o2DOMDailyAvg || 0)]
+                  ];
+                  _pairs.forEach(function (p) {
+                    if (Number.isFinite(p[1]) && Math.abs(p[1] - p[2]) > 1e-9) {
+                      inv.push(tag + ' 物质O ' + p[0] + ' 总量 ' + p[1].toFixed(6)
+                               + ' ≠ 分量和 ' + p[2].toFixed(6) + ' —— 有分量没进总量');
+                    }
+                  });
+                }
+
+                /* ── A1 碱度收支闭合 (含排水出口项) ──
+                   第二信息源: 排水模块 (SM.discharge.V_m3_d) + 系统实际维持的总碱度。
+                   系统碱度守恒:
+                     投加 = 硝化消耗 − 反硝化回收 − 补水带入 + 【排水带出】
+                   ⚠ 最后一项现行代码里【不存在】: alkFromMakeup 记了补水进项,
+                     却没记排水出项。补水按 alkSource 进、系统水按维持碱度出,
+                     换水实际是碱度的【净汇】, 而模型记成净源。 */
+                if (_A && _D && Number.isFinite(_D.V_m3_d)) {
+                  // 系统实际维持的碱度: alk 模式 = alkTarget; pH 模式 = 反求出的 alkRequired
+                  const _TAheld = (SM.phMode && Number.isFinite(SM.alkRequired))
+                    ? SM.alkRequired : _A.alkTarget;
+                  if (Number.isFinite(_TAheld)) {
+                    const _export = _D.V_m3_d * _TAheld / 1000;                 // kg CaCO₃/d
+                    const _want = Math.max(0, (_A.alkNetDemand || 0) + _export - (_A.alkFromMakeup || 0));
+                    if (Math.abs((_A.alkToAdd || 0) - _want) > 1e-6) {
+                      inv.push(tag + ' 物质A A1 碱度收支不闭合: alkToAdd ' + (_A.alkToAdd || 0).toFixed(3)
+                               + ' ≠ 净需求 ' + (_A.alkNetDemand || 0).toFixed(3)
+                               + ' + 排水带出 ' + _export.toFixed(3)
+                               + ' − 补水带入 ' + (_A.alkFromMakeup || 0).toFixed(3)
+                               + ' = ' + _want.toFixed(3) + ' kg CaCO₃/d');
+                    }
+                  }
+                }
+
+                /* ── A2 维持碱度的口径跨模块同源 ──
+                   第二信息源: 碳酸盐模块解出的鱼池节点碱度 (stages[0].alkNode)。
+                   碱度模块用 proc.alkTarget 算收支, 碳酸盐模块在 pH 模式下用的却是
+                   solveAlk 反求的 alkRequired —— 两者不同源时, 排水出口项会用错基数。
+                   ⚠ 本条不是理论洁癖: A1 的出口项 = V × 【维持碱度】, 取错基数直接错。 */
+                if (_A && SM && SM.stages && SM.stages[0] && Number.isFinite(SM.stages[0].alkNode)) {
+                  const _TAheld = (SM.phMode && Number.isFinite(SM.alkRequired))
+                    ? SM.alkRequired : _A.alkTarget;
+                  if (Number.isFinite(_TAheld)
+                      && Math.abs(SM.stages[0].alkNode - _TAheld) / Math.max(_TAheld, 1) > 1e-6) {
+                    inv.push(tag + ' 物质A A2 碱度口径不同源: 碱度模块用 ' + _TAheld.toFixed(2)
+                             + ', 碳酸盐模块鱼池节点解出 ' + SM.stages[0].alkNode.toFixed(2)
+                             + ' mg/L CaCO₃');
+                  }
+                }
+
+                /* ── A3 硝化量与氮链同源 ──
+                   第二信息源: 排水模块的 TAN 外排量。
+                   tanNitrified 有一条【回退到全量式】的路径 (sim 缺失时 = tanDaily),
+                   静默生效时会高估耗碱。本条锁住它用的确实是氮链解出的值。
+                   ⚠ TAN 发散工况例外: 此时无硝化菌 ⇒ 硝化量取 0, 与水质侧一致。 */
+                if (_A && _D && _L && Number.isFinite(_D.TAN_kg_d)
+                    && !(SM.divergent && SM.divergent.indexOf('TAN') >= 0)) {
+                  const _nitrified = (_A.alkConsumed || 0) / ALK_PER_TANN;
+                  const _want = Math.max((_L.tanDaily || 0) - _D.TAN_kg_d, 0);
+                  if (_want > 1e-9 && Math.abs(_nitrified - _want) / _want > 1e-6) {
+                    inv.push(tag + ' 物质A A3 硝化量不同源: 碱度模块隐含 '
+                             + _nitrified.toFixed(4) + ' kg N/d, 氮链给出 产生 '
+                             + (_L.tanDaily || 0).toFixed(4) + ' − 外排 ' + _D.TAN_kg_d.toFixed(4)
+                             + ' = ' + _want.toFixed(4) + ' —— 可能静默回退到全量式');
+                  }
+                }
+              } catch (e) {
+                inv.push(tag + ' 物质O/A 断言自身异常: ' + (e && e.message));
+              }
+
               /* v2.3二批 M8 气曝-CO₂ 闭环: air 模式且关塔时, 风量选型必须保证
                  鱼池稳态 CO₂ ≤ 选型目标 (目标=co2TargetMgL 或鱼种阈值)。
                  这条断言的存在意义: 防止「选型公式」与「稳态 η」再度脱钩 ——
@@ -17377,12 +18942,41 @@ function runSelfTest(quiet) {
                     ? globalThermalConfig.degasserExhaustIndoorFrac
                     : GLOBAL_THERMAL_DEFAULTS.degasserExhaustIndoorFrac, 0), 1);
                 if (Number.isFinite(_T.fracIndoorCO2) && Number.isFinite(_CR.fracAer)) {
-                  const _exp = _CR.fracAer * _sAer + (1 - _CR.fracAer) * _dg;
+                  /* v2.5 IRAS_V25_CO2_DILUTION (审计 B4 连带): 分解由两份额变三份额。
+                     换水带走的 CO₂ 随排水离场, 入室份额为 0 —— 故用显式 fracTower,
+                     而不是 (1 − fracAer)。后者在补回换水项后会把排掉的那部分算进车间。 */
+                  const _fT = Number.isFinite(_CR.fracTower) ? _CR.fracTower : (1 - _CR.fracAer);
+                  /* v2.5 IRAS_V25_BF_CO2: 期望式补第四支 —— MBBR 吹掉的 CO₂ 随 BF 尾气走,
+                     mbbrCovered=true 外排 ⇒ 0 入室; false 敞口 ⇒ 全部入室。
+                     ⚠ 本条正是这样被 edge_mbbr_open 咬出的: 我改了 fracIndoorCO2 的实现,
+                       却没同步它的【期望式】—— 断言的两边必须一起改, 否则修好的反被判红。 */
+                  const _fBFx = Number.isFinite(_CR.fracBF) ? _CR.fracBF : 0;
+                  const _bfCov = !(r.stage && r.stage.proc && r.stage.proc.mbbrCovered === false);
+                  const _exp = _CR.fracAer * _sAer + _fT * _dg + _fBFx * (_bfCov ? 0 : 1);
                   if (Math.abs(_T.fracIndoorCO2 - _exp) > 1e-9) {
                     inv.push(tag + ' 入室X1 fracIndoorCO2 ' + _T.fracIndoorCO2.toFixed(6)
                              + ' ≠ 由 co2Removal 分解导出的 ' + _exp.toFixed(6)
-                             + ' (fracAer=' + _CR.fracAer.toFixed(4) + ' sAer=' + _sAer
+                             + ' (fracAer=' + _CR.fracAer.toFixed(4) + ' fracTower=' + _fT.toFixed(4)
+                             + ' sAer=' + _sAer
                              + ' degasFrac=' + _dg + ') —— 室侧与水侧不同源');
+                  }
+                  /* X1b 三份额必须闭合到 1 —— 稳态下 产量 ≡ 塔移除 + 曝气移除 + 换水带走。
+                     这是 B4 之后"移除路径已经数全了"的唯一受检面: 将来再加一条移除路径
+                     (如 MBBR 曝气吹脱, 审计 B10) 而忘了进本分解, 由本条当场咬住。
+                     ⚠ 空场 (Q=0 或无产量) 时三者皆 0, 此时不判 —— 没有移除可分解。 */
+                  if (Number.isFinite(_CR.fracDil)) {
+                    /* v2.5 IRAS_V25_BF_CO2: 三份额 → 四份额 (新增 MBBR 曝气吹脱)。
+                       旧载荷无 fracBF ⇒ 取 0, 与 v2.5 之前逐位一致。 */
+                    const _fBF = Number.isFinite(_CR.fracBF) ? _CR.fracBF : 0;
+                    const _sum = _CR.fracAer + _fT + _CR.fracDil + _fBF;
+                    if (_sum > 1e-9 && Math.abs(_sum - 1) > 1e-9) {
+                      inv.push(tag + ' 入室X1b CO₂ 移除份额之和 ' + _sum.toFixed(9)
+                               + ' ≠ 1 (曝气 ' + _CR.fracAer.toFixed(6)
+                               + ' + 塔 ' + _fT.toFixed(6)
+                               + ' + 换水 ' + _CR.fracDil.toFixed(6)
+                               + ' + MBBR吹脱 ' + _fBF.toFixed(6)
+                               + ') —— 有移除路径没进分解, 或分母口径不一致');
+                    }
                   }
                 } else if (Number.isFinite(_T.fracIndoorCO2) !== Number.isFinite(_CR.fracAer)) {
                   inv.push(tag + ' 入室X1 fracIndoorCO2 与 co2Removal.fracAer 一有一无 (导出面不完整)');
@@ -17460,8 +19054,18 @@ function runSelfTest(quiet) {
                    或高碱度源水) 净需求为负, 但不可能投【负量】药剂。这是正确行为,
                    断言必须把钳制纳入期望值。落地时 edge_yield_0 / edge_yield_tiny
                    八条立刻咬中, 是断言有牙的证明, 也是这条钳制的实证。 */
-                rel(A.alkToAdd, Math.max(0, A.alkNetDemand - (A.alkFromMakeup || 0)), 1e-9,
-                    'M4b 碱投加 =max(0, 净额−补水带入)');
+                /* ══ v2.5 IRAS_V25_MASS_BALANCE — M4b 补上排水出口项 ══
+                   ⚠ 本条断言【曾经把 bug 锁在里面】: 它照抄了当时的 alkToAdd 公式
+                     (净额 − 补水带入), 而那个公式整项缺了「排水带出」。于是
+                     ① 缺陷期间它永远绿; ② 一旦有人把公式改对, 它反而当场转红 ——
+                     实测修正后全库 27 条工况全部报 5.3%–24.8% 的"偏差"。
+                   ⇒ 这就是「同义反复型断言」的真实代价: 它不校验正确性,
+                     它把当时的写法固化成规范, 并在纠错时反过来挡路。
+                   现改为与 A1 同一口径 (含 alkExport), 且期望值取自【导出面】而非
+                   在此重算 —— 独立信息源由 A1 承担 (排水模块 × 维持碱度)。 */
+                rel(A.alkToAdd,
+                    Math.max(0, A.alkNetDemand + (A.alkExport || 0) - (A.alkFromMakeup || 0)), 1e-9,
+                    'M4b 碱投加 =max(0, 净额+排水带出−补水带入)');
                 if (A.alkToAdd > 0) {
                   rel(A.naHCO3Demand, A.alkToAdd / 0.595, 1e-6,
                       'M4c 药剂 =碱投加/0.595');
@@ -17528,13 +19132,23 @@ function runSelfTest(quiet) {
                 }
               })();
 
-              /* M6 碳-闭合: 设计口径 CO₂ = 呼吸 + 硝化 (扣 BF 内脱气)
-                 —— 第三方复核 BUG-2 暴露的正是这个公式的日均副本漏了硝化项。 */
+              /* M6 碳-闭合: 设计口径 CO₂ = 池内呼吸 + 生物滤池产 (硝化 + 异养, 扣 BF 内脱气)
+                 —— 第三方复核 BUG-2 暴露的正是这个公式的日均副本漏了硝化项。
+                 ⚠ v2.5 IRAS_V25_BF_HETERO: 本条【第二次因缺项而过期】。原判据写死
+                   "呼吸 + 硝化"两项, 而生物滤池的【异养】呼吸 CO₂ 补入后成了三项 ⇒
+                   公式一改对, 断言反而全库转红 (实测偏差 19.8%)。
+                   与 M4b 当年把碱度公式的缺陷锁在里面是同一形态:
+                   【照抄实现的断言, 在纠错时会反过来挡路】。
+                 ⚠ 但它并非同义反复 —— 它锁的是"co2Daily 的构成项一个不少",
+                   正是靠它, 本次补项才没有悄悄改变总量口径而无人知晓。
+                   改法是把新项写进期望式, 而不是放宽容差。 */
               const C2T = (typeof CO2_PER_TANN !== 'undefined') ? CO2_PER_TANN : 6.286;
               const BFS = (typeof BF_CO2_STRIP !== 'undefined') ? BF_CO2_STRIP : 0;
+              const C2H = (typeof CO2_PER_O2_HETERO_BF !== 'undefined') ? CO2_PER_O2_HETERO_BF : 1.38;
               rel(L.co2Daily,
-                  (L.o2FishDaily || 0) * 1.375 + (L.tanDaily || 0) * C2T * (1 - BFS),
-                  1e-6, 'M6 碳构成 =呼吸+硝化');
+                  (L.o2FishDaily || 0) * 1.375
+                  + ((L.tanDaily || 0) * C2T + (L.o2DOMDaily || 0) * C2H) * (1 - BFS),
+                  1e-6, 'M6 碳构成 =池内呼吸+滤池(硝化+异养)');
             })();
 
             /* G v2.2 IRAS_V22_REGISTRY_DECL_ASSERT — 登记表声明自校验。
@@ -17763,6 +19377,274 @@ function runSelfTest(quiet) {
     if (badH.length) rowH.invariants = badH.slice(0, 8);
     rowH.ok ? out.pass++ : out.fail++;
     out.results.push(rowH);
+  })();
+
+  /* ── v2.5 IRAS_V25_CHAIN_CO2 — W5 pH<7 告警的锚定 (审计 B8 的连带) ──
+     B8 之前, grouper 默认工况 (幼鱼期 pH 6.94 / 成鱼期 6.99) 是全库唯一触发
+     "pH < 7.0 硝化效率应下调"告警 (审计 B2) 的【默认】工况。链式重导后鱼池
+     CO₂ 降 25%, pH 升到 7.06 / 7.11 —— 该告警在默认工况上【失去覆盖】。
+     覆盖并未全丢: edge_no_degasser (salmon 关塔, pH 6.06–6.47) 仍稳稳触发。
+     但按 M13/M14 的教训, "还有别的工况能走到"必须是【被断言保证的】,
+     不能是"我记得有"。本条把那个保证写死: 至少一条工况必须触发该告警。
+     ⚠ 与 X 锚同款: 锚定查的是"存在能走到断言的工况", 不查一致性。 */
+  (function () {
+    const badW5 = [];
+    try {
+      const hit = (out.results || []).length >= 0 && __iRAS_ph7WarnSeen;
+      if (!hit) {
+        badW5.push('W5 全部自检工况中无一触发 pH<7 告警 —— B2 告警已成惰性断言,'
+                   + ' 需补一条低 pH 工况 (曾由 grouper 默认覆盖, v2.5 链式重导后升到 7.06)');
+      }
+    } catch (e) { badW5.push('W5 断言自身异常: ' + (e && e.message)); }
+    const rowW5 = { id: 'ph7_warning_anchor', ok: badW5.length === 0 };
+    if (badW5.length) rowW5.invariants = badW5;
+    rowW5.ok ? out.pass++ : out.fail++;
+    out.results.push(rowW5);
+  })();
+
+  /* ── v2.5 IRAS_V25_PH_BRACKET — N1 碳酸盐求解器边界护栏 (第八轮审计 B7) ──
+     与 M15 同款的【工况无关】断言: 直接调 iRASCarbonate.solve, 不依赖任何养殖工况。
+     ⚠ 为什么不写自检工况: 越界在 iRAS 当前输入域内【够不到】(alkTarget 钳在
+       [20,400], 即使 CO₂ 恰为 0 也只到 pH_sws 11.53)。写一条工况去覆盖它,
+       结果只能是"工况走不到 ⇒ 断言惰性存在" —— M13/M14 踩过两次的坑。
+       单元级直调是唯一能真正覆盖该分支的形式。
+     N1a 正常输入必须 boundaryHit=false, 且 pH 落在区间内 (防护栏误报);
+     N1b 越界输入必须 boundaryHit=true 且方向正确 (防护栏失效 —— 即负对照);
+     N1c 护栏不得改变正常输入的解 (逐位): 它只是个旁路判定, 不参与求解。 */
+  (function () {
+    const badN = [];
+    try {
+      if (typeof iRASCarbonate === 'undefined' || !iRASCarbonate || !iRASCarbonate.solve) {
+        badN.push('N1 iRASCarbonate.solve 不可用');
+      } else {
+        const rho = 1.024, T = 15, S = 30;
+        const asTA = function (mg) { return mg / 50043 / rho; };
+        const asCO2 = function (mg) { return mg / 44010 / rho; };
+        // N1a 正常工况 (iRAS 默认口径 alk=150, CO₂=10)
+        const r0 = iRASCarbonate.solve(asTA(150), asCO2(10), T, S);
+        if (r0.boundaryHit) badN.push('N1a 常规输入 (alk150/CO₂10) 被误判为越界');
+        if (!(r0.pH_sws > 2.05 && r0.pH_sws < 11.95)) {
+          badN.push('N1a 常规输入 pH_sws ' + r0.pH_sws.toFixed(3) + ' 已贴近区间端点');
+        }
+        // N1a' 输入域上界: alkTarget clamp 上限 400 + CO₂ 恰为 0, 仍须在区间内
+        const rEdge = iRASCarbonate.solve(asTA(400), 0, T, S);
+        if (rEdge.boundaryHit) {
+          badN.push('N1a\' 输入域上界 (alk400/CO₂0) 越界 —— \"够不到\"这一前提已不成立,'
+                    + ' 越界告警不再是防御性的, 须补自检工况');
+        }
+        // N1b 负对照: 真解在区间外, 护栏必须报
+        const rHi = iRASCarbonate.solve(asTA(3000), 0, T, S);
+        if (!rHi.boundaryHit || rHi.boundaryDir !== 'high') {
+          badN.push('N1b 上越界未被捕获 (boundaryHit=' + rHi.boundaryHit
+                    + ', dir=' + rHi.boundaryDir + ')');
+        }
+        // N1c 护栏是旁路判定, 不得改变正常解 —— 与 v1.9 PyCO2SYS 验证值对齐
+        const r1 = iRASCarbonate.solve(asTA(150), asCO2(10), T, S);
+        if (r1.pH !== r0.pH || r1.H_sws !== r0.H_sws) {
+          badN.push('N1c 求解器非确定性 —— 护栏改变了解');
+        }
+      }
+    } catch (e) {
+      badN.push('N1 断言自身异常: ' + (e && e.message));
+    }
+    const rowN = { id: 'carbonate_bracket_guard', ok: badN.length === 0 };
+    if (badN.length) rowN.invariants = badN.slice(0, 8);
+    rowN.ok ? out.pass++ : out.fail++;
+    out.results.push(rowN);
+  })();
+
+  /* ── v2.5 IRAS_V25_CA_ACTIVITY — N6 淡水 Ω 的外部口径交叉验证 (单元级) ──
+     【为什么必须有这条】B6 落地时, 未加活度修正的实现给淡水 Ω = 1.22–1.76
+     (过饱和, 会结垢), 而 Langelier 饱和指数独立算出 −0.16 ~ −0.39 ⇒ Ω ≈ 0.40–0.70
+     (欠饱和, 会溶蚀) —— <b>定性结论相反</b>。而"溶蚀混凝土池体、池壁起砂"正是本模型
+     要提示的工程问题, 不修正等于把它藏起来还反着说。
+     ⇒ 本条把那次交叉验证【固化】: 淡水 Ω 必须与 LSI 同侧, 且量级相当。
+     ⚠ 这是【外部口径】断言, 与 N5d(Revelle)同族 —— 库内多数断言查的是内部自洽,
+       而内部自洽挡不住"整套实现一致地偏离物理"。B6 正是被这类断言救回来的。
+     ⚠ LSI 与 log10(Ω) 只是近似对应(LSI 的经验式含 TDS 项与温度拟合),
+       故判据取【同侧 + 一个数量级内】, 不比数值。写紧了会因两套经验式的差异误报。 */
+  (function () {
+    const badN6 = [];
+    try {
+      const C = (typeof iRASCarbonate !== 'undefined') ? iRASCarbonate : null;
+      if (!C || !C.caFromHardness || !C.ionicStrengthFW) {
+        badN6.push('N6 iRASCarbonate 的钙/离子强度接口不可用');
+      } else {
+        /* LSI = pH − pHs;  pHs = (9.3 + A + B) − (C + D)
+           A=(log10(TDS)−1)/10 · B=−13.12·log10(T_K)+34.55 · C=log10(钙硬度)−0.4 · D=log10(碱度) */
+        const cases = [
+          { n: '典型淡水 RAS', T: 28, alk: 150, ca: 90, co2: 10.99, tds: 250 },
+          { n: '软水', T: 25, alk: 60, ca: 40, co2: 10, tds: 120 },
+          { n: '硬水', T: 25, alk: 250, ca: 250, co2: 10, tds: 500 }
+        ];
+        cases.forEach(function (k) {
+          const I = C.ionicStrengthFW(k.alk, k.ca);
+          const ca = C.caFromHardness(k.ca, 0);
+          const r = C.solve(k.alk / 50043, k.co2 / 44010, k.T, 0, ca, I);
+          if (!(r.omega_calcite > 0)) {
+            badN6.push('N6 ' + k.n + ': 淡水 Ω 算不出 —— 钙输入或活度修正失效');
+            return;
+          }
+          const A = (Math.log10(k.tds) - 1) / 10;
+          const B = -13.12 * Math.log10(k.T + 273.15) + 34.55;
+          const Cc = Math.log10(k.ca) - 0.4, D = Math.log10(k.alk);
+          const lsi = r.pH - ((9.3 + A + B) - (Cc + D));
+          const omLSI = Math.pow(10, lsi);
+          // 同侧: 两者都 >1 或都 <1
+          if ((r.omega_calcite > 1) !== (omLSI > 1)) {
+            badN6.push('N6 ' + k.n + ': 模型 Ω ' + r.omega_calcite.toFixed(3)
+                       + ' 与 LSI 口径 ' + omLSI.toFixed(3) + ' 【分处饱和线两侧】'
+                       + ' —— 定性结论相反, 这正是活度修正缺失时的症状');
+          }
+          // 量级: 一个数量级内
+          const ratio = r.omega_calcite / omLSI;
+          if (!(ratio > 0.1 && ratio < 10)) {
+            badN6.push('N6 ' + k.n + ': 模型 Ω ' + r.omega_calcite.toFixed(3)
+                       + ' 与 LSI 口径 ' + omLSI.toFixed(3) + ' 相差超过一个数量级');
+          }
+        });
+        /* N6b 海水【不得】被活度修正碰到 —— 传 ionicI 也应无效 */
+        const rho = 1.024, TAs = 150 / 50043 / rho, co2s = 7.1 / 44010 / rho;
+        const a1 = C.solve(TAs, co2s, 15, 30).omega_calcite;
+        const a2 = C.solve(TAs, co2s, 15, 30, null, 0.7).omega_calcite;
+        if (Math.abs(a1 - a2) > 1e-12) {
+          badN6.push('N6b 海水 Ω 被离子强度参数改变了 (' + a1.toFixed(6) + ' → ' + a2.toFixed(6)
+                     + ') —— Mucci 的 Ksp 在 S>0 是化学计量常数, 再乘活度系数即重复计算');
+        }
+      }
+    } catch (e) {
+      badN6.push('N6 断言自身异常: ' + (e && e.message));
+    }
+    const rowN6 = { id: 'freshwater_omega_lsi', ok: badN6.length === 0 };
+    if (badN6.length) rowN6.invariants = badN6.slice(0, 8);
+    rowN6.ok ? out.pass++ : out.fail++;
+    out.results.push(rowN6);
+  })();
+
+  /* ── v2.5 IRAS_V25_CO2_BUFFER — N5 碳酸盐缓冲反解器 (单元级, 工况无关) ──
+     与 N1 同款: 直接调 iRASCarbonate, 不依赖任何养殖工况。
+     N5a 反解自洽: solve(TA,CO2)→DIC→co2FromDIC(TA,DIC) 必须逐位回到 CO2。
+         这是二分反解唯一能自证的性质, 也是它被信任的前提。
+     N5b 缓冲因子必须 ≥ 1: 自由 CO2 的降幅【不可能】大于被吹走的质量 ——
+         大于 1 是碳酸盐补充, 小于 1 则违反质量守恒, 说明反解或 DIC 算错。
+     N5c 单调性: 碱度越高缓冲越强 (DIC 池子越大)。淡水应显著弱于海水。
+         这条抓的是"因子算出来了但对输入不敏感"——即反解退化成常数。
+     N5d 与 Revelle 因子互换: factor = DIC/([CO2]×Revelle)。
+         Revelle 是海洋化学几十年的通行量, 本工况应落在 8–15。
+         ⚠ 这是【外部口径交叉验证】, 与库内其他断言的"内部自洽"不同类 ——
+           它能抓到"整套实现自洽但物理上偏离"的情形, 那正是 negA/negB 抓不到的那类。 */
+  (function () {
+    const badN5 = [];
+    try {
+      const C = (typeof iRASCarbonate !== 'undefined') ? iRASCarbonate : null;
+      if (!C || !C.co2FromDIC || !C.co2BufferFactor) {
+        badN5.push('N5 iRASCarbonate.co2FromDIC / co2BufferFactor 不可用');
+      } else {
+        const T = 15, S = 30, rho = 1 + 0.0008 * S;
+        const TA = 150 / 50043 / rho, CO2 = 8.47 / 44010 / rho;
+        const r0 = C.solve(TA, CO2, T, S);
+        // N5a 反解自洽
+        const back = C.co2FromDIC(TA, r0.DIC, T, S);
+        if (Math.abs(back - CO2) / CO2 > 1e-6) {
+          badN5.push('N5a 反解不自洽: 原 CO₂ ' + (CO2 * 44010 * rho).toFixed(6)
+                     + ' → 反解 ' + (back * 44010 * rho).toFixed(6) + ' mg/L');
+        }
+        // N5b 因子 ≥ 1
+        const fSea = C.co2BufferFactor(TA, CO2, T, S);
+        if (!(fSea >= 1 - 1e-9)) {
+          badN5.push('N5b 缓冲因子 ' + fSea.toFixed(6)
+                     + ' < 1 —— 自由 CO₂ 降幅大于被吹走的质量, 违反质量守恒');
+        }
+        // N5c 单调性: 高碱 > 标准 > 淡水
+        const fHi = C.co2BufferFactor(300 / 50043 / rho, CO2, T, S);
+        const fFresh = C.co2BufferFactor(150 / 50043, 10.99 / 44010, 28, 0);
+        if (!(fHi > fSea && fSea > fFresh)) {
+          badN5.push('N5c 缓冲因子对输入不敏感或方向错: 高碱 ' + fHi.toFixed(4)
+                     + ' / 海水 ' + fSea.toFixed(4) + ' / 淡水 ' + fFresh.toFixed(4)
+                     + ' —— 应严格递减 (DIC 池子越大缓冲越强)');
+        }
+        // N5d Revelle 交叉验证
+        const R = r0.DIC / (CO2 * fSea);
+        if (!(R > 6 && R < 20)) {
+          badN5.push('N5d 换算出的 Revelle 因子 ' + R.toFixed(2)
+                     + ' 落在海洋典型 8–15 之外 (放宽到 6–20 仍不过) —— 与外部口径不符');
+        }
+      }
+    } catch (e) {
+      badN5.push('N5 断言自身异常: ' + (e && e.message));
+    }
+    const rowN5 = { id: 'co2_buffer_solver', ok: badN5.length === 0 };
+    if (badN5.length) rowN5.invariants = badN5.slice(0, 8);
+    rowN5.ok ? out.pass++ : out.fail++;
+    out.results.push(rowN5);
+  })();
+
+  /* ── v2.5 IRAS_V25_DOC_ANCHOR — N2 文案实算值锚定 (第八轮审计的扫尾) ──
+     【立此断言的直接原因】v2.5 的 B8 把全库鱼池 CO₂ 动了 23–39%、Ω 动了约 30%,
+     而发布说明里\"实测海水鱼种 Ω 0.37–1.29 全部欠饱和\"这句话【一个字没跟着变】,
+     39 条自检全绿、25 项 check_doc_version 全绿 —— 因为没有任何门禁在看【文案里的
+     实算值】。它是靠人眼发现的, 而且定性结论已经反了 (对虾苗种期实为过饱和)。
+     这与 M15 治的是同一个病: 权威源变了, 消费面没跟上, 各自自洽故断言全绿。
+
+     【手段】把声明句的数值做成机读属性 (data-omega-min/max), 断言直接跑模型、
+     取四个海水鱼种默认工况的鱼池 Ω 包线, 与文案声明比对。
+     ⚠ 容差 0.02: 文案是两位小数, 不能要求逐位。
+     ⚠ 本断言会改动全局 currentSpecies / stagesState —— 故必须排在所有【工况级】
+       断言之后, 只与静态扫描类 (M15) 相邻。移动位置前先想清楚这一条。 */
+  (function () {
+    const badN2 = [];
+    try {
+      const el = document.querySelector('[data-anchor="omega-seawater"]');
+      if (!el) {
+        badN2.push('N2 找不到 data-anchor="omega-seawater" 的声明句 —— 文案锚点被删或改名');
+      } else {
+        const docMin = parseFloat(el.getAttribute('data-omega-min'));
+        const docMax = parseFloat(el.getAttribute('data-omega-max'));
+        const list = (el.getAttribute('data-omega-species') || '').split(',').filter(Boolean);
+        if (!Number.isFinite(docMin) || !Number.isFinite(docMax) || !list.length) {
+          badN2.push('N2 锚点属性缺失或非数 (min=' + docMin + ' max=' + docMax + ')');
+        } else {
+          let lo = Infinity, hi = -Infinity, n = 0;
+          const _yield = { salmon: 1000, turbot: 500, grouper: 500, shrimp: 100 };
+          list.forEach(function (sp) {
+            currentSpecies = sp;
+            loadStagesFromDB(sp);
+            if (typeof rebuildStages === 'function') rebuildStages();
+            const y = document.getElementById('inpYield');
+            if (y) y.value = (_yield[sp] != null ? _yield[sp] : 500);
+            readGlobalThermalConfig();
+            recomputeAll();
+            ((lastResults && lastResults.allResults) || []).forEach(function (r) {
+              const om = r && r.sim && r.sim.stages && r.sim.stages[0] && r.sim.stages[0].omega;
+              if (Number.isFinite(om)) { lo = Math.min(lo, om); hi = Math.max(hi, om); n++; }
+            });
+          });
+          if (!n) {
+            badN2.push('N2 四个海水鱼种一个 Ω 都没算出来 —— 锚点无从校验 (碳酸盐模块失效?)');
+          } else if (Math.abs(lo - docMin) > 0.02 || Math.abs(hi - docMax) > 0.02) {
+            badN2.push('N2 文案声明的海水 Ω 包线 ' + docMin.toFixed(2) + '–' + docMax.toFixed(2)
+                       + ' ≠ 实算 ' + lo.toFixed(2) + '–' + hi.toFixed(2)
+                       + ' —— 模型数值变了而发布说明/README/手册没跟上 (v2.5 B8 即因此漏改)');
+          }
+          /* N2b 定性结论也要跟着数值走: 文案现在写的是\"多数阶段欠饱和, 对虾苗种期过饱和\"。
+             若哪天实算包线整体落到 1 以下 (或整体高于 1), 那句定性描述就该重写。 */
+          if (n && Number.isFinite(lo) && Number.isFinite(hi)) {
+            const txt = el.textContent || '';
+            const claimsOver = /过饱和/.test(txt);
+            if ((hi > 1) !== claimsOver) {
+              badN2.push('N2b 文案的定性结论与实算不符: 实算最大 Ω ' + hi.toFixed(2)
+                         + (hi > 1 ? ' 已过饱和但文案未提' : ' 全部欠饱和但文案称有过饱和'));
+            }
+          }
+        }
+      }
+    } catch (e) {
+      badN2.push('N2 断言自身异常: ' + (e && e.message));
+    }
+    const rowN2 = { id: 'doc_value_anchor', ok: badN2.length === 0 };
+    if (badN2.length) rowN2.invariants = badN2.slice(0, 8);
+    rowN2.ok ? out.pass++ : out.fail++;
+    out.results.push(rowN2);
   })();
 
   /* ── v2.3.3 IRAS_V233_FIELD_FLOW — M15 字段流转声明表 × 消费面 一致性 ──

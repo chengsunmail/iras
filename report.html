@@ -28,7 +28,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="孙程 / 海南登登科技咨询有限公司">
 <meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
-<title>iRAS · 可研报告生成器 v2.4</title>
+<title>iRAS · 可研报告生成器 v2.5</title>
 <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
 <!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
 <script src="finance-core.js"></script>
@@ -1042,6 +1042,30 @@ TAN 去除率|{{ workflow.bf.tanEff|round(0) }}%
 
 @@P@@MBBR 设有粗孔曝气提供菌膜代谢所需溶氧 + 推动填料悬浮, 采用罗茨风机供气。曝气供氧不与鱼池主增氧重叠, 避免溶氧重复计算。
 
+@@P@@<strong>溶解性有机物的去除</strong>: 生物滤池内的异养细菌氧化溶解性有机物, 将其转化为二氧化碳与菌体污泥, 污泥经微滤机截留与换水排出系统。本模型取生物滤池对溶解性有机物的<strong>单程去除率 {{ workflow.bfDOMEff }}%</strong>。
+
+@@P@@需注意该值为<strong>单程</strong>去除率, 而循环水一昼夜通过生物滤池 60–144 次, 故看似很低的单程去除率对应相当高的日处理量。该取值参照丹麦技术大学水产研究所淡水虹鳟中试循环水系统的实测溶解态化学需氧量(35.6 mg O₂/L)反推确定。其数值显著低于氨氮去除率, 原因在于溶解性有机物中<strong>难生物降解组分占多数</strong>——易降解部分在循环中很快被消耗, 其余部分则持续累积, 主要依靠换水与高级氧化排出。
+
+@@P@@<strong>钙硬度与方解石饱和度</strong>: 方解石饱和度 Ω 用于判断水体对碳酸钙是溶蚀性还是结垢性, 工程上关系到<strong>混凝土池体与水泥基砂浆的耐久性</strong>(Ω &lt; 1 时水对碳酸钙不饱和, 持续溶蚀池体、池壁起砂), 以及甲壳类蜕壳所需的钙供给。
+
+@@P@@本项目钙用量口径为{% if workflow.caMode == 'manual' %}<strong>手动指定</strong>, 钙硬度取 {{ workflow.caHardness }} mg/L(以 CaCO₃ 计)。{% else %}<strong>自动</strong>: 海水阶段按 Riley &amp; Tongudai(1967)的海水恒定比例反推; 淡水阶段取钙硬度 {{ workflow.caHardness }} mg/L(以 CaCO₃ 计)。{% endif %}该取值参照美国地质调查局硬度分级(0–60 软水、61–120 中等硬度、121–180 硬水、大于 180 极硬)与水产养殖推荐区间(SRAC 464: 游离钙 40–100 mg/L, 即钙硬度 100–250 mg/L; Boyd: 鱼类不低于 50、甲壳类不低于 80 mg/L)。<strong>钙硬度为常规水质检测项, 建议按水源实测值填入。</strong>
+
+@@P@@<strong>淡水计算口径说明</strong>: 淡水条件下方解石溶度积退化为活度标度的热力学常数, 故本模型对淡水阶段施加 Davies 活度系数修正(离子强度由碱度与钙硬度经电荷平衡估算)。未作该修正时模型会给出过饱和的错误结论, 与 Langelier 饱和指数判断相反。⚠ 淡水方解石饱和度<strong>宜作定性判断(欠饱和/过饱和方向)使用</strong>, 定量精度约为 ±30% 量级; 海水阶段不受此限。
+
+@@P@@<strong>MBBR 曝气选型口径</strong>: 本项目 MBBR 曝气按<strong>载体流化</strong>选型, 取流化通量 {{ workflow.bfAirFlux }} m³/(h·m² 池底), 池水深 {{ workflow.bfDepth }} m。依据为挪威国家设计导则 Norsk Vann Rapport 168/2009: <em>为保证良好混合, 供气量不应低于 10–15 m³/h·m² 池底(随载体类型而定)</em>; 该导则同时指出<strong>混合需求可能成为供气量的控制性因素</strong>。生物滤池内溶解氧不作为输入, 而由质量平衡解出(进水溶解氧 − 生物膜耗氧 + 曝气传氧), 并与设定下限 {{ workflow.bfDOMin }} mg/L 比较; 低于下限时系统给出告警并给出所需通量与相应功率, <strong>但不自动增加曝气</strong> —— 是否加大曝气属工程决策。
+
+@@P@@<strong>传氧计算口径说明</strong>: 实际氧转移效率按标准式 SOTE × α × 驱动力 × θ^(T−20) 计算, 其中驱动力 =(β·Cs_水深 − DO)/Cs_20。α 取 {{ workflow.bfAlpha }}, 属<strong>待标定参数</strong>(市政污水常用 0.5–0.7, 本项目按循环水水质更洁净取值, 无直接实测支撑)。需注意标准氧转移效率的定义条件为清水、20 °C、<strong>溶解氧为零</strong>, 即驱动力最大的工况; 实际运行溶解氧下驱动力显著降低, 故不含驱动力项的选型方法会系统性高估曝气供氧能力。
+
+@@P@@<strong>MBBR 曝气对 CO₂ 的吹脱</strong>: 本模型计入生物滤池曝气对溶解 CO₂ 的吹脱作用, 气液平衡逼近系数取 {{ workflow.bfCo2Approach }}(粗孔盘实测值; 填料脱气塔另用独立系数, 两者气液接触方式不同, 不共用)。该项在物理上不可忽略: CO₂ 与空气的平衡浓度仅约 0.6 mg/L, 而循环水中为 7–13 mg/L, 推动力接近全量; 与溶解氧"水体已接近饱和、推动力极小"的情形正相反 —— 同一股空气几乎无法补氧, 却能有效脱除 CO₂。计入后生物滤池出水(即脱气塔进水)CO₂ 浓度低于不计入时的估算值, <strong>脱气塔选型相应可下调一档</strong>。
+
+@@P@@<strong>吹脱产物去向</strong>: 该部分 CO₂ 随生物滤池曝气尾气排出, 去向与尾气一致 —— {% if workflow.mbbrCovered %}本项目 MBBR 加盖外排, 该部分 CO₂ 全部离开建筑, 不计入车间新风负荷。{% else %}本项目 MBBR 敞口设置, 该部分 CO₂ 进入车间空气, <strong>已计入车间新风量计算</strong>。{% endif %}
+
+@@P@@<strong>已知局限</strong>: 表观气速并非水产 MBBR 合适的放大准则 —— 保持几何相似放大时曝气注入深度增加, 相同表观气速下所需能量输入更高, 而该量本身不包含这一影响。本模型将池水深开放为输入, 但流化通量本身不随水深修正。
+
+@@P@@<strong>曝气尾气去向</strong>: 本项目 MBBR {% if workflow.mbbrCovered %}<strong>加盖并接排风管直排室外</strong>, 曝气尾气及其携带的水汽、CO₂ 全部离开建筑, 不进入养殖车间空气, 车间除湿与新风负荷不受其影响。{% else %}<strong>敞口设置</strong>, 曝气尾气在车间内水面破裂进入车间空气。尾气离开水面时为水温下饱和状态, 其携带的水汽计入车间除湿负荷 —— 该项在同类项目中量级可与池面自然蒸发相当, 暖通选型时不可忽略。{% endif %}
+
+@@P@@<strong>模型口径说明</strong>: MBBR 粗孔曝气对溶解 CO₂ 的吹脱作用在本模型中按保守处理【略去不计】(即假定硝化产生的 CO₂ 全部进入主回路, 由 CO₂ 脱气塔承担)。按本模型自身的气相载量式估算, 该项等效单程去除率约 4%–13%, 取值取决于粗孔盘的气液平衡逼近系数 —— 该系数目前尚无标定值, 故不予计入。其后果是 CO₂ 脱气塔选型偏保守、鱼池稳态 CO₂ 计算值偏高。
+
 @@H3@@5.3.4 UV 紫外线消毒
 
 UV 消毒采用 254 nm 中压紫外灯, 通过破坏细菌/病毒/寄生虫的 DNA 实现物理消毒。设计参数:
@@ -1066,9 +1090,12 @@ CO₂ 脱气塔采用逆流空气吹脱原理, 在塔顶布水、塔底鼓风, �
 脱气方式|逆流空气吹脱
 G:L 气液比|{{ workflow.co2.gToL|round(1) if workflow.co2.gToL else 3 }}
 单次脱气率|{{ workflow.co2.eff|round(0) if workflow.co2.eff else 65 }}%
+{% if workflow.co2.inletCO2 %}设计进水 CO₂|{{ workflow.co2.inletCO2|round(1) }} mg/L (生物滤池出水, 全场最高点){% endif %}
 风机|罗茨风机, 风压 2.5 kPa, 效率 60%
 填料|结构填料, 高度 1.0 m
 @@END_TABLE@@
+
+{% if workflow.co2.inletCO2 %}@@P@@<strong>关于脱气塔进水浓度与鱼池浓度的区别</strong>: 硝化反应产生的 CO₂ 发生在<strong>生物滤池内</strong>, 而生物滤池位于鱼池下游、脱气塔上游。因此脱气塔进水 CO₂ ({{ workflow.co2.inletCO2|round(1) }} mg/L) <strong>高于鱼池 CO₂</strong> —— 前者是<strong>设备选型口径</strong>, 后者是<strong>鱼类福利判据口径</strong>(见第 5.2 节水质指标), 两者不可混用。本报告的水质限值校核一律采用鱼池浓度, 脱气塔与风机选型采用进水浓度。{% endif %}
 
 {% if workflow.skimmer.enabled %}
 @@H3@@5.3.6 蛋白分离器
@@ -2384,7 +2411,7 @@ const SHARE_KEY = 'iRAS_reportExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.4';
+const IRAS_PAGE_VERSION = '2.5';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
@@ -3130,7 +3157,11 @@ function buildContext() {
     rdf: designEq.rdf || {},
     bf:  designEq.bf || {},
     uv:  designEq.uv || {},
-    co2: designEq.co2 || {},
+    co2: Object.assign({}, designEq.co2 || {}, {
+      /* v2.5 IRAS_V25_CHAIN_CO2 (D1-c): 塔进水浓度 —— 设备选型口径, 与鱼池口径分开报。
+         硝化 CO₂ 产在生物滤池 (鱼池下游、塔上游), 故塔进水恒高于鱼池。 */
+      inletCO2: (designEq.co2 && designEq.co2.inletCO2_mgL != null) ? designEq.co2.inletCO2_mgL : null
+    }),
     aerator: designEq.o2cone || {},
     // v1.7: 鱼池增氧鼓风机 K-101 (仅 air 模式启用; o2 模式 enabled=false)
     tankAirBlower: designEq.tankAirBlower || {},
@@ -3148,6 +3179,21 @@ function buildContext() {
        现改为读正确层级, 并保留 proc 与字面量两级兜底(旧方案 JSON 可能只有 proc)。 */
     peakFactor: (sample.peakFactor != null ? sample.peakFactor
                  : (sproc.peakFactor != null ? sproc.peakFactor : 1.5)),
+    /* v2.5 IRAS_V25_MBBR_COVER: MBBR 尾气去向是一个影响暖通选型的设计前提
+       (敞口时水汽入室, 量级与池面蒸发相当), 必须在可研正文里说出来, 而不是
+       只活在计算里。默认 true = 加盖外排, 与 PROCESS_DEFAULTS 同口径。 */
+    mbbrCovered: (sproc.mbbrCovered !== false),
+    /* v2.5 IRAS_V25_BF_AERATION: MBBR 曝气改为流化驱动、DO 为计算结果。
+       四个参数直接决定风机选型与生物滤池内 DO, 属可研必须交代的设计前提。 */
+    bfAirFlux: (sproc.bfAirFlux != null ? sproc.bfAirFlux : 10),
+    bfDepth:   (sproc.bfDepth   != null ? sproc.bfDepth   : 3),
+    bfDOMin:   (sproc.bfDOMin   != null ? sproc.bfDOMin   : 4),
+    bfAlpha:   (sproc.bfAlpha   != null ? sproc.bfAlpha   : 0.85),
+    bfCo2Approach: (sproc.bfCo2Approach != null ? sproc.bfCo2Approach : 0.23),
+    /* v2.5 IRAS_V25_CA_INPUT: 钙口径决定方解石饱和度能否算出, 是可研水质章的必要前提 */
+    caMode:     (sproc.caMode === 'manual' ? 'manual' : 'auto'),
+    caHardness: (sproc.caHardness != null ? sproc.caHardness : 90),
+    bfDOMEff:   (sproc.bfDOMEff != null ? sproc.bfDOMEff : 2.5),
     // 各阶段工艺数据(供详细表格)
     perStage: (d.results.perStage || []).map(ps => ({
       stageName: ps.stageName,
@@ -3330,7 +3376,7 @@ function buildContext() {
     irasVersion:     d.irasVersion || '1.5',
     /* v2.3.3: 页面版本跟随主页面(项目方决定)。
        ⚠ 此前写 'v1.5-alpha-1', 与 index 2.3.3 各自演进, 报告页脚长期显示旧版本。 */
-    templateVersion: 'v2.4',
+    templateVersion: 'v2.5',
     reportNumber:    `iRAS-${d.species}-${d.yieldTons}t-${new Date().toISOString().slice(0,10).replace(/-/g,'')}`
   };
 

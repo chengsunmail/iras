@@ -1,13 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="iRAS">
-  <title>iRAS</title>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  iRAS logo 母版 (v2.5, 2026-08-23) — 单一事实源
+  ═══════════════════════════════════════════════════════════════════════════
+  ⚠ 本文件是 logo 的【唯一来源】。以下派生物全部由它生成, 不得手改:
+      · index.html 内联的 favicon data URI  (由 tools/check_logo_sync.js 锁定一致)
+      · favicon.png / favicon180.png / favicon.ico
+    改 logo 只改本文件, 然后重跑派生 + 重生成 MD5SUMS。
+
+  ── 几何参数 (2026-08-23 定稿, 逐档目视比选后确定) ──
+    画布      512 × 512, 圆角 rx=141
+    R 缩放    0.98   (原 R 路径按此比例, R 高 284 · 主干粗 75)
+    i         【冻结】竖笔宽 53 · 点 r=30 · 高度不随 R 变
+              —— 有意让 i 比 R 主干细约 1/3: i 是前缀, 主体是 RAS,
+                 等粗会让它读成两个并列字母而不是一个词。
+    字距      34   (i 竖笔右缘 → R 左缘)
+    右移      +14  (见下)
+
+  ── 为什么整体右移 14 ──
+    外框居中时留白 80/84 看似对称, 但墨迹【重心】在 x=241.9, 偏左 14px:
+    右下那条腿是细斜杠, 左上却是实心 i 竖笔 + R 的厚字碗, 重量压在左边。
+    右移 14 后重心 255.9 ≈ 画布中心 256。
+    ⚠ 代价: 右侧留白降到 70, 而圆角半径是 141。若将来遇到【圆形裁切】场合
+      (某些头像框 / 圆形 app 图标规范), 腿尖可能被蹭到 —— 那种场合应另出
+      安全区版本, 不要靠改本母版去迁就。
+
+  ── 全尺寸统一 ──
+    所有派生物一律使用本母版, 不设简化版。
+    ⚠ 已知代价: 16px 下 i 的点会与竖笔并成一根竖线, R 也因让位而比单独时更早糊。
+      这是【有意接受】的 —— 品牌一致优先于该尺寸上的字母可读性,
+      且 16px 上起作用的本就是色块轮廓而非字形。高分屏标签页实际请求 32px,
+      16px 只出现在老式低分屏上。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="irasBg" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0C9ED5"/>
       <stop offset="1" stop-color="#1A5CD7"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="141" fill="url(#irasBg)"/>
-  <path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z"
-        fill="#FFFFFF" fill-rule="evenodd"/>
-  <path d="M256 290 H324 L392 401 H324 Z" fill="#FFFFFF"/>
+  <rect width="512" height="512" rx="141" fill="url(#g)"/>
+  <!-- i 竖笔 (冻结尺寸: 宽 53) -->
+  <rect x="97.1" y="204.7" width="53" height="193.4" rx="11" fill="#fff"/>
+  <!-- i 点 (冻结尺寸: r=30) -->
+  <circle cx="123.6" cy="168.8" r="30" fill="#fff"/>
+  <!-- R (原始路径, 整体 scale 0.98) -->
+  <g transform="translate(58.7,5.1) scale(0.98)">
+    <path d="M128 111 H264 A98 98 0 0 1 264 307 H205 V401 H128 Z M205 179 H256 A30 30 0 0 1 256 239 H205 Z" fill="#fff" fill-rule="evenodd"/>
+    <path d="M256 290 H324 L392 401 H324 Z" fill="#fff"/>
+  </g>
 </svg>
