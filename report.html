@@ -6,7 +6,7 @@
   数据源: localStorage['iRAS_reportExport'] (从主页面 "📄 生成可研报告" 按钮传入)
   输出: 按发改委规范的 16 章 docx 文档 (结构化内容)
 
-  Copyright (C) 2026 海南登登科技咨询有限公司
+  Copyright (C) 2026 孙程
   Copyright (C) 2026 孙程 <6881509@qq.com>
 
   本程序是自由软件: 你可以根据自由软件基金会发布的
@@ -26,9 +26,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="孙程 / 海南登登科技咨询有限公司">
-<meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
-<title>iRAS · 可研报告生成器 v2.5</title>
+<meta name="author" content="孙程">
+<meta name="copyright" content="© 2026 孙程">
+<title>iRAS · 可研报告生成器 v2.6</title>
 <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
 <!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
 <script src="finance-core.js"></script>
@@ -1036,7 +1036,26 @@ TSS 去除率|{{ workflow.rdf.tssEff|round(0) }}%
 填料类型|HDPE K1/K3, 比表面积 500 m²/m³
 设计 TAN 负荷|{{ workflow.bf.designTAN|round(2) }} kg/d
 TAN 去除率|{{ workflow.bf.tanEff|round(0) }}%
-温度修正后 VTR|{{ workflow.bf.vtrAtT|round(3) }} kg/(m³·d)
+硝化面积 A|{{ workflow.bf.areaNitri|round(0) }} m²
+面速率 r|{{ workflow.bf.arealRate|round(3) }} g N/(m²·d)
+面速率系数 k|{{ workflow.bf.bfArealK }} g N/(m²·d)
+设计目标 TAN Sn|{{ workflow.bf.bfDesignTAN }} mg/L
+载体比表面 PSA|{{ workflow.bf.bfCarrierPSA }} m²/m³
+温度修正上限|{{ workflow.bf.bfArealTempCap }} °C（超过此温度不再做 θ 外推）
+异养(COD)面积 A_COD|{{ workflow.bf.areaCOD|round(0) }} m²
+总面积 A_总|{{ workflow.bf.areaTotal|round(0) }} m²（= A_硝化 + A_COD）
+COD 设计面负荷|{{ workflow.bf.bfSALRDesign }} g COD/(m²·d)（分配面积用的约定值）
+COD 实际面负荷|{{ workflow.bf.salrActual|round(2) }} g COD/(m²·d)
+COD 温度系数 θ_h|{{ workflow.bf.bfSALRTheta }}（1.00 = 有意不做温度修正，出处待定）
+COD 参考温度|{{ workflow.bf.bfSALRRefTemp }} °C
+溶解 COD·可降解 codDiss_b|{{ workflow.bf.codDissB|round(2) }} mg/L
+溶解 COD·难降解 codDiss_r|{{ workflow.bf.codDissR|round(2) }} mg/L（滤池不去除）
+溶解 COD 总产率|{{ workflow.bf.codDissYield }} % of 饲料
+TSS 产率|{{ workflow.bf.tssYield }} % of 饲料
+难降解产率|{{ workflow.bf.codDissRefracYield }} % of 饲料（⚠ 由稳态反推，非实测）
+滤池对可降解 COD 的单程去除率|{{ (workflow.bf.etaBfCODb*100)|round(1) }} %（⚠ 结构批内为等价反解值）
+AOP 难降解→可降解转化率|{{ workflow.bf.aopCodTransferRate }}（⚠ 显式置零：机理成立但无数值出处）
+等效 VTR（仅展示，不参与选型）|{{ workflow.bf.vtrAtT|round(3) }} kg/(m³·d)
 {% if workflow.bf.vdrAtT %}盐度修正后 VTR|含盐度修正系数{% endif %}
 @@END_TABLE@@
 
@@ -2411,7 +2430,7 @@ const SHARE_KEY = 'iRAS_reportExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.5';
+const IRAS_PAGE_VERSION = '2.6';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
@@ -3212,7 +3231,11 @@ function buildContext() {
   // ------- capex 命名空间 -------
   // v1.5 审计回合 3: Bug 2 修复后, 自有/贷款拆分不再是 totalInvestment × ownPct
   //   贷款只覆盖固定资产, 流动资金 100% 自筹. 这里也要拆开避免报告模板写错.
-  const _wc = (fin.annualOpex || 0) * 0.15;
+  /* IRAS_R26_FIN_OPEX_BASE: 流动资金基数须与 finance-core 同口径 (它已改读
+     annualOpexForFinance), 否则报告里的流动资金与财务表对不上。 */
+  const _opexFinBase = (typeof fin.annualOpexForFinance === 'number' && fin.annualOpexForFinance > 0)
+    ? fin.annualOpexForFinance : (fin.annualOpex || 0);
+  const _wc = _opexFinBase * 0.15;
   const _fa = fin.totalCapexProject || 0;
   const _ownPct = 0.3;  // 与 finParams.ownPct 保持一致, 必要时下面 finParams 重新覆盖
   const capex = {
@@ -3376,7 +3399,7 @@ function buildContext() {
     irasVersion:     d.irasVersion || '1.5',
     /* v2.3.3: 页面版本跟随主页面(项目方决定)。
        ⚠ 此前写 'v1.5-alpha-1', 与 index 2.3.3 各自演进, 报告页脚长期显示旧版本。 */
-    templateVersion: 'v2.5',
+    templateVersion: 'v2.6',
     reportNumber:    `iRAS-${d.species}-${d.yieldTons}t-${new Date().toISOString().slice(0,10).replace(/-/g,'')}`
   };
 

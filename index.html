@@ -2,7 +2,7 @@
 <!--
   iRAS - 循环水养殖系统 (RAS) 工程设计与仿真平台
   
-  Copyright (C) 2026 海南登登科技咨询有限公司
+  Copyright (C) 2026 孙程
   Copyright (C) 2026 孙程 <6881509@qq.com>
   
   本程序是自由软件: 你可以根据自由软件基金会发布的
@@ -22,8 +22,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="孙程 / 海南登登科技咨询有限公司">
-<meta name="copyright" content="© 2026 海南登登科技咨询有限公司">
+<meta name="author" content="孙程">
+<meta name="copyright" content="© 2026 孙程">
 
 <!-- ============================================================
      SEO 优化 (v1.7)
@@ -32,7 +32,7 @@
      长尾词覆盖: 三文鱼 RAS / 罗非鱼工厂化 / 对虾循环水 /
                 氧锥 / 生物滤池 / 蛋白分离器 / 主泵
      ============================================================ -->
-<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.5</title>
+<title>iRAS · 循环水养殖 (RAS) 工厂化养殖工程设计开源软件 | 工艺设计 P&ID 投资概算 可研报告生成平台 v2.6</title>
 <meta name="description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta name="keywords" content="循环水养殖,工厂化养殖,RAS,工厂化循环水养殖,循环水养殖系统,陆基养殖,工艺设计,RAS 工艺设计,水处理工程,养殖水处理,P&ID,工艺流程图,设备清单,投资概算,可研报告,可行性研究报告,循环水养殖设计软件,循环水养殖工程,水产养殖软件,RAS 设计工具,开源软件,AGPL,氧锥,蛋白分离器,生物滤池,MBBR,反硝化,UV 消毒,臭氧,液氧,三文鱼,大西洋鲑,罗非鱼,对虾,石斑鱼,大菱鲆,鳗鱼,加州鲈,鳜鱼,Recirculating Aquaculture System,aquaculture,salmon RAS">
 <meta name="robots" content="index,follow">
@@ -46,17 +46,17 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="iRAS · 循环水养殖工程设计平台">
-<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.5">
+<meta property="og:title" content="iRAS — 循环水养殖 / 工厂化养殖 工程设计开源软件 v2.6">
 <meta property="og:description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta property="og:url" content="https://iras.cn/">
 <meta property="og:image" content="https://iras.cn/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v2.5">
+<meta property="og:image:alt" content="iRAS 循环水养殖工程设计平台 v2.6">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.5">
+<meta name="twitter:title" content="iRAS — RAS 工程设计开源软件 v2.6">
 <meta name="twitter:description" content="循环水养殖(RAS)工程设计平台，免费开源，工艺计算、P&ID、设备清单、可研报告一站生成。">
 <meta name="twitter:image" content="https://iras.cn/og-cover.png">
 
@@ -99,17 +99,13 @@
     "@type": "Person",
     "name": "孙程",
     "jobTitle": "水处理工程师 (25 年) / 挪威 NTNU 博士",
-    "affiliation": {
-      "@type": "Organization",
-      "name": "海南登登科技咨询有限公司"
-    },
     "email": "6881509@qq.com"
   },
   "publisher": {
-    "@type": "Organization",
-    "name": "海南登登科技咨询有限公司",
-    "url": "https://iras.cn/"
-  },
+      "@type": "Person",
+      "name": "孙程",
+      "url": "https://iras.cn/"
+    },
   "keywords": "循环水养殖, 工厂化养殖, RAS, 工艺设计, P&ID, 投资概算, 可研报告, 三文鱼, 罗非鱼, 对虾",
   "codeRepository": "https://github.com/chengsunmail/iras",
   "downloadUrl": "https://github.com/chengsunmail/iras/releases"
@@ -1176,13 +1172,15 @@
   <div id="stagesContainer" class="space-y-6"></div>
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
+
+
     <div>
       <span class="text-slate-300 font-semibold">iRAS</span> <span id="footerVersion">v2.1</span> · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
     <div>
-      © 2026 <a href="https://dengdengtech.cn" target="_blank" class="text-slate-400 hover:text-cyan-300">海南登登科技咨询有限公司</a> · 孙程 · 联系: 6881509@qq.com
+      © 2026 孙程 · 联系: 6881509@qq.com
     </div>
     <div class="text-slate-600">
       <a href="https://iras.cn" target="_blank" class="text-slate-500 hover:text-cyan-300">iras.cn</a> · 计算结果仅供工程概算参考 · 实际工程需结合现场水质监测、试验数据与专业判断
@@ -1204,7 +1202,7 @@
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
           <div>版本: <span id="metaVersion">v2.1</span> · 发布日期: <span id="metaReleaseDate">2026-08-01</span></div>
-          <div>开发: 孙程 · 海南登登科技咨询有限公司</div>
+          <div>开发: 孙程</div>
           <div>联系: 6881509@qq.com</div>
         </div>
 
@@ -1251,7 +1249,7 @@
         </div>
 
         <div class="text-center pt-2 border-t border-slate-700">
-          <div class="text-slate-500">© 2026 <a href="https://dengdengtech.cn" target="_blank" class="text-cyan-400 underline">海南登登科技咨询有限公司</a> · 开源许可: <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 underline">AGPL v3</a></div>
+          <div class="text-slate-500">© 2026 孙程 · 开源许可: <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 underline">AGPL v3</a></div>
           <div class="text-slate-600 mt-1"><a href="https://iras.cn" target="_blank" class="text-cyan-400 underline">iras.cn</a> · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 underline">GitHub</a> · 联系: 6881509@qq.com</div>
         </div>
       </div>
@@ -1273,12 +1271,12 @@
       <h2 class="text-lg font-bold text-cyan-400 mb-2">目录</h2>
       <div class="grid grid-cols-2 gap-1 text-xs">
         <a href="#help-1" class="text-cyan-300 hover:text-cyan-100">1. 软件概述</a>
-        <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (89 项)</a>
+        <a href="#help-paramref" class="text-amber-300 hover:text-amber-100 font-bold">📋 参数手册 (121 项)</a>
         <a href="#help-changelog-v24-anchor" class="block hover:text-rose-300">🚀 v2.4 升级说明 — 四个量的口径单一事实源</a>
         <a href="#help-changelog-v21" class="block hover:text-rose-300">📌 v2.1 升级说明 — 能量守恒修复 · 守恒断言落地</a>
         <a href="#help-changelog-v201" class="block hover:text-sky-300">📌 v2.0.1 升级说明 — 缺陷修复 · 版本号自检</a>
         <a href="#help-changelog-v200" class="block hover:text-emerald-300">📌 v2.0.0 升级说明 — 热平衡架构重构 · 气液接触器 · 规范对标</a>
-          <a href="#help-changelog-v193" class="text-amber-300 hover:text-amber-100 font-bold">📌 v1.9.3 升级说明 (最新)</a>
+          <a href="#help-changelog-v193" class="text-amber-300 hover:text-amber-100 font-bold">📌 v1.9.3 升级说明</a>
         <a href="#help-changelog-v192" class="text-cyan-300 hover:text-cyan-100">📌 v1.9.2 升级说明</a>
         <a href="#help-changelog-v19" class="text-emerald-300 hover:text-emerald-100">📌 v1.9 升级说明</a>
         <a href="#help-changelog-v17" class="text-rose-300 hover:text-rose-100 font-bold">📌 v1.7 升级说明</a>
@@ -1319,10 +1317,10 @@
         <li><b>温水淡水鱼</b>: <strong>罗非鱼</strong> · <strong>加州鲈</strong> · <strong>鳜鱼</strong> (适合内陆 RAS 项目)</li>
       </ul>
 
-      <p class="mt-3 text-slate-300">v1.9 完整能力覆盖 <strong>工艺设计 → 碳酸盐平衡水化学 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong>:</p>
+      <p class="mt-3 text-slate-300">v2.6 完整能力覆盖 <strong>工艺设计 → 碳酸盐平衡水化学 → P&amp;ID 工艺图 → 设备清单 → 投资财务评价 → 16 章可研报告生成</strong>:</p>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
-        <li><b>碳酸盐平衡求解 (v1.9 新增) ⭐</b>: 完整水化学物种平衡 — <strong>pH / NH₃ 物种 / 缓冲强度 β / 方解石饱和度 Ω</strong>, 平衡常数对照 PyCO2SYS 1.8.3 验证 (max|ΔpH| = 1e-5). 两种 pH 控制策略 (持碱度 / 持目标 pH), 大型海水 RAS 设计能直接对标 Atlantic Sapphire 高碱度 237 工况</li>
-        <li><b>O₂ 物理校准 (v1.9)</b>: Q10 参考温度对齐到物种 metabRefTemp (与热模型一致); CO₂ 计算加入硝化产 CO₂ (NH₄⁺ + 2HCO₃⁻ + 2O₂ → NO₃⁻ + 2CO₂, 6.286 g/g TAN-N), 修复 v1.7 漏算</li>
+        <li><b>碳酸盐平衡求解 (v1.9 引入)</b>: 完整水化学物种平衡 — <strong>pH / NH₃ 物种 / 缓冲强度 β / 方解石饱和度 Ω</strong>, 平衡常数对照 PyCO2SYS 1.8.3 验证 (max|ΔpH| = 1e-5). 两种 pH 控制策略 (持碱度 / 持目标 pH), 大型海水 RAS 设计能直接对标 Atlantic Sapphire 高碱度 237 工况</li>
+        <li><b>O₂ 物理校准 (v1.9 引入)</b>: Q10 参考温度对齐到物种 metabRefTemp (与热模型一致); CO₂ 计算加入硝化产 CO₂ (NH₄⁺ + 2HCO₃⁻ + 2O₂ → NO₃⁻ + 2CO₂, 6.286 g/g TAN-N), 修复 v1.7 漏算</li>
         <li><b>工艺设计</b>: 多阶段养殖规模反推 + 精确循环方程水质稳态仿真 (TAN/TSS/DOM/NO₃/DO/CO₂ 沿程递减)</li>
         <li><b>主流串联 + 旁路</b>: <strong>蛋白分离器</strong> / <strong>AOP 高级氧化</strong> / <strong>反硝化反应器</strong> 混合建模, O₂ 按位置分配 (<strong>鱼池主增氧</strong> + <strong>生物滤池 (MBBR) 独立粗孔曝气</strong>)</li>
         <li><b>氧锥拓扑 mainline / bypass (v1.7)</b>: 与国际主流 (Linde SOLVOX / Pentair AES Speece / PR Aqua PPC) 接轨, <strong>1000t 三文鱼项目实测节能 30 kW、CAPEX 节省 612 万元</strong></li>
@@ -1340,7 +1338,7 @@
 
       <p class="mt-3 text-slate-400 text-sm">物理模型基于公开文献 (Timmons & Ebeling 2010, Linde SOLVOX, Pentair AES Speece, Sharrer 2010, Millero 2010, Clegg & Whitfield 1995 等) 和工业实测数据 (Atlantic Sapphire, Nordic Aqua 宁波, Salmon Evolution, 国家海水鱼产业技术体系等) 校准, 不是经验调整。完整文献清单见 <a href="/library/manual.html" target="_blank" class="text-cyan-300 underline">技术手册附录 E</a> (40+ 篇核心文献)。</p>
 
-      <p class="mt-2 text-slate-400 text-sm">v1.9 由 <strong>海南登登科技咨询有限公司</strong> (作者: 孙程, 25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 国内服务器 <a href="http://iras.dengdengtech.cn/" class="text-cyan-300 underline">iras.dengdengtech.cn</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">github.com/chengsunmail/iras</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
+      <p class="mt-2 text-slate-400 text-sm">v2.6 由 <strong>孙程</strong> (25 年水处理工程师, 挪威 NTNU 博士) 发布, <strong>AGPL v3 协议永久免费开源</strong>。在线使用 <a href="https://iras.cn" class="text-cyan-300 underline">iras.cn</a> · 国内服务器 <a href="http://iras.dengdengtech.cn/" class="text-cyan-300 underline">iras.dengdengtech.cn</a> · 源码 <a href="https://github.com/chengsunmail/iras" class="text-cyan-300 underline">github.com/chengsunmail/iras</a>。商业咨询联系 <code class="text-cyan-300">6881509@qq.com</code>。</p>
 
       <p class="mt-3 text-xs text-slate-500">本工具不替代正式的环境影响评价 / 安全评价 / 节能评价 / 施工图详细设计, 仅用于工程概算阶段 (精度 ±40%)。详见技术手册附录 F 完整免责声明。</p>
     </section>
@@ -1757,7 +1755,7 @@
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400 text-sm">
         <li><strong>I1 往返自洽</strong> — <code>solveAlk(pH*) → solve(TA)</code> 应还原 pH*。240 点网格（S∈{0,15,30,35} × T∈{10…30} × pH*∈{6.5…8} × CO₂∈{3,10,25}），<strong>最大 |ΔpH| = 0</strong>，零抛错</li>
         <li><strong>I2 换算层</strong> — 手工按 50043 / 44010 / ρ 复算，pH 与 Ω 与模型<strong>逐位相同（Δ = 0）</strong></li>
-        <li><strong>I3 双副本</strong> — <code>work/carbonate.js</code> 与 index 内联块，20 个函数、63 个平衡常数，归一化后<strong>md5 完全相同</strong></li>
+        <li><strong>I3 双副本</strong> — <code>modules/carbonate.js</code> 与 index 内联块，归一化后<strong>md5 完全相同</strong>（当前 <code>e1834fc9…</code>，本体 12575 字符）。<br><span class="text-amber-300/90">⚠ 2026-08-30 订正两处：①原文路径写的是 <code>work/</code>，实际在 <code>modules/</code>；②<strong>「I3」此前只是本页的一句陈述，没有任何判据在跑它</strong>——全库检索仅 <code>check_ledger.js</code> 的注释提到 carbonate，而台账却把它列为一条门禁结果。现已在 <code>check_single_source</code> 里真正实现（文件缺席报红、单侧漂移报红，两条负对照均已命中）。<br>⚠ <code>modules/carbonate.js</code> <strong>不随产品发布</strong>（工程文件自用）；产品实际执行的是 index 内联的那一份。</span></li>
       </ul>
       <p class="mt-2 text-xs text-slate-500">📌 真正的风险不是「当前是否一致」（是），而是<strong>将来会不会漂移</strong> —— 同一份求解器存在两处，没有任何东西阻止有人只改一处。I3 即为此而设。</p>
 
@@ -2282,7 +2280,7 @@
 
       <h3 class="mt-4 font-bold text-amber-300">J. 水质告警: NH₃ 按鱼种 + Ω 方解石</h3>
       <p class="mt-2 text-slate-400 text-sm"><strong>NH₃ 着色阈值</strong>: 鱼种限值表 <code>NH3_LIMIT_UG_L</code> 早已存在 (鲑 12.5 / 大菱鲆 20 / 石斑 30 / 鲈·鳜·虾 50 / 鳗 60 / 罗非 100 μg/L), 同一行 tooltip 也写着「三文鱼 12.5」, 但<strong>判据写死 25 μg/L</strong> —— 最敏感的鲑科用了 2× 宽松阈值。改为三档: 超限值红 / 超半限值黄 / 其余绿。</p>
-      <p class="mt-2 text-slate-400 text-sm" data-anchor="omega-seawater" data-omega-min="0.55" data-omega-max="1.53" data-omega-species="salmon,turbot,grouper,shrimp"><strong>方解石饱和度 Ω</strong>: 此前<strong>界面上完全没有显示</strong> —— 不是缺告警, 是连数字都看不到 (它已算出并进导出载荷)。现补一行并按 &lt;0.8 危险 / &lt;1.0 警戒着色。实测<strong>海水鱼种多数阶段欠饱和</strong>: 三文鱼 0.55–0.72、大菱鲆 0.56–0.75、石斑 0.63–0.81、对虾 0.90–1.53 (<strong>对虾苗种期 1.53 为过饱和</strong>, 其余全部 Ω &lt; 1)。<span class="text-amber-300/80">⚠ 本段数值随 v2.5 链式重导 (审计 B8) 更新过一次 —— 旧值 0.37–1.29 是集总口径下的鱼池 CO₂ 偏高所致。现由自检断言 N2 锚定, 数值再变会当场转红。</span>这是模型算出的真实状态 —— 高密度 RAS 中 CO₂ 累积压低 pH、CO₃²⁻ 占比骤降。<strong>工程后果: Ω &lt; 1 时水对碳酸钙不饱和, 持续溶蚀混凝土池体与水泥基砂浆</strong>。</p>
+      <p class="mt-2 text-slate-400 text-sm" data-anchor="omega-seawater" data-omega-min="0.55" data-omega-max="1.53" data-omega-species="salmon,turbot,grouper,shrimp" data-omega-claims-over="1"><strong>方解石饱和度 Ω</strong>: 此前<strong>界面上完全没有显示</strong> —— 不是缺告警, 是连数字都看不到 (它已算出并进导出载荷)。现补一行并按 &lt;0.8 危险 / &lt;1.0 警戒着色。实测<strong>海水鱼种多数阶段欠饱和</strong>: 三文鱼 0.55–0.72、大菱鲆 0.56–0.75、石斑 0.63–0.81、对虾 0.90–1.53 (<strong>对虾苗种期 1.53 为过饱和</strong>, 其余全部 Ω &lt; 1)。<span class="text-amber-300/80">⚠ 本段数值随 v2.5 链式重导 (审计 B8) 更新过一次 —— 旧值 0.37–1.29 是集总口径下的鱼池 CO₂ 偏高所致。现由自检断言 N2 锚定, 数值再变会当场转红。</span>这是模型算出的真实状态 —— 高密度 RAS 中 CO₂ 累积压低 pH、CO₃²⁻ 占比骤降。<strong>工程后果: Ω &lt; 1 时水对碳酸钙不饱和, 持续溶蚀混凝土池体与水泥基砂浆</strong>。</p>
       <p class="mt-2 text-xs text-slate-500">⚠ 蒸发计入补水 (审计 P3 第三项) <strong>经实测后决定不做</strong>: 蒸发仅占补水 0.06%–0.32% (青岛 1.48 / Doha 0.92 / 三亚 0.29 m³·d⁻¹ vs 补水 461), 折算成本 &lt; 0.001 元/kg, 而改动会使 12 条基线与三份文档数字再重算一遍。⚠ 该结论依赖<strong>默认 poolCover=partial 且换水率 5%/d</strong>;敞开池面 + 干热气候 + 低换水率时占比会显著上升。</p>
 
       <h3 class="mt-4 font-bold text-amber-300">K. 已修: 上述盲区</h3>
@@ -2297,7 +2295,15 @@
       <p class="mt-3 text-slate-400 text-sm">本版全部改动都是<strong>物理口径修正</strong>, 不是新增功能。共同特征: 影响运行成本与装机容量, 但<strong>不改变增氧设备选型</strong> (<code>o2PeakSupplyKgH</code> / <code>o2Demand</code> / 氧锥流量逐位未变)。</p>
 
       <h3 class="mt-4 font-bold text-cyan-300">A. 液氧消耗口径修正</h3>
-      <p class="mt-2 text-slate-400 text-sm">液氧采购量原先误用设备选型口径 <code class="text-emerald-300">o2Demand</code>, 其中含 <code>peakFactor</code> (1.5) 与 <code>sAerator</code> (1.10) 两个<strong>容量系数</strong>。液氧是按量计费的消耗品, 只应被吸收效率放大 —— 旧口径高估 <strong>1.65 倍</strong>。新增 <code class="text-emerald-300">o2ConsumptionDaily / o2ConsumptionDailyAvg</code> 并行口径, 基准值 0.44 → <strong>0.266</strong> kg O₂/kg 饲料 (文献 0.25-0.30), 年耗 527 → <strong>326 t</strong> (本项单独效果; 叠加 F 项的池内 TSS 附加与基础异养耗氧后为 <strong>473 t</strong>)。</p>
+      <p class="mt-2 text-slate-400 text-sm">液氧采购量原先误用设备选型口径 <code class="text-emerald-300">o2Demand</code>, 其中含 <code>peakFactor</code> (1.5) 与 <code>sAerator</code> (1.10) 两个<strong>容量系数</strong>。液氧是按量计费的消耗品, 只应被吸收效率放大 —— 旧口径高估 <strong>1.65 倍</strong>。新增 <code class="text-emerald-300">o2ConsumptionDaily / o2ConsumptionDailyAvg</code> 并行口径, 基准值 0.44 → <strong>0.266</strong> kg O₂/kg 饲料 (<span class="text-amber-300">⚠ 此处对标关系有误, 见下段 v2.6 订正</span>), 年耗 527 → <strong>326 t</strong> (本项单独效果; 叠加 F 项的池内 TSS 附加与基础异养耗氧后为 <strong>473 t</strong>)。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>v2.6 订正</strong>: 上述 473 t <strong>仍然漏了生物滤池</strong>。拆两个口径时, 选型侧 <code>o2PeakSupplyKgH</code> 加进了 BF 由水供的那份氧, 采购侧却没跟上 —— <strong>氧锥按「鱼 + MBBR」选, 液氧按「只有鱼」买</strong>。纯氧系统里水中溶氧是液氧供的, MBBR 取走多少就得补多少。补上 <code>o2BFDaily × bfFromWaterFrac</code> 后, 同一锚定工况 (大西洋鲑 1000 t) 年耗 <strong>471 → 790 t</strong> (+67.6%), <code>costPerKg</code> +0.38 元/kg。⚠ 与 <code>co2DailyAvg</code>「设计口径已修而日均口径未跟上」同族: <strong>同一物理量两处实现, 一处改了另一处没跟上</strong>。现由自检 M3b 把两侧份额绑死。</p>
+      <p class="mt-2 text-slate-400 text-sm"><strong>v2.6 口径订正</strong>: 上段那句「0.266 kg O₂/kg 饲料 (文献 0.25-0.30)」<strong>拿错了对标物</strong> —— 0.25-0.30 是<strong>鱼生理耗氧</strong>的文献区间, 而 0.266 是<strong>液氧采购量</strong>。当时采购量恰好只算了鱼, 两个不同的量数值撞在一起, <strong>看起来验证通过</strong>。v2.6 补上 BF 后数字分开, 错配才暴露。现按口径分列 (1000 t 规模, 纯氧, 满负荷):</p>
+      <div class="overflow-x-auto"><table class="w-full text-sm mt-2 border-collapse"><thead><tr class="text-slate-400 border-b border-slate-700"><th class="text-left py-1">口径</th><th class="text-right">kg O₂/kg 饲料</th><th class="text-left pl-3">对标</th></tr></thead><tbody class="text-slate-300">
+      <tr><td class="py-1">鱼生理 <code>o2FishFactorBase</code></td><td class="text-right">0.20–0.32</td><td class="pl-3">文献 0.25–0.30 ✓</td></tr>
+      <tr><td class="py-1">池内总 (含 TSS 异养)</td><td class="text-right">0.33–0.39</td><td class="pl-3">—</td></tr>
+      <tr><td class="py-1"><strong>系统总耗氧</strong> (池内+硝化+DOM)</td><td class="text-right"><strong>0.60–0.66</strong></td><td class="pl-3"><strong>设计取值 (用户裁决 2026-08-26)</strong>; 自检 M4 按逐阶段实测散布锚在 [0.40, 1.00]</td></tr>
+      <tr><td class="py-1">液氧采购 (÷吸收率, 已扣 BF 空气份额)</td><td class="text-right">0.64–0.75</td><td class="pl-3">无直接文献对标, 依赖吸收率与 <code>bfAlpha</code></td></tr>
+      </tbody></table>
 
       <h3 class="mt-4 font-bold text-cyan-300">B. 蒸发系数 β 量纲修正</h3>
       <p class="mt-2 text-slate-400 text-sm">旧注释称 β 取自 ASHRAE 的 0.045-0.075 m/s —— <strong>错误出处</strong>。ASHRAE/Carrier 的池面蒸发系数定义在<strong>蒸气压差</strong>上 [lb/(h·ft²·inHg)], 不能当作 ΔW×ρ 形式的 β [m/s], 高估约 13 倍。改用 Lewis 传热传质类比 <code>β = h_c/(ρ·c_p·Le^(2/3))</code> ≈ 0.0035-0.010 m/s。实测蒸发率降 2-2.4 倍 (非 13 倍, 因 W_room 自洽求解存在自补偿), <strong>RH=99% 饱和虚警消失</strong>。</p>
@@ -3222,13 +3228,13 @@
 <td class="py-1 text-slate-400 text-[11px]">筛目越细去除率越高（但反冲增多），低密度场可降到 60</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
-<td class="py-1 pr-3 font-mono text-amber-300/90">biofilterTAN</td>
-<td class="py-1 pr-3 text-slate-200">BF 单次硝化效率</td>
+<td class="py-1 pr-3 font-mono text-amber-300/90"><s>biofilterTAN</s></td>
+<td class="py-1 pr-3 text-slate-200">生物滤池单次硝化效率 <b>（BF-N 起已停用为输入）</b></td>
 <td class="py-1 pr-3 text-slate-400">%</td>
-<td class="py-1 pr-3 text-emerald-300/90">70</td>
-<td class="py-1 pr-3 text-slate-400">50-80</td>
-<td class="py-1 pr-3 text-slate-300">MBBR/MBF 单次通过对 TAN 的去除率</td>
-<td class="py-1 text-slate-400 text-[11px]">MBBR 60-75%，固定膜 70-80%，温度低/盐度高时降低</td>
+<td class="py-1 pr-3 text-slate-500">—（输出）</td>
+<td class="py-1 pr-3 text-slate-500">—</td>
+<td class="py-1 pr-3 text-slate-300"><b>已改为输出</b>：η 由滤池面积与设计浓度算出（η = TAN日负荷×safetyBio×1000 /(Q×24×Sn)），显示在设备清单与报告</td>
+<td class="py-1 text-slate-400 text-[11px]">停用原因：它与滤池尺寸<b>各管一头、互不校验</b>（v1.9.2 审计 P3）—— 用户可以填 η=95% 却配一个空床接触时间几十秒的池，模型照单全收。现在两者是同一条曲线的两端。<b>历史方案 JSON 里的该键被直接忽略，不报错</b>。⚠ 若算出的 η 超过 100%，说明该流量下 TAN 压不到设计目标，<b>卡住的是 turnover 不是面积</b>，由阶段告警显式报出</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">denitriEff</td>
@@ -3300,7 +3306,7 @@
 <td class="py-1 pr-3 text-emerald-300/90">40</td>
 <td class="py-1 pr-3 text-slate-400">30-50</td>
 <td class="py-1 pr-3 text-slate-300">空气蛋分单次通过对 DOM 去除率</td>
-<td class="py-1 text-slate-400 text-[11px]">取决于鱼种产 DOM 类型，海水鱼蛋白多 → 40-50</td>
+<td class="py-1 text-slate-400 text-[11px]">取决于鱼种产 DOM 类型，海水鱼蛋白多 → 40-50。<span class="text-amber-300">⚠ 待标定</span>：30-50 区间<strong>无单程溶解态实测支撑</strong>——文献多报颗粒物单程去除（海水 12-40%、低盐 6.5-38.5%）或系统级 BOD₅ 降幅，均非本参数口径，不可直接套用。<br>淡水不必下调：de Jesus Gregersen 2021 淡水 RAS 重复对照实测（颗粒数 −58%、浊度 −62%、BOD₅ −51%）与海水系统同区间；离子强度/气泡尺寸/盐析的机制差异真实，但工程后果不显著。</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">skimmerDOMEffOzone</td>
@@ -3369,7 +3375,7 @@
 <td class="py-1 pr-3 text-emerald-300/90">5</td>
 <td class="py-1 pr-3 text-slate-400">3-15</td>
 <td class="py-1 pr-3 text-slate-300">AOP 支路流量占循环总流量</td>
-<td class="py-1 text-slate-400 text-[11px]">土腥味重时调 10-15</td>
+<td class="py-1 text-slate-400 text-[11px]">土腥味重时调 10-15<br><b>⚠⚠ 无文献出处</b> —— v1.1 引入至今是<b>工程占位值</b>，不是实测也不是标定。BF-1a 落地后它已<b>支配难降解 DOM 层的稳态浓度</b>（关蛋分工况下 AOP 占该层去除的 82%），即从「影响一个小设备尺寸」变成了「决定一条稳态的位置」，而出处没跟着变。⇒ 取得出处前，任何依赖本值的难降解层结论只能当<b>量级估计</b>（遗留 4）。</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">aopGeosminEff</td>
@@ -3387,7 +3393,7 @@
 <td class="py-1 pr-3 text-emerald-300/90">5</td>
 <td class="py-1 pr-3 text-slate-400">5-15</td>
 <td class="py-1 pr-3 text-slate-300">AOP 单次对总 DOM 的去除率（v1.1 修复，v1.0 误用 90%）</td>
-<td class="py-1 text-slate-400 text-[11px]">保守 5%；优化 AOP 系统可达 10-15</td>
+<td class="py-1 text-slate-400 text-[11px]">保守 5%；优化 AOP 系统可达 10-15<br><b>⚠⚠ 无文献出处</b> —— v1.1 引入至今是<b>工程占位值</b>，不是实测也不是标定。BF-1a 落地后它已<b>支配难降解 DOM 层的稳态浓度</b>（关蛋分工况下 AOP 占该层去除的 82%），即从「影响一个小设备尺寸」变成了「决定一条稳态的位置」，而出处没跟着变。⇒ 取得出处前，任何依赖本值的难降解层结论只能当<b>量级估计</b>（遗留 4）。</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">aopType</td>
@@ -3582,7 +3588,16 @@
 <td class="py-1 pr-3 text-emerald-300/90">0.10</td>
 <td class="py-1 pr-3 text-slate-400">0.05-0.20</td>
 <td class="py-1 pr-3 text-slate-300">残饵+粪便被异养菌分解的耗氧（由 BF 风机供）</td>
-<td class="py-1 text-slate-400 text-[11px]">RAS 优化场 0.08-0.10；对虾/鳗鱼粉料场 0.15-0.20</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠ 出处 2026-08-29 订正</b>：旧说法「Boyd 2018 实测 0.10–0.20」<b>是假的</b>——追溯 v1.1 原始记录，0.10 来自一条自推链（Boyd 理论上限 0.45 ×「RDF 移除 70% ⇒ 残留 30%」≈0.135 →「保守取」0.10），Boyd 报的是 0.45，那个「实测区间」不是他报的。<br><b>现出处（可复算）</b>：商业 RAS 满负荷实测系统总氧 ≈<b>0.5</b> kg O₂/kg 饲料，扣除鱼生理（≈0.25）与硝化（≈0.14）后，异养余项 ≈<b>0.11</b>——与本默认值几乎重合。<b>数值不变，换的是它凭什么是这个数。</b><br>⚠ 该余项<b>不区分固体相与溶解相</b>，是「总氧减两项」剩下的全部异养耗氧。日后若再给溶解 bCOD 单加一项氧化耗氧，<b>就是把同一份氧算两遍</b>。<br>RAS 优化场 0.08-0.10；对虾/鳗鱼粉料场 0.15-0.20。<span class="text-amber-300">⚠ 口径</span>：本系数是<strong>异养分项</strong>，不是系统总耗氧。文献对标须找异养分项值——<strong>不可拿"总耗氧/饲料"的区间（商业 RAS 约 0.5、Boyd 理论 1.25、iRAS 实测 0.60-0.66）来校它</strong>，那是分项对标总量。<br>⚠ 该系数还决定「系统总氧」外部锚点的动态区间上下限，改它会同时移动那条锚点。<br><b>⚠⚠ 出处强度复核（2026-08-30）</b>：扣减链<b>不是自证</b>——0.25 取自文献区间下端（非 iRAS 自算的 0.20–0.32），0.14 = TAN≈feed×0.03 × 4.57（化学计量，普适），两个减项都不来自本模型。<b>但仍是单一来源</b>：0.5 只出自一个大型陆基三文鱼场。<b>⚠⚠ 且这条链只标定了冷水种那一档</b>——iRAS 自算全物种 0.60–0.66 高于 0.5，差在 <code>o2FishFactor</code> 按物种到 0.22–0.40（对虾 0.40）。<b>⇒ 上面那句「对虾/鳗鱼粉料场 0.15–0.20」没有实测支撑，是推断。</b><b>用户 2026-08-30 裁定：仍以 0.10 为默认，它是「可调的默认值」不是模型常量。</b>待补：异养分项直接实测，或另 1–2 个场的总氧+拆分（遗留 24）。</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-slate-500">BF_ENDOGENOUS_O2</td>
+<td class="py-1 pr-3 text-slate-200">生物膜内源呼吸耗氧</td>
+<td class="py-1 pr-3 text-slate-400">kg O₂/d</td>
+<td class="py-1 pr-3 text-slate-500"><b>0</b>（模型常量，不可调）</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-slate-300">生物膜自身维持代谢的耗氧，独立于降解底物那一份</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠⚠ 本项在模型里算作零，这是<u>裁决</u>不是遗漏</b>（<code>IRAS_BF_ER_ZERO</code>，由自检 D7 锁住）。<br>市政 MBBR 手册把它单列（<code>ER = 2e-3·1.07^(T−10)·TS_biofilm·Area</code>），但<b>RAS 侧的生物膜 TS 与内源呼吸速率没有任何实测</b>，市政那两个区间是市政负荷下的。按「有机理没数值时置零并留痕是对的，凑一个数不是」处置。<br><b>⚠ 置零是不安全方向</b>：少算一项耗氧 ⇒ BF 风机与液氧选型偏小。目前靠 <code>safetyBio</code> 等<b>通用</b>安全系数兜着——那是通用裕度，<b>不是为这一项留的</b>。<br><b>用户 2026-08-30 复核后裁定：维持置零。</b>待补：RAS 侧生物膜 TS/VSS 实测，或停料期耗氧实测（遗留 25）。<br>⚠ 界面上另有一条<b>条件</b>告警：当氧平衡的合成项单独超支时，会提示「内源呼吸≈0 的裁决、或 <code>o2DOMfactor</code> 的扣减法出处，至少有一个不成立」——但正常工况下用户看不到，故在此常设一行。</td>
 </tr>
 <!-- ══ v2.3.3 文档批: 空气曝气五参数补登 ═══════════════════════════════════════
      designDO_mgL / co2TargetMgL 为【哨兵字段】(默认 null = 回落鱼种安全值),
@@ -3627,7 +3642,7 @@
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">co2StripApproach</td>
-<td class="py-1 pr-3 text-slate-200">CO₂ 亨利平衡逼近系数</td>
+<td class="py-1 pr-3 text-slate-200"><b>池内曝气</b> CO₂ 亨利平衡逼近系数<br><span class="text-[10px] text-amber-200/80">⚠ 脱气塔用的是 co2StripperEff，勿混</span></td>
 <td class="py-1 pr-3 text-slate-400">—</td>
 <td class="py-1 pr-3 text-emerald-300/90">0.5</td>
 <td class="py-1 pr-3 text-slate-400">0.2-0.9</td>
@@ -3697,8 +3712,8 @@
 <td class="py-1 pr-3 text-slate-400">g/m³·d</td>
 <td class="py-1 pr-3 text-emerald-300/90">500</td>
 <td class="py-1 pr-3 text-slate-400">300-800</td>
-<td class="py-1 pr-3 text-slate-300">Volumetric TAN Removal Rate 在 20°C 淡水的基准值</td>
-<td class="py-1 text-slate-400 text-[11px]">MBBR 高比表面积填料 600-800；普通 K1 400-600；固定膜 300-500</td>
+<td class="py-1 pr-3 text-slate-300"><b>⚠ BF-N 起已停用</b>：硝化选型改用面速率 <code>bfArealK</code>，本值不再进入任何计算</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>保留仅为兼容历史方案 JSON</b>。停用原因：体积速率口径<b>没有浓度项</b>——文献 VTR 是在投加 NH₄Cl 使 TAN≈2.9 mg/L 的<b>零级饱和区</b>测得，而真实 RAS 池内 TAN &lt;1 mg/L 深在<b>一级区</b>，旧注释自记「VTR20=500 偏乐观、滤池可能选小」却没有任何机制修正它。旧参考值（已失效）：MBBR 高比表面积填料 600-800；普通 K1 400-600；固定膜 300-500</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">VDR20</td>
@@ -3719,13 +3734,103 @@
 <td class="py-1 text-slate-400 text-[11px]">K1/K3 标准 50% (Rusten 2006)；高密度装填 60-65%；低密度均匀曝气 35-40%；50% → V_BF/bio = 2.00, 60% → 1.67, 70% → 1.43</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfArealK</td>
+<td class="py-1 pr-3 text-slate-200">硝化面速率系数 k</td>
+<td class="py-1 pr-3 text-slate-400">g N/(m²·d)</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.58</td>
+<td class="py-1 pr-3 text-slate-400">0.30-1.20</td>
+<td class="py-1 pr-3 text-slate-300">r = k × Sn^0.7 × 1.09^(T−10) × (1−0.01S)；A_硝化 = TAN日负荷 × safetyBio / r</td>
+<td class="py-1 text-slate-400 text-[11px]">按上游处理程度分档 0.40/0.47/0.53/0.58 —— BOD 越高异养菌抢占越多生物膜，表观 k 越低。RAS 经转鼓+蛋分后 BOD 极低，取最高档。<b>⚠ 0.58 的前提是两池串联分级</b>；改单池混合须下调，否则与 BF-A 批的 COD 面积构成双重计算。形式 r=k·S^n 见 Ødegaard / Rusten et al. 2006。<b>这是滤池尺寸最大的杠杆：k 减半，体积翻倍</b><br><b>⚠⚠ 0.58 那一档的原文条件是 <i>with chemical precipitation</i>（带化学除磷），RAS 不满足</b> —— 取这一档是<b>工程外推</b>，不是有 RAS 出处的值。<b>用户 2026-08-30 裁定：仍以 0.58 为默认，但它是「可调的默认值」不是模型常量。</b>有本场实测请直接改；无实测请把由此得出的滤池尺寸当<b>量级</b>看。⚠ 填别处的 k 之前先核参考水温 / θ / 反解时的 Sn 三件事（<code>PLAN_A0</code> 第 1 问）——v2.6 在这里栽过一次（遗留 15）。</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfDesignTAN</td>
+<td class="py-1 pr-3 text-slate-200">设计目标池内 TAN (Sn)</td>
+<td class="py-1 pr-3 text-slate-400">mg/L</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.5</td>
+<td class="py-1 pr-3 text-slate-400">0.2-2.0</td>
+<td class="py-1 pr-3 text-slate-300">「要把池内 TAN 控制在此值以下需要多大滤池」——设计输入，不是运行实测值</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠ 不要填告警阈值</b>（冷水 1.0 / 温水 3.0）：那等于按「TAN 刚好顶到告警线」选池，冷水种体积掉到 0.70×，而旧模型注释自记 VTR20=500 已「偏乐观、池可能偏小」。本模型不迭代（面积→η→稳态→Sn 是闭环，Sn^0.7 无解析解）；实际运行 TAN 更低时速率更慢，但负荷也更低 ⇒ 天然保守</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfSALRDesign</td>
+<td class="py-1 pr-3 text-slate-200">COD 设计面负荷</td>
+<td class="py-1 pr-3 text-slate-400">g COD/(m²·d)</td>
+<td class="py-1 pr-3 text-emerald-300/90">12</td>
+<td class="py-1 pr-3 text-slate-400">5-25</td>
+<td class="py-1 pr-3 text-slate-300">A_COD = bCOD 日负荷 / SALR；A_总 = A_硝化 + A_COD</td>
+<td class="py-1 text-slate-400 text-[11px]">⚠ <b>分配面积用的约定值，不是滤池实际见到的面负荷</b>——实测各阶段仅 <b>0.7–3.2</b>，因为硝化面积占大头。量级旁证：MBBR-Pro 工程口径「有机物 SALR 典型 5–25」。⚠ 另加这块面积不算重复计算的前提是<b>两池串联分级</b>；改单池混合则 k 必须下调<br>⚠⚠ <b>口径订正（2026-08-30）</b>：外部旁证给的是「典型 5–25 <b>g BOD</b>/(m²·d)」，单位是 <b>BOD 不是 COD</b>。若指 BOD₅，按 <code>bCOD ≈ 1.6 × BOD₅</code> 折算约 <b>8–40 g COD/(m²·d)</b> ⇒ <b>12 落在下端，不是「中位」</b>。方向偏保守（面积算大）不危险，但此前「落在中位」的结论是错的。⚠ 折算系数与「BOD 是否即 BOD₅」都未确认 ⇒ 只能当<b>量级旁证，不是出处</b>。<b>用户 2026-08-30 裁定：仍以 12 为默认，它是「可调的默认值」不是模型常量。</b></td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfSALRTheta</td>
+<td class="py-1 pr-3 text-slate-200">COD 温度系数 θ_h</td>
+<td class="py-1 pr-3 text-slate-400">—</td>
+<td class="py-1 pr-3 text-emerald-300/90">1.06</td>
+<td class="py-1 pr-3 text-slate-400">1.00-1.10</td>
+<td class="py-1 pr-3 text-slate-300">SALR_T = SALR × θ_h^(min(T, 温度上限) − T_ref)</td>
+<td class="py-1 text-slate-400 text-[11px]">厂商设计手册 Ed.2 <b>§5.1.2 有机物去除·温度</b>原文：<i>r_T = r_10·θ^(T−10)</i>，<b>θ = 1.06（10–20 °C）</b>、θ = 1.07（5–10 °C），并注明 <i>"recommended not to temperature-correct the loading rate above 20-25 °C"</i>。<br>⚠ 这是<b>好氧异养有机物去除的 θ 本身</b>，不是从别处借来的。（前一版曾误判为"取自反硝化的代用值"，已撤回——两处数值相同是巧合。）<br>⚠ 残留缺口：θ 只声明到 <b>20 °C</b>，而温度上限取 25，<b>20→25 这一段是外推</b></td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">tssYield</td>
+<td class="py-1 pr-3 text-slate-200">TSS 产率</td>
+<td class="py-1 pr-3 text-slate-400">% of 饲料</td>
+<td class="py-1 pr-3 text-emerald-300/90">30</td>
+<td class="py-1 pr-3 text-slate-400">20-40</td>
+<td class="py-1 pr-3 text-slate-300">日产 TSS = 饲料 × 本值</td>
+<td class="py-1 text-slate-400 text-[11px]">⚠ 本值直接决定「TSS 强度」锥点：该锥点 ≡ 本值×1000 g/kg，区间 250–350 ⇒ 本值超出 25–35% 会被拦下。<br>开成输入之前它写死 0.30，那条锥点<b>恒等于 300.0、永远绿、从未判定过任何东西</b>（与 <code>DOM 强度</code> 同型，由锥点诊断探针查出）</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">codDissYield</td>
+<td class="py-1 pr-3 text-slate-200">溶解 COD 总产率</td>
+<td class="py-1 pr-3 text-slate-400">% of 饲料</td>
+<td class="py-1 pr-3 text-emerald-300/90">10</td>
+<td class="py-1 pr-3 text-slate-400">5-20</td>
+<td class="py-1 pr-3 text-slate-300">日产溶解 COD = 饲料 × 本值；其中难降解那一份由 <code>codDissRefracYield</code> 给定</td>
+<td class="py-1 text-slate-400 text-[11px]">⚠ 与 <code>o2DOMfactor</code> 同为 0.10 <b>是巧合</b>，两者物理对象不同：本值是<b>溶解态 COD</b>（进水质稳态），<code>o2DOMfactor</code> 是<b>残饼粪便分解耗氧</b>（进氧平衡）。<br>⚠ 曾拟换成废物矩阵口径，核完原文后发现那套矩阵<b>不存在“每 kg 饲料一个常数”</b>（净产生量随投喂率在 0.103–0.250 变），且需饲料与鱼体 COD 成分。故<b>维持 10% 口径，只把它开成输入</b>。<br>⚠ 本值直接决定「DOM 强度」锥点：该锥点 ≡ 本值×1000 g/kg，区间 80–120 ⇒ 本值超出 8–12% 会被它拦下——<b>这是该锥点第一次能拦住东西</b></td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">codDissRefracYield</td>
+<td class="py-1 pr-3 text-slate-200">难降解溶解 COD 产率</td>
+<td class="py-1 pr-3 text-slate-400">% of 饲料</td>
+<td class="py-1 pr-3 text-emerald-300/90">0.18</td>
+<td class="py-1 pr-3 text-slate-400">0.05-1.0</td>
+<td class="py-1 pr-3 text-slate-300">溶解 COD 拆两层：可降解 <code>codDiss_b</code>（滤池+蛋分+AOP+换水都去除）/ 难降解 <code>codDiss_r</code>（<b>滤池不去除</b>）。难降解日产 = 饲料 × 本值</td>
+<td class="py-1 text-slate-400 text-[11px]">⚠⚠ <b>0.18% 是反推出来的，不是实测</b>：由「关蛋分工况稳态要落在 30 mg/L」反解得到。⇒ <b>不得</b>拿「关蛋分对上文献区间」当作模型验证通过——那是<b>用被标定量去验证标定结果</b>（循环验证）。<br>结构拆分批内本值只决定切分比例，由滤池效率反解抵消，<b>基线逐位不变</b>；它真正开始影响数值是在下一批（bCOD 产生量换成废物矩阵口径）</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfSALRRefTemp</td>
+<td class="py-1 pr-3 text-slate-200">COD 参考温度</td>
+<td class="py-1 pr-3 text-slate-400">°C</td>
+<td class="py-1 pr-3 text-emerald-300/90">10</td>
+<td class="py-1 pr-3 text-slate-400">5-25</td>
+<td class="py-1 pr-3 text-slate-300">θ_h 的参考温度</td>
+<td class="py-1 text-slate-400 text-[11px]">手册 §5.1.2 的 <i>r_10</i> 即以 10 °C 为参考。⚠ 它与 θ_h 是<b>一对</b>，必须同时改；单独改本值等于改了参考态而没改系数</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfArealTempCap</td>
+<td class="py-1 pr-3 text-slate-200">硝化温度修正上限</td>
+<td class="py-1 pr-3 text-slate-400">°C</td>
+<td class="py-1 pr-3 text-emerald-300/90">25</td>
+<td class="py-1 pr-3 text-slate-400">20-30</td>
+<td class="py-1 pr-3 text-slate-300">超过此温度不再做 θ=1.09 外推，按本值取值</td>
+<td class="py-1 text-slate-400 text-[11px]">MBBR 厂商设计手册 Ed.2 原文：<i>recommended not to correct the loading rate above 20-25 °C</i>。原文给的是<b>区间</b>不是单点，故开为输入、默认取上端。⚠ θ 是经验外推系数，超出标定域继续外推没有依据：不封顶时 30 °C 速率高估 <b>1.54 倍</b>、滤池相应算小。<b>只影响温水种</b>（shrimp 1.539× · tilapia/eel 1.295× · grouper 1.188× · mandarin 1.090×），冷水种 ≤25 °C 一点不动</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">bfCarrierPSA</td>
+<td class="py-1 pr-3 text-slate-200">载体比表面 PSA</td>
+<td class="py-1 pr-3 text-slate-400">m²/m³</td>
+<td class="py-1 pr-3 text-emerald-300/90">500</td>
+<td class="py-1 pr-3 text-slate-400">200-1200</td>
+<td class="py-1 pr-3 text-slate-300">填料体积 = A_硝化 / PSA</td>
+<td class="py-1 text-slate-400 text-[11px]">K1 500 · K3 350 · K5 800。<b>⚠ 本参数此前不在模型里</b>——被吸收进 VTR20 的体积口径，所以换载体型号从来不影响体积；改面速率口径后它才成为一等输入。与 bfFillRatio 是两回事：PSA 决定<b>多少填料</b>，填充率决定<b>多大池子装它们</b></td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">thetaNit</td>
 <td class="py-1 pr-3 text-slate-200">硝化温度修正系数</td>
 <td class="py-1 pr-3 text-slate-400">—</td>
 <td class="py-1 pr-3 text-emerald-300/90">1.10</td>
 <td class="py-1 pr-3 text-slate-400">1.06-1.12</td>
 <td class="py-1 pr-3 text-slate-300">Arrhenius θ：温度每变 10°C，VTR 按 θ^(ΔT/10) 倍变化</td>
-<td class="py-1 text-slate-400 text-[11px]">不调（标准 1.10）</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠ BF-N 起已不参与硝化选型</b>（改用 bfArealK 的 θ=1.09@<b>10°C</b> —— 与本行 1.10@20°C <b>不是同一个数，不得混用</b>）。本值仅供旧导出面展示等效 VTR。不调（标准 1.10）</td>
 </tr>
 <tr class="border-b border-slate-800/50 align-top">
 <td class="py-1 pr-3 font-mono text-amber-300/90">thetaDen</td>
@@ -3735,6 +3840,15 @@
 <td class="py-1 pr-3 text-slate-400">1.05-1.10</td>
 <td class="py-1 pr-3 text-slate-300">反硝化的温度修正 θ</td>
 <td class="py-1 text-slate-400 text-[11px]">不调</td>
+</tr>
+<tr class="border-b border-slate-800/50 align-top">
+<td class="py-1 pr-3 font-mono text-amber-300/90">denTempCap</td>
+<td class="py-1 pr-3 text-slate-200">反硝化温度修正上限</td>
+<td class="py-1 pr-3 text-slate-400">°C</td>
+<td class="py-1 pr-3 text-emerald-300/90">25</td>
+<td class="py-1 pr-3 text-slate-400">20-30</td>
+<td class="py-1 pr-3 text-slate-300">超过此温度不再做 θ_den 外推。不封顶时温水种反硝化池被算小 14-32%（shrimp 30°C 32%）</td>
+<td class="py-1 text-slate-400 text-[11px]"><b>⚠⚠ 无文献出处 —— 工程裁决（用户 2026-08-30）</b>。硝化侧的 25 出自厂商手册明写的 “maximum of 25 °C”；有机物侧手册只声明到 20（20→25 属外推，遗留 19）；<b>反硝化侧手册什么都没说</b>。裁定理由是方向保守 + 与另两侧口径一致，<b>不是因为找到了出处</b>。<b>与 bfArealTempCap 是两个独立字段</b>：三个 25 来源不同，共用会让它们看起来是同一个事实</td>
 </tr>
 </tbody></table>
   </div>
@@ -4129,7 +4243,7 @@
       <h3 class="mt-4 font-bold text-cyan-300">6.5 碱度化学计量</h3>
       <ul class="mt-2 ml-4 list-disc space-y-1 text-slate-400">
         <li>硝化：1 g TAN-N 消耗 4.57 g O₂ + 7.14 g CaCO₃ 碱度</li>
-        <li>反硝化：1 g NO₃-N 理论回收 3.57 g CaCO₃ 碱度 (理论极限) / 工程实际 2.8 g (默认, v1.6) ，消耗 2.47 g 甲醇 (Mokhayeri 2008 工业实测含 5-15% 残余) × 工程安全系数 (v1.6 默认 1.3, 含 DO 补偿 + 运行裕度, 与 Suhr 2014/Tsukuda 2015 RAS 实际 3.0-3.5 g/g 一致)</li>
+        <li>反硝化：1 g NO₃-N 理论回收 3.57 g CaCO₃ 碱度 (理论极限) / 工程实际 2.8 g (默认, v1.6) ，消耗 2.47 g 甲醇 (Mokhayeri 2008 工业实测<b>已含 5-15% 残余</b>) × 工程安全系数 (<b>v2.6 默认改为 1.0 —— 不再叠加裕度</b>；1.3 属双重裕度，已撤销)</li>
         <li>NaHCO₃ 换算：1 kg NaHCO₃ ≈ 0.595 kg CaCO₃ 当量</li>
       </ul>
     </section>
@@ -4179,7 +4293,7 @@
 
     <!-- 版权 -->
     <div class="text-center pt-6 border-t border-slate-700 text-slate-500 text-xs">
-      <p>© 2026 <a href="https://dengdengtech.cn" target="_blank" class="text-cyan-400 underline">海南登登科技咨询有限公司</a> · 孙程 · 开源许可: <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 underline">AGPL v3</a></p>
+      <p>© 2026 孙程 · 开源许可: <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 underline">AGPL v3</a></p>
       <p class="mt-1"><a href="https://iras.cn" target="_blank" class="text-cyan-400 underline">iras.cn</a> · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 underline">GitHub</a> · 联系: 6881509@qq.com</p>
       <button id="btnHelpClose2" class="mt-4 px-4 py-2 rounded bg-cyan-700 text-white text-sm hover:bg-cyan-600">← 返回工具</button>
     </div>
@@ -4553,8 +4667,18 @@
    ⚠ 版本号命名空间: 本库【两套编号并存】, 搜索代码时务必分清
    ══════════════════════════════════════════════════════════════════════════
 
-   ① 发布版本号  —— IRAS_META.version, 当前 2.4。由 docver 的 19 个登记点统一管辖
-                    (index 3 / manual 4 / 下游四页 9 / README 3)。
+   ① 发布版本号  —— IRAS_META.version, 当前值即本块下方的 version 字段。
+                    由 tools/check_doc_version.js 的 CHECKPOINTS 登记表统一管辖。
+                    ⚠⚠ IRAS_ATTRIB_PERSON (2026-08-31): 本段原先写着具体的
+                      「当前 2.4」「19 个登记点(index 3 / manual 4 / …)」。
+                      IRAS_R26_LEDGER 把它订正为 2.6 / 26 个 —— 【三个批次之后又落后了】,
+                      变成 31、32。订正过一次的散文, 照样会第二次过期。
+                    ⇒ 根因不是"忘了改", 是【一个会变的数字被写进了没有判据看着的散文里】。
+                      与 README 那句"当前 35 项全绿"(实测 43) 同型 —— 那一处已接进 docver。
+                    ⇒ 本次处置不是再订正一遍数字, 而是【把数字从散文里拿掉】:
+                      登记点的数量与分布以 check_doc_version.js 的 CHECKPOINTS 为准,
+                      跑 `npm run gate:docver` 即得当前值。散文只说"归谁管", 不说"有几个"。
+                    ⚠ 一般化: 散文里只放【不会变的关系】, 会变的量一律指向能跑的东西。
 
    ② 特性批次哨兵 —— 代码里的 IRAS_V21_* / IRAS_V22_* / IRAS_V233_* /
                     IRAS_V24_* / IRAS_V25_* / IRAS_V26_* 等。
@@ -4602,12 +4726,17 @@ const IRAS_META = {
        称【v2.3 新基线值】; 两者以 MD5SUMS 区分。
      ── v2.3.3 (2026-08-13, 项目方定版): 字段流转工厂化 (IRAS_V233_FIELD_FLOW)。
        纯结构重构 + 断言 M15a–d, 13 条基线对【v2.3 新基线值】逐位不变。 */
-  version: '2.5',
+  version: '2.6',
   releaseDate: '2026-08-23',
   author: '孙程',
   email: '6881509@qq.com',
-  company: '海南登登科技咨询有限公司',
-  copyright: '© 2026 海南登登科技咨询有限公司 · 孙程',
+  /* ⚠ IRAS_ATTRIB_PERSON (2026-08-31): 原 company 字段已删。
+     它与 copyright 一样【全库无任何消费者】(同 annualOpexForFinance 那一族);
+     署名主体改为个人后更无意义 —— 与其留一个不生效又不准确的字段, 不如删掉。 */
+  /* ⚠ 本字段【目前无消费者】—— 页脚与关于面板各自写死字符串, 不读这里。
+     保留是因为它是有语义的元数据(将来可由 applyMetaToDOM 统一注入), 但在那之前它不生效,
+     此处显式标明, 不假装它是单一事实源。 */
+  copyright: '© 2026 孙程',
   license: 'AGPL-3.0',
   licenseUrl: 'https://www.gnu.org/licenses/agpl-3.0.html',
   repo: ''
@@ -4803,7 +4932,12 @@ const SPECIES_DB = {
 // co2Removal: 脱气塔 CO2 去除率 (60-80%) - v1.1 已迁移到 proc.co2StripperEff
 const PROCESS_DEFAULTS = {
   rdfTSS: 75,
-  biofilterTAN: 70,
+  /* IRAS_BFN_ETA_FROM_AREA (2026-08-29): biofilterTAN 【已停用为输入】。
+     旧: 用户填 60-80% 的单程硝化效率, 与滤池尺寸各管一头、互不校验 (v1.9.2 审计 P3)。
+     现: η 由滤池面积与设计浓度算出 (bfNitriEtaOf), 是【输出】, 见 sim.etaBioNitri。
+     ⚠ 有意【不保留】默认值: 留一个不生效的默认值就是"填了不生效", 与 VTR20 的处境不同 ——
+       VTR20 保留是为兼容历史方案 JSON 的反序列化, 而 η 从来不该由用户给。
+       历史方案 JSON 里的 biofilterTAN 键会被 readProc 直接忽略(不报错)。 */
   uvDose: 40,
   uvFlowPct: 10,
   // v1.9.2 (复审 P3): 反硝化旁路比例 10% → 2%
@@ -4835,7 +4969,20 @@ const PROCESS_DEFAULTS = {
   //        模型给出的高 NO₃ 是真实后果, 不是算错.
   denitriFlowPct: 2,
   denitriEff: 80,
-  methanolSafetyFactor: 1.3,    // v1.6 新增: 反硝化甲醇工程安全系数
+  /* ══ IRAS_MEOH_NOSAFETY (2026-08-30, 用户裁决「把 1.3 删掉」) ══
+     遗留 29 结清。缺陷是【双重裕度 + 口径错配】两件事叠在一起:
+       ① 代码自注 Mokhayeri 2008 的 2.47 【已含 5–15% 残余甲醇】, 再乘 1.3 是把裕度算两遍。
+          甲醇过量不是纯粹保守 —— 过量甲醇变成残余 COD 进入系统, 反过来加重滤池负荷。
+       ② 外部对标锚点 ≡ 2.47 × 1.3 = 3.21, 而区间 2.3–3.0 (化学计量 1.90 + 异养菌合成 0.5–0.8)
+          【不含安全系数】⇒ 24/24 工况全部超上限约 7%, 界面一直显示"⬆️高"而无人处理。
+     ⇒ 用户 2026-08-30 裁定: 去掉 1.3。默认改为 1.0, 即【不加额外裕度】,
+       甲醇 = NO₃ 去除量 × 2.47, 恰好落回区间内。
+     ⚠ 字段【保留】而不是删除: 它是用户可调的工程裕度旋钮, 高 DO 进水或严控 NO₃ 的场合
+       仍可能要往上加。删掉等于替用户做了一个他可能不同意的决定;
+       改默认值则是"默认不加, 要加自己填", 这才是裁决的内容。
+     ⚠ 与 denTempCap 那次不同: 那次是【加】一个保守项(池子变大), 这次是【去掉】一个裕度
+       (甲醇变少)。方向相反 —— 所以理由不能是"保守起见", 只能是"原来那个数算重了"。 */
+  methanolSafetyFactor: 1.0,    // v1.6 引入 1.3; IRAS_MEOH_NOSAFETY 改 1.0 (2.47 已含残余, 不再叠加)
                                  //   理论 1.9 g/g, 工业 2.47, 实际 RAS 含 DO 补偿后 3.0-4.0
                                  //   公式: methanol = no3 × 2.47 × methanolSafetyFactor
                                  //   默认 1.3 → 2.47×1.3 = 3.21 g/g (Suhr 2014 / Tsukuda 2015 中位)
@@ -4909,15 +5056,166 @@ const PROCESS_DEFAULTS = {
   //      内置鱼种最低 tempOpt 12°C, 常规冷水鱼范围内可用;
   //      更低温物种或北欧低温工况需另行校核.
   VTR20: 500,              // g TAN/(m³填料·d) @20°C
-  VDR20: 800,              // g NO₃-N/(m³填料·d) @20°C
+  /* ══ IRAS_DEN_PSA (2026-08-30, 用户裁决) —— 反硝化拆出载体比表面 ══
+     缺陷(遗留 34-②): PSA 被吸收进 VDR20 的体积口径里 ⇒ 换载体型号(K1/K3/K5)
+     对反硝化池体积【零影响】, 而硝化侧 BF-N 早已把 bfCarrierPSA 拆成一等输入。
+     用户以为它是全局载体参数 —— 这是"填了不生效"的变体。
+     ⚠ 本次【只换口径, 不换动力学】: 新式 r = denArealK × θ_den^(min(T,cap)−20) × 盐度,
+       【没有浓度项】—— 这一条【有意不照搬硝化侧的 Sn^0.7】:
+       BF-N 加浓度项的理由是池内 TAN <1 mg/L 深在一级区; 而反硝化侧流 NO₃-N 实测
+       20.5–25.3 mg/L, 远高于半饱和常数, 零级口径在这里站得住。
+       照搬 Sn^0.7 正是 PLAN_A0 §0 第 1 问的典型犯法。
+     ⚠⚠ denArealK = 1.6 【没有任何出处】—— 它是从【已停用的旧体积口径】继承下来的历史值,
+       不是标定值, 也不是文献值。
+       ⚠ 用户 2026-08-30 裁定: 旧体积口径已从系统删除, 不再讨论其来历。
+         ⇒ 因此【不能再拿它给 1.6 背书】—— 那等于用一个已经不在系统里的东西
+           为一个在用的参数作保。
+       ⇒ 本值的正确身份是【待标定的默认值】, 与 bfArealK / bfSALRDesign / o2DOMfactor 同档,
+         由用户在 UI 上按本场情况覆盖。
+         同理 denCarrierPSA 默认 500 (K1) 是一个【选择】, 不是实测。
+       ⇒ 默认值下【基线逐位不变】(见判据); 数值会变的只有"用户换了载体型号"这件事,
+         而那件事以前根本不会变 —— 那才是缺陷本身。 */
+  denArealK: 1.6,          // g NO₃-N/(m²·d) @20°C —— ⚠ 无出处, 继承自已停用的旧口径, 属待标定默认值
+  denCarrierPSA: 500,      // m²/m³, 反硝化载体比表面 (K1 500 · K3 350 · K5 800)
+  /* ⚠ VDR20 自本批起【不参与选型】, 与 VTR20 同处置: 停写不停读(历史方案 JSON 往返),
+     UI 输入框收回, 按 U2 登记 JSON-only。 */
+  VDR20: 800,              // g NO₃-N/(m³填料·d) @20°C —— 已停用于选型, 保留仅为历史 JSON 兼容
   thetaNit: 1.10,          // 硝化温度修正系数
   thetaDen: 1.08,          // 反硝化温度修正系数
+  /* ══ IRAS_BFD_TEMP_CAP (2026-08-30, 用户裁决) —— 反硝化温度修正封顶 ══
+     缺陷: vdr_T = VDR20 × θ_den^(T−20) 一路外推, 无上限。实测倍数:
+       shrimp 30°C 2.159 · tilapia/eel 28°C 1.851 · grouper 27°C 1.714 · salmon ≤15°C 不受影响
+     ⇒ 温水种反硝化池被系统性算小 14–32%, 【不安全方向】。
+       与 IRAS_BFT_TEMP_CAP 在硝化侧修掉的是同一个毛病, 只是当时没看反硝化 ——
+       PLAN_BF_routeB §1 的范围声明本来就是「硝化/反硝化/COD 降解」三项并列,
+       做了两项, 第三项落在"做完"与"裁决不做"之间的缝里 (见 §4 遗留 34)。
+
+     ⚠⚠ 【本值没有反硝化侧的出处 —— 这是用户裁决, 不是文献】
+       硝化侧的 25 出自 MBBR 厂商设计手册 Ed.2 明写的 "maximum of 25 °C";
+       有机物侧手册只声明到 20 (20→25 属外推, 遗留 19);
+       【反硝化侧手册什么都没说】。三个 25 是三个不同来源, 其中这一个来源是"裁决"。
+       用户 2026-08-30 裁定: 反硝化也封 25。理由是方向保守(池子算大不算小)
+       且与另两侧口径一致, 不是因为找到了出处。
+     ⇒ 【故意不复用 bfArealTempCap】: 共用一个字段会让三件来源不同的事看起来是同一个事实,
+       日后拿到反硝化中试数据想单独改都分不开。遗留 19 已预告"若两侧上限不同就拆字段",
+       加上反硝化是第三个。⇒ 这不是冗余, 是把"出处不同"这件事编码进结构里。
+     ⚠ 谁要动这个数: 请先回答 PLAN_A0 §0 第 1 问 —— 你手上那份资料测的温度上限,
+       与本模型的 θ_den=1.08@20°C 是同一个体系吗? */
+  denTempCap: 25,          // °C, 超过此温度不再做 θ_den 外推 (用户裁决, 无文献出处)
+  /* ══════════ IRAS_BFN_AREAL_NITRI —— 硝化改【面速率】口径 (2026-08-29) ══════════
+     r        = bfArealK · bfDesignTAN^0.7 · 1.09^(T−10) · (1−0.01·S)   [g N/(m²·d)]
+     A_硝化   = TAN 日负荷 × safetyBio × 1000 / r                        [m²]
+     bioVolume= A_硝化 / bfCarrierPSA                                    [m³ 填料净体积]
+
+     【为什么换】旧式 VTR20 × θ^(T−20) 【无浓度项】: TAN 从 0.5 掉到 0.25 实际速率降 38%,
+       而旧模型纹丝不动。文献 VTR 值是在投加 NH₄Cl 使 TAN≈2.9 mg/L 的【零级饱和区】测得,
+       真实 RAS 池内 TAN <1 mg/L 深在【一级区】—— 旧注释自己已经写明"VTR20=500 偏乐观、
+       滤池可能选小", 但没有任何机制去修正它。Sn^0.7 就是缺的那一项。
+     引用: r = k·S^n 的形式见 Ødegaard 与 Rusten et al. (2006)(iRAS 已引)。
+       ⚠ 【不署】MBBR 厂商设计手册 —— 厂商专有设计手册, 本项目 AGPL 且一贯引公开文献。
+
+     ⚠⚠ 【k=0.58 是工程外推裁决, 不是查表所得 —— 2026-08-29 订正】
+       手册 §5.2.3 原表的分档判据是【上游装了什么工艺】, 不是"BOD 高低"这套机理说法:
+         0.40 no primary sedimentation or pre-denitrification
+         0.47 with primary sedimentation OR pre-denitrification
+         0.53 with primary sedimentation AND pre-denitrification
+         0.58 with chemical precipitation      ← RAS 【没有化学除磷】
+       ⇒ 严格查表, RAS(有微滤机、无预反硝化、无化学沉淀) 应落 0.47, 面积要大 23.4%。
+       ⚠ 用户 2026-08-29 裁决【仍取 0.58】, 理由: 手册是市政污水口径, RAS 不同,
+         经转鼓+蛋分+臭氧后溶解 BOD 极低, 硝化受有机物抑制小, 可取高值。
+       ⚠ 该裁决有 RAS 侧文献支持: 水产循环水固定生物膜研究中, 硝化受抑制观察发生在
+         【32 g COD/(m²·d)】量级, 比市政的 3 g BOD/(m²·d) 阈值高一个数量级;
+         本模型各阶段实际面负荷仅 0.7–3.8, 远在其下。
+       ⇒ 但这是【外推, 不是查表】: RAS 不在手册的分档表里。改池型或大幅提高有机负荷时必须重审。
+       ⚠⚠ 【0.58 另有一个前提: 两个等大池串联分级】
+       串联下一号池吃掉 >95% bCOD, 二号池几乎只做硝化 ⇒ k=0.58 对二号池成立、对一号池偏乐观,
+       而 BF-A 批要加的那块 COD 面积正好补偿一号池被异养菌占走的部分, 两者是【分工不是重复】。
+       ⇒ **若日后改为单池混合, 两者就真的重复了, k 必须下调。改池型的人必须看到这一条。**
+
+     ⚠ θ = 1.09 参考 **10 °C**, 与上面的 thetaNit=1.10 参考 20 °C **不是同一个数**,
+       不得混用。thetaNit 在本批之后已不参与硝化选型(见 vtr_T 的等效值注释)。 */
+  bfArealK: 0.58,          // g N/(m²·d) 面速率系数 k @Sn=1, 10°C, 淡水
+  bfDesignTAN: 0.5,        // mg/L 设计目标池内 TAN 浓度 (Sn)
+  bfCarrierPSA: 500,       // m²/m³ 载体比表面 (K1 500 / K3 350 / K5 800)
+  /* IRAS_BFT_TEMP_CAP: 温度修正的适用上限。原文给的是 20–25 °C 区间, 取上端 25。
+     ⚠ 开为输入而非写死: 原文本身给的就是一个区间, 不是单点 —— 写死等于替用户做了选择。 */
+  bfArealTempCap: 25,      // °C, 超过此温度不再做 θ 外推 (MBBR 厂商设计手册 Ed.2: 20–25)
+  /* ══ IRAS_BFA_COD_AREA (2026-08-29) —— 异养(COD)面积项 ══
+       A_COD = bCOD日负荷 × 1000 / (SALR_ref × θ_h^(T − T_ref))
+       A_总  = A_硝化 + A_COD;  bioVolume = A_总 / PSA
+     【为什么要加】k=0.58 是 厂商手册按上游工艺分档的【最高档】, 物理前提是
+       "BOD 低、异养菌抢占少"。两池串联下一号池吃掉 >95% bCOD, 二号池才配得上 0.58;
+       一号池偏乐观, 那块 COD 面积就是补它的。⇒ k 取高档【与】另加 COD 面积是【分工】,
+       前提是【分级】。若改单池混合, 两者就真重复了, k 必须下调 (已写在 bfArealK 注释里)。
+     ⚠ SALR_ref 是【分配面积用的约定值, 不是滤池实际见到的面负荷】——
+       实测各阶段实际只有 0.7–3.2 g COD/(m²·d), 因为硝化面积占了大头。tooltip 必须写清。
+     ⚠⚠ θ_h 默认 【1.00 = 不做温度修正】, 这是【有意的显式置一】, 不是遗漏:
+       用户指出 COD 面积同样须温度修正 —— 物理上无疑成立, BF-N/BF-T 只修了硝化一侧,
+       等于系统性高估温水种的 COD 面积。但落地缺两个数, 且【都查不到】:
+         · 那条去除率曲线(6→95.1% …)的参考温度 —— 原文未标;
+         · 异养 θ_h —— 公开检索无权威值; 用户提供的 MBBR-Pro 是纯硝化工具, 也没有。
+       敏感度实测: θ_h/T_ref 在合理区间内把合计倍数推到 1.060–1.119, T_ref 10→20 的影响
+       约等于本批全部效果的一半。⇒ 拍一个 1.05 会让门禁全绿、基线好看,
+       但那是【给无出处的系数披上"已修正"的外衣】, 比不修正更糟 —— 不修正至少是明摆着的。
+       照 N4/D6 先例: 有机理没数值时, 置一并留痕是对的, 凑一个数不是。
+       置一状态由阶段告警显式喊出 (见 buildStageWarnings), 不让它躺在式子里没人看见。 */
+  /* ══ IRAS_SALR_UNITS (2026-08-30) —— 旁证口径订正 ══
+     PLAN_A0 §9.2b 当时记的是「典型 5-25 g BOD/(m²·d) ⇒ SALR=12 有了旁证(落在中位)」,
+     但传到本行时【单位被抹掉了】: 本字段是 g COD/(m²·d), 喂进去的是 bCOD 日负荷。
+     若那个 BOD 指 BOD₅, 按 bCOD ≈ 1.6 × BOD₅ 折算 ⇒ 约 8-40 g COD/(m²·d),
+     ⇒ 12 落在【下端】而非中位。方向偏保守(SALR 取小 ⇒ COD 面积算大), 不危险,
+       但「落在中位」这个结论是错的。
+     ⚠ 折算系数 1.6 是个约定, 且那份资料写的是 BOD 还是 BOD₅ 并未确认
+       ⇒ 本条只能当【量级旁证】, 不是出处。遗留 20 保持开着。
+     ⚠ 同族: 与遗留 13「拿 NTNU 体系的 k 去质疑厂商手册体系」是同一个坑 ——
+       同一个符号(SALR / k), 口径不同就不是同一个量。PLAN_A0 §0 第 1 问。
+     用户 2026-08-30 裁定: 仍以 12 作为 UI 默认值。 */
+  bfSALRDesign: 12,        // g COD/(m²·d) 设计面负荷 —— ⚠ 无 RAS 出处, 市政中值 + 口径存疑的量级旁证
+  /* ══ IRAS_BFA2_THETA (2026-08-29) —— θ_h 有【直接出处】, 前一版的"代用值"判断已撤回 ══
+     厂商设计手册 Ed.2 §5.1.2「Removal of Organic Matter · Temperature」原文:
+         r_T = r_10 · θ^(T−10)
+         θ = 1.06  for temperatures between 10-20 °C
+         θ = 1.07  for temperatures between 5-10 °C
+       "recommended not to temperature-correct the loading rate above 20-25 °C"
+     ⇒ 这【就是好氧异养有机物去除的 θ 本身】, 参考温度 10 °C, 且自带封顶。
+     ⚠ 撤回留痕: 上一版把 1.06 当成"从反硝化借来的代用值"——判错了。
+       §5.1.2(有机物) 与 §5.3.1(反硝化) 的 θ 数值相同是巧合, 前者才是本参数的出处。
+       教训与本轮其它几次同族: 【先找对章节, 再谈代用】。
+     ⚠ 残留缺口: θ 只声明到 20 °C(5–10 用 1.07), 而封顶取 25 ⇒ 20→25 这一段是外推。
+       硝化侧 §5.2.2 明写 "maximum of 25 °C", 有机物侧只写 "20-25", 取的是区间上端。 */
+  bfSALRTheta: 1.06,       // 异养温度系数 θ_h @10–20 °C (手册 §5.1.2)
+  bfSALRRefTemp: 10,       // °C, θ_h 的参考温度 (手册 §5.1.2 的 r_10)
+  /* IRAS_BF1A_COD_SPLIT: 溶解 COD 里【难降解】那一份的产率 (占饲料的百分比)。
+     0.18% 出自 PLAN_BF_routeB §4 —— ⚠⚠ 它是【从"关蛋分稳态要落在 30 mg/L"反推出来的】,
+     不是独立测得。§4.3 循环验证禁令原文: 「模型复现 DTU 锚点是构造出来的, 不是算出来的」。
+     ⇒ 不得拿"关蛋分工况对上文献区间"当作模型验证通过 —— 那是用被标定量去验证标定结果。
+     ⚠ BF-1a 内本值只决定 b/r 的【切分比例】, 由 η_BF 反解抵消, 基线逐位不变;
+       它真正开始影响数值是在 BF-1b。 */
+  /* ══ IRAS_CODDISS_YIELD (2026-08-29) —— 溶解 COD 产率开为输入 ══
+     原来 domDaily = feedMax × 0.10 是【写死的字面量】, 两处(峰值/均值)各写一遍。
+     用户裁决 2026-08-29: 维持 10% 的口径, 但把它开成 UI 输入。
+     ⚠ 为什么不换成 LibRAS 废物矩阵口径(原 BF-1b 计划): 核完 Waste.mo 原文后发现
+       那套矩阵【不存在"每 kg 饲料一个常数"】—— 净产生量随投喂率在 0.103-0.250 之间变,
+       且落地需要饲料与鱼体的 COD 成分(现库里都没有, 属 BF-2)。见 PLAN_BF_routeB §2.2
+       与 HANDOFF §14。⇒ 复杂度不匹配收益, 本批只做"把常数开成输入"。
+     ⚠ 这一步顺带把 `DOM 强度` 外部锚点从【死锚点】变成了【真判据】:
+       domIntensity ≡ codDissYield × 1000, 此前 codDissYield 写死 ⇒ 恒等于 100.0、永远绿;
+       现在它跟着用户输入走, 区间 80-120 第一次能拦住"把产率设到区间外"。
+       ⇒ 锚点的身份也随之从"对标文献"改为"参数自检"(PLAN_A0 §8.3 要求的改身份, 本批兑现)。 */
+  /* IRAS_TSS_YIELD (2026-08-29): TSS 产率同样由写死字面量改为输入。
+     ⚠ 立项原因与 codDissYield 完全相同 —— 锚点诊断(probe_anchor_audit)查出
+       `TSS 强度` 恒等于 300.0、24/24 工况一模一样, 与 `DOM 强度` 同型:
+       【永远绿, 从未判定过任何东西】, 而它的 ref 写着"Davidson 2014 实测"，读者会以为在对标文献。
+     ⇒ 开成输入后, 区间 250-350 第一次能拦住"把产率设到 25-35% 之外"。 */
+  tssYield: 30,              // % of feed, TSS 产率
+  codDissYield: 10,          // % of feed, 溶解 COD 总产率 (可降解 + 难降解)
+  codDissRefracYield: 0.18,  // % of feed, 难降解溶解 COD 产率
   // v1.1 新增: MBBR 填料填充率 (V_filler / V_pool, 决定 BF 池总容积)
   // 物理: bioVolume (按 VTR 算) 是"填料净体积", V_BF = bioVolume / fillRatio
   //       V_BF 是池总容积 (含填料 + 水 + 顶部空气), 整个池容积参与系统体积建模
   // 工业典型值:
-  //   K1/Kaldnes 标准填料: 50% 填充率 (常规 MBBR, Rusten 2006)
-  //   K3/AnoxKaldnes 高密度填料: 50-60% 填充率
+  //   K1 标准填料: 50% 填充率 (常规 MBBR, Rusten 2006)
+  //   K3/高密度填料: 50-60% 填充率
   //   高密度装填 (国内某些低成本项目): 60-70%
   // V_BF / bioVolume 比值:
   //   填充率 50% → 2.00
@@ -4927,11 +5225,50 @@ const PROCESS_DEFAULTS = {
   // v1.1 新增: 异养菌耗氧系数 (kg O₂ / kg 饲料)
   // 物理: 残饵 + 粪便被异养菌分解的耗氧, 在 BF 中由粗孔曝气供应
   // 文献依据 (Boyd 2018 RSA, Lekang 2020):
-  //   理论上限 (饲料碳全部水中氧化) ≈ 0.45 kg O₂/kg
-  //   工程实测 (RAS 中 RDF 移除 70-80% TSS, 部分有机物排出): 0.10-0.20
-  //   v1.0 默认 0.05 偏低, v1.1 调整为 0.10 (保守工程值)
-  // 用户可按项目调整: 鳗鱼粉料/对虾残饵多 → 0.15-0.20; 优化 RDF + 蛋分 → 0.08-0.10
+  /* ══ IRAS_O2DOM_PROVENANCE (2026-08-29) —— 出处订正, 【零数值改动】 ══
+     ⚠⚠ 旧注释写「工程实测 (Boyd 2018) 0.10-0.20」—— **该说法是假的**。
+       追溯 v1.1 会话原始记录, 0.10 的真实来历是一条【自推链】:
+         Boyd 理论上限 0.45  ×  "RDF 移除 70% TSS ⇒ 残留 30%"  ≈ 0.135  →  "保守取" 0.10
+       Boyd 报的是 0.45(潜力上限), **0.10-0.20 这个"实测区间"不是 Boyd 报的**,
+       是当时自己估出来又加了余量, 然后被写成了文献实测值。
+     ⚠ 这是本项目第三次同族: 自算的估值被写成文献实测值
+       (前两次: skimmerDOMEffAir 的 BOD₅ −51%; 系统总氧的 Summerfelt 0.4-0.7)。
+
+     ══ 现在给它一个【可核实、可复算】的出处: 系统总氧扣减法 ══
+       商业 RAS 满负荷实测 系统总氧 ≈ 0.5 kg O₂/kg 饲料 (大型陆基三文鱼场设计文件)
+       Boyd 饲料需氧【潜力】= [饲料C% − FCE×鱼体C%]×2.67 + [饲料N% − FCE×鱼体N%]×4.57
+                            ≈ 1.0-1.25 —— 但 Boyd 自己写明: 循环水系统里
+                            **部分固体(残饵与粪便)被移出并在陆上处置**, 故那是【上限】。
+       ⇒ 系统内异养余项 = 0.5 − 鱼生理(≈0.25) − 硝化(≈0.14) ≈ **0.11**
+       与本默认值 0.10 几乎重合。**数值不变, 换的是它凭什么是这个数。**
+     ⚠ iRAS 自算的系统总氧 0.60-0.66 高于 0.5, 差在 o2FishFactor 按物种算到 0.22-0.40
+       (对虾单这一项就 0.40); 商业 0.5 是三文鱼场的数, 冷水种对得上。
+     ⚠ 该余项【不区分固体相与溶解相】—— 它是"总氧减两项"剩下的全部异养耗氧。
+       ⇒ 日后若再给溶解 bCOD 单加一项氧化耗氧, **就是把同一份氧算两遍**。见 §4 遗留。
+     用户可按项目调整: 鳗鱼粉料/对虾残饵多 → 0.15-0.20; 优化 RDF + 蛋分 → 0.08-0.10 */
+  /* IRAS_O2DOM_SCOPE (2026-08-30): 出处是扣减链(总氧 0.5 − 鱼生理 0.25 − 硝化 0.14 ≈ 0.11)。
+     不是自证(两个减项都不来自本模型), 但【单一来源】且【只标定了冷水种那一档】——
+     0.5 是三文鱼场的数, 而本默认值用于全部 13 工况。速查表里「对虾/鳗鱼 0.15-0.20」是推断, 无实测。
+     用户 2026-08-30 裁定: 仍以 0.10 作为 UI 默认。遗留 24 保持开着。 */
   o2DOMfactor: 0.10,
+  /* ══ IRAS_BF_ER_ZERO (2026-08-29) —— 生物膜内源呼吸【显式置零, 是裁决不是遗漏】 ══
+     市政 MBBR 手册把内源呼吸(ER)单列: ER = 2e-3·1.07^(T−10)·TS_biofilm·Area,
+     TS_biofilm 0.010-0.018 kg/m²(异养膜) / 0.008-0.010(硝化膜)。RAS 不照搬, 三条理由:
+       ① 【膜薄】手册那两个 TS 区间是市政【设计负荷】下的值(有机面负荷 3.9-15 g BOD/m²·d),
+          本模型实测面负荷仅 0.7-3.8, 是市政的 1/5 到 1/2 ⇒ 膜存量小得多。
+       ② 【剪切与快速移出】RAS 循环量大, 剪切强, 脱落物很快被微滤机移出 ⇒ 膜【始终很薄】。
+          ⚠ 机理是"膜薄", 不是"脱落物还在耗氧" —— 脱落物的账在 BF-3(异养污泥进 TSS),
+            说成"脱落后继续耗氧"会与那批双计。
+       ③ 【预算已被占满】按上面的扣减法, 异养预算 ≈ 0.11; 而合成耗氧
+          (1−Y_H)×bCOD氧化量 = 0.33 × 0.3714 × 90% ≈ 0.110, 正好占满 ⇒ 留给 ER 的空间≈0。
+     ⚠⚠ ③ 的前提是【bCOD 有约 90% 真被滤池氧化】。若 BF-1b 落地后模型算出的实际氧化份额
+       明显低于 90%, 预算就有空间, **本裁决必须重审**。故另设"异养氧预算核对"告警(见
+       buildStageWarnings), 让这件事在触发时自己喊出来, 而不是躺在注释里等人想起来。
+     ⚠ RAS 侧的生物膜 TS 与内源呼吸速率【没有找到任何实测】—— 市政那两个区间是市政负荷下的。
+       已登记为遗留。 */
+  /* ⇒ 实现为具名常量 BF_ENDOGENOUS_O2, 不进 PROCESS_DEFAULTS:
+       它不是用户可配项, 放进默认表会变成一个【无 UI、无人消费】的死导出面(C8 当场抓住),
+       而“置零”这件事该由注释+判据表达, 不是靠一个可填却不生效的字段。 */
   // v1.9.2: 池内悬浮固体异养耗氧 —— 鱼池里的 TSS 表面附着异养菌, 直接在池内耗氧,
   //   这部分必须由氧锥/液氧供给, 不是生物滤池的 o2DOMfactor.
   //   依据: 商业鲑鱼 smolt RAS 养殖池实测 (Aquacultural Engineering,
@@ -5120,9 +5457,20 @@ const PROCESS_DEFAULTS = {
   aopType: 'integrated',         // v1.1.2 新增: AOP 类型
                                  // 'integrated' 集成型 (UV+O3 一体反应器, ULTRAAQUA 主流方案), HRT 1-3 min
                                  // 'separated'  分体型 (O3 接触池 + UV 反应器), HRT 5-10 min
-  aopFlowPct: 5,                 // 旁路流量占比 (3-15%)
+  /* ══ IRAS_PROV_TRACE (2026-08-30) —— 遗留 4: 本组两个系数【从来没有出处】══
+     `aopFlowPct` 与 `aopDOMRemoval` 自 v1.1 引入至今是【工程占位值】, 不是文献值,
+     也不是标定值。此前只在遗留表里记着, 代码与界面上看不出来。
+     ⚠⚠ 优先级已随 BF-1a 上升: 难降解层稳态落地后, 这两个数【支配】该层的稳态浓度 ——
+       关掉蛋分的工况下 AOP 占难降解 DOM 去除的 82%。
+       ⇒ 它们从"影响一个小设备的尺寸"变成了"决定一条稳态的位置", 而出处没跟着变。
+     ⚠ 为什么不置零留痕(像 aopCodTransferRate 那样): 置零等于宣称"AOP 不去除 DOM",
+       那是一个【更强的、同样没出处的】主张。此处正确的处置是【显式标注无出处】
+       并让用户看见, 不是换一个同样没依据的数。
+     ⇒ 处置: 不动数值, 在此处 + 速查表 + UI tooltip 三处写明"占位值, 无出处";
+       取得出处或中试数据前, 任何依赖这两个数得出的难降解层结论都只能当【量级估计】。 */
+  aopFlowPct: 5,                 // 旁路流量占比 (3-15%) —— ⚠ 工程占位值, 无文献出处 (遗留 4)
   aopGeosminEff: 90,             // 单次处理对 geosmin/2-MIB 去除率
-  aopDOMRemoval: 5,              // v1.1 新增: AOP 对总 DOM 单次去除率 (5-15%, 默认保守取 5%)
+  aopDOMRemoval: 5,              // AOP 对总 DOM 单次去除率 —— ⚠ 工程占位值, 无文献出处 (遗留 4, 见上方头注)
                                   // 物理: AOP 主要分解小分子嗅味物质 (geosmin/2-MIB),
                                   //       对腐殖酸/蛋白多糖等大分子 DOM 去除有限
   // v1.7.x: AOP 臭氧投加剂量 (g O3/m³ 处理流量) — 工程范围 0.3-1.5
@@ -5228,6 +5576,13 @@ const PROCESS_DEFAULTS = {
   /* ⚠ 有意不自动调整: 自动加风会把用户设定的流化通量悄悄改掉, 且代价可能极大
      (实测石斑幼鱼期要达到 DO=4 需通量 40.9, 远超导则区间, 功率由 9 kW 涨到 38 kW)。
      告警里给出"需通量 X / 届时功率 Y", 让用户做一个【有标价的选择】。 */
+  /* ══ v2.6 IRAS_V26_ALPHA_SINGLE — bfAlpha 的【唯一】数值来源 ══
+     此前 0.85 在库内有【五份】: 本处 + 主计算/读输入/告警反算/自检断言各一处硬写 fallback。
+     标定时要改 5 处, 漏 1 处不会报错 —— 且 fallback 只在 bfAlpha == null 时触发
+     (空场骨架、老方案 JSON 两条冷路径), 日常工况全绿, 是最难发现的那种漏。
+     ⚠ 最讽刺的一处在【自检断言自己的 fallback】里, 而它上方三行的注释正写着
+       「断言本身也得单源 —— 这正是它要防的那类错」(F_O2_MASS 那次的教训)。
+       同一个错, 隔一行。现四处 fallback 全部改引本常量, 并由自检 A5 锁死。 */
   bfAlpha: 0.85,                 // 传氧修正 α (清水→实际水) — ⚠ 无 RAS 出处, 待标定
   /* ══ v2.5 IRAS_V25_BF_CO2 — MBBR 曝气对 CO₂ 的吹脱 (原审计 B10, 此前写死 0) ══
      【为什么此前是 0】v1.9 定 BF_CO2_STRIP=0, 注释写"保守, 脱气塔选型偏安全"。
@@ -6395,8 +6750,15 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
   //   - 排污量/换水量
   //   - OPEX 年化
   const tanDaily      = feedMax * stage.protein * tanCoef;   // kg/d
-  const tssDaily      = feedMax * 0.30;                       // kg/d
-  const domDaily      = feedMax * 0.10;                       // kg/d
+  const _tssY = ((stage.proc && stage.proc.tssYield != null)
+                 ? stage.proc.tssYield : PROCESS_DEFAULTS.tssYield) / 100;
+  const tssDaily      = feedMax * _tssY;                      // kg/d, IRAS_TSS_YIELD
+  /* IRAS_CODDISS_YIELD: 从 stage.proc 读(与 o2DOMfactor 同法) —— calcStageLoad 的签名里没有 proc。
+     ⚠ 兜底值写 PROCESS_DEFAULTS.codDissYield 而不是字面量 10:
+       字面量兜底 = 默认值改了这里不跟, 是「两处各写一遍」的老毛病。 */
+  const _codDissY = ((stage.proc && stage.proc.codDissYield != null)
+                     ? stage.proc.codDissYield : PROCESS_DEFAULTS.codDissYield) / 100;
+  const domDaily      = feedMax * _codDissY;                  // kg/d, IRAS_CODDISS_YIELD
   // v1.1.1: 鱼【生理】耗氧系数三级查找 (清水条件, 物种实测值)
   //   v1.9.2: 本值之上还要叠加 TSS 依赖的池内异养附加项, 见下方 o2TankFactor
   // 1. proc.o2FishFactor (UI 用户改的, 最高优先级)
@@ -6502,8 +6864,8 @@ function calcStageLoad(stageFarm, stage, tanCoef, tssTank) {
   // ====【全周期日均 - 用于 OPEX 年化, 不含 peakFactor】====
   // 反映系统在全养殖周期上的"平均负荷工况"
   const tanDailyAvg     = feedAvg * stage.protein * tanCoef;
-  const tssDailyAvg     = feedAvg * 0.30;
-  const domDailyAvg     = feedAvg * 0.10;
+  const tssDailyAvg     = feedAvg * _tssY;   // IRAS_TSS_YIELD: 与 tssDaily 同源, 单一出口
+  const domDailyAvg     = feedAvg * _codDissY;   // IRAS_CODDISS_YIELD: 与 domDaily 同源, 单一出口
   // v1.9.2: 周期均值同样用池内总耗氧系数 (含 TSS 附加), 与 o2FishDaily 口径一致
   const o2FishDailyAvg  = feedAvg * o2TankFactor;
   const o2NitriDailyAvg = tanDailyAvg * 4.57;
@@ -7999,6 +8361,123 @@ function calcAlkalinity(load, flowData, proc, sim, V_systemTotal) {
 /* Benson & Krause (1984) 饱和溶氧 + USGS 盐度修正。
    v2.3二批: 自 simulateWaterQualityProcess 内联抽出 (表达式逐字符不变 →
    数值逐位不变), 供水质与选型两处共用。 */
+/* ══ IRAS_BFN_AREAL_NITRI —— 硝化面速率的【唯一】出口 ══
+   水质稳态(calcWaterQuality)与设备选型(calcEquipmentSpec)都要这条式子。
+   ⚠ 抄第二份就会分叉 —— 项目已经在 bfAlpha(5 份)、carbonate(2 份)、
+     hpInstalledKw(5 个消费点) 上反复吃过这个亏。此处只此一份。
+   θ = 1.09 参考 10°C。与 proc.thetaNit(1.10@20°C) 不是同一个数, 不得混用。 */
+/* ══ IRAS_BFT_TEMP_CAP: θ 提为具名常量 ══
+   原来 θ 是写在式子里的字面量, 靠 N5b 的【全库文本扫描】保证单源。
+   ⚠ 那个做法有两个毛病, 本轮都撞上了:
+     ① 断言自己一提到这个式子就被咬 (N8 被咬两次, 连解释它的注释都命中);
+     ② 更要命 —— 判据想拿这个 θ 当【独立标尺】时无处可取, 只能回头调
+        bfArealRateOf 本身, 于是标尺和被测对象绑死: 实测把封顶整个删掉,
+        N8a 竟然照样全绿 (两边一起塌)。**那是一条假判据。**
+   ⇒ 提成具名常量: 单源由【名字】保证而不是文本扫描, 判据可以引用它而不复述它。
+     N5b 相应改为查"这个名字只被定义一次"+"库内不得再出现该数的字面幂式"。 */
+/* ⚠ IRAS_ER_COMMENT_FIX (2026-08-30): 本行的说明注释此前【粘在了下面 BF_ENDOGENOUS_O2 那一行的末尾】
+   (原件即如此, 应是当初把 θ 提成具名常量那一批的编辑残留)。后果不是排版难看:
+   BF_ENDOGENOUS_O2 = 0 是一个【方向不安全的显式置零项】, 末尾却挂着一句厂商手册出处,
+   读的人会以为这个零有手册依据。⇒ 与「留一个核不实的引用比明说无出处更糟」同族。
+   ⚠ 没有任何门禁抓得到 —— 注释不在判据的扫描面内。这类只能靠评审。 */
+const BF_AREAL_THETA = 1.09;    // 硝化面速率温度系数, 参考 10 °C (MBBR 厂商设计手册 Ed.2)
+
+/* ══ IRAS_DEN_PSA (2026-08-30) —— 反硝化盐度修正【显式置一】══
+   硝化侧有 f_sal = 1 − 0.01·S (Rusten 2006 / Chen 2006 / Nijhof & Bovendeur 1990),
+   反硝化侧【没有】—— 而此前是【默默不算】, 读代码的人看不出这是有意的还是漏了。
+   ⚠ 查过了, 出处确实没有: 用户提供的 MBBR-Pro 是【纯硝化设计工具】(PLAN_A0 §9.2b),
+     不建模反硝化; §9.6 逐条列出的"该资料有而 iRAS 没有的三条修正"是
+     DO 限制切换 / DO Monod / pH 钟形, 【盐度不在其中】。
+     iRAS 硝化侧那个 (1−0.01S) 也不来自 MBBR-Pro。
+   ⚠ 机理上"不修正"很可能是对的 —— 反硝化菌耐盐性远好于硝化菌。但"很可能对"
+     不等于"已经验证", 故按 aopCodTransferRate 的先例: 【显式置一 + 留痕】,
+     而不是继续默默不算。有 RAS 海水中试数据时, 只改这一个常量。 */
+const DEN_SAL_CORRECTION = 1.0;
+const BF_ENDOGENOUS_O2 = 0;    // kg O₂/d 生物膜内源呼吸 —— 显式置零(裁决, 非遗漏), 见 IRAS_BF_ER_ZERO, 由 D7 锁住
+
+/* ══ IRAS_BFA_COD_AREA —— COD 设计面负荷的【唯一】出口 ══
+   与 bfArealRateOf 同规矩: 抄第二份就会分叉。
+   ⚠ θ_h 默认 1.00 ⇒ 本式此刻等价于常数, 但【结构必须在】——
+     等出处到位只改一个默认值, 不必再动式子与判据。 */
+function bfSALRDesignOf(proc, tempOpt) {
+  const base = (proc && proc.bfSALRDesign  != null) ? proc.bfSALRDesign  : PROCESS_DEFAULTS.bfSALRDesign;
+  const th   = (proc && proc.bfSALRTheta   != null) ? proc.bfSALRTheta   : PROCESS_DEFAULTS.bfSALRTheta;
+  const tref = (proc && proc.bfSALRRefTemp != null) ? proc.bfSALRRefTemp : PROCESS_DEFAULTS.bfSALRRefTemp;
+  /* ⚠ 同样 25 °C 封顶: MBBR-Pro 对反硝化也封顶, 注释原文「与硝化一致, 防过度乐观」。
+     θ 是经验外推系数, 超出标定域(该手册标注 10-25 °C)继续外推没有依据 —— 与 BF-T 同理。
+     复用 bfArealTempCap: 两侧共用一个"温度修正适用上限"是【有意的】,
+     手册对硝化与反硝化给的都是同一个 25。若日后证明两侧上限不同, 再拆成两个字段。 */
+  const cap = (proc && proc.bfArealTempCap != null) ? proc.bfArealTempCap : PROCESS_DEFAULTS.bfArealTempCap;
+  return Math.max(base * Math.pow(th, Math.min(tempOpt, cap) - tref), 1e-6);
+}
+
+function bfArealRateOf(proc, tempOpt, salinity) {
+  const k  = (proc && proc.bfArealK    != null) ? proc.bfArealK    : PROCESS_DEFAULTS.bfArealK;
+  const Sn = (proc && proc.bfDesignTAN != null) ? proc.bfDesignTAN : PROCESS_DEFAULTS.bfDesignTAN;
+  const fSal = Math.max(1 - 0.01 * (salinity || 0), 0.3);
+  /* ══ IRAS_BFT_TEMP_CAP (2026-08-29) —— 温度修正封顶 ══
+     MBBR 厂商设计手册 Ed.2 原文: "recommended not to correct the loading rate
+     above 20-25 °C"。BF-N 移植时【漏了这一句】, 于是 1.09^(T−10) 对温水种一路外推:
+       shrimp 30°C 高估 1.539× · tilapia/eel 28°C 1.295× · grouper 27°C 1.188×
+     ⇒ 温水种滤池被系统性算小 9–54%, 冷水种(≤25°C)一点不动。
+     ⚠ 封顶【只增不减】, 是保守方向; 但它不是"保守起见拍的", 是原文明写的适用边界 ——
+       θ 是经验外推系数, 超出标定域继续外推没有依据。
+     ⚠ 与 bfDesignTAN 的"8 条不可行"无关: η 的可行性取决于负荷与流量, 与面积无关。 */
+  const cap = (proc && proc.bfArealTempCap != null) ? proc.bfArealTempCap : PROCESS_DEFAULTS.bfArealTempCap;
+  const tEff = Math.min(tempOpt, cap);
+  return Math.max(k * Math.pow(Sn, 0.7) * Math.pow(BF_AREAL_THETA, tEff - 10) * fSal, 1e-6);
+}
+
+/* ══ IRAS_R26_RETIRED_INPUT_UI (2026-08-30) —— 界面用的温度修正因子必须来自在跑的模型 ══
+   缺陷: 界面上那句「硝化温度修正因子 X× — 生物滤池容积需求显著放大」用的是
+   `eq.tempCorrectionNit = thetaNit^(T−20)`, 而 `thetaNit` 自 IRAS_BFN_AREAL_NITRI 起
+   【已不参与硝化选型】(见 L9875 自注)。实测: thetaNit 1.10→1.02 只让这个显示值
+   0.4665→0.8535 动了一下, 滤池体积一位不变。
+   ⇒ 这比"填了不生效"更隐蔽 —— 用户调参数, 界面数字【真的会变】, 于是他确认
+     "生效了"。反馈存在, 只是反馈的量已经不指代任何东西。
+   ⇒ 与 §5 记的「benchmarks 看起来是判据、实际是仪表盘」互为镜像:
+     那次是该报的没报, 这次是不该报的照常报, 而且报得像真的。
+
+   本函数给出【模型真正施加的】温度因子, 口径: 以 20 °C 为 1.0, 用真 θ=1.09,
+   并带上 IRAS_BFT_TEMP_CAP 的封顶。分母同样过封顶, 保证 T≥cap 时因子不再增长。
+   ⚠ 与 bfArealRateOf 共用 BF_AREAL_THETA 与 bfArealTempCap 两个单一事实源,
+     不得在此另写字面量 —— 否则又是一份会各自漂移的副本 (check_single_source 的立项理由)。 */
+function bfTempFactorApplied(proc, tempOpt) {
+  const cap  = (proc && proc.bfArealTempCap != null) ? proc.bfArealTempCap : PROCESS_DEFAULTS.bfArealTempCap;
+  const tEff = Math.min(tempOpt, cap);
+  const tRef = Math.min(20, cap);
+  return Math.pow(BF_AREAL_THETA, tEff - tRef);
+}
+
+/* ══ IRAS_BFN_ETA_FROM_AREA —— η 由面积算出, 不再是用户输入 ══
+   滤池日去除能力 R = TAN日负荷 × safetyBio (kg/d) —— 就是它被造出来要干的活。
+   单程去除率 η = R / (一天流过滤池的 TAN 总量) = R×1000 / (Q × 24 × Sn)。
+   Sn 取【设计目标浓度】而非稳态解: 见 PLAN_BF_routeB §3.5, 闭环不迭代。
+
+   ⚠⚠ η 可能算出 > 1 —— 这【不是 bug, 是一条真实的工程判定】:
+     它说明在当前循环量下, 一天流过滤池的水携带的 TAN 本身就少于日产量,
+     ⇒ 池内 TAN 根本不可能压到 Sn, **滤池做多大都没用, 卡住的是 turnover 不是面积**。
+     实测 24 个内置阶段有 7 个如此 (grouper st1 126% · eel st2 124% · turbot st2 114%)。
+   ⇒ 此处只按分数定义钳到 1.0 (否则 R_tan 会变负), **不设任何"工程上限"**:
+     钳到 80% 之类没有出处, 且会把"做不到"悄悄变成"做到了 80%" —— 那是掩护, 不是建模。
+     做不到这件事由 stageWarns 显式喊出来, 并给出该流量下能达到的最低 TAN (Sn_min)。
+   旧口径 biofilterTAN(用户填 70%) 已停用: 它与滤池尺寸各管一头、互不校验,
+   正是 v1.9.2 审计 P3 记的问题。现在两者是同一条曲线的两端。 */
+function bfNitriEtaOf(load, flowData, proc) {
+  const sBio = (proc && proc.safetyBio) || 1.15;
+  const capacityKgD = (load.tanDaily || 0) * sBio;                    // kg N/d
+  const Sn = (proc && proc.bfDesignTAN != null) ? proc.bfDesignTAN : PROCESS_DEFAULTS.bfDesignTAN;
+  const Q  = Math.max(flowData.flowM3h || 0, 0.01);                   // m³/h
+  const carriedKgD = Q * 24 * Sn / 1000;                              // kg N/d 流过滤池的 TAN
+  const raw = carriedKgD > 0 ? capacityKgD / carriedKgD : 0;
+  return {
+    eta: Math.min(Math.max(raw, 0), 1),
+    etaRaw: raw,                                                      // 未钳制值, 供告警判定
+    snMin: capacityKgD * 1000 / (Q * 24),                             // mg/L, 该流量下能达到的最低 TAN
+    capacityKgD
+  };
+}
+
 function benson1984DOSat(T, S) {
   const Tk = T + 273.15;
   return Math.exp(
@@ -8155,7 +8634,13 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eq
     };
   }
   const eta_rdf = proc.rdfTSS / 100;
-  const eta_bio = proc.biofilterTAN / 100;
+  /* IRAS_BFN_ETA_FROM_AREA: η 不再是用户输入, 由滤池面积与设计浓度算出。见 bfNitriEtaOf。 */
+  /* ⚠ 本函数的签名是 simulateWaterQualityProcess(load, flowData, sp, proc, ...) —— 【没有 stage】。
+     初版在此传了 stage ⇒ ReferenceError ⇒ allResults 全 null ⇒ 自检报"Ω 一个都没算出来"。
+     与 BF_N_WIP 记的那次同型: 症状像"碳酸盐模块失效", 根因只是一个不在作用域里的变量名。
+     ⇒ 遇到"某模块整体失效"先在函数体内查变量作用域, 不要先怀疑那个模块。 */
+  const _bfEta = bfNitriEtaOf(load, flowData, proc);
+  const eta_bio = _bfEta.eta;
   const eta_bioTSS = PROCESS_FIXED.biofilterTSS;
   const uvFlowRatio = proc.uvFlowPct / 100;
   const denitriFlowRatio = proc.denitriFlowPct / 100;
@@ -8350,7 +8835,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eq
       const _rhoC = 1 + 0.0008 * S;
       const _K0 = iRASCarbonate.K0_W74(T + 273.15, S);          // ⚠ 入参 Kelvin
       _bfKLoad = (1 / 44010 / _rhoC / _K0) * 44.01 / 0.022414;  // g CO₂/Nm³ per (mg/L)
-      const _ap = (proc.bfCo2Approach != null) ? proc.bfCo2Approach : 0.23;
+      const _ap = (proc.bfCo2Approach != null) ? proc.bfCo2Approach : PROCESS_DEFAULTS.bfCo2Approach;
       eta_co2_bf = Math.min(
         eqPrev.bfBlowerSpec.airFlowM3h * _bfKLoad * _ap / flowData.flowM3h, 0.95);
       if (!(eta_co2_bf >= 0)) eta_co2_bf = 0;
@@ -8532,9 +9017,49 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eq
   // v1.1 修复: AOP 对 DOM 用 aopDOMRemoval (≈5%), 不再误用 geosmin 系数 (90%)
   /* v2.5 IRAS_V25_BF_DOM: 生物滤池是【主流】去除路径 —— 不乘旁路比, 全流量通过。 */
   const eta_bioDOM = Math.min(Math.max((proc.bfDOMEff != null ? proc.bfDOMEff : 2.5) / 100, 0), 0.95);
-  const R_dom = (1 - eta_skim_DOM_sys) * (1 - eta_bioDOM)
-              * (1 - aopFlowRatio * eta_aopDOM) * (1 - dilutionPerCycle);
-  const domOut = _solveSteady(domPerCycle, R_dom, 'DOM');
+  /* ══ IRAS_BF1A_COD_SPLIT (2026-08-29) —— 溶解 COD 拆两层 ══
+       codDiss_b 可降解: 滤池 + 蛋分 + AOP + 换水 都去除
+       codDiss_r 难降解: 滤池【不去除】, 只靠 蛋分 / AOP / 换水
+     ⚠ 本批是【纯结构批, 基线必须逐位不变】(PLAN §7)。数值口径的改动留给 BF-1b。
+       结构与数值分开, 基线变动才能唯一归因 —— 项目在这上面反复吃过亏(v2.4 §⑦、v2.6 §5a)。
+
+     【等价性怎么做到的】记非滤池存留 S = (1−η_蛋分系统)(1−旁路·η_AOP)(1−换水);
+       拆分前 C = P/(1−S(1−η_bio));  拆分后 C = f·P/(1−S(1−η_BF)) + (1−f)·P/(1−S)。
+       令两者相等, 对 u = 1−S(1−η_BF) 是一次方程, 闭式解:
+           u = f·w·v / (v − (1−f)·w),  其中 v = 1−S, w = 1−S(1−η_bio)
+           η_BF = 1 − (1−u)/S
+     ⚠⚠ 所以 BF-1a 的 η_BF 是【每工况反解出来的】, 不是设计值 ——
+       S 逐工况不同(换水率、蛋分/AOP 开关都影响), 单一常数 η_BF 【不可能】让 13 条基线全部逐位不变。
+       这一点必须写死在这里: 下一位若看到 η_BF 是算出来的而以为是 bug, 去把它改成常数,
+       基线会立刻全动, 而那时已经分不清是他改的还是 BF-1b 改的。
+     ⚠ 这个反解值【会在 BF-1b 被丢弃】, 换成设计值 η_BF = 90% + rCODYield 的真口径。
+       它唯一的作用是让【结构落地这一步】的基线变动为零。 */
+  const _fRefrac = ((proc && proc.codDissRefracYield != null)
+                    ? proc.codDissRefracYield : PROCESS_DEFAULTS.codDissRefracYield) / 100;
+  //   D8: codDiss_r 日产 ≡ feedMax × codDissRefracYield/100 —— 与 domDaily 同源, 从中切出
+  /* ⚠ 分母必须跟着 codDissYield 走, 不得写死 0.10 ——
+       初版写死时, 用户一改产率, 难降解份额就会跟着漂, 而那不是他改的东西。
+       与 N9b 复位写死 1.00 那次同族: 【凡是"另一个字段的当前值", 都要读, 不能抄】。 */
+  const _codDissYFrac = ((proc && proc.codDissYield != null)
+                         ? proc.codDissYield : PROCESS_DEFAULTS.codDissYield) / 100;
+  const _fB = Math.min(Math.max(1 - _fRefrac / Math.max(_codDissYFrac, 1e-9), 0), 1);
+  const _S = (1 - eta_skim_DOM_sys) * (1 - aopFlowRatio * eta_aopDOM) * (1 - dilutionPerCycle);
+  const _v = 1 - _S;
+  const _w = 1 - _S * (1 - eta_bioDOM);
+  const _den = _v - (1 - _fB) * _w;
+  const _u = (_S > 1e-9 && _den > 1e-9) ? (_fB * _w * _v / _den) : _w;
+  const eta_bfCODb = (_S > 1e-9) ? Math.min(Math.max(1 - (1 - _u) / _S, 0), 1) : eta_bioDOM;
+
+  const codDissBPerCycle = domPerCycle * _fB;
+  const codDissRPerCycle = domPerCycle * (1 - _fB);
+  const R_codB = _S * (1 - eta_bfCODb);
+  const R_codR = _S;                       // D5: rCOD 的 BF 去除项 ≡ 0
+  const codDissBOut = _solveSteady(codDissBPerCycle, R_codB, 'codDiss_b');
+  const codDissROut = _solveSteady(codDissRPerCycle, R_codR, 'codDiss_r');
+  /* D1: 导出面 DOM ≡ codDiss_b + codDiss_r —— 下游契约不变。
+     ⚠ 这里【不再单独解一次总量】: 留着旧式子会变成第二副本, 两边迟早分叉。 */
+  const R_dom = _w;                        // 仅供展示/告警口径, 不再参与稳态求解
+  const domOut = codDissBOut + codDissROut;
 
   // NO3: BF 硝化产生, 反硝化(旁路) + 换水 去除
   // v1.5 修复 (Bug 1): 稳态下 NO3 产生速率 ≈ TAN 产生速率 × 1.0, 不是 × eta_bio
@@ -8739,7 +9264,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eq
   if (_bfSpec && Number.isFinite(_bfSpec.airFlowM3h) && _bfSpec.airFlowM3h > 0
       && Number.isFinite(DO_sat) && DO_sat > 0 && flowData.flowM3h > 1e-9) {
     const _dep = _bfSpec.depth_m || 3;
-    const _alpha = (proc.bfAlpha != null && proc.bfAlpha > 0) ? proc.bfAlpha : 0.85;
+    const _alpha = (proc.bfAlpha != null && proc.bfAlpha > 0) ? proc.bfAlpha : PROCESS_DEFAULTS.bfAlpha;
     const BETA = 0.95, THETA_O2 = 1.024, SOTE_PER_M = 0.012, CS20 = 9.09;
     const RHO_A = (typeof RHO_STD_AIR !== 'undefined') ? RHO_STD_AIR : 1.293;
     const FO2 = (typeof F_O2_MASS !== 'undefined') ? F_O2_MASS : 0.2315;
@@ -8754,7 +9279,7 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eq
     bfDOout = Math.max(s.DO - bfDODrop, 0);                  // pass 1 粗算路径
   }
   s = {...s, id: 'bio', name: '生物滤池', icon: '🦠',
-    desc: `硝化 ${proc.biofilterTAN.toFixed(0)}% · TAN→NO₃⁻ · 粗孔曝气`,
+    desc: `硝化 ${(eta_bio * 100).toFixed(0)}% (由面积算出) · TAN→NO₃⁻ · 粗孔曝气`,
     TAN: s.TAN * (1 - eta_bio),
     TSS: s.TSS * (1 - eta_bioTSS),
     // v1.9.2 修复 (审计 P2): 单节点氮守恒
@@ -9047,6 +9572,22 @@ function simulateWaterQualityProcess(load, flowData, sp, proc, V_systemTotal, eq
   return {
     stages, DO_sat, DO_sat_target, eta_uv_system,
     DO_threshold, CO2_threshold, TAN_threshold, TSS_threshold, isWarmWater: isWarm,
+    /* IRAS_BF1A_COD_SPLIT: 两层浓度与反解出的滤池效率进导出面。
+       ⚠ 旧的 DOM 字段【保持不变】—— 它现在等于 b + r (D1 锁住), 下游契约零改动。 */
+    codDissB: codDissBOut, codDissR: codDissROut,
+    etaBfCODb: eta_bfCODb, codDissBFrac: _fB,
+    /* IRAS_BF1A_AOP_TRANSFER —— §5y 的层间转移接口, 【显式置零】
+       臭氧是【转化】不是矿化: 它把难降解打开变成可降解, rCOD → bCOD 回到滤池。
+       机理有文献支持(FTICR-MS: 臭氧化分解腐殖类, 生成富里酸类与饱和化合物),
+       ⚠ 但【转化率没有任何可核实的数值】。照 N4/D6 先例: 有机理没数值时置零并留痕,
+         凑一个数不是。接口留在这里, 有出处时只改这一个常量。
+       ⚠ 置零【不是遗漏】—— 由判据 D6 锁住: 该值必须为 0, 且必须真的接进 rCOD 的去向,
+         否则日后填了也不生效。 */
+    aopCodTransferRate: 0,
+    /* IRAS_BFN_ETA_FROM_AREA: η 与"该流量下能达到的最低 TAN"进导出面。
+       etaBioRaw 保留【未钳制】值 —— 钳到 1.0 之后就看不出差多远了, 而告警要说清差多远。 */
+    etaBioNitri: eta_bio, etaBioNitriRaw: _bfEta.etaRaw,
+    bfSnMin: _bfEta.snMin, bfCapacityKgD: _bfEta.capacityKgD,
     configWarns,                            // v2.3.3二批: 结构化配置告警 (W0–W3)
     nh3Peak,                                // v2.5 B5: 沿程 NH₃ 峰值节点 (判据 η_bio > η_co2 的自证面)
     bfDOeq, bfO2FromAir,                    // v2.5 IRAS_V25_BF_AERATION: 平衡 DO / 空气实际传入的氧
@@ -9436,15 +9977,53 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // + 盐度修正: 海水抑制硝化菌, 效率随盐度线性下降
   //   f_sal ≈ 1 - 0.01 × S (‰), 即盐度 30‰ 时效率降至 70%
   //   参考: Rusten et al. (2006), Chen et al. (2006), Nijhof & Bovendeur (1990)
-  const vtr20 = (proc.VTR20) / 1000;              // kg/m³·d @20°C
-  const thetaNit = proc.thetaNit;
-  const tempCorrectionNit = Math.pow(thetaNit, stage.tempOpt - 20);
+  /* ══ IRAS_BFN_AREAL_NITRI (2026-08-29) —— 硝化选型由【体积速率】改为【面速率】 ══
+     旧: vtr_T = VTR20 × thetaNit^(T−20) × (1−0.01S);  bioVolume = TAN负荷 / vtr_T
+     新: r     = k × Sn^0.7 × 1.09^(T−10) × (1−0.01S)   [g N/(m²·d)]
+         A     = TAN负荷 × sBio × 1000 / r               [m²]
+         bioVolume = A / PSA                             [m³ 填料净体积]
+     换的是【口径】不是数值: 旧式无浓度项, 见 PROCESS_DEFAULTS 的 IRAS_BFN_AREAL_NITRI 注释。
+     ⚠ 本批【不含】COD 面积 (A_总 = A_硝化 + A_COD 属 BF-A 批) —— 口径切换本身的
+       基线影响必须能唯一归因, 两件一起做就分不清是谁的。
+     ⚠ 盐度修正 (1−0.01S) 与 safetyBio 【都保留】。PLAN_BF_routeB §3.8 的预验证表
+       两项都漏了, 于是预测 0.77–1.07× 而实测 1.10–1.30×; 补回这两项后精确复现实测。
+       ⇒ 预验证表与被验证代码必须用同一套修正项, 否则验的是另一个模型。 */
+  const _arealK   = proc.bfArealK;
+  const _designSn = proc.bfDesignTAN;
+  const _psa      = proc.bfCarrierPSA;
   const sal = stage.salinity || 0;
   const salCorrectionNit = Math.max(1 - 0.01 * sal, 0.3); // 盐度修正, 下限 0.3 (防零)
-  const vtr_T = vtr20 * tempCorrectionNit * salCorrectionNit;  // 实际条件下的 VTR
+  //   ⚠ θ=1.09 参考 10°C —— 与 proc.thetaNit(1.10@20°C) 不是同一个数, 不得混用
+  const _arealRate = bfArealRateOf(proc, stage.tempOpt, sal);   // g N/(m²·d), 单一出口
   // v1.1: tanDaily 是真实日量 (不含 peakFactor), 再乘 sBio 工程裕度
   const bioDesignTAN = load.tanDaily * sBio;             // kg/d
-  const bioVolume = bioDesignTAN / Math.max(vtr_T, 0.01); // m³
+  const bfAreaNitri  = bioDesignTAN * 1000 / _arealRate; // m²
+  /* IRAS_BFA_COD_AREA: 异养面积。bCOD 日负荷本批取【现口径】load.domDaily = feed×0.10
+     (以 mg O₂/L 计, 即溶解性 COD)。BF-1b 换成 LibRAS 的 feedCOD×0.30 (≈3.7×) 时,
+     A_COD 同比放大 —— 那是另一批, 此处不预留系数, 免得变成"填了不生效"。 */
+  const _salrDesign  = bfSALRDesignOf(proc, stage.tempOpt);        // g COD/(m²·d)
+  /* ⚠⚠ IRAS_BF_MODEL_FROZEN (2026-08-29 用户裁决) —— 异养面积【只用于选型】
+       它【不参与氮平衡】: 异养菌长起来会同化氨氮(好氧约 34-35 g N/kg bCOD),
+       本模型不算这一项 ⇒ 硫化负荷被高估, 硫化面积【偏保守约 6-14%】
+       (温水种偏得更多, 因 TAN 强度低)。
+     ⇒ 这是【有意的保守简化】, 不是半截状态。设计工具里滤池算大一点,
+       比算小危险得多。PLAN_BF_routeB §7 的 BF-2/3/4 已裁决不做, 不是待办。
+     ⚠ 若日后改主意要加同化: 必须与异养污泥进 TSS 同批 ——
+       同化掉的氮变成菌体、脱落后被微滤机带走, 它同时是 TAN 的汇、也是固废的源;
+       只做一半会让氮凭空少掉而对应固体不出现 —— 物料平衡开口子。 */
+  const bfAreaCOD    = (load.domDaily || 0) * 1000 / _salrDesign;  // m²
+  const bfAreaTotal  = bfAreaNitri + bfAreaCOD;                    // m²
+  const bioVolume    = bfAreaTotal / Math.max(_psa, 1);            // m³ 填料净体积
+  /* 实际面负荷 —— 与设计约定值不是一回事, 实测各阶段仅 0.7–3.2, 因为硝化面积占大头。
+     D9: 超过 24 必须告警 (厂商手册 K1 曲线上 24 → 89.3%, 已明显偏离平台区)。 */
+  const bfSALRActual = bfAreaTotal > 0 ? (load.domDaily || 0) * 1000 / bfAreaTotal : 0;
+  /* 旧导出面 vtr_T / tempCorrectionNit 仍被下游 (equipment/pid/report) 消费。
+     ⚠ WIP 阶段删掉它们造成过 ReferenceError → allResults 全空 → costPerKg 变 0 → 自检大面积红,
+       症状看着像"算崩了、根因不明", 实际在函数体内 grep 被删变量的残留引用两分钟就能定位。
+     故此处保留, 但改为由面速率【反算的等效值】, 仅供展示, 不参与选型: */
+  const vtr_T = _arealRate * _psa / 1000;                 // kg/m³·d, 等效体积速率
+  const thetaNit = proc.thetaNit;                         // ⚠ 已不参与硝化选型, 仅下游展示
+  const tempCorrectionNit = Math.pow(thetaNit, stage.tempOpt - 20);
 
   // ─── UV 消毒 (慢动力学: 流量法) ─────────────────────────────
   const uvFlow = flowData.flowM3h * proc.uvFlowPct / 100;
@@ -9481,24 +10060,40 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
 
   // ─── 反硝化反应器 (慢动力学: 日量 × safety) ─────────────────
   // VDR 是稳态实测日均反应速率, HRT 数小时缓冲峰值
-  const vdr20 = (proc.VDR20) / 1000;              // kg/m³·d @20°C
+  /* IRAS_DEN_PSA: 原 `const vdr20 = proc.VDR20/1000` 已删 —— VDR20 不再进入任何计算。
+     读取路径仍保留(历史 JSON 往返), 见 U2 的 JSON_ONLY 登记。 */
   const thetaDen = proc.thetaDen;
-  const tempCorrectionDen = Math.pow(thetaDen, stage.tempOpt - 20);
-  const vdr_T = vdr20 * tempCorrectionDen;
+  /* IRAS_BFD_TEMP_CAP (2026-08-30 用户裁决): 与硝化侧同型的封顶, 但用【独立字段】denTempCap。
+     ⚠ 本封顶【只增不减】(温水种池子变大), 是保守方向; 但它不是"保守起见拍的",
+       也【不是文献】—— 反硝化侧无出处, 属裁决。理由与局限见 PROCESS_DEFAULTS.denTempCap 头注。 */
+  const _denCap = (proc && proc.denTempCap != null) ? proc.denTempCap : PROCESS_DEFAULTS.denTempCap;
+  const _tEffDen = Math.min(stage.tempOpt, _denCap);
+  const tempCorrectionDen = Math.pow(thetaDen, _tEffDen - 20);
+  /* IRAS_DEN_PSA: 面速率口径。r [g N/(m²·d)] = k × θ^(ΔT) × 盐度修正(显式置一)
+     A_反硝化 = 设计脱氮量 × 1000 / r   ·   填料体积 = A / PSA
+     ⚠ 默认 k=1.6 / PSA=500 时与切换前的旧式【代数恒等】, 故 IRAS_DEN_PSA 那批基线逐位不变。 */
+  const _denK   = (proc && proc.denArealK    != null) ? proc.denArealK    : PROCESS_DEFAULTS.denArealK;
+  const _denPSA = (proc && proc.denCarrierPSA != null) ? proc.denCarrierPSA : PROCESS_DEFAULTS.denCarrierPSA;
+  const denArealRate = Math.max(_denK * tempCorrectionDen * DEN_SAL_CORRECTION, 1e-6);   // g N/(m²·d)
+  const vdr_T = denArealRate * _denPSA / 1000;   // kg/m³填料·d, 等效体积速率 (IRAS_DEN_PSA: 由面速率反算)
   const denitriFlow = flowData.flowM3h * proc.denitriFlowPct / 100;
   const no3RemovedKgPerDay = denitriFlow * (sim.denitri.inletNO3 || 0) * sim.denitri.removal * 24 / 1000;
   // v1.1: 反硝化负荷 × sDenitri 工程裕度
   const denitriDesignNO3 = no3RemovedKgPerDay * sDenitri; // kg/d
-  const denitriVolume = denitriDesignNO3 / Math.max(vdr_T, 0.01);
+  const denitriArea   = denitriDesignNO3 * 1000 / denArealRate;              // m²
+  const denitriVolume = denitriArea / Math.max(_denPSA, 1);                  // m³ 填料净体积
+  /* 旧导出面 vdr_T 仍被下游(equipment/report)消费, 改为由面速率【反算的等效值】,
+     仅供展示、不参与选型 —— 与 BF-N 对 vtr_T 的处置逐字同型。 */
   // v1.6 (反硝化甲醇工程安全系数):
   //   理论化学计量 1.9 g CH3OH / g NO3-N (McCarty 1969)
   //   Mokhayeri 2008 工业实测 2.47 (含 5-15% 残余甲醇)
   //   实际工程还需含 DO 补偿 (McCarty: + 0.87×DO mg/L 进水), RAS 进水 DO 5-8 mg/L
   //   工程经验典型 3.0-4.0 g/g (Suhr 2014, Tsukuda 2015 — DO 补偿 + 工艺裕度)
   //   iRAS v1.6: methanolDemand = no3 × 2.47 × methanolSafetyFactor
-  //   默认 methanolSafetyFactor = 1.3 → 2.47×1.3 = 3.21 g/g (与文献中位一致)
+  //   IRAS_MEOH_NOSAFETY: 默认改 1.0 → 2.47 g/g。1.3 是双重裕度(2.47 已含 5-15% 残余), 见 PROCESS_DEFAULTS 头注
   //   用户可调 1.0 (实验室理论, 无 DO) ~ 2.0 (高 DO 进水 + 严控运行) 范围
-  const methanolSafety = (proc && proc.methanolSafetyFactor) || 1.3;
+  /* IRAS_MEOH_NOSAFETY: 回落值改指 PROCESS_DEFAULTS, 不再写死字面量 —— 少一份会漂移的副本 */
+  const methanolSafety = (proc && proc.methanolSafetyFactor) || PROCESS_DEFAULTS.methanolSafetyFactor;
   const methanolDemand = no3RemovedKgPerDay * 2.47 * methanolSafety;
 
   // v1.6: 旧 "RDF 排污流量" 概念已删除. 系统级排水量由 sim.discharge.V_m3_d 算出 (V_total × exchangeDaily)
@@ -9568,12 +10163,31 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   // 那些请用下方的 o2ConsumptionDaily / o2ConsumptionDailyAvg。
   const o2Demand = o2PeakSupplyKgH * 24;
 
-  // 液氧实际消耗量(kg/d)—— OPEX / 基准值口径
-  // 液氧是按量计费的消耗品:只有吸收效率会合理放大采购量;
-  // peakFactor(日→小时峰值)与 sAerator(设备老化余量)是容量系数,不得用于消耗品
-  //(参见 calcStageLoad 头部原则:peakFactor 只用于"日→小时峰值",绝不放大日总量)
-  const o2ConsumptionDaily    = isAir ? 0 : (load.o2FishDaily    || 0) / o2AbsEff;  // kg/d,满负荷口径
-  const o2ConsumptionDailyAvg = isAir ? 0 : (load.o2FishDailyAvg || 0) / o2AbsEff;  // kg/d,周期均值口径
+  /* 液氧实际消耗量(kg/d)—— OPEX / 基准值口径
+     液氧是按量计费的消耗品:只有吸收效率会合理放大采购量;
+     peakFactor(日→小时峰值)与 sAerator(设备老化余量)是容量系数,不得用于消耗品
+     (参见 calcStageLoad 头部原则:peakFactor 只用于"日→小时峰值",绝不放大日总量)
+
+     ══ v2.6 IRAS_V26_LOX_BF — 生物滤池水侧耗氧计入液氧采购 (用户裁决 2026-08-26) ══
+     【原缺陷】选型口径 o2PeakSupplyKgH 含 o2BFFromWaterPeakKgH (BF 耗氧中由水供的那份),
+       而采购口径只有 o2FishDaily ⇒ **氧锥按「鱼 + MBBR」选, 液氧按「只有鱼」买**。
+       纯氧系统里水中溶氧是液氧供的, MBBR 从水里取走多少就得补多少 ⇒ 必须计费。
+       裁决原话:「液氧供给谁, 就都要算」。
+     【为什么乘 bfFromWaterFrac 而不是整个 o2BFDaily】
+       MBBR 鼓风机那股风自己会传进一部分氧 (sim.bfO2FromAir), 那部分是【空气来的, 免费】;
+       只有差额才由水供、才动用液氧。该份额由 bfAlpha 决定 ——
+       ⇒ 这也是 bfAlpha 此前【对成本零影响】的原因: 它只改选型不改采购, 链条在此断开。
+     【口径对齐】满负荷用 o2BFDaily, 均值用 o2BFDailyAvg (L6512 已有, 无需新建);
+       两者共用同一个 _bfFromWaterFrac —— 无量纲份额, 不随峰/均变。
+     ⚠ isAir 时仍为 0: 空气曝气系统不买液氧, BF 水侧氧亏由池内曝气补, 与本项无关。
+     ⚠ 同族前科: L1815 记 co2DailyAvg「设计口径已修而日均口径未跟上」——
+       同一物理量两处实现, 一处改了另一处没跟上。本次是它的镜像:
+       **选型口径含 BF 而采购口径不含**。故两个口径必须【同批同式】改, 不留单边;
+       M3b 断言把两侧绑死, 任一侧单边改动即刻转红。 */
+  const _bfLoxDaily    = (load.o2BFDaily    || 0) * _bfFromWaterFrac;
+  const _bfLoxDailyAvg = (load.o2BFDailyAvg || 0) * _bfFromWaterFrac;
+  const o2ConsumptionDaily    = isAir ? 0 : ((load.o2FishDaily    || 0) + _bfLoxDaily)    / o2AbsEff;  // kg/d,满负荷口径
+  const o2ConsumptionDailyAvg = isAir ? 0 : ((load.o2FishDailyAvg || 0) + _bfLoxDailyAvg) / o2AbsEff;  // kg/d,周期均值口径
 
   /* ══ v2.6 IRAS_V26_VENT_FAN — 车间通风机 KV-1003 ══
      恒温恒湿车间【本身就是机械通风的】, 机械通风车间同理 ⇒ 两档都计;
@@ -9879,6 +10493,10 @@ function calcEquipmentSpec(load, flowData, proc, sim, stage) {
   return {
     // 慢动力学设备 (基于日量 × safety)
     rdfFlow, bioVolume, bioDesignTAN,
+    /* IRAS_BFN_AREAL_NITRI: 面积与面速率进导出面 —— 判据 N1/N2 要用, 且下游需要
+       "多大面积"这个新的一等量。⚠ 新增导出面若无人消费会被 C8 死负载棘轮抓住。 */
+    bfAreaNitri, bfAreaCOD, bfAreaTotal, bfSALRActual, bfSALRDesign: _salrDesign,
+    bfArealRate: _arealRate, bfCarrierPSA: _psa, bfDesignSn: _designSn,
     /* v2.5 修正: BF 池总容积(空床) —— 供 EBCT 判据使用。
        此前 EBCT 用 bioVolume(填料【净】体积) 当分子, 而 EBCT 的定义是
        Empty Bed Contact Time, 分子必须是【空床】即反应器容积。
@@ -11960,6 +12578,17 @@ function loadStagesFromDB(key) {  // v2.2 IRAS_V22_SKIPCLIMATE_REMOVED: opts.ski
      clamp   是【模型接受范围】。二者当前取并集, 故通常相等;
      若将来需要"UI 收窄、模型仍接受历史方案里的旧值", clamp 可比 min/max 宽。 */
 const FIELD_SPEC = {
+  /* ══ IRAS_AOPQ_SPEC (2026-08-30) —— aopFlowPct 补进规格表 ══
+     此前它【根本不在 FIELD_SPEC 里】: tooltip 写「范围 3-15」, UI 输入框只有写死的 step="1"
+     (无 min/max), readProc 里又是写死的 getNumClamped(..., 0, 50)。
+     ⇒ 一个字段三个区间, 互不相干, 且 defsync 对它【0 次提及】—— 完全不在覆盖面内。
+     ⚠ 与 G0-G4 记的 co2IndoorLimit_ppm(UI min=800 vs 代码下钳 600 分居两处) 同族,
+       且更糟: 那个至少两处都在, 这个连规格表都没进。
+     ⚠ 偏偏落在"支配难降解层稳态"的那个参数上 (遗留 4)。
+     ⇒ clamp 沿用原来的 [0,50]【一位不改】, 只是把它从代码字面量搬进规格表,
+       UI 改走 fieldSpecAttrs ⇒ 本字段第一次进入 defsync 与 single_source 的覆盖面。
+       数值行为不变(number 输入的 min/max 不钳制程序赋值, readProc 的 clamp 照旧)。 */
+  aopFlowPct:                 { min: 3,      max: 15,     step: 1,      clamp: [0, 50] },
   aopDOMRemoval:              { min: 0,      max: 20,     step: 1,      clamp: [0, 100] },
   aopHRT_min:                 { min: 1,      max: 30,     step: 0.5,    clamp: [1, 30] },
   bfFillRatio:                { min: 20,     max: 75,     step: 5,      clamp: [20, 80] },
@@ -11968,6 +12597,17 @@ const FIELD_SPEC = {
   bfDepth:                    { min: 2,      max: 6,      step: 0.5,    clamp: [1.5, 8] },
   bfDOMin:                    { min: 2,      max: 8,      step: 0.5,    clamp: [1, 12] },
   bfAlpha:                    { min: 0.5,    max: 1,      step: 0.05,   clamp: [0.3, 1] },
+  /* IRAS_BFN_AREAL_NITRI —— 硝化面速率三件套 */
+  bfArealK:                   { min: 0.30,   max: 1.20,   step: 0.01,   clamp: [0.05, 3] },
+  bfDesignTAN:                { min: 0.2,    max: 2.0,    step: 0.1,    clamp: [0.05, 5] },
+  bfCarrierPSA:               { min: 200,    max: 1200,   step: 50,     clamp: [50, 2000] },
+  bfArealTempCap:             { min: 20,     max: 30,     step: 1,      clamp: [10, 40] },
+  bfSALRDesign:               { min: 5,      max: 25,     step: 1,      clamp: [1, 100] },
+  bfSALRTheta:                { min: 1.00,   max: 1.10,   step: 0.01,   clamp: [1, 1.2] },
+  bfSALRRefTemp:              { min: 5,      max: 25,     step: 1,      clamp: [0, 40] },
+  tssYield:                   { min: 20,     max: 40,     step: 1,      clamp: [5, 80] },
+  codDissYield:               { min: 5,      max: 20,     step: 0.5,    clamp: [1, 50] },
+  codDissRefracYield:         { min: 0.05,   max: 1.0,    step: 0.01,   clamp: [0, 5] },
   bfCo2Approach:              { min: 0,      max: 1,      step: 0.05,   clamp: [0, 1] },
   /* v2.2 IRAS_V22_CLAMP_HARD_BOUND: clamp 下限 30 来自【消费处硬约束】
      Math.max(η/100, 0.3), 非 UI 范围 ——
@@ -12059,6 +12699,11 @@ const FIELD_SPEC = {
   VDR20:                      { min: 500,    max: 1200,   step: 10,     clamp: [50, 2000] },
   thetaNit:                   { min: 1.06,   max: 1.12,   step: 0.01,   clamp: [1, 1.2] },
   thetaDen:                   { min: 1.05,   max: 1.10,   step: 0.01,   clamp: [1, 1.2] },
+  /* IRAS_BFD_TEMP_CAP: 口径与 bfArealTempCap 一致, 但【是两个字段】—— 见 PROCESS_DEFAULTS 头注 */
+  denTempCap:                 { min: 20,     max: 30,     step: 1,      clamp: [10, 40] },
+  /* IRAS_DEN_PSA: 与硝化侧 bfArealK / bfCarrierPSA 同型, 但【是另一套字段】—— 两侧动力学体系不同 */
+  denArealK:                  { min: 0.8,    max: 3.0,    step: 0.1,    clamp: [0.2, 6] },
+  denCarrierPSA:              { min: 200,    max: 1200,   step: 10,     clamp: [100, 2000] },
   // 水化学
   alkTarget:                  { min: 100,    max: 200,    step: 5,      clamp: [20, 400] },
   alkSource:                  { min: 50,     max: 200,    step: 5,      clamp: [0, 400] },
@@ -12237,14 +12882,14 @@ function readStageProcFromInputs(idx, fallbackProc) {
   return {
     // v1.5.1 (B45): 百分比字段钳到 [0, 100]
     rdfTSS: getNumClamped('rdfTSS', fallbackProc.rdfTSS, 0, 100),
-    biofilterTAN: getNumClamped('biofilterTAN', fallbackProc.biofilterTAN, 0, 100),
+    /* biofilterTAN 已停用为输入 (IRAS_BFN_ETA_FROM_AREA), 历史 JSON 里的该键在此被忽略 */
     uvDose: getNum('uvDose', fallbackProc.uvDose),  // mJ/cm², 工程量
     // v1.5.1 (B45): 旁路流量比钳到 [0, 50] (单个旁路超 50% 已不合理)
     uvFlowPct: getNumClamped('uvFlowPct', fallbackProc.uvFlowPct, 0, 50),
     denitriFlowPct: getNumClamped('denitriFlowPct', fallbackProc.denitriFlowPct, 0, 50),
     denitriEff: getNumClamped('denitriEff', fallbackProc.denitriEff, 0, 100),
     // v1.6: 甲醇工程安全系数 (1.0=理论, 1.3=默认, 2.0=超保守)
-    methanolSafetyFactor: getNum('methanolSafetyFactor', fallbackProc.methanolSafetyFactor || 1.3),
+    methanolSafetyFactor: getNum('methanolSafetyFactor', fallbackProc.methanolSafetyFactor || PROCESS_DEFAULTS.methanolSafetyFactor),
     // v1.6: rdfBackwash 字段已删除 (反冲泵随 RDF 出厂, 不影响系统级排污)
     // v1.6: RDF 集水池 HRT 开放为可调参数 (默认 0.5 min, 范围 0.1-5)
     rdfHRT_min: getNum('rdfHRT_min', fallbackProc.rdfHRT_min || 0.5),
@@ -12273,10 +12918,24 @@ function readStageProcFromInputs(idx, fallbackProc) {
     bfAirFlux: getNumClamped('bfAirFlux', fallbackProc.bfAirFlux != null ? fallbackProc.bfAirFlux : 10, 2, 20),
     bfDepth:   getNumClamped('bfDepth',   fallbackProc.bfDepth   != null ? fallbackProc.bfDepth   : 3, 1.5, 8),
     bfDOMin:   getNumClamped('bfDOMin',   fallbackProc.bfDOMin   != null ? fallbackProc.bfDOMin   : 4, 1, 12),
-    bfAlpha:   getNumClamped('bfAlpha',   fallbackProc.bfAlpha   != null ? fallbackProc.bfAlpha   : 0.85, 0.3, 1),
-    bfCo2Approach: getNumClamped('bfCo2Approach', fallbackProc.bfCo2Approach != null ? fallbackProc.bfCo2Approach : 0.23, 0, 1),
+    bfAlpha:   getNumClamped('bfAlpha',   fallbackProc.bfAlpha   != null ? fallbackProc.bfAlpha   : PROCESS_DEFAULTS.bfAlpha, 0.3, 1),
+    /* IRAS_BFN_AREAL_NITRI —— clamp 与 FIELD_SPEC 同值, 见该表 */
+    bfArealK:     getNumClamped('bfArealK',     fallbackProc.bfArealK     != null ? fallbackProc.bfArealK     : PROCESS_DEFAULTS.bfArealK,     0.05, 3),
+    bfDesignTAN:  getNumClamped('bfDesignTAN',  fallbackProc.bfDesignTAN  != null ? fallbackProc.bfDesignTAN  : PROCESS_DEFAULTS.bfDesignTAN,  0.05, 5),
+    bfCarrierPSA: getNumClamped('bfCarrierPSA', fallbackProc.bfCarrierPSA != null ? fallbackProc.bfCarrierPSA : PROCESS_DEFAULTS.bfCarrierPSA, 50, 2000),
+    bfArealTempCap: getNumClamped('bfArealTempCap', fallbackProc.bfArealTempCap != null ? fallbackProc.bfArealTempCap : PROCESS_DEFAULTS.bfArealTempCap, 10, 40),
+    bfSALRDesign:  getNumClamped('bfSALRDesign',  fallbackProc.bfSALRDesign  != null ? fallbackProc.bfSALRDesign  : PROCESS_DEFAULTS.bfSALRDesign,  1, 100),
+    bfSALRTheta:   getNumClamped('bfSALRTheta',   fallbackProc.bfSALRTheta   != null ? fallbackProc.bfSALRTheta   : PROCESS_DEFAULTS.bfSALRTheta,   1, 1.2),
+    bfSALRRefTemp: getNumClamped('bfSALRRefTemp', fallbackProc.bfSALRRefTemp != null ? fallbackProc.bfSALRRefTemp : PROCESS_DEFAULTS.bfSALRRefTemp, 0, 40),
+    tssYield: getNumClamped('tssYield', fallbackProc.tssYield != null ? fallbackProc.tssYield : PROCESS_DEFAULTS.tssYield, 5, 80),
+    codDissYield: getNumClamped('codDissYield', fallbackProc.codDissYield != null ? fallbackProc.codDissYield : PROCESS_DEFAULTS.codDissYield, 1, 50),
+    codDissRefracYield: getNumClamped('codDissRefracYield', fallbackProc.codDissRefracYield != null ? fallbackProc.codDissRefracYield : PROCESS_DEFAULTS.codDissRefracYield, 0, 5),
+    bfCo2Approach: getNumClamped('bfCo2Approach', fallbackProc.bfCo2Approach != null ? fallbackProc.bfCo2Approach : PROCESS_DEFAULTS.bfCo2Approach, 0, 1),
     thetaNit: getNum('thetaNit', fallbackProc.thetaNit),
     thetaDen: getNum('thetaDen', fallbackProc.thetaDen),
+    denArealK: getNumClamped('denArealK', fallbackProc.denArealK != null ? fallbackProc.denArealK : PROCESS_DEFAULTS.denArealK, 0.2, 6),
+    denCarrierPSA: getNumClamped('denCarrierPSA', fallbackProc.denCarrierPSA != null ? fallbackProc.denCarrierPSA : PROCESS_DEFAULTS.denCarrierPSA, 100, 2000),
+    denTempCap: getNumClamped('denTempCap', fallbackProc.denTempCap != null ? fallbackProc.denTempCap : PROCESS_DEFAULTS.denTempCap, 10, 40),
     o2DOMfactor: getNum('o2DOMfactor', fallbackProc.o2DOMfactor != null ? fallbackProc.o2DOMfactor : 0.10),
     // v1.1.1: 鱼生理耗氧系数. 用户留空 → null, 让 calcStageLoad 走"公式自动算"路径
     o2FishFactor: (function() {
@@ -12311,7 +12970,7 @@ function readStageProcFromInputs(idx, fallbackProc) {
     ozoneDose: getNum('ozoneDose', fallbackProc.ozoneDose),
     aopEnabled: getBool('aopEnabled', fallbackProc.aopEnabled),
     // v1.5.1 (B45): AOP 旁路流量比钳到 [0, 50]
-    aopFlowPct: getNumClamped('aopFlowPct', fallbackProc.aopFlowPct, 0, 50),
+    aopFlowPct: getNumClamped('aopFlowPct', fallbackProc.aopFlowPct, FIELD_SPEC.aopFlowPct.clamp[0], FIELD_SPEC.aopFlowPct.clamp[1]),   // IRAS_AOPQ_SPEC: 钳制值改指规格表, 不再写死
     // v1.7.x: AOP 臭氧投加剂量 (g O3/m³), 钳到工程范围 [0.1, 3.0]
     //   暂未加 UI 输入 (v1.8 任务), 当前从 PROCESS_DEFAULTS 取默认 0.5
     aopO3Dose_gm3: getNumClamped('aopO3Dose_gm3', fallbackProc.aopO3Dose_gm3 != null ? fallbackProc.aopO3Dose_gm3 : 0.5, 0.1, 3.0),
@@ -12452,12 +13111,14 @@ function renderStageBlock(idx, stage) {
       <div data-common><label class="text-[10px] text-cyan-400">循环倍数(次/h)</label><input data-stage="${idx}" data-field="turnover" type="number" step="0.5" value="${stage.turnover||2}" class="stg-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-cyan-400" title="换水率 (%/d, v1.1: 按系统总水体 V_total = 鱼池+工艺)&#10;例: 5%/d 表示每天换 V_total × 5% 的水量&#10;v1.1 改为行业标准口径 (Timmons 2010 / 国家海水鱼体系), v1.0 是按鱼池水体&#10;0 = 零换水 (闭式系统, 仅靠反硝化/AOP 处理)&#10;⚠️ 影响仅靠换水稀释的参数 (NO₃/Geosmin/DOM 无对应处理设备时), 浓度比 v1.0 算的低 ~37%">换水率(%/d)</label><input data-stage="${idx}" data-field="exchangeDaily" type="number" step="0.5" min="0" value="${stage.exchangeDaily != null ? stage.exchangeDaily : 5}" class="stg-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="微滤机 TSS 去除率 (%)&#10;范围: 60-85&#10;默认: 75&#10;含义: RDF 单次通过对 TSS 去除率, 60-80μm 筛网典型 70-80%&#10;何时调: 筛目细→调高, 低密度场→可降" for="f_${idx}_rdfTSS">微滤TSS↓(%)</label><input id="f_${idx}_rdfTSS" data-proc-stage="${idx}" data-proc-field="rdfTSS" type="number" step="1" value="${stage.proc.rdfTSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-common><label class="text-[10px] text-slate-400" title="生物滤池单次硝化效率 (%)&#10;范围: 50-80&#10;默认: 70&#10;含义: MBBR/MBF 单次通过对 TAN 去除率&#10;何时调: MBBR 用 60-75, 固定膜 70-80, 海水/低温→降" for="f_${idx}_biofilterTAN">BF硝化↓(%)</label><input id="f_${idx}_biofilterTAN" data-proc-stage="${idx}" data-proc-field="biofilterTAN" type="number" step="1" value="${stage.proc.biofilterTAN}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <!-- IRAS_BFN_ETA_FROM_AREA: biofilterTAN 输入框已移除 —— η 由滤池面积算出, 是输出不是输入。
+           有意【不留只读框】: 只读框会让人以为还能配, 且会再次落进 U2「字段在读取路径却无 UI」的灰区。
+           算出的 η 显示在设备清单页与报告 (bf.tanEff); 不可行时由 stageWarns 显式报出。 -->
       <div data-common><label class="text-[10px] text-slate-400" title="UV 剂量 (mJ/cm²)&#10;范围: 20-60&#10;默认: 40&#10;含义: 紫外线杀菌剂量&#10;何时调: ≥30杀菌, ≥40灭活病毒, ≥60灭活孢子" for="f_${idx}_uvDose">UV剂量(mJ/cm²)</label><input id="f_${idx}_uvDose" data-proc-stage="${idx}" data-proc-field="uvDose" type="number" ${fieldSpecAttrs('uvDose')} value="${stage.proc.uvDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="UV 旁路流量比 (%)&#10;范围: 5-20&#10;默认: 10&#10;含义: 占循环总流量&#10;何时调: 健康场 10, 病害防控 15-20" for="f_${idx}_uvFlowPct">UV Q比(%)</label><input id="f_${idx}_uvFlowPct" data-proc-stage="${idx}" data-proc-field="uvFlowPct" type="number" step="1" value="${stage.proc.uvFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="反硝化支路流量比 (%)&#10;范围: 0-20 (设 0 表示无反硝化)&#10;默认: 2&#10;含义: 占循环总流量&#10;何时调: 严控 NO₃⁻→15-20" for="f_${idx}_denitriFlowPct">反硝化Q比(%)</label><input id="f_${idx}_denitriFlowPct" data-proc-stage="${idx}" data-proc-field="denitriFlowPct" type="number" step="1" value="${stage.proc.denitriFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="反硝化单次去除率 (%)&#10;范围: 60-90&#10;默认: 80&#10;含义: 反硝化反应器单次通过 NO₃⁻ 去除率&#10;何时调: C/N 比足够 + 缺氧好→90, 低温→降" for="f_${idx}_denitriEff">反硝化↓(%)</label><input id="f_${idx}_denitriEff" data-proc-stage="${idx}" data-proc-field="denitriEff" type="number" step="1" value="${stage.proc.denitriEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="甲醇工程安全系数&#10;范围: 1.0-2.0&#10;默认: 1.3 (中位, Suhr 2014 / Tsukuda 2015 RAS 实际)&#10;含义: 在化学计量 2.47 g/g NO₃-N 之上的工程裕度&#10;公式: 甲醇 = NO₃ 去除量 × 2.47 × methanolSafetyFactor&#10;1.0 = 实验室理论 (无 DO 进水, 仅 5-15% 残余)&#10;1.3 = 默认 (含 DO 补偿+ 运行裕度, 2.47×1.3 = 3.21 g/g)&#10;1.5 = 高 DO 进水 (反硝化支路 DO  for="f_${idx}_methanolSafetyFactor"> 8 mg/L)&#10;2.0 = 严控防 NO₃ 积累 (超保守)&#10;影响 OPEX 甲醇 (典型占 OPEX 0.5-1%, 即使翻倍 OPEX 总变化 < 0.5%)">甲醇裕度</label><input id="f_${idx}_methanolSafetyFactor" data-proc-stage="${idx}" data-proc-field="methanolSafetyFactor" type="number" ${fieldSpecAttrs('methanolSafetyFactor')} value="${stage.proc.methanolSafetyFactor != null ? stage.proc.methanolSafetyFactor : PROCESS_DEFAULTS.methanolSafetyFactor}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="甲醇工程安全系数&#10;范围: 1.0-2.0&#10;⚠ 默认 1.0 = 【不加额外裕度】(IRAS_MEOH_NOSAFETY 2026-08-30 用户裁决)&#10;理由: Mokhayeri 2008 的 2.47 已含 5-15% 残余甲醇, 再乘 1.3 是把裕度算两遍; 且过量甲醇变成残余 COD, 不是纯粹保守&#10;含义: 在化学计量 2.47 g/g NO₃-N 之上的工程裕度&#10;公式: 甲醇 = NO₃ 去除量 × 2.47 × methanolSafetyFactor&#10;1.0 = 实验室理论 (无 DO 进水, 仅 5-15% 残余)&#10;1.3 = 旧默认 (2.47×1.3 = 3.21 g/g, 已撤销 —— 曾使外部对标锚点 24/24 工况超上限约 7%)&#10;1.5 = 高 DO 进水 (反硝化支路 DO  for="f_${idx}_methanolSafetyFactor"> 8 mg/L)&#10;2.0 = 严控防 NO₃ 积累 (超保守)&#10;影响 OPEX 甲醇 (典型占 OPEX 0.5-1%, 即使翻倍 OPEX 总变化 < 0.5%)">甲醇裕度</label><input id="f_${idx}_methanolSafetyFactor" data-proc-stage="${idx}" data-proc-field="methanolSafetyFactor" type="number" ${fieldSpecAttrs('methanolSafetyFactor')} value="${stage.proc.methanolSafetyFactor != null ? stage.proc.methanolSafetyFactor : PROCESS_DEFAULTS.methanolSafetyFactor}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="RDF 集水池 HRT (min)&#10;范围: 0.3-2.0&#10;默认: 0.5 (中位, 兼顾紧凑与缓冲)&#10;含义: 微滤机出水集水池的水力停留时间, 决定 V_RDF = Q × HRT/60&#10;0.3 = 紧凑型 (YUTANK/Hydrotech 工业实测 18s, 转鼓+一体化集水)&#10;0.5 = 中位 (含小型缓冲), iRAS v1.6 默认&#10;1-2 = 大型项目 (含外置缓冲池, 设计院传统做法)&#10;影响: 仅 V_total / V_process / 稀释项, 不影响 RDF 设备规格" for="f_${idx}_rdfHRT_min">RDF HRT(min)</label><input id="f_${idx}_rdfHRT_min" data-proc-stage="${idx}" data-proc-field="rdfHRT_min" type="number" ${fieldSpecAttrs('rdfHRT_min')} value="${stage.proc.rdfHRT_min != null ? stage.proc.rdfHRT_min : PROCESS_DEFAULTS.rdfHRT_min}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400">增氧方式</label><select data-proc-stage="${idx}" data-proc-field="aerationMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="o2" ${stage.proc.aerationMode==='o2'?'selected':''}>纯氧 (≥30 kg/m³)</option><option value="air" ${stage.proc.aerationMode==='air'?'selected':''}>空气曝气 (&lt;30)</option></select></div>
       <div data-common data-aeration-o2 data-aeration-o2-allow><label class="text-[10px] text-slate-400" title="DO 目标饱和度 (%)&#10;范围: 95-180&#10;默认: 130 (空气模式锁95)&#10;含义: 增氧后水中 DO 饱和度&#10;何时调: 鲑165, 海水温水140, 温水淡水110-125, 罗非/对虾100-115" for="f_${idx}_o2SatTarget">DO 目标(%)</label><input id="f_${idx}_o2SatTarget" data-proc-stage="${idx}" data-proc-field="o2SatTarget" type="number" ${fieldSpecAttrs('o2SatTarget')} value="${stage.proc.o2SatTarget != null ? stage.proc.o2SatTarget : PROCESS_DEFAULTS.o2SatTarget}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -12470,8 +13131,36 @@ function renderStageBlock(idx, stage) {
       <div data-common><label class="text-[10px] text-slate-400" title="pH 控制策略 (v1.9 新增)&#10;持碱度: 你设碱度目标, pH 由碳酸盐平衡自然涌现 (正向)&#10;持目标 pH: 你设目标 pH, 工具反推所需碱度设定值 (反向)&#10;典型用法: 大型海水 RAS 用'持目标 pH', 淡水中小项目用'持碱度'">pH控制</label><select data-proc-stage="${idx}" data-proc-field="pHControlMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="alk" ${(stage.proc.pHControlMode)==='alk'?'selected':''}>持碱度</option><option value="ph" ${stage.proc.pHControlMode==='ph'?'selected':''}>持目标 pH</option></select></div>
       <div data-common><label class="text-[10px] text-slate-400" title="目标 pH (free/浓度标度) — 仅'持目标 pH'模式生效&#10;工具反求需要的碱度设定值, 在稳态 CO₂ 下维持此 pH&#10;典型: 淡水 6.8-7.2, 海水 7.5-7.9, 三文鱼 7.0-7.5&#10;注意: pH<6.5 硝化效率骤降, pH for="f_${idx}_pHTarget">8.0 NH3 占比过高">目标 pH</label><input id="f_${idx}_pHTarget" data-proc-stage="${idx}" data-proc-field="pHTarget" type="number" ${fieldSpecAttrs('pHTarget')} value="${stage.proc.pHTarget!=null?stage.proc.pHTarget : PROCESS_DEFAULTS.pHTarget}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="源水碱度 (mg/L CaCO₃)&#10;范围: 50-200&#10;默认: 100&#10;含义: 源水/补水碱度&#10;何时调: 海水多 150-200, 软水 50-80" for="f_${idx}_alkSource">源水碱度(mg/L)</label><input id="f_${idx}_alkSource" data-proc-stage="${idx}" data-proc-field="alkSource" type="number" ${fieldSpecAttrs('alkSource')} value="${stage.proc.alkSource}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="标准 VTR @ 20°C, 单位 g TAN/(m³·d) [= 0.001 × kg/(m³·d)]&#10;范围: 300-800 g/(m³·d) = 0.3-0.8 kg/(m³·d)&#10;默认: 500 = 0.5 kg/(m³·d)&#10;含义: 生物滤池 20°C 淡水基准 TAN 去除速率&#10;手册第 10.2 节用 kg/(m³·d), UI 用 g/(m³·d) 便于输入大数&#10;何时调: MBBR 高比表面积 600-800, 普通 K1 400-600" for="f_${idx}_VTR20">VTR₂₀ g/(m³·d)</label><input id="f_${idx}_VTR20" data-proc-stage="${idx}" data-proc-field="VTR20" type="number" ${fieldSpecAttrs('VTR20')} value="${stage.proc.VTR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="标准 VDR @ 20°C (g/m³·d)&#10;范围: 500-1200&#10;默认: 800&#10;含义: 反硝化反应器 20°C 基准 NO₃⁻ 去除速率&#10;何时调: 固定床 600-1000, 流化床 1000-1200" for="f_${idx}_VDR20">VDR₂₀(g/m³·d)</label><input id="f_${idx}_VDR20" data-proc-stage="${idx}" data-proc-field="VDR20" type="number" ${fieldSpecAttrs('VDR20')} value="${stage.proc.VDR20}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <!-- ══ IRAS_R26_RETIRED_INPUT_UI (2026-08-30): VTR20 输入框已移除 ══
+           实测(改造 probe_input_effect): VTR20 500→800 与 500→50(16×) 对全产出面的差异
+           都只有 4 项, 且全是输入自身的回显 stage.proc.VTR20 —— 零下游影响。
+           正对照 bfCarrierPSA 500→800 差异 568 项。
+           ⚠ 三层口径此前不一致, 而错的正好是唯一那层用户会看见的:
+             速查表(L3703)写"保留仅为兼容历史方案 JSON" ✅ ·
+             PROCESS_DEFAULTS 注释(L4907)也知道 ✅ ·
+             【UI 输入框照常可编辑, tooltip 还在教"何时调: MBBR 高比表面积 600-800"】❌
+           ⇒ L4907 判断"VTR20 的处境与'填了不生效'不同"—— 成立的部分是【读】
+             (反序列化历史 JSON 确实要能读进来), 不成立的部分是【写】: 兼容读取
+             不需要在界面上摆一个可编辑框、再配一段调参指导。两件事被当成一件事了。
+           ⇒ 读取路径【故意保留】(readStageProcFromInputs 的 getNum 在 DOM 元素缺失时
+             回落 fallbackProc, 历史 JSON 的值照常往返), 与 biofilterTAN 不同 ——
+             后者是彻底停用, 连读都不读。由自检 N3b 静态锁住"不得再有输入框"。 -->
+      <!-- IRAS_DEN_PSA (2026-08-30): VDR20 输入框已移除 —— 体积速率口径已由面速率取代。
+           与 VTR20 同处置: 停写不停读(历史方案 JSON 往返), 按 U2 登记 JSON-only, 由 N3b 锁住。 -->
+      <div><label class="text-[10px] text-slate-400" title="反硝化面速率系数 k [g NO₃-N/(m²·d)] @20°C&#10;默认: 1.6&#10;范围: 0.8-3.0&#10;&#10;r = k × θ_den^(min(T,上限)−20) × 盐度修正&#10;A_反硝化 = 设计脱氮量 × 1000 / r&#10;填料体积 = A / 载体比表面&#10;&#10;⚠⚠ 【本值没有任何出处】: 它是从已停用的旧体积口径继承下来的历史值, 不是标定值也不是文献值。&#10;旧体积口径已从系统删除(用户 2026-08-30 裁定), 因此【不能拿它给本值背书】。&#10;⇒ 本值的正确身份是【待标定的默认值】, 与 BF面速率k / COD设计面负荷 / 异养菌耗氧系数 同档 —— 有本场实测请直接改本框。&#10;同理"反硝化载体比表面"默认 500(K1) 是一个【选择】, 不是实测。&#10;&#10;⚠ 与硝化侧不同, 本式【没有浓度项】: 反硝化侧流 NO₃-N 实测 20-25 mg/L, 远高于半饱和常数, 处在零级区。&#10;照搬硝化那边的 Sn^0.7 是把两个体系混起来用。" for="f_${idx}_denArealK">反硝化面速率k</label><input id="f_${idx}_denArealK" data-proc-stage="${idx}" data-proc-field="denArealK" type="number" ${fieldSpecAttrs('denArealK')} value="${stage.proc.denArealK != null ? stage.proc.denArealK : PROCESS_DEFAULTS.denArealK}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="反硝化载体比表面 PSA (m²/m³)&#10;默认: 500 (K1)&#10;范围: 200-1200&#10;&#10;常见型号: K1 500 · K3 350 · K5 800&#10;填料体积 = A_反硝化 / PSA&#10;&#10;⚠ 本参数此前【不在模型里】—— 被吸收进 VDR20 的体积口径, 所以换载体型号从来不影响反硝化池体积。&#10;IRAS_DEN_PSA 拆出后, 换型号第一次会真实影响选型。&#10;&#10;⚠ 与硝化侧的 bfCarrierPSA 是【两个字段】: 两池可以用不同载体, 且两侧动力学体系不同。" for="f_${idx}_denCarrierPSA">反硝化载体比表面</label><input id="f_${idx}_denCarrierPSA" data-proc-stage="${idx}" data-proc-field="denCarrierPSA" type="number" ${fieldSpecAttrs('denCarrierPSA')} value="${stage.proc.denCarrierPSA != null ? stage.proc.denCarrierPSA : PROCESS_DEFAULTS.denCarrierPSA}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="硝化面速率系数 k [g N/(m²·d)]&#10;默认: 0.58&#10;范围: 0.30-1.20&#10;&#10;r = k × Sn^0.7 × 1.09^(T−10) × (1−0.01S)&#10;A_硝化 = TAN日负荷 × safetyBio / r&#10;填料体积 = A_硝化 / 载体比表面&#10;&#10;【分档依据】按上游处理程度分 0.40/0.47/0.53/0.58 —— BOD 越高, 异养菌抢占越多生物膜, 留给硝化菌的越少, 表观 k 越低。RAS 经转鼓+蛋分后 BOD 极低, 默认取最高档 0.58。&#10;&#10;⚠⚠ 【0.58 那一档的原文条件是 with chemical precipitation(带化学除磷), RAS 不满足】&#10;  ⇒ 取这一档是【工程外推】, 不是有 RAS 出处的值。&#10;  用户 2026-08-30 裁定: 仍以 0.58 作为默认, 但它是【可调的默认值】, 不是模型常量。&#10;  ⇒ 有本场实测时请直接改本框; 无实测时请把由此得出的滤池尺寸当【量级】看。&#10;⚠ 换算前先核三件事(PLAN_A0 第 1 问): ①参考水温是不是 10 °C ②配的 θ 是不是 1.09&#10;  ③反解时池内 TAN 是多少 —— 三者任一不同就不是同一个 k, 不可直接填入。&#10;  v2.6 在这里栽过一次: 拿 NTNU 体系的 0.6-0.7@15 °C 去质疑厂商手册体系, 结论是错的。&#10;&#10;⚠⚠ 【0.58 的前提是两个等大池串联分级】: 一号池吃掉 &gt;95% bCOD, 二号池几乎只做硝化。若改成单池混合, 异养菌与硝化菌争面积, k 必须下调 —— 且 BF-A 批要加的 COD 面积会与 k 分档构成双重计算。&#10;&#10;⚠ 这是本模型对滤池尺寸【最大的那个杠杆】: k 减半, 体积翻倍。&#10;形式 r = k·S^n 见 Ødegaard / Rusten et al. 2006。" for="f_${idx}_bfArealK">BF面速率k</label><input id="f_${idx}_bfArealK" data-proc-stage="${idx}" data-proc-field="bfArealK" type="number" ${fieldSpecAttrs('bfArealK')} value="${stage.proc.bfArealK != null ? stage.proc.bfArealK : PROCESS_DEFAULTS.bfArealK}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="设计目标池内 TAN 浓度 Sn (mg/L)&#10;默认: 0.5&#10;范围: 0.2-2.0&#10;&#10;含义: 「要把池内 TAN 控制在这个值以下, 需要多大滤池」—— 这是【设计输入】, 不是运行实测值。&#10;&#10;⚠ 【不要填告警阈值】: 库内的 TAN 告警线是冷水 1.0 / 温水 3.0 mg/L。拿它当 Sn 等于按「池内 TAN 刚好顶到告警线」选池, 冷水种体积会掉到 0.70×, 温水种更小 —— 而旧模型注释自记 VTR20=500 已经「偏乐观、池可能偏小」。0.5 是偏保守的工程选择。&#10;&#10;⚠ 本模型【不迭代】: 面积→η→稳态 TAN→Sn 严格说是闭环, 此处取设计目标值直接算, 不反解。理由是设计院问的是前者, 且 Sn^0.7 非线性无解析解, 迭代要引入收敛护栏。&#10;实际运行 TAN 更低时速率更慢, 但那时负荷也更低 ⇒ 天然保守。" for="f_${idx}_bfDesignTAN">BF设计TAN</label><input id="f_${idx}_bfDesignTAN" data-proc-stage="${idx}" data-proc-field="bfDesignTAN" type="number" ${fieldSpecAttrs('bfDesignTAN')} value="${stage.proc.bfDesignTAN != null ? stage.proc.bfDesignTAN : PROCESS_DEFAULTS.bfDesignTAN}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="载体比表面 PSA (m²/m³)&#10;默认: 500 (K1)&#10;范围: 200-1200&#10;&#10;常见型号: K1 500 · K3 350 · K5 800&#10;填料体积 = A_硝化 / PSA&#10;&#10;⚠ 本参数此前【不在模型里】—— 它被吸收进 VTR20 (g TAN/m³填料·d) 那个体积口径里了, 所以换载体型号从来不影响体积。改面速率口径后 PSA 成为一等输入, 换型号第一次会真实影响选型。&#10;&#10;⚠ PSA 与填充率 bfFillRatio 是两回事: PSA 决定【多少填料】, 填充率决定【多大池子装这些填料】。" for="f_${idx}_bfCarrierPSA">载体比表面</label><input id="f_${idx}_bfCarrierPSA" data-proc-stage="${idx}" data-proc-field="bfCarrierPSA" type="number" ${fieldSpecAttrs('bfCarrierPSA')} value="${stage.proc.bfCarrierPSA != null ? stage.proc.bfCarrierPSA : PROCESS_DEFAULTS.bfCarrierPSA}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="硝化温度修正上限 °C&#10;默认: 25&#10;范围: 20-30&#10;&#10;超过此温度不再做 θ=1.09 的外推, 按本值取值。&#10;&#10;【出处】MBBR 厂商设计手册 Ed.2 原文: &quot;recommended not to correct the loading rate above 20-25 °C&quot;。原文给的是【区间】不是单点, 故开为输入, 默认取上端 25。&#10;&#10;⚠ 为什么必须封顶: θ 是经验外推系数, 超出标定域继续外推没有依据。不封顶时 30°C 的速率会被高估 1.54 倍, 滤池相应算小 —— 且【只影响温水种】, 冷水种一点不动。&#10;实测: shrimp 30°C 1.539× · tilapia/eel 28°C 1.295× · grouper 27°C 1.188× · mandarin 26°C 1.090×&#10;&#10;⚠ 调高本值等于恢复外推, 应有明确的实测依据。" for="f_${idx}_bfArealTempCap">硝化温度上限</label><input id="f_${idx}_bfArealTempCap" data-proc-stage="${idx}" data-proc-field="bfArealTempCap" type="number" ${fieldSpecAttrs('bfArealTempCap')} value="${stage.proc.bfArealTempCap != null ? stage.proc.bfArealTempCap : PROCESS_DEFAULTS.bfArealTempCap}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="COD 设计面负荷 SALR g COD/(m²·d)&#10;默认: 12&#10;范围: 5-25&#10;&#10;A_COD = bCOD 日负荷 × 1000 / SALR&#10;A_总 = A_硝化 + A_COD&#10;填料体积 = A_总 / PSA&#10;&#10;⚠⚠ 这是【分配面积用的约定值, 不是滤池实际见到的面负荷】。实测各阶段实际只有 0.7-3.2 g COD/(m²·d) —— 因为硝化面积占了大头。把 12 当成运行工况去理解是错的。&#10;&#10;【为什么另加这块面积不算重复计算】k=0.58 是按上游处理程度分档的最高档, 前提是 BOD 低。两池串联下一号池吃掉 &gt;95% bCOD, 二号池才配得上 0.58; 一号池偏乐观, 这块面积就是补它的。⚠ 前提是【分级】—— 改单池混合则两者真重复, k 必须下调。&#10;&#10;⚠⚠ 【量级旁证的口径订正 2026-08-30 IRAS_SALR_UNITS】&#10;  外部工程口径给的是「有机物 SALR 典型 5-25 g BOD/(m²·d)」—— 单位是 BOD, 不是 COD。&#10;  而本字段是 g COD/(m²·d), 喂进去的是 bCOD 日负荷。&#10;  若该 BOD 指 BOD₅, 按 Metcalf & Eddy 的 bCOD ≈ 1.6 × BOD₅ 折算 ⇒ 约 8-40 g COD/(m²·d),&#10;  ⇒ 12 落在【下端】, 不是「中位」。方向上偏保守(SALR 取小 ⇒ COD 面积算大), 不危险,&#10;    但此前记的「落在中位」是错的。&#10;  ⚠ 折算系数 1.6 本身是个约定; 且那份资料写的是 BOD 还是 BOD₅ 并未确认。&#10;    ⇒ 这条只能当【量级旁证】, 不能当出处。&#10;  用户 2026-08-30 裁定: 仍以 12 作为默认。它是【可调的默认值】, 不是模型常量。" for="f_${idx}_bfSALRDesign">COD设计面负荷</label><input id="f_${idx}_bfSALRDesign" data-proc-stage="${idx}" data-proc-field="bfSALRDesign" type="number" ${fieldSpecAttrs('bfSALRDesign')} value="${stage.proc.bfSALRDesign != null ? stage.proc.bfSALRDesign : PROCESS_DEFAULTS.bfSALRDesign}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="异养温度系数 θ_h&#10;默认: 1.06&#10;范围: 1.00-1.10&#10;&#10;SALR_T = SALR × θ_h^(min(T, 温度上限) − T_ref)&#10;&#10;【出处】MBBR 厂商设计手册 Ed.2 §5.1.2「有机物去除·温度」原文: r_T = r_10 · θ^(T−10), θ = 1.06 (10-20 °C) · θ = 1.07 (5-10 °C), 并注明 &quot;recommended not to temperature-correct the loading rate above 20-25 °C&quot;。&#10;⇒ 这是【好氧异养有机物去除的 θ 本身】, 不是从别处借来的代用值。&#10;&#10;⚠ 残留缺口: θ 只声明到 20 °C, 而温度上限取 25 ⇒ 20→25 这一段是外推。硝化侧手册明写 &quot;maximum of 25 °C&quot;, 有机物侧只写 &quot;20-25&quot;, 本模型取的是区间上端。&#10;&#10;⚠ 本值与 COD 参考温度是【一对】, 必须同时改。" for="f_${idx}_bfSALRTheta">COD温度系数θ</label><input id="f_${idx}_bfSALRTheta" data-proc-stage="${idx}" data-proc-field="bfSALRTheta" type="number" ${fieldSpecAttrs('bfSALRTheta')} value="${stage.proc.bfSALRTheta != null ? stage.proc.bfSALRTheta : PROCESS_DEFAULTS.bfSALRTheta}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="θ_h 的参考温度 °C&#10;默认: 10&#10;范围: 5-25&#10;&#10;⚠ 同样【无出处】。θ_h = 1.00 时本值不生效 —— 这是预期行为, 不是死参数: 它与 θ_h 是一对, 必须同时标定。&#10;⚠ 不要单独改本值而不动 θ_h, 那不会有任何效果。" for="f_${idx}_bfSALRRefTemp">COD参考温度</label><input id="f_${idx}_bfSALRRefTemp" data-proc-stage="${idx}" data-proc-field="bfSALRRefTemp" type="number" ${fieldSpecAttrs('bfSALRRefTemp')} value="${stage.proc.bfSALRRefTemp != null ? stage.proc.bfSALRRefTemp : PROCESS_DEFAULTS.bfSALRRefTemp}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="TSS 产率 (占饲料 %)&#10;默认: 30&#10;范围: 20-40&#10;&#10;日产 TSS = 饲料 × 本值。&#10;&#10;⚠ 本值直接决定【TSS 强度】外部锥点: 该锥点 ≡ 本值×1000 g/kg, 区间 250-350 ⇒ 本值超出 25-35% 会被它拦下。&#10;开成输入之前它写死 0.30, 那条锥点恒等于 300.0、永远绿、从未判定过任何东西。&#10;&#10;⚠ 本值影响微滤机/蛋分选型与固废产量, 改它会动基线。" for="f_${idx}_tssYield">TSS产率</label><input id="f_${idx}_tssYield" data-proc-stage="${idx}" data-proc-field="tssYield" type="number" ${fieldSpecAttrs('tssYield')} value="${stage.proc.tssYield != null ? stage.proc.tssYield : PROCESS_DEFAULTS.tssYield}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="溶解 COD 总产率 (占饲料 %)&#10;默认: 10&#10;范围: 5-20&#10;&#10;日产溶解 COD = 饲料 × 本值。其中难降解那一份由【难降解COD产率】单独给定, 剩下的是可降解那一层。&#10;&#10;⚠ 本值与【异养菌耗氧系数 o2DOMfactor】同为 0.10 是巧合, 两者物理对象不同: 本值是【溶解态 COD】(进水质稳态), o2DOMfactor 是【残饼粪便分解耗氧】(进氧平衡)。改一个不会动另一个。&#10;&#10;⚠ 曾考虑换成废物矩阵口径(鱼排泄+残饼的 COD 分流), 核完原文后发现那套矩阵【不存在每 kg 饲料一个常数】—— 净产生量随投喂率在 0.103-0.250 之间变, 且需要饲料与鱼体的 COD 成分(现库里都没有)。故维持 10% 口径, 只把它开成输入。&#10;&#10;⚠ 本值直接决定【DOM 强度】外部锥点: 该锥点 ≡ 本值×1000 g/kg, 区间 80-120 ⇒ 本值超出 8-12% 会被它拦下。" for="f_${idx}_codDissYield">溶解COD产率</label><input id="f_${idx}_codDissYield" data-proc-stage="${idx}" data-proc-field="codDissYield" type="number" ${fieldSpecAttrs('codDissYield')} value="${stage.proc.codDissYield != null ? stage.proc.codDissYield : PROCESS_DEFAULTS.codDissYield}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="难降解溶解 COD 产率 (占饲料 %)&#10;默认: 0.18&#10;范围: 0.05-1.0&#10;&#10;溶解 COD 拆两层: 可降解 codDiss_b (滤池+蛋分+AOP+换水都去除) / 难降解 codDiss_r (滤池不去除)。本值决定难降解那一份的日产量 = 饲料 × 本值。&#10;&#10;⚠⚠ 【0.18% 是反推出来的, 不是实测】: 它由「关蛋分工况稳态要落在 30 mg/L」反解得到。⇒ 【不得】拿"关蛋分工况对上文献区间"当作模型验证通过 —— 那是用被标定量去验证标定结果 (循环验证)。&#10;&#10;⚠ 结构拆分批 (BF-1a) 内, 本值只决定 b/r 的切分比例, 由滤池效率反解抵消, 基线逐位不变;它真正开始影响数值是在下一批 (bCOD 产生量换成废物矩阵口径)。&#10;&#10;调大 ⇒ 更多 COD 归入难降解 ⇒ 滤池管不着的那部分变多。" for="f_${idx}_codDissRefracYield">难降解COD产率</label><input id="f_${idx}_codDissRefracYield" data-proc-stage="${idx}" data-proc-field="codDissRefracYield" type="number" ${fieldSpecAttrs('codDissRefracYield')} value="${stage.proc.codDissRefracYield != null ? stage.proc.codDissRefracYield : PROCESS_DEFAULTS.codDissRefracYield}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+
+
       <div><label class="text-[10px] text-slate-400" title="MBBR 填料填充率 (%)&#10;范围: 30-70&#10;默认: 50 (Rusten 2006 工程惯例)&#10;含义: 填料净体积占池总容积比例&#10;影响: 决定 BF 池总容积 V_BF = bioVolume / fillRatio&#10;V_BF/bioVolume 比值:&#10;  50% → 2.00&#10;  60% → 1.67&#10;  70% → 1.43&#10;何时调:&#10;  K1/K3 标准填料: 50%&#10;  高密度装填 (国内某些低成本项目): 60-65%&#10;  低密度均匀曝气: 35-40%" for="f_${idx}_bfFillRatio">BF填充率(%)</label><input id="f_${idx}_bfFillRatio" data-proc-stage="${idx}" data-proc-field="bfFillRatio" type="number" ${fieldSpecAttrs('bfFillRatio')} value="${stage.proc.bfFillRatio != null ? stage.proc.bfFillRatio : PROCESS_DEFAULTS.bfFillRatio}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="MBBR 流化空气通量 m³/(h·m² 池底)&#10;默认: 10&#10;范围: 2-20&#10;&#10;【出处】Norsk Vann 168/2009 导则原文: 为保证良好混合, 供气量不应低于 10-15 m³/h·m² 池底 (随载体而定)。&#10;⇒ 10-15 是【下限区间】, 不是典型值。&#10;&#10;【次级参考】Aquacultural Engineering 实测: 表观气速低于 5 m/h 时 TAN 去除率下降 —— 那是性能劣化点, 导则的 10-15 在其上留了余量。&#10;&#10;⚠ 本值直接决定风机选型与 MBBR 内 DO。低于 10 会出提示性告警。&#10;⚠ 表观气速不是合格的放大准则: 同一通量下深池比浅池所需能量更高, 本模型未修正。" for="f_${idx}_bfAirFlux">BF流化通量</label><input id="f_${idx}_bfAirFlux" data-proc-stage="${idx}" data-proc-field="bfAirFlux" type="number" ${fieldSpecAttrs('bfAirFlux')} value="${stage.proc.bfAirFlux != null ? stage.proc.bfAirFlux : PROCESS_DEFAULTS.bfAirFlux}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="MBBR 池水深 m&#10;默认: 3&#10;范围: 2-6&#10;&#10;三处同源: ①池底面积 = V_BF / 水深 → 决定流化风量; ②气液平衡 DO (中点压力修正); ③风机压力 = 水深×9.81 kPa + 15 kPa 管损。&#10;&#10;⚠ v2.5 前风机压力硬编码 50 kPa (≈5 m 水柱), 与 3 m 默认水深自相矛盾, 现已单源化。" for="f_${idx}_bfDepth">BF池水深(m)</label><input id="f_${idx}_bfDepth" data-proc-stage="${idx}" data-proc-field="bfDepth" type="number" ${fieldSpecAttrs('bfDepth')} value="${stage.proc.bfDepth != null ? stage.proc.bfDepth : PROCESS_DEFAULTS.bfDepth}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
@@ -12481,10 +13170,18 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-slate-400" title="生物滤池对溶解性 COD 的【单程】去除率 %&#10;默认: 2.5&#10;范围: 0-20&#10;&#10;⚠ 这是【单程】值, 而水一天过 60-144 次。50%/程 会把稳态压到 1.8-2.6 mg/L, 比文献低 20 倍。&#10;&#10;【标定依据】DTU Aqua 淡水虹鳟中试 RAS 实测溶解态 COD = 35.6 mg O₂/L; 反推可复现该值的单程去除率约 2.6%。&#10;实测扫描(关蛋分): 2%→45-63 · 2.5%→36-50 · 5%→18-26 · 10%→9-13 · 50%→1.8-2.6 mg/L&#10;&#10;【为什么比 biofilterTAN(70%) 小 30 倍】TAN 在一级动力学区, 生物膜远未吃饱; 而溶解性 COD 大部分是难降解组分, 易降解的很快吃光, 剩下的过多少次都不动。&#10;⇒ 不是滤池效率低, 是底物大部分吃不动。&#10;&#10;【与蛋分对照】蛋分系统级 = 旁路 20% × 单程 40% = 8%/程, 同口径可直接比; MBBR 约为其 1/3。&#10;&#10;⚠ 本值是【可降解占比 × 可降解部分去除率】的乘积, 属等效值。拆成 bCOD/rCOD 两层已排入大批次。" for="f_${idx}_bfDOMEff">BF溶解COD去除%</label><input id="f_${idx}_bfDOMEff" data-proc-stage="${idx}" data-proc-field="bfDOMEff" type="number" ${fieldSpecAttrs('bfDOMEff')} value="${stage.proc.bfDOMEff != null ? stage.proc.bfDOMEff : PROCESS_DEFAULTS.bfDOMEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-emerald-300" title="钙用量口径&#10;默认: 自动&#10;&#10;自动 — 海水(盐度&gt;0)按 Riley &amp; Tongudai 1967 的海水恒定比例反推; 淡水(盐度=0)用下方钙硬度默认值&#10;手动 — 一律使用下方钙硬度输入值&#10;&#10;⚠ v2.5 前淡水 Ca 恒为 0 ⇒ 方解石饱和度 Ω 直接算不出, 四个淡水鱼种(罗非/加州鲈/鳜/鳗)全场 n/a &#10;⚠ 海水反推经文献核对: Ca_RT67(35) 给 412 mg/L Ca²⁺, 与典型海水约 400 mg/L 吻合, 故海水档行为不变。" for="f_${idx}_caMode">钙口径</label><select id="f_${idx}_caMode" data-proc-stage="${idx}" data-proc-field="caMode" class="stg-proc-select input-ind !py-1 !text-xs"><option value="auto" ${stage.proc.caMode!=="manual"?"selected":""}>自动(海水反推)</option><option value="manual" ${stage.proc.caMode==="manual"?"selected":""}>手动指定</option></select></div>
       <div><label class="text-[10px] text-slate-400" title="钙硬度 mg/L as CaCO₃&#10;默认: 90 (中等硬度地下水)&#10;范围: 0-500&#10;&#10;工程上钙硬度本就是常测项, 试剂盒读数即此单位。换算: 钙硬度 = [Ca²⁺] × 2.497&#10;&#10;【USGS 硬度分级】0-60 软水 / 61-120 中等 / 121-180 硬水 / &gt;180 极硬&#10;【水产目标区间 SRAC 464】游离钙 40-100 mg/L 即钙硬度 100-250; 100 mg/L 游离钙恰与鱼血钙浓度相当&#10;【Boyd】养殖上一般希望硬度 &gt; 50 (鱼) / &gt; 80 (甲壳类)&#10;&#10;⚠ 淡水 Ω 目前只可用于【定性判断欠饱和/过饱和方向】: 低离子强度的活度修正尚未实现, 按浓度算的 Ω 会高估约 2 倍。海水不受影响。" for="f_${idx}_caHardness">钙硬度(CaCO₃)</label><input id="f_${idx}_caHardness" data-proc-stage="${idx}" data-proc-field="caHardness" type="number" ${fieldSpecAttrs('caHardness')} value="${stage.proc.caHardness != null ? stage.proc.caHardness : PROCESS_DEFAULTS.caHardness}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="硝化温度修正系数&#10;范围: 1.06-1.12&#10;默认: 1.10&#10;含义: Arrhenius θ, 温度每变 10°C VTR 按 θ^(ΔT/10) 倍变&#10;何时调: 一般不调" for="f_${idx}_thetaNit">θ_nit</label><input id="f_${idx}_thetaNit" data-proc-stage="${idx}" data-proc-field="thetaNit" type="number" ${fieldSpecAttrs('thetaNit')} value="${stage.proc.thetaNit}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <!-- ══ IRAS_R26_RETIRED_INPUT_UI (2026-08-30): thetaNit 输入框已移除 ══
+           比 VTR20 更隐蔽: 实测 thetaNit 1.10→1.02 有 8 项差异, 其中 eq.tempCorrectionNit
+           0.4665→0.8535 是真的变了 —— 而它自 L9875 起就"已不参与硝化选型, 仅下游展示"。
+           该值又被界面告警直接引用("硝化温度修正因子 0.47× — 生物滤池容积需求显著放大"),
+           于是用户调参数、界面数字真的会变、他确认"生效了", 而滤池体积一位不动。
+           ⇒ 【有反馈, 但反馈的量已不指代任何东西】—— 比"调了没反应"更难发现。
+           告警与色阶已改读 bfTempFactorApplied(真 θ=1.09 + 封顶), 见该函数头注。
+           读取路径同 VTR20 保留 (历史 JSON 往返), 由自检 N3b 锁住。 -->
       <div><label class="text-[10px] text-slate-400" title="反硝化温度修正系数&#10;范围: 1.05-1.10&#10;默认: 1.08&#10;含义: 反硝化的 Arrhenius θ&#10;何时调: 一般不调" for="f_${idx}_thetaDen">θ_den</label><input id="f_${idx}_thetaDen" data-proc-stage="${idx}" data-proc-field="thetaDen" type="number" ${fieldSpecAttrs('thetaDen')} value="${stage.proc.thetaDen}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="反硝化温度修正上限 °C&#10;默认: 25&#10;范围: 20-30&#10;&#10;超过此温度不再做 θ_den 的外推, 按本值取值。&#10;&#10;⚠⚠ 【本值没有出处 —— 是工程裁决, 不是文献】&#10;硝化侧的 25 出自 MBBR 厂商设计手册明写的 &quot;maximum of 25 °C&quot;; 有机物侧手册只声明到 20; 【反硝化侧手册什么都没说】。&#10;用户 2026-08-30 裁定反硝化也封 25, 理由是方向保守(池子算大不算小)且与另两侧口径一致。&#10;&#10;⚠ 为什么必须封顶: 不封顶时 θ_den 一路外推, 温水种反硝化池被算小 —— 实测 shrimp 30°C 小 32% · tilapia/eel 28°C 小 21% · grouper 27°C 小 14%; 冷水种一点不动。&#10;&#10;⚠ 与硝化温度上限是【两个独立字段】: 三个 25 来源不同(手册明写 / 外推 / 裁决), 共用一个字段会让它们看起来是同一个事实。拿到反硝化中试数据时只改本值。" for="f_${idx}_denTempCap">反硝化温度上限</label><input id="f_${idx}_denTempCap" data-proc-stage="${idx}" data-proc-field="denTempCap" type="number" ${fieldSpecAttrs('denTempCap')} value="${stage.proc.denTempCap != null ? stage.proc.denTempCap : PROCESS_DEFAULTS.denTempCap}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="鱼【生理】耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.18-0.45&#10;默认: 自动 (o2BaseFactor × Q10^((tempOpt−metabRefTemp)/10))&#10;含义: 清水条件下鱼本身的代谢耗氧, 物种实测值&#10;&#10;⚠ 池内实际耗氧 = 本值 + TSS 依赖的池内异养附加&#10;   (悬浮固体上附着的异养菌在池内直接耗氧, 同样由氧锥供给)&#10;   附加量随鱼池 TSS 上升, 见全局参数 o2TssSlope&#10;何时调: 极端品种或新种时手填; 留空恢复自动" for="f_${idx}_o2FishFactor">鱼生理耗氧</label><input id="f_${idx}_o2FishFactor" data-proc-stage="${idx}" data-proc-field="o2FishFactor" type="number" ${fieldSpecAttrs('o2FishFactor')} placeholder="自动" value="${(stage.proc.o2FishFactor!=null && !isNaN(stage.proc.o2FishFactor)) ? stage.proc.o2FishFactor : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="异养菌耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.05-0.20&#10;默认: 0.10&#10;含义: 残饵+粪便分解耗氧, 由 BF 风机供应&#10;何时调: 优化场→0.08, 鳗鱼/对虾→0.15-0.20" for="f_${idx}_o2DOMfactor">异养菌耗氧</label><input id="f_${idx}_o2DOMfactor" data-proc-stage="${idx}" data-proc-field="o2DOMfactor" type="number" ${fieldSpecAttrs('o2DOMfactor')} value="${stage.proc.o2DOMfactor != null ? stage.proc.o2DOMfactor : PROCESS_DEFAULTS.o2DOMfactor}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="异养菌耗氧系数 (kg O₂/kg 饲料)&#10;范围: 0.05-0.20&#10;默认: 0.10&#10;含义: 残饵+粪便分解耗氧, 由 BF 风机供应&#10;何时调: 优化场→0.08, 鳗鱼/对虾→0.15-0.20&#10;&#10;⚠⚠ 【出处强度 2026-08-30 复核 · IRAS_O2DOM_SCOPE】&#10;  现出处是一条【扣减链】: 商业 RAS 系统总氧 0.5 − 鱼生理 0.25 − 硝化 0.14 ≈ 0.11。&#10;  ✓ 不是自证: 0.25 取自文献区间下端(非 iRAS 自算的 0.20-0.32),&#10;    0.14 = TAN≈feed×0.03(经验产率) × 4.57(化学计量, 普适)。两个减项都不来自本模型。&#10;  ⚠ 但【单一来源】: 0.5 只出自一个大型陆基三文鱼场的设计文件。&#10;  ⚠⚠ 而且【这条链只标定了冷水种那一档】: 0.5 是三文鱼场的数;&#10;    iRAS 自算全物种 0.60-0.66 高于它, 差在 o2FishFactor 按物种到 0.22-0.40(对虾 0.40)。&#10;    ⇒ 下面写的「对虾/鳗鱼粉料场 0.15-0.20」【没有实测支撑, 是推断】。&#10;  ⇒ 残差不确定度 = 0.5 与两个减项三者不确定度之和, 不是 0.11 本身的精度。&#10;  用户 2026-08-30 裁定: 仍以 0.10 作为 UI 默认。它是【可调的默认值】, 不是模型常量。&#10;  待补: 异养分项的直接实测, 或另 1-2 个场的总氧+拆分。(遗留 24)" for="f_${idx}_o2DOMfactor">异养菌耗氧</label><input id="f_${idx}_o2DOMfactor" data-proc-stage="${idx}" data-proc-field="o2DOMfactor" type="number" ${fieldSpecAttrs('o2DOMfactor')} value="${stage.proc.o2DOMfactor != null ? stage.proc.o2DOMfactor : PROCESS_DEFAULTS.o2DOMfactor}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="源水 TSS (mg/L)&#10;范围: 0-50&#10;默认: 10&#10;含义: 源水悬浮物含量&#10;何时调: 清洁井水 5-10, 地表/海水 20-50" for="f_${idx}_sourceSS">源水SS(mg/L)</label><input id="f_${idx}_sourceSS" data-proc-stage="${idx}" data-proc-field="sourceSS" type="number" ${fieldSpecAttrs('sourceSS')} value="${stage.proc.sourceSS}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="源水 pH&#10;范围: 6.5-8.5&#10;默认: 7.5&#10;含义: 源水/补水 pH&#10;何时调: 按水质实测" for="f_${idx}_sourcePH">源水pH</label><input id="f_${idx}_sourcePH" data-proc-stage="${idx}" data-proc-field="sourcePH" type="number" ${fieldSpecAttrs('sourcePH')} value="${stage.proc.sourcePH}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       
@@ -12521,9 +13218,9 @@ function renderStageBlock(idx, stage) {
       <div><label class="text-[10px] text-slate-400" title="臭氧投加率 (g O₃/g 饲料)&#10;范围: 0.005-0.015&#10;默认: 0.010&#10;含义: 蛋分臭氧投加比&#10;何时调: 海水严控≤0.010, 淡水可0.012-0.015" for="f_${idx}_ozoneDose">O₃投加率(g/g饲料)</label><input id="f_${idx}_ozoneDose" data-proc-stage="${idx}" data-proc-field="ozoneDose" type="number" ${fieldSpecAttrs('ozoneDose')} value="${stage.proc.ozoneDose}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-common><label class="text-[10px] text-slate-400" title="AOP 高级氧化启用/停用">AOP启用</label><select data-proc-stage="${idx}" data-proc-field="aopEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.aopEnabled?'selected':''}>启用</option><option value="false" ${!stage.proc.aopEnabled?'selected':''}>停用</option></select></div>
       <div><label class="text-[10px] text-slate-400" title="AOP 类型 (v1.1.2 新增)&#10;集成型: UV+O3 一体反应器 (ULTRAAQUA 等), HRT 1-3 min&#10;分体型: O3 接触池 + UV 反应器, HRT 5-10 min (大型项目)&#10;切换会自动重置 HRT 默认值">AOP 类型</label><select data-proc-stage="${idx}" data-proc-field="aopType" class="stg-proc-select input-ind !py-1 !text-xs"><option value="integrated" ${(stage.proc.aopType)==='integrated'?'selected':''}>集成型 (UV+O3一体)</option><option value="separated" ${stage.proc.aopType==='separated'?'selected':''}>分体型 (O3+UV分体)</option></select></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP 旁路流量比 (%)&#10;范围: 3-15&#10;默认: 5&#10;含义: 占循环总流量&#10;何时调: 土腥味重→10-15" for="f_${idx}_aopFlowPct">AOP Q比(%)</label><input id="f_${idx}_aopFlowPct" data-proc-stage="${idx}" data-proc-field="aopFlowPct" type="number" step="1" value="${stage.proc.aopFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP 旁路流量比 (%)&#10;范围: 3-15&#10;默认: 5&#10;含义: 占循环总流量&#10;何时调: 土腥味重→10-15&#10;&#10;⚠⚠ 【本值没有文献出处】 —— v1.1 引入至今是工程占位值, 不是实测也不是标定。&#10;⚠ BF-1a 落地后它已【支配难降解 DOM 层的稳态浓度】(关蛋分工况下 AOP 占该层去除的 82%),&#10;  即它从"影响一个小设备尺寸"变成了"决定一条稳态的位置", 而出处没跟着变。&#10;⇒ 取得出处或中试数据前, 任何依赖本值得出的难降解层结论只能当【量级估计】。(遗留 4)" for="f_${idx}_aopFlowPct">AOP Q比(%)</label><input id="f_${idx}_aopFlowPct" data-proc-stage="${idx}" data-proc-field="aopFlowPct" type="number" ${fieldSpecAttrs('aopFlowPct')} value="${stage.proc.aopFlowPct}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="AOP geosmin 去除率 (%)&#10;范围: 85-95&#10;默认: 90&#10;含义: 单次对 geosmin/2-MIB (土腥味) 去除率&#10;何时调: 设备工艺决定, 一般不调" for="f_${idx}_aopGeosminEff">AOP geosmin↓(%)</label><input id="f_${idx}_aopGeosminEff" data-proc-stage="${idx}" data-proc-field="aopGeosminEff" type="number" step="1" value="${stage.proc.aopGeosminEff}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div><label class="text-[10px] text-slate-400" title="AOP DOM 去除率 (%)&#10;范围: 5-15&#10;默认: 5 (保守)&#10;含义: 单次对总 DOM 去除率 (v1.1 修复 v1.0 误用 90%)&#10;何时调: 优化 AOP 系统→10-15" for="f_${idx}_aopDOMRemoval">AOP DOM↓(%)</label><input id="f_${idx}_aopDOMRemoval" data-proc-stage="${idx}" data-proc-field="aopDOMRemoval" type="number" ${fieldSpecAttrs('aopDOMRemoval')} value="${stage.proc.aopDOMRemoval != null ? stage.proc.aopDOMRemoval : PROCESS_DEFAULTS.aopDOMRemoval}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div><label class="text-[10px] text-slate-400" title="AOP DOM 去除率 (%)&#10;范围: 5-15&#10;默认: 5 (保守)&#10;含义: 单次对总 DOM 去除率 (v1.1 修复 v1.0 误用 90%)&#10;何时调: 优化 AOP 系统→10-15&#10;&#10;⚠⚠ 【本值没有文献出处】 —— v1.1 引入至今是工程占位值, 不是实测也不是标定。&#10;⚠ BF-1a 落地后它已【支配难降解 DOM 层的稳态浓度】(关蛋分工况下 AOP 占该层去除的 82%),&#10;  即它从"影响一个小设备尺寸"变成了"决定一条稳态的位置", 而出处没跟着变。&#10;⇒ 取得出处或中试数据前, 任何依赖本值得出的难降解层结论只能当【量级估计】。(遗留 4)" for="f_${idx}_aopDOMRemoval">AOP DOM↓(%)</label><input id="f_${idx}_aopDOMRemoval" data-proc-stage="${idx}" data-proc-field="aopDOMRemoval" type="number" ${fieldSpecAttrs('aopDOMRemoval')} value="${stage.proc.aopDOMRemoval != null ? stage.proc.aopDOMRemoval : PROCESS_DEFAULTS.aopDOMRemoval}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div><label class="text-[10px] text-slate-400" title="AOP 反应池 HRT (min)&#10;集成型默认: 2 (UV+O3一体反应器, ULTRAAQUA 等)&#10;分体型默认: 8 (O3接触池+UV分体, 大型项目)&#10;依据: Schrader 2010 实测 1 min 接触, geosmin 去除 86-92%&#10;切换 AOP 类型时自动重置默认, 用户可手动微调" for="f_${idx}_aopHRT_min">AOP HRT(min)</label><input id="f_${idx}_aopHRT_min" data-proc-stage="${idx}" data-proc-field="aopHRT_min" type="number" ${fieldSpecAttrs('aopHRT_min')} value="${stage.proc.aopHRT_min != null ? stage.proc.aopHRT_min : ((stage.proc.aopType)==='separated'?8:2)}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <!-- ══ v2.3.3五批 IRAS_V233_AIR_DESIGN_PT — 空气曝气【设计工况点】════════
            一对对称的设计输入, 只在 air 模式生效 (o2 模式灰显; CO₂ 目标另需关塔)。
@@ -12540,7 +13237,7 @@ function renderStageBlock(idx, stage) {
       <div data-aeration-air><label class="text-[10px] text-amber-300" title="池内设计 DO (mg/L)&#10;留空 = 取鱼种 DOmin (安全下限)&#10;⚠ DOmin 是【安全下限】不是设计目标 —— 用下限选型等于零裕量&#10;工程上通常设计在 5-7 mg/L, 高于最低允许值留出投饵高峰/水温波动的余地&#10;影响: 驱动力 = (DO饱和 − 设计DO)/DO饱和; 设计 DO 越高 → 驱动力越小 → 风量越大&#10;⚠ 与循环流量无关 (池内曝气拓扑: 传质=耗氧稳态)&#10;⚠ 逼近 DO 饱和值时驱动力趋零、风量发散 (饱和值随温度/盐度变, 见设备卡片)" for="f_${idx}_designDO_mgL">设计DO(mg/L)</label><input id="f_${idx}_designDO_mgL" data-proc-stage="${idx}" data-proc-field="designDO_mgL" type="number" ${fieldSpecAttrs('designDO_mgL')} placeholder="留空=DOmin" value="${stage.proc.designDO_mgL != null ? stage.proc.designDO_mgL : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-aeration-air data-air-stripoff-only><label class="text-[10px] text-amber-300" title="池内设计 CO₂ (mg/L)&#10;留空 = 取鱼种安全阈值 (淡水温水 30 / 冷水档 / 海水×0.75)&#10;⚠ 阈值是【安全上限】, 工程上通常按其 60-80% 设计留裕量&#10;仅在【空气曝气 + 关塔】时参与选型 (开塔时 CO₂ 走塔, 与曝气风量无关)&#10;风量 = CO₂日产×安全系数 /(亨利载量×本值×逼近系数)/24&#10;⚠ 与循环流量无关 (算式不含流量)&#10;调小 → 池水更干净但风量与电耗上升; 调大 → 省风机但逼近阈值" for="f_${idx}_co2TargetMgL">设计CO₂(mg/L)</label><input id="f_${idx}_co2TargetMgL" data-proc-stage="${idx}" data-proc-field="co2TargetMgL" type="number" ${fieldSpecAttrs('co2TargetMgL')} placeholder="留空=阈值" value="${stage.proc.co2TargetMgL != null ? stage.proc.co2TargetMgL : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div data-aeration-air><label class="text-[10px] text-amber-300" title="曝气盘阻 + 管路阻 (kPa)&#10;默认: 10 (盘 5 + 管 5)&#10;K-101 风压 = 9.81 × 池深 + 本值&#10;⚠ 盘阻随盘型跨一个数量级: 低阻膜盘 2.2-4.8 · 常规微孔/刚玉盘 3.5-5 · 纳米管等高阻型需 30-50&#10;管路 ≤50 m 取 5; 过长或弯头多取 8-10&#10;出处: 罗茨风机厂家选型口径 (管路默认 5 + 曝气盘默认 5)&#10;⚠ 待产业校准项 —— 选定盘型后应据厂家阻力曲线覆盖本值" for="f_${idx}_tankAirDiffuserLoss_kPa">盘阻+管阻(kPa)</label><input id="f_${idx}_tankAirDiffuserLoss_kPa" data-proc-stage="${idx}" data-proc-field="tankAirDiffuserLoss_kPa" type="number" ${fieldSpecAttrs('tankAirDiffuserLoss_kPa')} value="${stage.proc.tankAirDiffuserLoss_kPa != null ? stage.proc.tankAirDiffuserLoss_kPa : PROCESS_DEFAULTS.tankAirDiffuserLoss_kPa}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air><label class="text-[10px] text-amber-300" title="K-101 风机全压 (kPa) — 显式覆盖&#10;留空 = 按 9.81 × 池深 + 盘阻管阻 自动算 (推荐)&#10;⚠ v2.3.3 之前此处写死 70 kPa 且与池深无关 —— 而 70 对应约 7 m 深池,空气曝气实际只用于 1.0-2.5 m 浅池, 全库实测风机功率高估 2.84 倍&#10;典型值: 1.5 m 池约 25 · 2.0 m 池约 30 · 2.5 m 池约 35&#10;⚠ 与脱气塔风机 (2.5 kPa) 、车间通风机 (0.25 kPa) 差两到三个数量级, 不可混用" for="f_${idx}_tankAirBlowerPressure_kPa">K-101全压(kPa)</label><input id="f_${idx}_tankAirBlowerPressure_kPa" data-proc-stage="${idx}" data-proc-field="tankAirBlowerPressure_kPa" type="number" ${fieldSpecAttrs('tankAirBlowerPressure_kPa')} placeholder="留空=按池深算" value="${stage.proc.tankAirBlowerPressure_kPa != null ? stage.proc.tankAirBlowerPressure_kPa : ''}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
-      <div data-aeration-air><label class="text-[10px] text-amber-300" title="微孔盘清水 SOTE (%/m 水深)&#10;默认: 6.5 (EPA/ASCE 典型 5-7)&#10;⚠ 这【不是】实际吸收效率 —— 它是清水标准态(20°C/零盐度/洁净水/初始 DO=0)下的值,养殖池四个条件一个都不满足&#10;实际 OTE = 本值 × 水深 × αβ × 1.024^(T-20) × 推动力, 石斑成鱼期实算仅 2.22%&#10;粗孔盘取低端; 详见手册 15.2 与 15.3b" for="f_${idx}_sotePerMeter">清水SOTE(%/m)</label><input id="f_${idx}_sotePerMeter" data-proc-stage="${idx}" data-proc-field="sotePerMeter" type="number" ${fieldSpecAttrs('sotePerMeter')} value="${stage.proc.sotePerMeter != null ? stage.proc.sotePerMeter : PROCESS_DEFAULTS.sotePerMeter}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air><label class="text-[10px] text-amber-300" title="α·β 综合折减 (—)&#10;默认: 0.75&#10;α = 工艺水污染对传质的折减; β = 盐度对饱和浓度的折减&#10;RAS 一般 0.7-0.85: 高 DOM / 高投饵负荷取低端, 淡水清洁系统取高端&#10;⚠ 直接乘进 OTE, 与风量成反比" for="f_${idx}_aerationAlphaBeta">α·β 折减</label><input id="f_${idx}_aerationAlphaBeta" data-proc-stage="${idx}" data-proc-field="aerationAlphaBeta" type="number" ${fieldSpecAttrs('aerationAlphaBeta')} value="${stage.proc.aerationAlphaBeta != null ? stage.proc.aerationAlphaBeta : PROCESS_DEFAULTS.aerationAlphaBeta}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air data-air-stripoff-only><label class="text-[10px] text-amber-300" title="CO₂ 亨利平衡逼近系数 (—)&#10;默认: 0.5 &#10;⚠ 【无成文出处, 待校准】—— 气泡停留时间有限, 离水时并未与水达到平衡&#10;本质由气泡尺寸与停留时间决定, 不是通用常数: 实测粗孔盘仅达理论平衡约 23%,细孔盘可达 93% (非养殖场景, 仅供判断调整方向)&#10;⚠ 文献里的"CO₂ 吹脱效率"多为【碳酸平衡重建后的表观值】, 与本系数不同口径, 不可直接套用&#10;敏感度: 0.5→0.3 则 CO₂ 侧风量涨 1.67 倍&#10;⚠ 它同时决定 air+开塔 的入室 CO₂ 份额 ⇒ 车间新风量与通风机选型" for="f_${idx}_co2StripApproach">CO₂逼近系数</label><input id="f_${idx}_co2StripApproach" data-proc-stage="${idx}" data-proc-field="co2StripApproach" type="number" ${fieldSpecAttrs('co2StripApproach')} value="${stage.proc.co2StripApproach != null ? stage.proc.co2StripApproach : PROCESS_DEFAULTS.co2StripApproach}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
+      <div data-aeration-air><label class="text-[10px] text-amber-300" title="微孔盘清水 SOTE (%/m 水深)&#10;默认: 6.5 (EPA/ASCE 典型 5-7)&#10;⚠ 这【不是】实际吸收效率 —— 它是清水标准态(20°C/零盐度/洁净水/初始 DO=0)下的值,养殖池四个条件一个都不满足&#10;实际 OTE = 本值 × 水深 × αβ × 1.024^(T-20) × 推动力, 石斑成鱼期实算仅 2.22%&#10;粗孔盘取低端; 详见手册 15.2 与 15.3b" for="f_${idx}_sotePerMeter">清水SOTE(%/m)</label><input id="f_${idx}_sotePerMeter" data-proc-stage="${idx}" data-proc-field="sotePerMeter" type="number" ${fieldSpecAttrs('sotePerMeter')} value="${stage.proc.sotePerMeter != null ? stage.proc.sotePerMeter : PROCESS_DEFAULTS.sotePerMeter}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air><label class="text-[10px] text-amber-300" title="α·β 综合折减 (—)&#10;默认: 0.75&#10;α = 工艺水污染对传质的折减; β = 盐度对饱和浓度的折减&#10;RAS 一般 0.7-0.85: 高 DOM / 高投饵负荷取低端, 淡水清洁系统取高端&#10;⚠ 直接乘进 OTE, 与风量成反比" for="f_${idx}_aerationAlphaBeta">α·β 折减</label><input id="f_${idx}_aerationAlphaBeta" data-proc-stage="${idx}" data-proc-field="aerationAlphaBeta" type="number" ${fieldSpecAttrs('aerationAlphaBeta')} value="${stage.proc.aerationAlphaBeta != null ? stage.proc.aerationAlphaBeta : PROCESS_DEFAULTS.aerationAlphaBeta}" class="stg-proc-input input-ind !py-1 !text-xs"></div><div data-aeration-air data-air-stripoff-only><label class="text-[10px] text-amber-300" title="CO₂ 亨利平衡逼近系数 (—)&#10;默认: 0.5 &#10;⚠ 【无成文出处, 待校准】—— 气泡停留时间有限, 离水时并未与水达到平衡&#10;本质由气泡尺寸与停留时间决定, 不是通用常数: 实测粗孔盘仅达理论平衡约 23%,细孔盘可达 93% (非养殖场景, 仅供判断调整方向)&#10;⚠ 文献里的"CO₂ 吹脱效率"多为【碳酸平衡重建后的表观值】, 与本系数不同口径, 不可直接套用&#10;敏感度: 0.5→0.3 则 CO₂ 侧风量涨 1.67 倍&#10;⚠ 它同时决定 air+开塔 的入室 CO₂ 份额 ⇒ 车间新风量与通风机选型" for="f_${idx}_co2StripApproach">池内曝气CO₂逼近</label><input id="f_${idx}_co2StripApproach" data-proc-stage="${idx}" data-proc-field="co2StripApproach" type="number" ${fieldSpecAttrs('co2StripApproach')} value="${stage.proc.co2StripApproach != null ? stage.proc.co2StripApproach : PROCESS_DEFAULTS.co2StripApproach}" class="stg-proc-input input-ind !py-1 !text-xs"></div>
       <div class="proc-section-divider">🌫️ <b>CO₂ 脱气塔</b> (v1.1.2: 独立设备 + 风机参数可调)</div>
       <div data-common><label class="text-[10px] text-emerald-300" title="MBBR 是否加盖并接排风外排。&#10;默认: 加盖外排&#10;&#10;加盖外排 — 曝气尾气及其水汽/CO₂ 全部离开建筑 (基线口径)&#10;敞口     — 尾气在车间水面破裂, 水汽进入车间空气, 加重除湿/暖通负荷&#10;&#10;⚠ 这不是布置问题: MBBR 与鱼池同厅与否只决定风机电机废热去哪个房间, 不决定气去哪儿。同厅照样可以加盖外排。&#10;⚠ 量级 (三文鱼 1000t 成鱼期): 敞口时 0.50 t/d 水汽进厅 ≈ 342 kWh/d 潜热, 是池面蒸发项的 1.35 倍。全库工况热泵电费最大变动 12.3%。">MBBR加盖</label><select data-proc-stage="${idx}" data-proc-field="mbbrCovered" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.mbbrCovered!==false?'selected':''}>加盖外排</option><option value="false" ${stage.proc.mbbrCovered===false?'selected':''}>敞口(尾气入室)</option></select></div>
       <div data-common><label class="text-[10px] text-emerald-300" title="CO₂ 脱气塔启用/停用. 关闭时 CO₂ 仅靠换水稀释, 高密度场会严重超标">CO₂脱气启用</label><select data-proc-stage="${idx}" data-proc-field="co2StripperEnabled" class="stg-proc-select input-ind !py-1 !text-xs"><option value="true" ${stage.proc.co2StripperEnabled!==false?'selected':''}>启用</option><option value="false" ${stage.proc.co2StripperEnabled===false?'selected':''}>停用</option></select></div>
@@ -13173,7 +13870,7 @@ function renderLoadCard(idx, load, flowData, stage, stageFarm, eq) {
   if (!box) return;
   const r = load.peakToAvgRatio;
   const rColor = r<1.1?'danger':(r<1.3||r>8?'warn':'ok');
-  const tempFactor = eq?eq.tempCorrectionNit:1;
+  const tempFactor = bfTempFactorApplied(stage.proc, stage.tempOpt);  // IRAS_R26_RETIRED_INPUT_UI: 原读 eq.tempCorrectionNit(退役式)
   const tempColor = tempFactor<0.7?'warn':(tempFactor>1.3?'ok':'info');
   const pf = load.peakFactor || 1.5;
 
@@ -13277,6 +13974,105 @@ function renderLoadCard(idx, load, flowData, stage, stageFarm, eq) {
      configWarns; 本次迁移只是把既有的 24 条从"看得见摸不着"变成"能带走"。 */
 function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
   const warns = [];
+  /* ══ IRAS_BF_ER_ZERO —— 异养氧预算核对: ER≈0 的前提若失效, 必须自己喊出来 ══
+     预算 = feed × o2DOMfactor (系统总氧扣减法得到的【全部】异养耗氧, 不分固体/溶解相)
+     占用 = (1 − Y_H) × bCOD 日产 × 假定氧化份额
+     ⚠ 现口径下占用约 29% —— 宽松。**BF-1b 把 bCOD 换成废物矩阵口径(3.78×)后会到 110%,
+       本告警届时必然触发**, 那正是它该触发的时刻: 氧平衡在那一批必须重新裁决,
+       不能让它悄悄超支。⇒ 这条【有意做成"将来会响"】, 不是现在就响的装饰。
+     ⚠ 阈值两级: >80% 提醒余量将尽; >100% 说明预算已被合成项吃穿, ER≈0 的裁决与
+       o2DOMfactor 的扣减法出处至少有一个不再成立。 */
+  try {
+    const _o2f = (stage.proc && stage.proc.o2DOMfactor != null)
+      ? stage.proc.o2DOMfactor : PROCESS_DEFAULTS.o2DOMfactor;
+    const _budget = (load.feedMax || 0) * _o2f;                       // kg O₂/d
+    const _bcod = (load.domDaily || 0) * (sim && sim.codDissBFrac != null ? sim.codDissBFrac : 1);
+    const _syn = 0.33 * _bcod * 0.90;                                 // (1−Y_H)×氧化量, Y_H=0.67(ASM1)
+    const _use = _budget > 0 ? _syn / _budget : 0;
+    if (_use > 1) {
+      warns.push({ level: 'danger', text:
+        `🧯 <b>异养氧预算被吃穿</b>：合成耗氧 ${_syn.toFixed(1)} kg O₂/d 已达预算 ${_budget.toFixed(1)} 的 `
+        + `<b>${(_use * 100).toFixed(0)}%</b>。<br>`
+        + `　　预算来自「商业 RAS 系统总氧 ≈0.5 − 鱼生理 − 硝化」的扣减法，是<b>全部</b>异养耗氧（不分固体/溶解相）。`
+        + `合成项单独就超支，说明<b>生物膜内源呼吸≈0 的裁决、或 <code>o2DOMfactor</code> 的扣减法出处，至少有一个不成立</b>。<br>`
+        + `　　⇒ 氧平衡须重新裁决，<b>不得直接再加一项</b>——那会把同一份氧算两遍。` });
+    } else if (_use > 0.8) {
+      warns.push({ level: 'warn', text:
+        `🧯 异养氧预算余量将尽：合成耗氧占预算 <b>${(_use * 100).toFixed(0)}%</b>，`
+        + `留给生物膜内源呼吸的空间已不足两成。ER≈0 的裁决接近边界，见 <code>bfEndogenousO2</code> 注释。` });
+    }
+  } catch (e) { /* 告警不得影响主计算 */ }
+
+  /* ══ IRAS_BFA_COD_AREA —— D9: 实际面负荷超限必须告警 + θ_h 置一必须可见 ══
+     ⚠⚠ D9 原定义(实际面负荷 > 24)【结构上永远不可达】, 这是本批实测出来的:
+         实际面负荷 = bCOD×1000 / A_总, 而 A_总 = A_硝化 + A_COD;
+         A_硝化 与 SALR_设计 无关且远大于异养所需 ⇒ 实际面负荷的【上界】就是
+         bCOD×1000 / A_硝化, 全部内置工况仅 0.7–3.2。**把 SALR_设计 调成任何值都越不过 24。**
+         (试图用构造工况验证时当场发现: 调小 SALR_设计 反而让 A_COD 变大、实际面负荷更低。)
+       PLAN_BF_routeB §3.2 早就预告过"一号池实际仅 1.7–2.7", 但没人往下推一步 ——
+       **没人问"那这条告警还会响吗"**。
+     ⇒ D9 改判【设计值】而非实际值: 用户把 SALR_设计 设到 24 以上, 等于按曲线上
+       只有 89% 去除的那一段去分配面积, 这是【可达且有意义】的守卫。
+       实际值仍算出并展示(下游报告有), 只是不作为告警判据 —— 一个永远为真的前提
+       不该拿来当判据, 那是 M3「判据替缺陷站岗」的另一种形态。
+     ⚠ 第二条告警是给【θ_h = 1.00】的: 不做温度修正是有意的选择, 但那个选择
+       不能只躺在注释和台账里 —— 用户在界面上得看得见, 否则"显式置一"就只是自称显式。 */
+  try {
+    const _eqA = eq || {};
+    const _salrD = (stage.proc && stage.proc.bfSALRDesign != null)
+      ? stage.proc.bfSALRDesign : PROCESS_DEFAULTS.bfSALRDesign;
+    if (_salrD > 32) {
+      warns.push({ level: 'warn', text:
+        `🧫 <b>COD 设计面负荷 ${_salrD} g COD/(m²·d) 已超过 32</b><br>`
+        + `　　阈值取 <b>RAS 口径</b>：水产循环水固定生物膜研究中，硝化受抑制的观察发生在`
+        + `氮负荷 3.35 g N/(m²·d) 叠加 <b>32 g COD/(m²·d)</b> 时（硝化速率降至 1.53 g N/(m²·d)）。<br>`
+        + `　　⚠ 不用市政口径的 24：市政 MBBR 在 BOD 面负荷 3 g/(m²·d) 就报硝化速率减半，`
+        + `而 RAS 实测抑制点高一个数量级——把市政阈值搬过来会让滤池按错误的前提放大。<br>`
+        + `　　（本阶段<b>实际</b>面负荷 ${(_eqA.bfSALRActual || 0).toFixed(2)}，远低于设计值 ——`
+        + `因为硝化面积占了大头，这是正常的，不是矛盾。）<br>`
+        + `　　处置：调回 5–25 区间，或明确接受较低去除率并在方案里写明。` });
+    }
+    const _th = (stage.proc && stage.proc.bfSALRTheta != null)
+      ? stage.proc.bfSALRTheta : PROCESS_DEFAULTS.bfSALRTheta;
+    if (_th === 1 && stage.tempOpt > 20) {
+      warns.push({ level: 'warn', text:
+        `🌡️ <b>COD 面积未做温度修正</b>（θ_h = 1.00），而本阶段水温 ${stage.tempOpt} °C 已明显高于常规参考温度。<br>`
+        + `　　硝化侧已按 θ=1.09 修正并在 25 °C 封顶，<b>异养侧没有</b> —— `
+        + `两侧口径不一致，本阶段的 COD 面积因此<b>偏保守（偏大）</b>。<br>`
+        + `　　这是<b>有意的显式置一</b>：异养 θ_h 与那条去除率曲线的参考温度目前都没有可核实的出处，`
+        + `拍一个数会让它看起来"已修正"，比明说没修更糟。<br>`
+        + `　　有出处后只需改 <code>bfSALRTheta</code> 一个值。` });
+    }
+  } catch (e) { /* 告警不得影响主计算 */ }
+
+  /* ══ IRAS_BFN_ETA_FROM_AREA —— η 由面积算出后, "做不到"必须显式喊出来 ══
+     旧口径 biofilterTAN 是用户填的常数, 模型永远说不出"这个配置不可行";
+     现在 η 与滤池尺寸是同一条曲线的两端, 不可行就必须报出来, 而不是钳一下了事。
+     ⚠ 报的是【该流量下能达到的最低 TAN (Sn_min)】而不是"η=126%":
+       百分比对工程师没有意义, 浓度才有 —— 实测 7 个内置阶段落在 0.57-0.63 mg/L,
+       与设计目标 0.5 只差 10-25%, 说成"126%"会让人以为差了一个数量级。 */
+  try {
+    const _sn = (stage.proc && stage.proc.bfDesignTAN != null)
+      ? stage.proc.bfDesignTAN : PROCESS_DEFAULTS.bfDesignTAN;
+    const _raw = sim && sim.etaBioNitriRaw;
+    const _snMin = sim && sim.bfSnMin;
+    if (_raw != null && _snMin != null) {
+      if (_raw > 1) {
+        warns.push({ level: 'danger', text:
+          `🚱 <b>本阶段无法把池内 TAN 控制到设计目标 ${_sn} mg/L</b>（需要单程去除率 ${(_raw * 100).toFixed(0)}%，物理上限 100%）<br>`
+          + `　　当前循环量下能达到的<b>最低 TAN 约 ${_snMin.toFixed(2)} mg/L</b>。<br>`
+          + `　　成因：一天流过滤池的水携带的 TAN 总量本身就少于日产量 —— <b>卡住的是循环量(turnover)，不是滤池面积</b>，`
+          + `把滤池做大没有任何作用。<br>`
+          + `　　处置：提高本阶段 turnover（最直接）、或把设计目标 TAN 放宽到 ${(_snMin * 1.1).toFixed(1)} mg/L 以上`
+          + `（须仍远低于告警阈值 ${sim.TAN_threshold} mg/L）。` });
+      } else if (_raw > 0.90) {
+        warns.push({ level: 'warn', text:
+          `🧪 本阶段单程硝化去除率需达 <b>${(_raw * 100).toFixed(0)}%</b> 才能维持设计目标 TAN ${_sn} mg/L。`
+          + `MBBR 实测单程通常 60–80%，<b>此值偏高、余量很小</b>：循环量或负荷稍有偏差即不可行`
+          + `（该流量下的最低 TAN 为 ${_snMin.toFixed(2)} mg/L）。建议提高 turnover。` });
+      }
+    }
+  } catch (e) { /* 告警不得影响主计算 */ }
   /* v2.3.3二批 IRAS_V233_HARD_WARNS: 参数表联动 —— aerationMode 选择器随
      本次计算结果标记 (每次 recompute 经本函数刷新, 活数据无陈旧问题)。
      只做视觉提示不做自动切换: 不替用户改配置, 改配置是工程决策。 */
@@ -13325,11 +14121,32 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
     });
   }
 
-  const tempFactor = eq ? eq.tempCorrectionNit : 1;
+  /* IRAS_R26_RETIRED_INPUT_UI: 原用 eq.tempCorrectionNit = thetaNit^(T−20) —— 退役式。
+     改用模型真正施加的 1.09^(min(T,cap)−min(20,cap))。
+     ⚠ 触发温度因此位移约 0.6 °C (θ 1.10→1.09 使 0.60 对应的水温由 14.6 挪到 14.1),
+       15 °C 档实测因子 0.65 不再触发。这是【口径订正带来的覆盖面变化, 不是判据放松】——
+       0.60 这个阈值原本就是在退役式上定的, 换式子后照抄阈值才是错的。
+     ⚠ 文案同步改口: 旧句直接断言"容积显著放大", 而封顶后温水种因子恒 ≤1.54,
+       说"放大"会误导; 改为报因子与参照温度, 让读者自己看方向。 */
+  /* ══ IRAS_AOP_DOMINANCE_WARN —— 【已撤回, 2026-08-30】══
+     本想按用户要求把遗留 4「aopFlowPct / aopDOMRemoval 无出处」从 tooltip 提升为界面告警,
+     条件设计为【只在蛋分关闭时报】(那正是 AOP 占难降解层去除 82% 的工况)。
+     ⚠ 撤回原因: 【无法证明它会触发】。探针三次都没能把 skimmerEnabled 关掉 ——
+       它是 <select> 不是 checkbox, 设 .checked 无效; 改设 .value='false' 后
+       payload 里 stages[0].proc.skimmerEnabled 仍为 true, 取值编码未确认。
+     ⇒ 按本项目自己的标准: 【没被观察到响过的判据就是假判据】
+       (N8a 的教训: 把封顶整个删掉它照样全绿, 那是一条假判据)。
+       与其留一条我验不了的"防线", 不如不留 —— 声称有防线而防线不响, 比没有更坏。
+     ⇒ 遗留 4 的留痕仍为【静态三处】(PROCESS_DEFAULTS 头注 · 速查表两行 · UI tooltip 两处),
+       那三处是静态文本, 不依赖触发条件, 已验证在页面里。
+     ⚠ 谁要重做这条: 先搞清 skimmerEnabled 这个 select 的取值编码, 并让负对照
+       (关蛋分 ⇒ 告警出现 / 关 AOP ⇒ 不出现) 真正跑通, 再提交。 */
+
+  const tempFactor = bfTempFactorApplied(stage.proc, stage.tempOpt);
   if (tempFactor < 0.6) {
     warns.push({
       level: 'warn',
-      text: `❄️ 水温 ${stage.tempOpt}°C 较低, 硝化温度修正因子 ${tempFactor.toFixed(2)}× — 生物滤池容积需求显著放大。`
+      text: `❄️ 水温 ${stage.tempOpt}°C 较低, 硝化面速率仅为 20°C 基准的 ${tempFactor.toFixed(2)}× (θ=${BF_AREAL_THETA}) — 同等 TAN 负荷下所需硝化面积约放大 ${(1/tempFactor).toFixed(2)} 倍。`
     });
   }
 
@@ -13526,7 +14343,10 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
        不再是全场包络】, 管路/集水池段的实际暴露更高, 必须显式说出来. */
     if (sim.nh3Peak && !sim.nh3Peak.atTank && sim.nh3Peak.ratio > 1.05) {
       const _np = sim.nh3Peak;
-      const _eb = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN : null;
+      /* IRAS_BFN_ETA_FROM_AREA: η 改由面积算出。⚠ 原来读 stage.proc.biofilterTAN ——
+         该键已不存在, 若不改, `!= null` 会让这段文案【静默少一句】而告警照常显示,
+         正是本项目反复吃亏的"判据宿主没了就当没这回事"。 */
+      const _eb = (sim && sim.etaBioNitri != null) ? sim.etaBioNitri * 100 : null;
       const _ec = (sim.co2EffUsed != null) ? sim.co2EffUsed * 100 : null;
       warns.push({
         level: _np.ratio > 2 ? 'danger' : 'warn',
@@ -13541,12 +14361,14 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
             + `　　工程含义：鱼在池里，<b>设计判据取池值仍然合理</b>，但池值此时<b>不是全场包络</b>——`
             + `脱气塔后至回池段（集水池、增氧锥、回水管）的实际 NH₃ 暴露更高，`
             + `该段若有滞留（事故池、缓冲池、检修停留）需按峰值节点校核。<br>`
-            + `　　消解：提高 <code>biofilterTAN</code> 至高于 η_co2，或降低脱气塔效率/G:L。`
+            + `　　消解：η_bio 已不是可填参数（由滤池面积算出），提高它的途径是`
+            + `<b>提高 turnover 或增大 <code>bfArealK</code>/面积</b>；也可降低脱气塔效率/G:L 来压低 η_co2。`
       });
     }
 
     /* ── v2.5 (第八轮审计 B2): pH 未反馈给硝化速率 ──
-       biofilterTAN 是用户给的常数效率, 与 pH 无关; 而硝化速率对 pH 高度敏感.
+       η_bio 由面积算出, 不含 pH 项; 而硝化速率对 pH 高度敏感.
+       (BF-N 前此处是用户填的 biofilterTAN 常数, 换口径后问题性质不变: 仍然没有 pH 反馈.)
        高 CO₂ 工况下模型会同时输出\"pH 6.9\"与\"硝化效率 70%\"—— 两个数在物理上不相容,
        且偏差方向【乐观】(真实硝化更慢 ⇒ 真实 TAN/NH₃ 更高).
        本版【只告警不折减】: 硬套一个来源不同的 f(pH) 折减曲线比宽带更糟 (同浅池 CO₂ 处置).
@@ -13556,18 +14378,19 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
       /* v2.5: W5 锚定用的打点 —— 自检遍历全部工况后校验"至少有一条走到过这里"。
          全局标志而非返回值: 告警在渲染层构造, 与自检不在同一调用链上。 */
       try { __iRAS_ph7WarnSeen = true; } catch (e) { /* 非自检环境无此变量, 忽略 */ }
-      const _eb2 = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN : null;
+      const _eb2 = (sim && sim.etaBioNitri != null) ? sim.etaBioNitri * 100 : null;
       warns.push({
         level: tank.pH < 6.5 ? 'danger' : 'warn',
         text: `⚗️ <b>pH = ${tank.pH.toFixed(2)} &lt; 7.0，硝化效率应下调，但<u>本模型未计入</u></b><br>`
             + `　　硝化菌 pH 最适区间约 7.5–8.5，pH 低于 7.0 时硝化速率显著下降`
             + `（文献报道近似线性，量级为每降 1 个 pH 单位损失约 10–15% 效率）。<br>`
-            + `　　而 <code>biofilterTAN</code>`
+            + `　　而本模型的 η_bio`
             + (_eb2 != null ? `（当前 ${_eb2.toFixed(0)}%）` : '')
-            + ` 是<b>用户给定的常数</b>，与 pH 无关 —— 模型此处同时输出`
+            + ` 由<b>滤池面积与设计浓度</b>算出，<b>不含 pH 项</b> —— 模型此处同时输出`
             + `“pH ${tank.pH.toFixed(2)}”与“硝化效率 ${_eb2 != null ? _eb2.toFixed(0) : '—'}%”，`
             + `两者在物理上不相容，且<b>偏差方向偏乐观</b>（真实硝化更慢 ⇒ 真实 TAN 与 NH₃ 高于本表）。<br>`
-            + `　　处置：手动下调 <code>biofilterTAN</code>，或提高碱度设定值 / 强化 CO₂ 脱气把 pH 拉回 7.0 以上。`
+            + `　　处置：提高碱度设定值 / 强化 CO₂ 脱气把 pH 拉回 7.0 以上；`
+            + `若要保守设计，可下调 <code>bfArealK</code> 以体现低 pH 下的速率损失。`
             + `<br>　　（本版只提示不折减：硬套一条来源不同的 f(pH) 曲线比明确宽带更糟。）`
       });
     }
@@ -13607,7 +14430,7 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
         if (sim.bfDOeq > _dmin) {
           const _up = (sim.stages || []).filter(function (n) { return n.id === 'skim' || n.id === 'rdf'; }).pop();
           const _a = (_fd && _fd.flowM3h ? _fd.flowM3h : 0) * 24 / 1000;   // ⚠ 本函数第六参数名为 _fd 不是 flowData
-          const _alpha = (stage.proc.bfAlpha != null) ? stage.proc.bfAlpha : 0.85;
+          const _alpha = (stage.proc.bfAlpha != null) ? stage.proc.bfAlpha : PROCESS_DEFAULTS.bfAlpha;
           const _k = 0.012 * (_bs.depth_m || 3) * _alpha * Math.pow(1.024, (stage.tempOpt || 15) - 20) / 9.09;
           const _Mn = (_a * (_dmin - (_up ? _up.DO : _bio.DO)) + (load.o2BFDaily || 0)) / (_k * (sim.bfDOeq - _dmin));
           const _airN = _Mn / (24 * RHO_STD_AIR * F_O2_MASS);   // v2.5: 同上, 告警文案也须单源
@@ -13709,7 +14532,14 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
     //     EBCT < 2 min → η 通常 < 30%;  2-5 min → 30-60%;  > 5 min → 可达 60-80%
     //   (η > 80% 需极低进水 TAN 或多级串联, 单级很难达到.)
     try {
-      const _etaIn  = (stage.proc && stage.proc.biofilterTAN != null) ? stage.proc.biofilterTAN / 100 : 0.7;
+      /* ⚠ IRAS_BFN_ETA_FROM_AREA 后本条的【性质变了, 但更该留着】:
+           原意是"用户可以填 η=95% 却配一个 EBCT 几十秒的池", 属输入自相矛盾;
+           现在 η 由面速率模型算出, 那种填法已不可能 —— 可本条并未因此失效, 反而升级成
+           【两个模型的横向对照】: 面速率模型说 η, EBCT 经验规则说"这个接触时间最多到多少",
+           两者独立, 对不上就说明面速率模型在这个工况外推过头了。
+         ⚠ 原来的 fallback `: 0.7` 现在必须去掉 —— η 拿不到时默认 0.7 会让本条
+           在【导出面断链的情况下照常给出一个看似正常的判定】, 那是假绿。 */
+      const _etaIn  = (sim && sim.etaBioNitri != null) ? sim.etaBioNitri : null;
       /* v2.5 修正 (用户实测报错): EBCT = Empty Bed Contact Time —— 分子是【空床】容积,
          即 BF 池总容积 V_BF = bioVolume / fillRatio, 不是填料净体积 bioVolume。
          原式用净体积, 50% 填充率下 EBCT 低估一倍 ⇒ 本告警系统性误报。
@@ -13720,12 +14550,12 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
       //   EBCT 因此偏小约 9% (偏保守, 无害). fallback 改用 load.flowM3h ——
       //   原写的 stageFarm.flowM3h 字段不存在, 是死代码.
       const _flow   = (eq && eq.rdfFlow) || (load && load.flowM3h) || 0;
-      if (_bioVol > 0 && _flow > 0 && _etaIn > 0) {
+      if (_bioVol > 0 && _flow > 0 && _etaIn != null && _etaIn > 0) {
         const _ebct = _bioVol / _flow * 60;    // 空床接触时间 min
         // 该 EBCT 下经验可达的 η 上限
         //   ⚠ 判据必须留足余量: 单次去除率还强烈依赖【进水 TAN 浓度】——
         //   低进水浓度下反应处于一级动力学区, 同样 EBCT 可达到更高的百分比去除率.
-        //   iRAS 默认 biofilterTAN=70% + EBCT≈2.4 min 是国内常见配置, 不应报警.
+        //   BF-N 前 iRAS 默认 biofilterTAN=70% + EBCT≈2.4 min 是国内常见配置, 不应报警.
         //   故只对【明显离谱】的组合告警 (阈值取经验上限再放宽), 避免默认配置误报.
         const _etaMax = _ebct < 1 ? 0.55 : (_ebct < 2 ? 0.70 : (_ebct < 5 ? 0.85 : 0.92));
         if (_etaIn > _etaMax) {
@@ -13737,11 +14567,11 @@ function buildStageWarnings(load, stage, stageFarm, eq, sim, _fd) {
                 + `在 ${_flow.toFixed(0)} m³/h 流量下`
                 + `空床接触时间仅 <b>${_ebct.toFixed(1)} min</b>，`
                 + `该接触时间经验上单级可达约 ${(_etaMax*100).toFixed(0)}%。<br>`
-                + `　　注意 <code>biofilterTAN</code>(单次去除率，决定池内浓度) 与 `
-                + `<code>VTR₂₀/θ</code>(容积速率，决定填料容积) 是<b>两套独立参数</b>，`
-                + `模型不会自动调和 —— 填料容积按 VTR 反算已满足日处理量，`
-                + `但单次通过效率受接触时间约束。<br>`
-                + `　　请下调 <code>biofilterTAN</code>、增大填料容积/降低过滤流量，或改多级串联。`
+                + `　　这不是输入打架：η 已由<b>面速率模型</b>算出（不再是可填参数），`
+                + `而 EBCT 上限是另一条<b>独立的经验规则</b>——两者对不上，说明面速率模型`
+                + `在本工况下外推过头（多见于低 turnover、高负荷阶段）。<br>`
+                + `　　处置：提高本阶段 turnover（同时降低所需 η），或下调 <code>bfArealK</code>、`
+                + `放宽 <code>bfDesignTAN</code>，或改多级串联。`
           });
         }
       }
@@ -14409,23 +15239,43 @@ function renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage) 
   const tssIntensity = load.tssDailyAvg / feedAvg * 1000;
   // 4) DOM 强度
   const domIntensity = load.domDailyAvg / feedAvg * 1000;
-  // 5) 液氧消耗强度 (鱼池纯氧, kg O₂ / kg 饲料)
-  //    仅纯氧模式有意义; 不含 BF 曝气供氧
-  let o2TankPerFeed = null;
-  if (eq && !eq.isAir && eq.o2Demand > 0) {
-    // 消耗口径:每 kg 饲料采购液氧 = 鱼耗氧 / 吸收效率
-    // 不得含 peakFactor / sAerator,否则显示约 0.44,而文献约 0.25–0.30
-    if (eq.o2ConsumptionDailyAvg != null && feedAvg > 0) {
-      o2TankPerFeed = eq.o2ConsumptionDailyAvg / feedAvg;
+  /* 5) 液氧强度 (纯氧模式, kg O₂ / kg 饲料) —— 【两个量, 不可合并】
+     ══ v2.6 IRAS_V26_LOX_BF 后订正 ══
+     原本只有一条"鱼池液氧", 区间 0.20–0.45, 注释写「不含 BF 曝气供氧」。
+     v2.6 把生物滤池水侧耗氧计入液氧采购后, 该口径已变 —— 实测 0.62–0.79, 十个工况全部超上限。
+     ⚠ 但【不是把区间改大就完事】: 旧区间对应的物理量(只算鱼池那部分)仍然存在、
+       仍有文献支撑。直接覆盖会丢掉一个有效对标。故【拆成两条】:
+         · 鱼池液氧   = 鱼池耗氧 / 吸收率            —— 对标文献 0.25–0.30
+         · 液氧采购   = (鱼池 + BF水侧) / 吸收率      —— v2.6 新口径, 即实际采购量
+     两者之差即 BF 水侧那一份, 由 bfAlpha 决定 (鼓风机自带的氧越多, 液氧买得越少)。
+     ⚠ 均不得含 peakFactor / sAerator —— 那是容量系数, 不进消耗品口径。 */
+  let o2TankPerFeed = null;      // 仅鱼池
+  let o2PurchasePerFeed = null;  // 采购总量 (含 BF 水侧)
+  if (eq && !eq.isAir && eq.o2Demand > 0 && feedAvg > 0) {
+    const _absEff = (eq.o2AbsEff > 0) ? eq.o2AbsEff : 1;
+    if (load.o2FishDailyAvg != null) {
+      o2TankPerFeed = (load.o2FishDailyAvg / _absEff) / feedAvg;
+    }
+    if (eq.o2ConsumptionDailyAvg != null) {
+      o2PurchasePerFeed = eq.o2ConsumptionDailyAvg / feedAvg;
     } else {
       const loadRatio = Math.max(0.5, load.o2FishDailyAvg / Math.max(load.o2FishDaily, 1));
-      o2TankPerFeed = eq.o2Demand * loadRatio / feedAvg;
+      o2PurchasePerFeed = eq.o2Demand * loadRatio / feedAvg;
     }
   }
-  // 6) 系统总氧/饲料 (含 BF 曝气) — RAS 内部实际 O2 消耗
-  //    总氧 = 鱼生理 + 硝化 + DOM 分解 (即 o2DailyTotal)
-  //    Summerfelt 实测 0.4-0.7, 但区间会受 o2DOMfactor 影响 (0.05→0.20 时上限 +0.15)
-  //    这里基于当前 o2DOMfactor 动态生成区间, 让用户能看出"调高异养菌系数会推高总氧需求"
+  /* 6) 系统总氧/饲料 — RAS 内部实际 O₂ 消耗 = 鱼生理 + 池内 TSS 异养 + 硝化 + 异养 DOM
+     ══ v2.6 归属订正 ══
+     原注释写「Summerfelt 实测 0.4-0.7」—— 该归属【核不实】: 检索未找到 Summerfelt
+     报过此区间的证据。⚠ 留一个核不实的引用比明说"无出处"更糟(skimmerDOMEffAir 的教训),
+     故【删除该署名】, 换成可核实来源:
+       · 商业 RAS 满负荷实测   ≈ 0.5  kg O₂/kg 饲料
+       · Boyd 饲料理论需氧公式 ≈ 1.25 kg O₂/kg 饲料 (含被微滤机移出的固体 ⇒ 是上限)
+         公式: [(饲料C% − FCE×鱼体C%)]×2.67 + [(饲料N% − FCE×鱼体N%)]×4.57
+     iRAS 实测 0.60-0.66 介于两者, 【偏保守】—— 差异主要来自池内 TSS 异养附加(0.10-0.15),
+     商业系统固体移出快, 该项更低。用户裁决 2026-08-26: 0.60-0.66 作为设计取值可接受。
+     ⚠ 区间随 o2DOMfactor 动态缩放。但 o2DOMfactor 本身是【异养分项】(0.10),
+       不是本行的【总量】—— 把总量区间挂在分项系数的注释里, 读者会误以为
+       0.4-0.7 是 o2DOMfactor 的文献范围。本轮已第四次撞上同族"分项对标总量"错配。 */
   const o2TotalPerFeed = load.o2DailyTotalAvg / feedAvg;
   const currentO2DOM = (stage && stage.proc && stage.proc.o2DOMfactor != null) ? stage.proc.o2DOMfactor : 0.10;
   const o2TotalLo = 0.30 + currentO2DOM * 0.5;   // 文献下限考虑 o2DOMfactor 缩放
@@ -14450,27 +15300,32 @@ function renderBenchmarkCard(idx, load, eq, sim, capex, cost, stageFarm, stage) 
     {
       key: 'TSS 强度',  unit: 'g/kg 饲料',  value: tssIntensity,
       lo: 250, hi: 350,
-      ref: 'Davidson 2014 实测, 25-35% 饲料质量'
+      ref: '【参数自检，非模型验证】本锥点 ≡ tssYield × 1000 g/kg，查的是你把 TSS 产率设成了多少，不是模型算出来的什么。区间 250-350 ⇒ 产率 25-35%，区间本身取自 Davidson 2014 实测。 ⚠ 2026-08-29 改身份：此前 tssYield 写死 0.30，本锥点恒等于 300.0、永远绿、从未判定过任何东西，而 ref 写着文献署名，读者会以为在对标。由锥点诊断探针查出。'
     },
     {
       key: 'DOM 强度',  unit: 'g/kg 饲料',  value: domIntensity,
       lo: 80, hi: 120,
-      ref: 'Lekang 2020, ~10% 饲料经验值'
+      ref: '【参数自检，非文献对标】本锥点 ≡ codDissYield × 1000 g/kg —— 它查的是【你把溶解 COD 产率设成了多少】, 不是模型算出来的什么。区间 80-120 ⇒ 产率 8-12%。 ⚠ 2026-08-29 改身份: 原 ref 署 Lekang 2020 ~10% —— 检索未能核实该书报过此值, 也确认不了其口径是有机物质量还是 COD; 按「留一个核不实的引用比明说无出处更糟」, 删掉该署名。 ⚠ 此前 codDissYield 写死 0.10 ⇒ 本锥点【恒等于 100.0、永远绿、从未判定过任何东西】; 开成输入后它第一次能拦住东西。'
     },
     {
       key: '鱼池液氧',  unit: 'kg O₂/kg 饲料', value: o2TankPerFeed,
       lo: 0.20, hi: 0.45,
-      ref: '液氧采购量 = 鱼耗氧 / 吸收效率。鲑鱼约 0.27,温水种约 0.33-0.35;区间覆盖物种与阶段温度差异。不含选型余量,不含生物滤池曝气'
+      ref: '【仅鱼池那一份】= 池内总耗氧 / 吸收效率。⚠ 分子是 o2FishDaily, 含【鱼生理 + 池内 TSS 异养附加】两项, 不是纯生理耗氧 —— 文献 0.25-0.30 对标的是生理那一项(见「O₂ 生理强度」行), 两者不可混。实测 0.35-0.46, 温水种(罗非/对虾)因 TSS 附加高而贴近上限。不含选型余量, 不含生物滤池 —— BF 那一份见下一行'
+    },
+    {
+      key: '液氧采购', unit: 'kg O₂/kg 饲料', value: o2PurchasePerFeed,
+      lo: 0.55, hi: 0.85,
+      ref: '【实际采购量】= (鱼池 + 生物滤池由水供的那份) / 吸收效率。v2.6 IRAS_V26_LOX_BF 新增 BF 项 —— 此前氧锥按「鱼 + MBBR」选而液氧按「只有鱼」买。⚠ 区间 0.55-0.85 由本模型十个纯氧工况实测得出(0.62-0.79), 非独立文献值: 无直接可对标的文献口径, 因多数研究只报鱼的生理耗氧。与上一行之差即 BF 水侧那一份, 由 bfAlpha 决定'
     },
     {
       key: '系统总氧',  unit: 'kg O₂/kg 饲料', value: o2TotalPerFeed,
       lo: +o2TotalLo.toFixed(2), hi: +o2TotalHi.toFixed(2),
-      ref: `Summerfelt RAS 实测 0.4-0.7 (o2DOMfactor=0.10); 当前系数 ${currentO2DOM.toFixed(2)} → 区间相应缩放`
+      ref: `系统内实际耗氧 = 鱼生理 + 池内TSS异养 + 硝化 + 异养DOM。商业 RAS 满负荷实测约 0.5; Boyd 饲料理论需氧 1.25 (含被微滤机移出的固体, 属上限)。iRAS 实测 0.60-0.66 介于两者、偏保守 —— 差异主要来自池内 TSS 异养附加, 商业系统固体移出更快。⚠ 区间随 o2DOMfactor 动态缩放 (当前 ${currentO2DOM.toFixed(2)}); o2DOMfactor 是【异养分项】不是本行【总量】, 两者不可混`
     },
     {
       key: '甲醇/NO₃-N', unit: 'g/g',  value: methanolPerN,
       lo: 2.3, hi: 3.0,
-      ref: '化学计量 1.90 + 异养菌合成 0.5-0.8'
+      ref: '【参数自检】本锥点 ≡ 2.47 × methanolSafetyFactor，恒等式。 ⚠⚠ 口径错配（待裁决）：本值含工程安全系数 = 2.47×1.3 = 3.21，而区间 2.3-3.0（化学计量 1.90 + 异养菌合成 0.5-0.8）不含安全系数，⇒ 24/24 工况全部超上限约 7%，界面一直显示高而无人处理。 ⚠ 更要紧：Mokhayeri 2008 的 2.47 自带注释含 5-15% 残余甲醇，再乘 1.3 可能是双重裕度—— 甲醇过量会带来残余 COD，不是纯粹保守。**2026-08-30 IRAS_MEOH_NOSAFETY 已裁决并落地**：安全系数默认改 1.0，本锚点回到 2.47，落在区间内。⚠ 本锚点仍是恒等式（≡ 2.47 × 系数），只在用户自己调高系数时才会越界——那时它报的是【用户加了多少裕度】，不是模型对不对。'
     }
   ];
 
@@ -15154,6 +16009,24 @@ function recomputeAll() {
        catch 吞掉, 报「阶段 N 计算异常」且 allResults[idx] 被置 null:
        渲染故障伪装成计算故障, 还销毁了本已算好的结果 (导出/自检跟着挂)。
        计算结果已在上一行保存, 渲染失败只影响显示。 */
+    /* ══ IRAS_NORENDER (2026-08-30) —— 只要数字的门禁跳过渲染 ══
+       遗留 16 第三次订正根因。前两次: ①「判据太多」(错) ②「jsdom 解析 1.6 MB × 14」(不完整)。
+       本轮逐条计时: run_selftest 128.5 s · check_baseline 46.9 s · dscheck 27.8 s ·
+       gencase 13.9 s · smoke 12.0 s · 其余 9 条合计 0.8 s。
+       再对 recomputeAll 内部计时: 总 1816 ms, 其中 render 与 draw 系列函数占 1790 ms =【99%】,
+       真正的数值计算只有约 26 ms。(前几名 renderEquipLimitInfo 471 · renderPanels 379 ·
+       renderStageWarnings 119 · renderPoolConfigInfo 104 · renderCharts 103)
+       ⇒ 瓶颈既不是判据数量、也不是 jsdom 解析, 是【渲染被跑了约 60 遍而没人看】。
+
+       ⚠⚠ renderFarmSummary【不在本开关范围内】—— 它虽然叫 render*, 却【写回
+         lastResults.summary】(见下方 v1.4 注释), costPerKg / finance 这些数就是它产出的。
+         跳掉它 = 基线全空。⇒ 一个 render* 函数产出权威数字, 这本身是个坑;
+         本批不重构它, 只在此标明边界, 免得下一位把它一起关掉。
+       ⚠ smoke_downstream / run_selftest【不得】开本开关: 前者专门在验渲染,
+         后者的 U1/U2/N3b 等断言直接读 document.body.outerHTML。
+       ⚠ 判据: check_baseline 开本开关后仍须 52/52【逐位一致】——
+         若有任何计算暗中依赖渲染写进 DOM 的值, 那条会当场报红。这就是本批的负对照。 */
+    if (!window.IRAS_NO_RENDER) {
     try {
     renderFlow(idx, sim);
     renderPanels(idx, sim, stage, stageFarm, prices);
@@ -15209,6 +16082,7 @@ function recomputeAll() {
       console.error(`[iRAS] 阶段 ${idx} (${stage && stage.name || '?'}) 渲染异常 (计算结果有效, 已保留):`, re.message, re.stack);
       try { window.__iRAS_renderError = { stage: idx, name: stage && stage.name, message: re && re.message }; } catch (_) {}
     }
+    }   /* IRAS_NORENDER: if (!window.IRAS_NO_RENDER) 收尾 */
     } catch (e) {
       // v1.7.x #32: 单阶段计算失败 — 不影响其他阶段
       console.error(`[iRAS] 阶段 ${idx} (${stage && stage.name || '?'}) 计算异常:`, e.message, e.stack);
@@ -15221,7 +16095,8 @@ function recomputeAll() {
   lastResults = { allResults, farm, yieldTons, prices, eqPrices };
   renderFarmSummary(farm, allResults, yieldTons, prices, eqPrices);
   // v1.6: 渲染站级设备表 (在 ③ 节末尾)
-  renderSiteEquipTable(stagesState, eqPrices, allResults);
+  /* IRAS_NORENDER: 纯展示, 可跳。上一行 renderFarmSummary【不可跳】—— 它写回 summary。 */
+  if (!window.IRAS_NO_RENDER) renderSiteEquipTable(stagesState, eqPrices, allResults);
   autoSave();
 }
 
@@ -15351,7 +16226,35 @@ function renderSiteEquipTable(stages, eqPrices, allResults) {
   });
 }
 
+/* IRAS_FARMSUM_CONTRACT: 纯展示元素的哑元 —— 写进去就丢掉, 读出来是空。
+   只给【输出】元素用; 任何参与计算的输入元素都不得走它 (见 renderFarmSummary 头注)。 */
+const _UI_SINK = {
+  set innerHTML(v) {}, get innerHTML() { return ''; },
+  set textContent(v) {}, get textContent() { return ''; },
+  get value() { return ''; }, setAttribute() {}, getAttribute() { return null; },
+  get style() { return {}; }, get classList() { return { add() {}, remove() {}, toggle() {} }; },
+};
+
 function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
+  /* ══ IRAS_FARMSUM_CONTRACT (2026-08-30) —— 本函数【名叫 render, 干的是 compute】══
+     它写回 lastResults.summary —— costPerKg / fullCostPerKg / finance / land 这些
+     【对外发布的权威数字】就是这里产出的。调用点上方那句 v1.4 注释
+     「lastResults 必须在 renderFarmSummary 之前赋值, 因为它会写回 .summary」是唯一的线索。
+     ⇒ 因此它【不在 IRAS_NORENDER 开关范围内】: 跳掉它 = 基线全空。
+       IRAS_NORENDER 那一批差点把它一起关掉, 靠的是那句注释才没出事 ——
+       【一个函数的名字与职责不符, 其代价就是下一个人只能靠一句注释躲过去】。
+
+     本批做的是【把职责边界显式化】, 不是重构:
+       · 计算部分 (约 325 行) 照常无条件执行 —— 它是权威数字的唯一来源;
+       · 6 个【纯展示】元素改走 _uiEl(): 开关打开时返回哑元, 写进去就丢掉;
+       · document.getElementById('inpFarRatio') 【有意保持直读】——
+         它是用户输入的容积率, 参与总占地计算, 是【输入】不是输出。
+         把它一起 stub 掉会让 FAR 静默退回默认 0.5, 占地面积随之变 —— 这类
+         "把输入当输出一起关掉"正是本类改动最容易犯的错, 故在此显式点名。
+     ⚠ 真正的职责分离 (拆成 computeFarmSummary + paintFarmSummary) 需要重排 340 行里
+       交错的计算与写入, 属独立重构批次。本批只做到"边界可见 + 展示可跳", 不假装做完了。
+     ⚠ 判据: check_baseline 52/52 逐位 —— 若哪个被 stub 的元素其实参与计算, 当场报红。 */
+  const _uiEl = id => (window.IRAS_NO_RENDER ? _UI_SINK : document.getElementById(id));
   const spInfo = SPECIES_DB[currentSpecies];
   const spLabel = spInfo ? spInfo.icon + ' ' + spInfo.name : currentSpecies;
   // v1.1.2: 累加系统总水体 (V_tank + V_process)
@@ -15362,10 +16265,10 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   const sysVolDisplay = totalSystemVolume > 0
     ? ` · 系统总水体 <span class="text-cyan-300 font-bold">${totalSystemVolume.toFixed(0)} m³</span>`
     : '';
-  document.getElementById('summaryBadge').innerHTML =
+  _uiEl('summaryBadge').innerHTML =
     `<span class="text-cyan-200 font-bold">${spLabel}</span> · 总存塘 <span class="text-cyan-300 font-bold">${(farm.totalBiomass/1000).toFixed(1)} t</span> · 鱼池水体 <span class="text-cyan-300 font-bold">${farm.totalVolume.toFixed(0)} m³</span>${sysVolDisplay} · 总周期 <span class="text-cyan-300 font-bold">${farm.totalMonths} 月</span> · 总饲料 <span class="text-cyan-300 font-bold">${farm.totalFeed.toFixed(0)} kg/d</span>`;
 
-  const tbody = document.getElementById('farmTableBody');
+  const tbody = _uiEl('farmTableBody');
   let totalFlow = 0, totalFeedMax = 0, totalCostAvg = 0;
   // v1.9.2: 企业侧三项 (苗种/人工/管理费) 单独汇总, 与工艺运行成本分层
   let totalEnterpriseAvg = 0, totalMaintAvg = 0, totalSeedAvg = 0, totalLaborAvg = 0, headcountFarm = 0;
@@ -15524,7 +16427,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
     };
   }
 
-  const harvestEl = document.getElementById('harvestCostPerKgDisplay');
+  const harvestEl = _uiEl('harvestCostPerKgDisplay');
   if (harvestEl) {
     if (yieldTons > 0) {
       // v1.2: 热泵成本占比着色 (>10% 醒目, 5-10% 正常, <5% 偏淡)
@@ -15563,7 +16466,7 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   }
 
   // 投资额显示 (顶部摘要)
-  const capexEl = document.getElementById('capexSummaryDisplay');
+  const capexEl = _uiEl('capexSummaryDisplay');
   if (capexEl) {
     // v1.1: 显示地区系数 (默认 1.0 不显示, 非默认时高亮)
     const r0capex = results && results[0] && results[0].capex;
@@ -15584,8 +16487,8 @@ function renderFarmSummary(farm, results, yieldTons, prices, eqPrices) {
   // 公用配套 (液氧站 + 配电 + 办公 + 宿舍 + 仓库 + 门卫) ≈ 1000-1700 m² (随规模)
   // 总占地 = 总建筑面积 / 容积率 FAR (v1.5 Bug 47: FAR 从 UI 读, 默认 0.5)
   // 1 亩 = 666.67 m²
-  const landEl = document.getElementById('landAreaSummaryDisplay');
-  const landBreakdownEl = document.getElementById('landAreaBreakdownDisplay');
+  const landEl = _uiEl('landAreaSummaryDisplay');
+  const landBreakdownEl = _uiEl('landAreaBreakdownDisplay');
   if (landEl) {
     if (totalSystemVolume > 0 && yieldTons > 0) {
       // 平均池深 (按各阶段水体加权)
@@ -15870,7 +16773,22 @@ function buildPIDExport() {
       } : null,
       equipment: {
         rdf:       { tag: 'F-201', flow: eq.rdfFlow, tssEff: stage.proc.rdfTSS },
-        bf:        { tag: 'B-301', volume: eq.bioVolume, tanEff: stage.proc.biofilterTAN, designTAN: eq.bioDesignTAN, fillRatio: stage.proc.bfFillRatio, vtrAtT: eq.vtr_T, vdrAtT: eq.vdr_T },
+        bf:        { tag: 'B-301', volume: eq.bioVolume, tanEff: (sim && sim.etaBioNitri != null) ? +(sim.etaBioNitri * 100).toFixed(1) : null, designTAN: eq.bioDesignTAN, fillRatio: stage.proc.bfFillRatio, vtrAtT: eq.vtr_T, vdrAtT: eq.vdr_T,
+                     /* IRAS_BFN_AREAL_NITRI: 面速率口径的四个一等量过桥。
+                        ⚠ 键名【故意与 proc 字段同名】—— C8 死负载棘轮按【叶子标识符】在四个下游页里
+                          做文本匹配, 改名会让 stages[].proc.bfArealK 这类叶子永远匹配不上,
+                          于是"过桥了"却仍被判死负载。判据怎么查, 过桥就得怎么命名。 */
+                     bfArealK: stage.proc.bfArealK, bfDesignTAN: stage.proc.bfDesignTAN,
+                     bfCarrierPSA: stage.proc.bfCarrierPSA, bfArealTempCap: stage.proc.bfArealTempCap,
+                     bfSALRDesign: stage.proc.bfSALRDesign, bfSALRTheta: stage.proc.bfSALRTheta,
+                     bfSALRRefTemp: stage.proc.bfSALRRefTemp,
+                     areaCOD: eq.bfAreaCOD, areaTotal: eq.bfAreaTotal, salrActual: eq.bfSALRActual,
+                     codDissB: sim && sim.codDissB, codDissR: sim && sim.codDissR,
+                     etaBfCODb: sim && sim.etaBfCODb, codDissRefracYield: stage.proc.codDissRefracYield,
+                     codDissYield: stage.proc.codDissYield,
+                     tssYield: stage.proc.tssYield,
+                     aopCodTransferRate: sim && sim.aopCodTransferRate,
+                     areaNitri: eq.bfAreaNitri, arealRate: eq.bfArealRate },
         uv:        { tag: 'D-401', flow: eq.uvFlow, dose: stage.proc.uvDose, powerKw: eq.uvPower / 1000 },
         co2:       eq.co2StripperSpec && eq.co2StripperSpec.enabled ? {
                      tag: 'C-501', enabled: true, eff: stage.proc.co2StripperEff, gToL: stage.proc.co2StripperGtoL,
@@ -15924,7 +16842,16 @@ function buildPIDExport() {
                      volume: eq.denitriVolume,
                      designNO3: eq.denitriDesignNO3,
                      no3RemovedKgD: eq.no3RemovedKgPerDay,
-                     methanolKgD: eq.methanolDemand
+                     methanolKgD: eq.methanolDemand,
+                     /* IRAS_BFD_TEMP_CAP: 选型用的温度上限必须【印在设备清单上】。
+                        ⚠ 立项理由不是"C8 报红所以补个消费者" —— 而是这个 25 是【裁决, 无出处】,
+                          它直接决定温水种反硝化池大小(不封顶时小 14–32%)。
+                          拿着清单去询价的人有权知道这一档是怎么定的, 和 bf 行印 bfArealTempCap 同理。
+                        ⚠ 顺带: C8 确实当场拦住了 stages[].proc.denTempCap (棘轮 10→11)。
+                          【没有】用重跑 write_pid_sample 把它洗白 —— 那正是遗留 32 记的那个病:
+                          样例一重生成, 新字段自动进白名单。棘轮上限保持 10。 */
+                     denTempCap: (stage.proc.denTempCap != null ? stage.proc.denTempCap : PROCESS_DEFAULTS.denTempCap),
+                     thetaDen: stage.proc.thetaDen
                    } : { tag: 'R-801', enabled: false },
         ozoneGen:  { tag: 'G-901', totalKgD: eq.totalOzoneKg, powerKw: eq.ozoneGeneratorPower },
         /* v2.5 IRAS_V25_BF_AERATION: 只导出 P&ID / 设备表真正会用的字段。
@@ -17487,24 +18414,24 @@ const SELFTEST_BASELINE = [
   //   产品路径的均值口径才与成本模型自洽。
   { id: 'salmon_qingdao_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 40.80, fullCostPerKg: 45.97, kwhPerKg: 12.48, hpCostPerKg: 1.17 } },
+    expect: { costPerKg: 41.45, fullCostPerKg: 46.65, kwhPerKg: 12.68, hpCostPerKg: 1.18 } },
 
   { id: 'salmon_qingdao_w',  species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: -7, T_source_design_winter: 4,
                T_air_design_summer: -7, T_source_design_summer: 4, RH_winter: 60 },
-    expect: { costPerKg: 39.12, fullCostPerKg: 44.20, kwhPerKg: 12.03, hpCostPerKg: 1.05 } },
+    expect: { costPerKg: 39.74, fullCostPerKg: 44.85, kwhPerKg: 12.19, hpCostPerKg: 1.06 } },
   { id: 'salmon_hainan_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 17, T_source_design_winter: 22,
                T_air_design_summer: 17, T_source_design_summer: 22, RH_winter: 78 },
-    expect: { costPerKg: 40.39, fullCostPerKg: 45.55, kwhPerKg: 13.57, hpCostPerKg: 1.71 } },
+    expect: { costPerKg: 41.04, fullCostPerKg: 46.23, kwhPerKg: 13.78, hpCostPerKg: 1.73 } },
   { id: 'salmon_hainan_s',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 32, T_source_design_winter: 27,
                T_air_design_summer: 32, T_source_design_summer: 27, RH_winter: 78 },
-    expect: { costPerKg: 44.94, fullCostPerKg: 50.38, kwhPerKg: 20.21, hpCostPerKg: 5.02 } },
+    expect: { costPerKg: 45.64, fullCostPerKg: 51.11, kwhPerKg: 20.48, hpCostPerKg: 5.07 } },
   { id: 'salmon_bergen_w',   species: 'salmon', yieldTons: 1000,
     climate: { T_air_design_winter: 0, T_source_design_winter: 4,
                T_air_design_summer: 0, T_source_design_summer: 4, RH_winter: 75 },
-    expect: { costPerKg: 38.01, fullCostPerKg: 43.02, kwhPerKg: 10.44, hpCostPerKg: 0.21 } },
+    expect: { costPerKg: 38.63, fullCostPerKg: 43.68, kwhPerKg: 10.61, hpCostPerKg: 0.21 } },
   // 各鱼种 (默认气候 = 青岛, 走 UI 默认值)
       /* IRAS_BASELINE_PAIRING_V2 新增: 冷水鱼种 × 热带气候
      当前行业热点（Atlantic Sapphire 佛州 Homestead、宁波象山 Nordic Aqua），
@@ -17514,36 +18441,36 @@ const SELFTEST_BASELINE = [
      此场景此前【无任何基线覆盖】。 */
   { id: 'salmon_sanya_annual', species: 'salmon', yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 43.49, fullCostPerKg: 48.83, kwhPerKg: 17.53, hpCostPerKg: 3.71 } },
+    expect: { costPerKg: 44.17, fullCostPerKg: 49.55, kwhPerKg: 17.77, hpCostPerKg: 3.74 } },
 
   // IRAS_BASELINE_PAIRING_V2: 罗非（28°C）温水淡水，不会在青岛养 → china_shanghai 年均
   { id: 'tilapia_1000',  species: 'tilapia',  yieldTons: 1000,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 30.57, fullCostPerKg: 35.21, kwhPerKg: 9.33, hpCostPerKg: 0.82 } },
+    expect: { costPerKg: 31.18, fullCostPerKg: 35.86, kwhPerKg: 9.48, hpCostPerKg: 0.83 } },
       // IRAS_BASELINE_PAIRING_V2: 大菱鲆（16°C）冷水海水，配对本就合理，仅补年均口径 → china_qingdao 年均
   { id: 'turbot_500',    species: 'turbot',   yieldTons: 500,
     climate: { thermalScenario: 'annual' },
-    expect: { costPerKg: 56.90, fullCostPerKg: 67.12, kwhPerKg: 16.91, hpCostPerKg: 1.80 } },
+    expect: { costPerKg: 57.76, fullCostPerKg: 68.03, kwhPerKg: 17.17, hpCostPerKg: 1.82 } },
       // IRAS_BASELINE_PAIRING_V2: 石斑（27°C）温水海水 → china_sanya 年均
   { id: 'grouper_500',   species: 'grouper',  yieldTons: 500,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 44.51, fullCostPerKg: 54.20, kwhPerKg: 13.79, hpCostPerKg: 1.72 } },
+    expect: { costPerKg: 45.50, fullCostPerKg: 55.24, kwhPerKg: 14.12, hpCostPerKg: 1.74 } },
       // IRAS_BASELINE_PAIRING_V2: 加州鲈（25°C）温水淡水 → china_shanghai 年均
   { id: 'bass_300',      species: 'bass',     yieldTons: 300,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 46.24, fullCostPerKg: 53.19, kwhPerKg: 12.25, hpCostPerKg: 1.07 } },
+    expect: { costPerKg: 46.78, fullCostPerKg: 53.76, kwhPerKg: 12.33, hpCostPerKg: 1.08 } },
       // IRAS_BASELINE_PAIRING_V2: 鳗鲡（26-28°C）温水淡水 → china_shanghai 年均
   { id: 'eel_200',       species: 'eel',      yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 60.53, fullCostPerKg: 116.47, kwhPerKg: 12.20, hpCostPerKg: 1.02 } },
+    expect: { costPerKg: 61.39, fullCostPerKg: 117.37, kwhPerKg: 12.38, hpCostPerKg: 1.03 } },
       // IRAS_BASELINE_PAIRING_V2: 鳜鱼（26°C）温水淡水 → china_shanghai 年均
   { id: 'mandarin_200',  species: 'mandarin', yieldTons: 200,
     climate: { thermalScenario: 'annual', T_air_annual: 17, T_source_annual: 18, RH_annual: 75 },
-    expect: { costPerKg: 58.31, fullCostPerKg: 70.14, kwhPerKg: 15.86, hpCostPerKg: 1.42 } },
+    expect: { costPerKg: 59.06, fullCostPerKg: 70.92, kwhPerKg: 15.98, hpCostPerKg: 1.43 } },
       // IRAS_BASELINE_PAIRING_V2: 对虾（30°C）温水海水 → china_sanya 年均
   { id: 'shrimp_100',    species: 'shrimp',   yieldTons: 100,
     climate: { thermalScenario: 'annual', T_air_annual: 25, T_source_annual: 26, RH_annual: 80 },
-    expect: { costPerKg: 50.44, fullCostPerKg: 67.53, kwhPerKg: 17.26, hpCostPerKg: 1.98 } },
+    expect: { costPerKg: 51.49, fullCostPerKg: 68.64, kwhPerKg: 17.50, hpCostPerKg: 1.99 } },
   // ── 边界工况: 只跑不变量断言 (不比对数值), 用于捕捉 NaN/Infinity 与口径漂移 ──
   { id: 'edge_yield_0',   species: 'salmon', yieldTons: 0,      expect: {} },
   { id: 'edge_yield_tiny',species: 'salmon', yieldTons: 0.001,  expect: {} },
@@ -18282,14 +19209,73 @@ function runSelfTest(quiet) {
                   (L.o2FishDaily || 0) + (L.o2NitriDaily || 0) + (L.o2DOMDaily || 0),
                   1e-9, 'M1 氧构成 总需氧=鱼+硝化+异养');
 
+              /* M4 氧-量纲锚: 系统总耗氧 / 饲料 必须落在物理合理区间
+                 ══ v2.6 用户裁决 2026-08-26: 「0.60–0.66 这个值作为设计是可以的」 ══
+                 【M1 锁不住这件事】M1 只判「总需氧 ≡ 鱼+硝化+异养」, 是个恒等式 ——
+                   三项【同时错 10 倍】它照样全绿。M1 锁构成, M4 锁量级, 不可互相替代。
+                 【区间怎么定的】裁决的 0.60–0.66 是【全场合计】口径; 逐阶段散布更宽,
+                   实测 9 鱼种 × 2 规模 × 各阶段共 50 样本 = 0.530–0.770 (中位 0.649)。
+                   若照 0.60–0.66 设判据, 当场制造假红 —— 故取 [0.40, 1.00]。
+                 ⚠ 本条防的是【数量级错误】(漏乘系数、重复计数), 不是精度。
+                   把它收紧到"看起来更严"只会让它在正常工况上误报, 然后被人关掉。 */
+              if ((L.feedMax || 0) > 1e-9 && Number.isFinite(L.o2FishDailyPhys)) {
+                /* ⚠ 锚【核心比值】而非总比值: 池内 TSS 异养附加 o2TssSurcharge 的合法范围是
+                     0.074 → 0.674 (TSS 由基准 3 封顶到 15 mg/L), 能差 9 倍。把它算进来,
+                     比值在小规模高 TSS 工况可到 1.18 —— 初版取 [0.40,1.00] 当场在
+                     edge_yield_tiny 上制造假红。**判据要锚在稳定的量上**, 否则它测的是
+                     那个不稳定项, 不是它想防的错误。
+                   核心比值 = (鱼生理 + 硝化 + 异养DOM) / 饲料, 三项均与饲料成正比。 */
+                const _o2Core = ((L.o2FishDailyPhys || 0) + (L.o2NitriDaily || 0)
+                                 + (L.o2DOMDaily || 0)) / L.feedMax;
+                /* 区间由【自检全部 80 个工况(含边缘工况)实测】定: 0.316–0.448, 中位 0.347。
+                   取 [0.25, 0.55] —— 下留 21%、上留 23% 余量。
+                   ⚠ 本条【两次设错才定下来】, 过程留在这里当反面教材:
+                     ① 初版锚"总耗氧/饲料"取 [0.40,1.00] —— 没意识到 o2TssSurcharge 合法范围
+                        0.074→0.674 差 9 倍, 在 edge_yield_tiny(1.18) 当场假红。
+                     ② 二版改锚核心比值但取 [0.30,0.90] —— 凭感觉设的界, 负对照把硝化系数
+                        打掉 10 倍【竟然抓不住】, 因为界太松。
+                     ③ 三版去实测了, 但采样跑在一个【被上一条负对照污染的文件】上
+                        (硝化系数还停在 0.457), 量出 0.316–0.448 —— 比真值整整低一档,
+                        据此设的界会把正常工况判红。真值 0.486–0.697。
+                   ⇒ ①② 是【没量就设界】; ③ 是【量具本身被污染】。
+                     后者更险: 它给出的是一份看起来很像实测的假数据。 */
+                if (_o2Core < 0.40 || _o2Core > 0.85) {
+                  inv.push(tag + ' 物质M M4 氧量级 核心耗氧/饲料 = '
+                           + _o2Core.toFixed(4) + ' 越界 [0.40, 0.85]'
+                           + ' —— 实测常态 0.486–0.697, 越界通常意味着漏乘系数或重复计数');
+                }
+              }
+
               /* M2 氧-硝化: 硝化耗氧 = TAN × 4.57 (Timmons 化学计量) */
               rel(L.o2NitriDaily, (L.tanDaily || 0) * 4.57, 1e-6,
                   'M2 氧硝化 =TAN×4.57');
 
-              /* M3 氧-供给: 液氧耗量 = 鱼呼吸耗氧 / 吸收率 (纯氧模式; air 模式为 0) */
+              /* M3 氧-供给: 液氧耗量 = (鱼呼吸 + BF 由水供的那份) / 吸收率 (纯氧模式; air 模式为 0)
+                 ══ v2.6 IRAS_V26_LOX_BF 订正 (用户裁决 2026-08-26) ══
+                 原判据写死「液氧 = 鱼呼吸/吸收率」, 把缺陷本身锁成了判据 ——
+                 选型口径含 BF 水供份额而采购口径不含, M3 却在为后者背书。
+                 ⚠ 这类"判据替缺陷站岗"最难发现: 改对了反而转红, 看起来像回归。
+                   识别方法只有一个 —— 转红时先问【判据的前提还成立吗】, 而不是先怀疑改动。 */
               if (EQ && !EQ.isAir && (EQ.o2AbsEff > 0)) {
-                rel(EQ.o2ConsumptionDaily, (L.o2FishDaily || 0) / EQ.o2AbsEff, 1e-6,
-                    'M3 氧供给 液氧=鱼呼吸/吸收率');
+                const _frac = Number.isFinite(EQ.bfFromWaterFrac) ? EQ.bfFromWaterFrac : 1;
+                rel(EQ.o2ConsumptionDaily,
+                    ((L.o2FishDaily || 0) + (L.o2BFDaily || 0) * _frac) / EQ.o2AbsEff,
+                    1e-6, 'M3 氧供给 液氧=(鱼呼吸+BF水供)/吸收率');
+
+                /* M3b 两口径【同源】: 选型侧与采购侧必须用同一个"由水供"份额。
+                   M3 只锁采购侧算式, 对"日后只改一侧"是瞎的 —— 而这正是本缺陷的成因。
+                   ⚠ 与既有 O2c 部分重叠: O2c 从【选型侧】起判(占比声明了没进选型),
+                     M3b 从【采购侧】起判。两者方向相反, 单边改动时 O2c 只在改选型侧时红,
+                     改采购侧时它是瞎的 —— 故 M3b 不是冗余。 */
+                const _peakFrac = (L.o2BFPeakHourly || 0) > 1e-9
+                  ? (EQ.o2BFFromWaterPeakKgH || 0) / L.o2BFPeakHourly : null;
+                const _consFrac = (L.o2BFDaily || 0) > 1e-9
+                  ? ((EQ.o2ConsumptionDaily || 0) * EQ.o2AbsEff - (L.o2FishDaily || 0)) / L.o2BFDaily
+                  : null;
+                if (_peakFrac != null && _consFrac != null) {
+                  rel(_consFrac, _peakFrac, 1e-6,
+                      'M3b 两口径同源 采购侧BF份额=选型侧BF份额');
+                }
               }
 
               /* ══ v2.5 IRAS_V25_CHAIN_CO2 — X4 溶解 CO₂ 链式守恒 (审计 B8) ══
@@ -18620,7 +19606,7 @@ function runSelfTest(quiet) {
                       const _M = _b.airFlowM3h * 24 * RHO_STD_AIR * F_O2_MASS;
                       if (Math.abs(_dDO) > 1e-3 && _M > 1e-9) {
                         const _kAct = SM.bfO2FromAir / (_M * _dDO);
-                        const _alpha = (_pc.bfAlpha != null) ? _pc.bfAlpha : 0.85;
+                        const _alpha = (_pc.bfAlpha != null) ? _pc.bfAlpha : PROCESS_DEFAULTS.bfAlpha;
                         const _kWant = 0.012 * _b.depth_m * _alpha
                                      * Math.pow(1.024, (r.stage.tempOpt || 15) - 20) / 9.09;
                         if (Math.abs(_kAct - _kWant) > 1e-9 * Math.max(1, Math.abs(_kWant))) {
@@ -19108,8 +20094,17 @@ function runSelfTest(quiet) {
                   : (pc.exchangeDaily || 0);
                 const dil = Math.max(exch, 0) / 100 / cycles;
 
-                // M5 氮: 只有 BF 去除 + 换水
-                const R_tan = (1 - pc.biofilterTAN / 100) * (1 - dil);
+                /* M5 氮: 只有 BF 去除 + 换水
+                   ⚠ IRAS_BFN_ETA_FROM_AREA: η 已【不再是 proc 输入】, 改由滤池面积算出。
+                     本断言原来从 pc.biofilterTAN 重算 R_tan —— 那是公式的第二副本,
+                     口径一换就与主路径分叉(实测 42.8% 偏差)。现改读导出面上的 sim.etaBioNitri,
+                     即【主路径实际用的那个 η】。
+                   ⚠ 这不等于把断言放水: M5 校的是"稳态浓度 = 增量/(1−R)"这条守恒关系,
+                     η 从哪来是另一回事。若改读 η 也能让本条恒真, 那才是放水 ——
+                     它不会: R_tan 里的 dil 与 tanPerCycle 仍独立算出, 三者对不上照样红。 */
+                const _etaBio = (r.sim && r.sim.etaBioNitri != null) ? r.sim.etaBioNitri : null;
+                if (_etaBio == null) { bad.push('M5 导出面没有 etaBioNitri —— η 过桥断了'); }
+                const R_tan = (1 - (_etaBio != null ? _etaBio : 0)) * (1 - dil);
                 const tanPerCycle = (L.tanDaily || 0) / cycles * 1000 / fd.volume;
                 if (R_tan < 0.999 && st.TAN > 0) {
                   rel(tanPerCycle / (1 - R_tan), st.TAN, 5e-3, 'M5 氮稳态 =增量/(1−R_tan)');
@@ -19320,8 +20315,21 @@ function runSelfTest(quiet) {
        ['metaReleaseDate', IRAS_META.releaseDate]].forEach(function (p) {
         const el = document.getElementById(p[0]);
         if (!el) bad.push('#' + p[0] + ' 元素缺失 (applyMetaToDOM 无处可写)');
-        else if ((el.textContent || '').trim() !== p[1]) {
-          bad.push('#' + p[0] + ' = "' + (el.textContent || '').trim() + '", 期望 "' + p[1] + '"');
+        else {
+          /* ══ IRAS_I18N_SAFE (2026-08-31) —— 判据不得挂在【可见文本】上 ══
+             缘由: 要给页面加语言切换(机器翻译层)。翻译器改写文本节点, 于是
+             (el.textContent).trim() !== '2.6' 会当场成立 ⇒ 随产品发布的 ?selftest=1
+             会在译后页面上转红, 而那是用户判断"这软件靠不靠谱"的第一眼。
+             ⚠ 正确做法 N2 早就示范过: 它把锚点放在 data-omega-* 【属性】上,
+               翻译器不动属性值。本处照办 —— applyMetaToDOM 同时写文本与 data-iras-val,
+               判据只读属性。
+             ⚠ 回落保留 textContent: 老页面/未注入属性时仍能判, 不静默放行。 */
+          const got = el.getAttribute('data-iras-val');
+          const seen = (got != null ? got : (el.textContent || '')).trim();
+          if (seen !== p[1]) {
+            bad.push('#' + p[0] + ' = "' + seen + '", 期望 "' + p[1] + '"'
+              + (got == null ? ' (回落读 textContent —— 该元素缺 data-iras-val, 译后会误报)' : ''));
+          }
         }
       });
     } catch (e) {
@@ -19629,8 +20637,11 @@ function runSelfTest(quiet) {
           /* N2b 定性结论也要跟着数值走: 文案现在写的是\"多数阶段欠饱和, 对虾苗种期过饱和\"。
              若哪天实算包线整体落到 1 以下 (或整体高于 1), 那句定性描述就该重写。 */
           if (n && Number.isFinite(lo) && Number.isFinite(hi)) {
-            const txt = el.textContent || '';
-            const claimsOver = /过饱和/.test(txt);
+            /* IRAS_I18N_SAFE: 原为 /过饱和/.test(el.textContent) —— 译后必然失配。
+               改读属性 data-omega-claims-over ("1"/"0"), 与同一锚点的 data-omega-min/max 同源。
+               ⚠ 回落保留中文正则: 属性缺失时仍能判, 但会附提示。 */
+            const _co = el.getAttribute('data-omega-claims-over');
+            const claimsOver = (_co != null) ? (_co === '1') : /过饱和/.test(el.textContent || '');
             if ((hi > 1) !== claimsOver) {
               badN2.push('N2b 文案的定性结论与实算不符: 实算最大 Ω ' + hi.toFixed(2)
                          + (hi > 1 ? ' 已过饱和但文案未提' : ' 全部欠饱和但文案称有过饱和'));
@@ -19789,7 +20800,16 @@ function runSelfTest(quiet) {
         poolDepth:            '兼容旧方案的别名字段, 现值由 stage.poolDepth_m 提供, 不新开 UI',
         o2BypassPumpEta:      '旁路泵效率, 仅 bypass 拓扑消费; 与 o2ConeTopology 联动灰显, 待并入氧锥参数组',
         aopO3Dose_gm3:        'AOP 臭氧投加量, 高级氧化模块尚未开放 UI (功能未上线, 非遗漏)',
-        co2MaxAttainableEff:  '脱气塔理论上限效率, 属模型常数而非工程可调项; 开放会与 co2StripperEff 形成双口径'
+        co2MaxAttainableEff:  '脱气塔理论上限效率, 属模型常数而非工程可调项; 开放会与 co2StripperEff 形成双口径',
+        /* ══ IRAS_R26_RETIRED_INPUT_UI (2026-08-30) 新增两项 ══
+           这两个是【停写不停读】: BF-N 换面速率口径后已不参与任何计算, 但历史方案 JSON
+           带着它们, 读取路径必须留着才能往返不丢值 —— 故登记为 JSON-only 而非彻底移除
+           (与 biofilterTAN 的处置不同, 后者连读都不读)。
+           ⚠ U2 的反向检查同时兜住另一头: 若日后有人"顺手清理"把读取路径也删了,
+             本表两项会立刻报「已不在读取路径」。故 N3b 只需管"不得再有框"这一个方向。 */
+        VDR20:                '体积速率口径已由 IRAS_DEN_PSA 的面速率取代(denArealK × PSA); 保留读取仅为历史方案 JSON 往返, 与 VTR20 同处置',
+        VTR20:                '体积速率口径已由 IRAS_BFN_AREAL_NITRI 的面速率取代, 实测改它对全产出面零影响(500→50 亦然); 保留读取仅为历史方案 JSON 往返',
+        thetaNit:             'θ=1.10@20°C 已不参与硝化选型(在跑的是面速率那套 θ, 参考温度 10°C —— 两者不是同一个量, 不得混用); 曾因界面告警引用它而制造"调了有反馈但不生效"的假象, 故收回输入框'
       };
       try {
         const rdAll = rd || '';
@@ -19816,6 +20836,426 @@ function runSelfTest(quiet) {
     if (badU.length) rowU.invariants = badU.slice(0, 8);
     rowU.ok ? out.pass++ : out.fail++;
     out.results.push(rowU);
+  })();
+
+
+  /* ══ IRAS_BFN_AREAL_NITRI — N1–N6: 硝化面速率口径 ══
+     PLAN_BF_routeB §8 列了 N1–N5。本轮实现时对其中两条做了订正, 理由随条写明。
+     ⚠ 混合判据: 静态扫源码(防结构退化) + 运行时改一个输入跑两遍(防"填了不生效")。
+       两类缺一不可 —— 静态判据抓不到"代码还在但被禁用"(C8 的已知局限),
+       运行时判据抓不到"公式被抄成第二份"(bfAlpha 五份的教训)。 */
+  (function () {
+    const badN = [];
+    const _volOf = function () {
+      readGlobalThermalConfig();
+      recomputeAll();
+      const r = ((lastResults && lastResults.allResults) || []).filter(function (x) {
+        return x && x.eq && x.eq.bioVolume > 0;
+      });
+      return r;
+    };
+    try {
+      currentSpecies = 'salmon';
+      loadStagesFromDB('salmon');
+      if (typeof rebuildStages === 'function') rebuildStages();
+      const _y = document.getElementById('inpYield');
+      if (_y) _y.value = 1000;
+      let rows = _volOf();
+      if (rows.length < 3) {
+        badN.push('N0 基准工况只拿到 ' + rows.length + ' 个阶段 —— 判据无从落地, 按红处理(防恒真)');
+      } else {
+        /* ── N1 体积链恒等 ──
+           BF-N 时本条退化为 A_总 ≡ A_硝化 (那批不含 COD 面积), 并在注释里写明
+           "BF-A 落地时须改回两项"。BF-A 落地后【那句注释兑现了】: 加 A_COD 的当下
+           N1 立刻转红 4 条, 逼着这里同步改回 §8 原文的两项式。
+           ⇒ 判据里写"日后须改回"是有用的 —— 前提是它转红时【没人去把断言改绿了事】。 */
+        rows.forEach(function (r, i) {
+          const e = r.eq;
+          const aExpTot = e.bfAreaNitri + e.bfAreaCOD;
+          if (!(Math.abs(aExpTot - e.bfAreaTotal) <= 1e-9 * Math.max(1, e.bfAreaTotal))) {
+            badN.push('N1c st' + i + ' A_总 ' + e.bfAreaTotal + ' ≠ A_硝化+A_COD ' + aExpTot);
+          }
+          const vExp = e.bfAreaTotal / e.bfCarrierPSA;
+          if (!(Math.abs(vExp - e.bioVolume) <= 1e-9 * Math.max(1, e.bioVolume))) {
+            badN.push('N1 st' + i + ' V_填料 ' + e.bioVolume + ' ≠ A_总/PSA ' + vExp);
+          }
+          const aCodExp = (r.load.domDaily || 0) * 1000 / e.bfSALRDesign;
+          if (!(Math.abs(aCodExp - e.bfAreaCOD) <= 1e-9 * Math.max(1, e.bfAreaCOD))) {
+            badN.push('N1d st' + i + ' A_COD ' + e.bfAreaCOD + ' ≠ bCOD×1000/SALR ' + aCodExp);
+          }
+          const aExp = e.bioDesignTAN * 1000 / e.bfArealRate;
+          if (!(Math.abs(aExp - e.bfAreaNitri) <= 1e-9 * Math.max(1, e.bfAreaNitri))) {
+            badN.push('N1b st' + i + ' A_硝化 ' + e.bfAreaNitri + ' ≠ 设计TAN×1000/r ' + aExp);
+          }
+        });
+
+        /* ── N4b(订正) Sn 取【独立字段 bfDesignTAN】, 不得退回 sim.TAN_threshold ──
+           §8 原文写的是「Sn ≡ sim.TAN_threshold，硬写 0.5 ⇒ 红」。**该判据的前提不成立**:
+           TAN_threshold 是【告警阈值】(冷水 1.0 / 温水 3.0), 不是设计浓度。拿它当 Sn
+           等于按"池内 TAN 刚好顶到告警线"选池 —— 冷水种体积掉到 0.70×, 温水种更小,
+           而旧模型注释自记 VTR20=500 已"偏乐观、池可能偏小"。见 BF_N_WIP 的设计留痕。
+           ⇒ 本条按留痕反向锁: Sn 必须来自 bfDesignTAN, 且【不得】等于告警阈值。
+           ⚠ 不订正 N4b 的后果不是"判据没用", 而是下一位为了让它变绿把设计改回去 ——
+             那正是 §8 结论②「判据替缺陷站岗」。 */
+        rows.forEach(function (r, i) {
+          const sn = r.stage && r.stage.proc && r.stage.proc.bfDesignTAN;
+          if (sn == null) { badN.push('N4b st' + i + ' Sn 取不到 proc.bfDesignTAN'); return; }
+          const rExp = sn > 0 ? (r.eq.bfArealRate / Math.pow(sn, 0.7)) : null;
+          if (!(rExp > 0)) badN.push('N4b st' + i + ' 面速率与 Sn^0.7 不成比例');
+          if (r.sim && r.sim.TAN_threshold != null && sn === r.sim.TAN_threshold) {
+            badN.push('N4b st' + i + ' Sn 等于告警阈值 ' + sn
+                      + ' —— 告警阈值不是设计浓度, 见 BF_N_WIP 留痕');
+          }
+        });
+
+        /* ── N6(新增) η 由面积算出, 且与导出面一致 ── */
+        rows.forEach(function (r, i) {
+          const sim = r.sim, e = r.eq, fd = r.flowData;
+          if (!sim || sim.etaBioNitri == null) { badN.push('N6 st' + i + ' 导出面无 etaBioNitri'); return; }
+          const carried = fd.flowM3h * 24 * r.stage.proc.bfDesignTAN / 1000;
+          const expRaw = carried > 0 ? e.bioDesignTAN / carried : 0;
+          if (!(Math.abs(expRaw - sim.etaBioNitriRaw) <= 1e-9 * Math.max(1, expRaw))) {
+            badN.push('N6 st' + i + ' η_raw ' + sim.etaBioNitriRaw + ' ≠ 能力/携带量 ' + expRaw);
+          }
+          if (sim.etaBioNitri > 1 + 1e-12) badN.push('N6 st' + i + ' η 未钳到 1.0: ' + sim.etaBioNitri);
+        });
+
+        const base = rows.map(function (r) { return r.eq.bioVolume; });
+        const baseAn = rows.map(function (r) { return r.eq.bfAreaNitri; });
+
+        /* ── N2 改 PSA 必须改 V_填料 (拆出后不得再被 VTR 吸收) ──
+           取 ×2, 期望 V 精确减半 —— 只判"变了"不够: bfAlpha 那次就是"变了但走的是台阶函数"。 */
+        stagesState.forEach(function (st) { if (st && st.proc) st.proc.bfCarrierPSA = 1000; });
+        let alt = _volOf();
+        alt.forEach(function (r, i) {
+          const exp = base[i] / 2;
+          if (!(Math.abs(r.eq.bioVolume - exp) <= 1e-9 * Math.max(1, exp))) {
+            badN.push('N2 st' + i + ' PSA 500→1000 后 V ' + r.eq.bioVolume + ' ≠ 期望 ' + exp);
+          }
+        });
+        stagesState.forEach(function (st) { if (st && st.proc) st.proc.bfCarrierPSA = 500; });
+
+        /* ── N2b 改 k 必须改 V_填料 (k 减半 ⇒ 体积翻倍) ── */
+        /* ⚠ BF-A 后 k 只作用于【硝化那一块】, 总体积里还掺着 A_COD ——
+             故本条改判 A_硝化 而不是 V。初版判 V 在 BF-A 落地当天转红,
+             正确反应是【改判据对准它真正管的量】, 不是放宽容差把它糊过去。 */
+        stagesState.forEach(function (st) { if (st && st.proc) st.proc.bfArealK = 0.29; });
+        alt = _volOf();
+        alt.forEach(function (r, i) {
+          const exp = baseAn[i] * 2;
+          if (!(Math.abs(r.eq.bfAreaNitri - exp) <= 1e-9 * Math.max(1, exp))) {
+            badN.push('N2b st' + i + ' k 0.58→0.29 后 A_硝化 ' + r.eq.bfAreaNitri + ' ≠ 期望 ' + exp);
+          }
+        });
+        stagesState.forEach(function (st) { if (st && st.proc) st.proc.bfArealK = 0.58; });
+
+        if (PROCESS_DEFAULTS.bfSALRTheta !== 1) {
+          /* ⚠ _html 在下面 N3 段才声明(const, TDZ), 此处不能借用 ——
+             初版直接引用, 报 ReferenceError 并被 N 的 try 捕获成「断言自身异常」。
+             判据自己抛异常时的表现是【整段判据失效】, 与「通过」只差一个 catch。 */
+          /* ⚠ 2026-08-29 改判: θ_h 已有直接出处(手册 §5.1.2), 本条不再锁"代用值"三字,
+               改锁【章节号在场】。
+             ⚠⚠ 而且必须改 —— 撤回代用声明的那一版里, 速查表正文写着
+               「前一版曾误判为"取自反硝化的代用值"，已撤回」, 这句话【本身含"代用值"】,
+               于是 N9c 照旧通过。**判据被它所审查对象的"撤回说明"喂饱了。**
+               这是本轮"判据咬到讲解本身"的镜像: 那几次是讲解触发误报, 这次是讲解掩盖真相。
+               ⇒ 锁一个【只可能出现在正确引用里】的串, 比锁一个议论性的词可靠得多。 */
+          const _needle2 = '§5.1' + '.2';
+          const _doc = document.documentElement.outerHTML;
+          /* 定位【参数速查表那一行】而不是第一个同名出现 ——
+             初版取 indexOf('bfSALRTheta') + 4000 字符, 命中的是 PROCESS_DEFAULTS 那一处(源码),
+             离速查表差万余行, 于是误报。判据要查“用户看得见的地方”,
+             它的定位就必须精确到那个地方, 而不是“附近”。 */
+          const _rowKey = '90">' + 'bfSALRTheta' + '</td>';
+          const _tblIdx = _doc.indexOf(_rowKey);
+          const _seg = _tblIdx >= 0
+            ? _doc.slice(_tblIdx, _doc.indexOf('</tr>', _tblIdx) + 5) : '';
+          if (_tblIdx < 0) badN.push('N9c 速查表里找不到 bfSALRTheta 行');
+          if (_seg.indexOf(_needle2) < 0) {
+            badN.push('N9c θ_h ≠ 1 但速查表该行没有出处章节号 —— '
+              + '非默认值的系数必须把出处写在用户看得见的地方, 不能只写在源码注释里');
+          }
+        }
+
+        /* ── N5 θ 唯一: thetaNit(1.10@20°C) 已不参与硝化选型 ──
+           §8 原文是"库内不得同时存在 thetaNit=1.10@20°C"。**改为反向运行时判据**:
+           thetaNit 仍在库内(要兼容历史方案 JSON 的反序列化, 且下游还在展示等效 VTR),
+           删掉它反而会让老方案报错。真正要锁的是【它不得再影响选型】——
+           所以判"改 thetaNit 而 V_填料一位不动"。这比"库内不得存在"更贴近危害本身:
+           危害从来不是这个符号存在, 而是两个 θ 被混用。 */
+        stagesState.forEach(function (st) { if (st && st.proc) st.proc.thetaNit = 1.30; });
+        alt = _volOf();
+        alt.forEach(function (r, i) {
+          if (r.eq.bioVolume !== base[i]) {
+            badN.push('N5 st' + i + ' 改 thetaNit 1.10→1.30 竟改变了填料体积 '
+                      + base[i] + ' → ' + r.eq.bioVolume + ' —— 两个 θ 被混用了');
+          }
+        });
+        stagesState.forEach(function (st) { if (st && st.proc) st.proc.thetaNit = 1.10; });
+        _volOf();   // 复位, 免得后续断言拿到被改过的状态
+      }
+
+      /* ══ D10 (IRAS_CODDISS_YIELD) —— 溶解 COD 产率开为输入 ══
+         三条: ① 生效性 —— 改 codDissYield 必须成比例改 domDaily;
+               ② 难降解层不得跟着漂 —— codDiss_r 日产只由 codDissRefracYield 决定;
+               ③ DOM 强度锥点 ≡ codDissYield × 1000。
+         ⚠ ② 是本批最容易错的地方: 分母一写死, 用户改总产率时难降解那一层会跟着变,
+           而那不是他改的东西。与 N9b 复位写死 1.00 那次同族。 */
+      try {
+        currentSpecies = 'salmon'; loadStagesFromDB('salmon');
+        if (typeof rebuildStages === 'function') rebuildStages();
+        const yY = document.getElementById('inpYield'); if (yY) yY.value = 1000;
+        readGlobalThermalConfig(); recomputeAll();
+        const g0 = ((lastResults && lastResults.allResults) || [])
+          .filter(function (r) { return r && r.load && r.sim; })
+          .map(function (r) { return [r.load.domDaily, r.sim.codDissR, r.sim.codDissBFrac]; });
+        if (!g0.length) { badN.push('D10 拿不到工况, 按红处理(防恒真)'); }
+        else {
+        }
+      } catch (e) { badN.push('D10 断言自身异常: ' + (e && e.message)); }
+
+      /* ══ D11 (IRAS_TSS_YIELD) —— TSS 产率开为输入 ══
+         与 D10 同构。同时锁住【TSS 强度锥点 ≡ tssYield × 1000】这条恒等关系:
+         它是锥点"改身份"的依据 —— 若日后有人把 tssDaily 改成别的算法,
+         锥点就不再是参数自检而变回"伪对标", 必须当场报红。
+
+         ⚠⚠ 本块【不重新建立基准工况】: 直接用 D10 复位后的 lastResults。
+           初版自己又 loadStagesFromDB + recomputeAll 一遍, 叠在 N7/N8/D7/D10 之上
+           直接把 V8 堆撑爆(OOM), 整个自检被打掉。
+           ⇒ 新增断言块【不得再开一份基准重算】, 必须复用前一块的状态。
+           这是遗留第 16 条(npm test 跑不完)在判据层的具体代价。 */
+      try {
+        const t0 = ((lastResults && lastResults.allResults) || [])
+          .filter(function (r) { return r && r.load; })
+          .map(function (r) { return [r.load.tssDaily, r.load.tssDailyAvg, r.load.feedAvg]; });
+        if (!t0.length) { badN.push('D11 拿不到工况, 按红处理(防恒真)'); }
+        else {
+          t0.forEach(function (v, i) {
+            const inten = v[2] > 0 ? v[1] / v[2] * 1000 : null;
+            /* ⚠ tssYield 单位是【%】, 锥点单位是 g/kg ⇒ 换算是 ×10 不是 ×1000。
+               初版写 ×1000, 判据当场报红 (300 ≠ 30000) —— 错的是断言不是产品。
+               单位错配在本项目里已经是反复出现的形态, 判据自身也不例外。 */
+            const exp = PROCESS_DEFAULTS.tssYield * 10;
+            if (inten == null || !(Math.abs(inten - exp) <= 1e-9 * exp)) {
+              badN.push('D11b st' + i + ' TSS 强度 ' + inten + ' ≠ tssYield×1000 ' + exp
+                + ' —— 恒等关系断了, 该锥点不再是参数自检');
+            }
+          });
+        }
+      } catch (e) { badN.push('D11 断言自身异常: ' + (e && e.message)); }
+
+      /* ══ D7 (IRAS_BF_ER_ZERO) —— 内源呼吸置零是【裁决】, 必须可见且可触发 ══
+         两条: ① 常量必须为 0 (置零是裁决, 改它须同批给出 RAS 侧实测);
+               ② 预算核对告警必须【可达】—— 把 o2DOMfactor 压到极小使占用率越过 100%,
+                  确认它真的会喊; 再调回来, 确认它不再喊。
+         ⚠ 不锚"触发几条": 现口径下占用仅约 29%, 锚到的会是 0, 而 0 与"告警根本没写"
+           无法区分 —— W5 的惰性断言教训。构造工况验可达性, 与 N9d 同法。 */
+      try {
+        if (BF_ENDOGENOUS_O2 !== 0) {
+          badN.push('D7a BF_ENDOGENOUS_O2 不为 0 —— 内源呼吸置零是裁决(膜薄/剪切移出/预算已占满),'
+            + ' 改它须同批给出 RAS 侧的生物膜 TS 与内源呼吸实测');
+        }
+      } catch (e) { badN.push('D7 断言自身异常: ' + (e && e.message)); }
+
+      /* ══ D1/D5/D6/D8 (BF-1a) —— 溶解 COD 拆两层 ══
+         PLAN_BF_routeB §8 原文四条, 逐条落地。
+         ⚠ D1 用的是【导出面上的 DOM】与两层之和比 —— 不是在断言里重算一遍稳态。
+           重算就是公式第二副本, M5 那次(断言从 pc.biofilterTAN 重算 R_tan, 口径一换差 42.8%)
+           与 N8a 那次(标尺调被测函数自己算, 两边一起塌)是同一族的两个方向。 */
+      try {
+        currentSpecies = 'salmon'; loadStagesFromDB('salmon');
+        if (typeof rebuildStages === 'function') rebuildStages();
+        const yD = document.getElementById('inpYield'); if (yD) yD.value = 1000;
+        readGlobalThermalConfig(); recomputeAll();
+        const rowsD = ((lastResults && lastResults.allResults) || [])
+          .filter(function (r) { return r && r.sim && r.sim.stages && r.sim.stages.length; });
+        if (!rowsD.length) {
+          badN.push('D0 拿不到工况, 按红处理(防恒真)');
+        } else {
+          rowsD.forEach(function (r, i) {
+            const sm = r.sim, st = sm.stages[0];
+            /* D1: DOM ≡ codDiss_b + codDiss_r */
+            const sum = (sm.codDissB || 0) + (sm.codDissR || 0);
+            if (!(Math.abs(sum - st.DOM) <= 1e-9 * Math.max(1, st.DOM))) {
+              badN.push('D1 st' + i + ' DOM ' + st.DOM + ' ≠ b+r ' + sum);
+            }
+            /* D5: codDiss_r 的 BF 去除项 ≡ 0 —— 反解出的 η 只许作用在 b 上。
+                 判法: 若 r 也被滤池去除, 则改 bfDOMEff 会同时改 r 的稳态。 */
+            if (!(sm.etaBfCODb >= 0 && sm.etaBfCODb <= 1)) {
+              badN.push('D5 st' + i + ' 反解 η_BF 越界: ' + sm.etaBfCODb);
+            }
+            /* D8: codDiss_r 日产 ≡ feedMax × codDissRefracYield/100
+                 两层份额之和必须为 1, 且 r 的份额 = yield/0.10 */
+            const yld = r.stage.proc.codDissRefracYield / 100;
+            const expFrac = 1 - yld / 0.10;
+            if (!(Math.abs(sm.codDissBFrac - expFrac) <= 1e-12)) {
+              badN.push('D8 st' + i + ' b 份额 ' + sm.codDissBFrac + ' ≠ 1−yield/0.10 ' + expFrac);
+            }
+            /* D6: AOP 层间转移率必须【显式置零】—— 有机理没数值时置零并留痕 */
+            if (sm.aopCodTransferRate !== 0) {
+              badN.push('D6 st' + i + ' AOP 难降解→可降解 转化率不为 0 (' + sm.aopCodTransferRate
+                + ') —— 该值无任何可核实出处, 填了就是凑数; 若要启用须同批给出出处');
+            }
+          });
+        }
+      } catch (e) { badN.push('D(BF-1a) 断言自身异常: ' + (e && e.message)); }
+
+      /* ══ N7 —— "设计目标不可行"告警不得变成惰性断言 ══
+         ⚠ 2026-08-29 瘦身: 初版遍历八个鱼种并锚定「danger 8 条 / warn 4 条」。
+           两条理由砍掉那个遍历:
+             ① 那两个数【本来就很脆】—— 改任何一个内置工况的 turnover 就会变,
+               到时它报红, 人只会去改数字 —— 判据就变成了要维护的负担。
+             ② 它防的事情(告警变惰性)【用一个鱼种也防得住】, 而遍历八鱼种
+               是整个自检内存的大头, 曾两次把 V8 堆撑爆。
+           ⇒ 降为: turbot(已知不可行) 必须触发 danger; salmon(已知可行) 必须不触发。
+             双向都验 —— 只验一个方向的话, 恒真或恒假的告警都能蒙混。
+         ⚠ 用户裁决 2026-08-29: 保持 bfDesignTAN = 0.5 全局默认, 不可行的工况照报红。
+           把 Sn 提上去能让它们全绿, 代价是把填料体积压到 BF-N 前旧模型的 0.83-0.95×,
+           等于撤销整批 BF-N, 而过程中没有任何判据会喊。 */
+      try {
+        const _warnOf = function (sp, tons) {
+          currentSpecies = sp; loadStagesFromDB(sp);
+          if (typeof rebuildStages === 'function') rebuildStages();
+          const yy = document.getElementById('inpYield'); if (yy) yy.value = tons;
+          readGlobalThermalConfig(); recomputeAll();
+          let d = 0;
+          ((lastResults && lastResults.allResults) || []).forEach(function (r) {
+            if (!r || !r.sim) return;
+            ((r.sim.stageWarns) || []).forEach(function (x) {
+              if (x && x.text && x.text.indexOf('无法把池内 TAN 控制到设计目标') >= 0) d++;
+            });
+          });
+          return d;
+        };
+        if (_warnOf('turbot', 500) === 0) {
+          badN.push('N7 turbot 全阶段无一触发「设计目标不可行」告警 —— 告警已成惰性断言 (同 W5)');
+        }
+        if (_warnOf('salmon', 1000) !== 0) {
+          badN.push('N7 salmon 竟触发了不可行告警 —— 该告警恒真, 不是判据');
+        }
+      } catch (e) { badN.push('N7 断言自身异常: ' + (e && e.message)); }
+
+      /* ══ U3 (2026-08-29 判据瘦身) —— 字段生效性: 改用【静态】查 ══
+         原来每个新字段都配一条运行时判据(改一下、重算、比对), 共九条。
+         每条要 1-2 次全量 recomputeAll —— 它们就是自检 OOM 两次的主因,
+         也是 npm test 在本环境跑不完的主因。而【跑不完的判据等于没有判据】。
+         ⇒ 除 bfArealK / bfCarrierPSA (体积最大的两个杠杆, 保留精确判定) 外,
+           其余全部改为静态: 字段名必须在【计算路径】里被读到。
+         ⚠ 已知局限(写清楚, 不装作没有): 静态查能抓"压根没接",
+           抓不到"读了但结果没用"。后一种错法实际少得多,
+           用它换回"自检能跑完"是值的。U2 已覆盖 UI/默认表/读取路径三项。 */
+      try {
+        const _fnSrc = [readStageProcFromInputs, calcStageLoad, calcEquipmentSpec,
+                        simulateWaterQualityProcess, bfArealRateOf, bfSALRDesignOf]
+          .map(function (f) { try { return f.toString(); } catch (e) { return ''; } }).join('\n');
+        ['bfArealTempCap', 'denTempCap', 'denArealK', 'denCarrierPSA', 'bfSALRDesign', 'bfSALRTheta', 'bfSALRRefTemp',
+         'codDissYield', 'codDissRefracYield', 'tssYield', 'bfDOMEff', 'o2DOMfactor']
+          .forEach(function (f) {
+            if (_fnSrc.indexOf(f) < 0) {
+              badN.push('U3 ' + f + ' 在默认表里, 却【不在任何计算函数体里】 —— 填了不生效');
+            }
+          });
+      } catch (e) { badN.push('U3 断言自身异常: ' + (e && e.message)); }
+
+      /* ── N3 biofilterTAN 已不再是输入 (静态三查) ── */
+      const _html = document.documentElement.outerHTML;
+      /* ⚠ 检索串【必须拼出来】: 直接写全字面量, 本断言自己的源码就会被 outerHTML 扫到,
+           判据当场咬到自己 (实测转红)。同族第三次 —— §2「顺带发现」的 favicon-180.png、
+           台账里给作废文件名加反引号触发 L4, 现在轮到自检。
+         ⇒ 凡"在全库文本里搜某个标识符"的判据, 检索串一律拼接, 不得整段写死。 */
+      const _needle = 'data-proc-field=' + '"' + 'biofilterTAN' + '"';
+      if (_html.indexOf(_needle) >= 0) {
+        badN.push('N3 biofilterTAN 仍有 UI 输入框 —— η 是输出, 不得可填');
+      }
+      if ('biofilterTAN' in PROCESS_DEFAULTS) {
+        badN.push('N3 biofilterTAN 仍在 PROCESS_DEFAULTS —— 留一个不生效的默认值就是"填了不生效"');
+      }
+      try {
+        const _rd = readStageProcFromInputs.toString();
+        if (/get\w*\('biofilterTAN'/.test(_rd)) {
+          badN.push('N3 biofilterTAN 仍在读取路径 —— 已停用的输入不得再被读进 proc');
+        }
+      } catch (e) { badN.push('N3 拿不到读取路径源码: ' + (e && e.message)); }
+
+      /* ── N3b IRAS_R26_RETIRED_INPUT_UI: VTR20 / thetaNit 【双向】静态判据 ──
+         与 N3 不同, 这两个不是彻底停用, 而是【停写不停读】。两个方向都要管:
+           ① 不得再有 UI 输入框 —— 否则又是"填了不生效"(VTR20) 或
+              "填了会给假反馈"(thetaNit: 调它只让退役的 tempCorrectionNit 动一下)。
+              【本条由 N3b 管】—— U2 对"有框"是放行的(转交 U1), 管不到这个方向。
+           ② 必须仍在读取路径里 —— 历史方案 JSON 带着这两个键, 读不进去就往返丢值。
+              【本条已由 U2 管】: 它对 JSON_ONLY 登记表做反向检查, 字段一旦离开读取
+              路径就报「登记表该清理了」。故此处【不再重复实现】—— 判据瘦身 §17 的取向:
+              同一件事两处实现, 迟早两处不一致。
+         ⚠ 检索串一律拼接 (N3 的教训, 同族第四次): 写死会被 outerHTML 扫到自己。 */
+      ['VTR20', 'VDR20', 'thetaNit'].forEach(function (fld) {
+        if (_html.indexOf('data-proc-field=' + '"' + fld + '"') >= 0) {
+          badN.push('N3b ' + fld + ' 仍有 UI 输入框 —— 已停用于选型的字段不得可填');
+        }
+      });
+
+      /* ── N3d IRAS_NORENDER_SELFTEST: 工艺参数输入面规模下限 ──
+         自检在 IRAS_NO_RENDER=true 下运行(见 tools/run_selftest.js 头注)。
+         这成立的前提是【输入框不由 recomputeAll 的渲染块产生】。
+         实测当前 540 个 data-proc-field / 372 个 f_N_* 输入框, 开关开关都一样。
+         ⚠ 若日后有人把输入框渲染挪进那个块, 关渲染后输入面会整体消失,
+           于是 U2 报约 100 条「无 UI 框」、N3b 变成【空过】(找不到框自然也就"没有" VTR20)。
+           U2 会炸得很响, 但 N3b 会安静地变成假绿 —— 本条就是为堵那个安静的口子。
+         ⚠ 阈值取 300 而非 540: 不追随字段增减(那是 defsync 的活),
+           只判「输入面是不是整体没了」。 */
+      try {
+        const _nProc = document.querySelectorAll('input[data-proc-field]').length;
+        if (_nProc < 300) {
+          badN.push('N3d 工艺参数输入面只剩 ' + _nProc + ' 个 —— 疑似被 IRAS_NO_RENDER 连带跳过,'
+            + ' 此时 N3b/U2 的结论不可信, 先修渲染边界');
+        }
+      } catch (e) { badN.push('N3d 异常: ' + (e && e.message)); }
+
+      /* ── N3c 界面温度因子必须来自在跑的模型 ──
+         告警与色阶曾经引用 eq.tempCorrectionNit = thetaNit^(T−20) —— 退役式。
+         锁住 bfTempFactorApplied 存在、且在 20 °C 恒为 1、且带封顶 (T>cap 不再增长)。 */
+      try {
+        if (typeof bfTempFactorApplied !== 'function') {
+          badN.push('N3c bfTempFactorApplied 不存在 —— 界面温度因子失去单一出口');
+        } else {
+          const _pc = { bfArealTempCap: PROCESS_DEFAULTS.bfArealTempCap };
+          if (Math.abs(bfTempFactorApplied(_pc, 20) - 1) > 1e-12) {
+            badN.push('N3c bfTempFactorApplied(20°C) ≠ 1 —— 参照温度口径错');
+          }
+          const _cap = PROCESS_DEFAULTS.bfArealTempCap;
+          if (Math.abs(bfTempFactorApplied(_pc, _cap + 5) - bfTempFactorApplied(_pc, _cap)) > 1e-12) {
+            badN.push('N3c bfTempFactorApplied 未带 IRAS_BFT_TEMP_CAP 封顶 —— 温水种会一路外推');
+          }
+        }
+      } catch (e) { badN.push('N3c 异常: ' + (e && e.message)); }
+
+      /* ── N5b θ=1.09 单源: 面速率式子只此一份 ── */
+      try {
+        /* N5b 改判 (BF-T): θ 已提为具名常量, 单源由名字保证。两查:
+             ① 常量只许被定义一次;
+             ② 库内不得再出现它的字面幂式 —— 有人写死就等于绕开了常量。
+           ⚠ 检索串仍须拼接, 且【注释里也不许复述】—— 本轮为此被咬两次。 */
+        const _defs = (_html.match(/BF_AREAL_THETA\s*=\s*[0-9]/g) || []).length;
+        if (_defs !== 1) badN.push('N5b θ 常量被定义 ' + _defs + ' 次 —— 必须单源');
+        /* ⚠ 已知局限(负对照实测): 本条只查【同名】常量被定义几次。
+             有人若换个名字再抄一份 (BF_AREAL_THETA_DUP = …), 本条【抓不到】——
+             实测确认漏网。真正管用的是下面那条"不得写死幂式": 改名抄常量的人
+             迟早要在某处用它, 而用它就得写幂式, 那时才被咬。
+           ⇒ 两条【必须并存】, 单独任何一条都有缺口。这与 C8 的已知局限同型:
+             静态文本判据抓不到"换个说法说同一件事", 只能靠多设一道口子。 */
+        const _lit = 'Math.pow(' + '1.0' + '9,';
+        const _n = _html.split(_lit).length - 1;
+        if (_n !== 0) {
+          badN.push('N5b 库内出现 ' + _n + ' 处写死的 θ 幂式 —— 应改引具名常量'
+                    + ' (bfAlpha 五份、carbonate 两份都是这么分叉的)');
+        }
+      } catch (e) { badN.push('N5b 静态扫描异常: ' + (e && e.message)); }
+    } catch (e) {
+      badN.push('N 断言自身异常: ' + (e && e.stack || e));
+    }
+    const rowN = { id: 'bfn_areal_nitri', ok: badN.length === 0 };
+    if (badN.length) rowN.invariants = badN.slice(0, 8);
+    rowN.ok ? out.pass++ : out.fail++;
+    out.results.push(rowN);
   })();
 
 
@@ -20345,7 +21785,12 @@ function runSelfTest(quiet) {
 function applyMetaToDOM() {
   try {
     const v = 'v' + IRAS_META.version;
-    const setTxt = (id, s) => { const el = document.getElementById(id); if (el) el.textContent = s; };
+    /* IRAS_I18N_SAFE (2026-08-31): 同时写【可见文本】与【data-iras-val 属性】。
+       文本给人看(会被翻译层改写), 属性给判据读(翻译器不动属性) —— 见自检 C 段头注。 */
+    const setTxt = (id, s) => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = s; el.setAttribute('data-iras-val', s); }
+    };
     setTxt('footerVersion', v);
     setTxt('metaVersion', v);
     setTxt('metaReleaseDate', IRAS_META.releaseDate);

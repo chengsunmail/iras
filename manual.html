@@ -2,12 +2,12 @@
 <html lang="zh-CN"><!-- IRAS_MANUAL_V2_0 --><!-- IRAS_MANUAL_CH29_V2_0 --><!-- IRAS_MANUAL_CH16_V2_0 --><!-- IRAS_DOC_FC_CONTACTOR_V2 -->
 <head>
 <meta charset="UTF-8">
-<title>iRAS 技术手册 v2.5 完整版</title><!-- IRAS_V23_MANUAL_VERSION IRAS_R24_MANUAL_VERSION -->
+<title>iRAS 技术手册 v2.6 完整版</title><!-- IRAS_V23_MANUAL_VERSION IRAS_R24_MANUAL_VERSION -->
 <style>
 @page {
   size: A4;
   margin: 2.5cm 2cm 2.5cm 2cm;
-  @top-center { content: "iRAS · RAS 工程设计技术手册 v2.5 © 2026 海南登登科技 · 孙程"; font-size: 9pt; color: #666; }
+  @top-center { content: "iRAS · RAS 工程设计技术手册 v2.6 © 2026 孙程"; font-size: 9pt; color: #666; }
   @bottom-right { content: "第 " counter(page) " 页 / 共 " counter(pages) " 页"; font-size: 9pt; color: #666; }
 }
 body { font-family: 'Noto Sans CJK SC', sans-serif; font-size: 10.5pt; line-height: 1.5; color: #222; }
@@ -186,11 +186,13 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 
 </head>
 <body>
+
+
 <!-- @@IRAS_NAV_HTML_BEGIN@@ v1.9.2 侧边导航 (屏幕专用, 打印时隐藏) -->
 <button id="navToggle" onclick="document.body.classList.toggle('nav-open')" title="目录 (快捷键 M)">☰</button>
 <nav id="manualNav">
   <div class="nvhead">
-    <b>iRAS 技术手册 v2.5</b>
+    <b>iRAS 技术手册 v2.6</b>
     <input id="nvFilter" type="search" placeholder="过滤章节… (/ 聚焦)" autocomplete="off">
   </div>
   <div class="nvlist">
@@ -670,8 +672,8 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
 <div class="cover">
   <div style="font-size:14pt; color:#666; margin-bottom:8pt;">iRAS</div>
   <div class="title">循环水养殖系统 (RAS)<br>工程设计技术手册</div>
-  <div class="subtitle">完整版 · v2.5</div>
-  <div class="version">版本: v2.5 · 2026 年 8 月</div>
+  <div class="subtitle">完整版 · v2.6</div>
+  <div class="version">版本: v2.6 · 2026 年 8 月</div>
   <div style="font-size:11pt; color:#666; margin-top:20pt;">
     物理框架重构 · 文献校准 · 工业实测对齐<br>
     全局气候 + 围护 · 多模块并联 · P&amp;ID 自动生成 · 投资财务评价<br>
@@ -691,18 +693,18 @@ hr.section-end { border: none; border-top: 1px dashed #aaa; margin: 16pt 0; }
     <strong>v2.5 · 沿程碳酸盐逐节点重算 · CO₂ 按产生位置链式重导 · NH₃ 峰值判据 · MBBR 尾气去向可选 · 文案实算值锚定</strong>
   </div>
   <div class="footer">
-    海南登登科技咨询有限公司 · 孙程<br>
+    孙程<br>
     6881509@qq.com · iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras<br><br>
-    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v2.5 (2026 年 8 月) 全部内容</span>
+    <span style="font-size:10pt;">本手册整合 v1.1 (2026 年 4 月) 至 v2.6 (2026 年 8 月) 全部内容</span>
   </div>
 </div>
 
 <!-- ============ 版本演进说明 ============ -->
 <div class="chapter">
-<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v2.5)</h1>
+<h1 style="margin-top:30pt; font-size:22pt;">版本演进说明 (v1.0 → v2.6)</h1>
 
-<p>iRAS 项目从 2026 年初首发以来, 经历了 <strong>16 次</strong>重大版本升级, 每次都基于公开文献或工业项目实测数据校准, 不是经验调整。
-本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机) + v1.9.3 (基线对齐与验证自动化) + <strong>v2.0.0 (热平衡架构重构 + 气液接触器)</strong> + <strong>v2.0.1 / v2.1 (缺陷修复 + 车间显热能量守恒 + 守恒类断言)</strong> + <strong>v2.2 (工况覆盖补盲 + 登记表声明自校验 + UI 审计 + 字段范围单一事实源)</strong> + <strong>v2.3 (第七轮审计处置: head 结构修复 + 加载路径钳制 + 曝气尾气入室 + 全局热工单源 + chart.js SRI)</strong> , 以及 v2.3 内后续四批工作 —— <strong>简易模式 (自然通风车间自由空气节点求解 + 太阳辐射子系统首次建模)</strong>、<strong>池内曝气拓扑修正 (曝气强度约束 + sp 白名单跨模块同源)</strong>、<strong>车间模式三档 + 车间通风机建模</strong>、<strong>CO₂ 脱除机制澄清 + 浅池告警</strong>, 直至 <strong>v2.5 六批 (字段流转工厂化 + aerationMode 硬告警 configWarns + 空气曝气密度分界 40→30 + 空气曝气设计工况点与加载路径哨兵盲区 + 手册第 15 章追平代码)</strong> —— 的全部内容,
+<p>iRAS 项目从 2026 年初首发以来, 经历了 <strong>17 次</strong>重大版本升级, 每次都基于公开文献或工业项目实测数据校准, 不是经验调整。
+本手册整合 v1.1 (2026 年 4 月) 物理框架重构 + v1.2 (热平衡建模) + v1.3 (工程化模块) + v1.4 (投资财务评价) + v1.5 (可研报告生成器) + v1.6 (站级设备 + UI 重构) + v1.7 (氧锥拓扑 + 系统排水重构 + 审计修复) + v1.9 (碳酸盐平衡求解 + o2 物理校准 + finance 零利率修复) + v1.9.1 / v1.9.2 (液氧消耗口径 + 蒸发系数量纲 + 通风口径 + 机械除湿机) + v1.9.3 (基线对齐与验证自动化) + <strong>v2.0.0 (热平衡架构重构 + 气液接触器)</strong> + <strong>v2.0.1 / v2.1 (缺陷修复 + 车间显热能量守恒 + 守恒类断言)</strong> + <strong>v2.2 (工况覆盖补盲 + 登记表声明自校验 + UI 审计 + 字段范围单一事实源)</strong> + <strong>v2.3 (第七轮审计处置: head 结构修复 + 加载路径钳制 + 曝气尾气入室 + 全局热工单源 + chart.js SRI)</strong> , 以及 v2.3 内后续四批工作 —— <strong>简易模式 (自然通风车间自由空气节点求解 + 太阳辐射子系统首次建模)</strong>、<strong>池内曝气拓扑修正 (曝气强度约束 + sp 白名单跨模块同源)</strong>、<strong>车间模式三档 + 车间通风机建模</strong>、<strong>CO₂ 脱除机制澄清 + 浅池告警</strong>, <strong>v2.5 六批 (字段流转工厂化 + aerationMode 硬告警 configWarns + 空气曝气密度分界 40→30 + 空气曝气设计工况点与加载路径哨兵盲区 + 手册第 15 章追平代码)</strong>, 直至 <strong>v2.6 (开源基建 + 液氧采购口径补生物滤池水侧耗氧 —— 氧锥按「鱼 + MBBR」选而液氧按「只有鱼」买, 锚定工况年耗 471 → 790 t)</strong> —— 的全部内容,
 是 RAS 工程设计的完整参考。</p>
 
 <p style="font-size:9.5pt; color:#888;">〔v2.2 注: 本段此前停在 v2.0.0 —— v2.1 与 v2.2 两批工作都只加了下方的版本演进章节, 而没有更新这段总览。同一事实 (手册覆盖到哪个版本) 散布于封面副标题、封面页脚、本章标题与本段共四处, 改一处不改其余。已加入 t21 三文档判据, 下次漏改会转红。〕<br>
@@ -4399,36 +4401,78 @@ iRAS 输出的"系统排水 TSS"是<strong>沉淀池入口</strong>浓度 (含�
 
 <p>MBBR 是 RAS 最关键的处理单元。HDPE 悬浮填料 (比表面积 500-800 m²/m³) 在曝气搅动下悬浮于水中, 表面附着硝化菌群, 将有毒的 TAN 氧化为低毒的 NO₃。硝化是缓慢的自养过程, 菌群建立需 4-8 周。</p>
 
-<h3 id="sec10_2">10.2 容积去除率 (VTR) 与温度修正</h3>
-
-<div class="formula-block">
-VTR(T, S) = VTR₂₀ × θ<sub>nit</sub><sup>(T−20)</sup> × f<sub>sal</sub><br>
-&nbsp;&nbsp;f<sub>sal</sub> = max(1 − 0.01 × S, 0.3)&nbsp;&nbsp;（S = 盐度 ‰）<br>
-<br>
-BF 池填料容积 = TAN 负荷 ÷ VTR(T, S)
-</div>
-
-<p>iRAS 默认 VTR₂₀ = 0.5 kg TAN/(m³·d)、θ<sub>nit</sub> = 1.10；
-反硝化对应 VDR₂₀ = 0.8 kg NO₃-N/(m³·d)、θ<sub>den</sub> = 1.08。</p>
+<h3 id="sec10_2">10.2 面速率 (areal rate) 与温度 / 盐度 / 浓度修正</h3>
 
 <div class="warning-box">
-<span class="label">⚠ 使用前必读：这组参数是工程经验取值</span><br>
-生物滤池动力学参数（<code>VTR20 / VDR20 / thetaNit / thetaDen</code>）随
-<strong>填料型号、比表面积、运行 TAN 浓度、曝气强度、菌群成熟度</strong>变化很大，
-不同来源的实测值可相差数倍。iRAS 内置的是<strong>通用工程取值</strong>，
-用于方案比选与量级估算；<strong>具体项目应以填料厂家实测数据或设计单位参数覆盖默认值</strong>，
-不应直接作为施工图依据。
+<span class="label">⚠ 口径已变更（v2.6 · IRAS_BFN_AREAL_NITRI / IRAS_DEN_PSA）</span><br>
+本节此前描述的是<strong>容积速率口径</strong>（<code>VTR₂₀ / VDR₂₀</code>）。该口径把
+<strong>载体比表面积吸收进了速率常数里</strong>，后果是<strong>换填料型号（K1/K3/K5）不影响池体积</strong>。
+现已整体改为<strong>面速率口径</strong>：<code>VTR20 / thetaNit / VDR20</code>
+<strong>已停用于选型</strong>（保留读取仅为历史方案 JSON 往返，界面输入框已收回）。
+<strong>若你手上是 v2.5 或更早的手册，本节以下全部内容与模型不符。</strong>
+</div>
+
+<div class="formula-block">
+<strong>硝化</strong><br>
+r(T, S, S<sub>n</sub>) = k × S<sub>n</sub><sup>0.7</sup> × θ<sup>(min(T, T<sub>cap</sub>) − 10)</sup> × f<sub>sal</sub><br>
+&nbsp;&nbsp;f<sub>sal</sub> = max(1 − 0.01 × S, 0.3)&nbsp;&nbsp;（S = 盐度 ‰）<br>
+<br>
+硝化面积 A = TAN 负荷 ÷ r&nbsp;&nbsp;·&nbsp;&nbsp;填料体积 = A ÷ PSA
+</div>
+
+<p>iRAS 取值：<code>bfArealK</code> 默认 0.58 g NH₄-N/(m²·d)；
+<code>bfDesignTAN</code>（S<sub>n</sub>）默认 0.5 mg/L；
+θ = 1.09（<strong>参考温度 10 °C，不是 20 °C</strong>）；
+<code>bfArealTempCap</code> 默认 25 °C；
+<code>bfCarrierPSA</code> 默认 500 m²/m³（K1）。</p>
+
+<div class="formula-block">
+<strong>反硝化</strong><br>
+r<sub>den</sub>(T) = k<sub>den</sub> × θ<sub>den</sub><sup>(min(T, T<sub>cap,den</sub>) − 20)</sup> × f<sub>sal,den</sub><br>
+<br>
+反硝化面积 A = 设计脱氮量 ÷ r<sub>den</sub>&nbsp;&nbsp;·&nbsp;&nbsp;填料体积 = A ÷ PSA<sub>den</sub>
+</div>
+
+<p>iRAS 取值：<code>denArealK</code> 默认 1.6 g NO₃-N/(m²·d)；
+<code>thetaDen</code> 默认 1.08（参考 20 °C）；
+<code>denTempCap</code> 默认 25 °C；
+<code>denCarrierPSA</code> 默认 500 m²/m³。</p>
+
+<div class="warning-box">
+<span class="label">⚠ 反硝化侧与硝化侧的三处<strong>有意</strong>不同</span><br>
+① <strong>没有浓度项</strong>。硝化加 S<sub>n</sub><sup>0.7</sup> 的理由是池内 TAN 常低于 1 mg/L、处在一级动力学区；
+而反硝化侧流 NO₃-N 实测 20–25 mg/L，<strong>远高于半饱和常数、处在零级区</strong>，零级体积口径在这里站得住。
+把硝化那一项照搬过来是<strong>把两个体系混用</strong>。<br>
+② <strong>没有盐度修正</strong>，且这是<strong>显式置一</strong>（<code>DEN_SAL_CORRECTION = 1.0</code>）不是遗漏。
+机理上反硝化菌耐盐性远好于硝化菌，"不修正"很可能是对的，但<strong>没有 RAS 实测验证过</strong>。<br>
+③ <strong>温度上限是独立字段</strong>（<code>denTempCap</code> 与 <code>bfArealTempCap</code> 分开）。
+两个 25 <strong>来源不同</strong>：硝化侧出自厂商设计手册明写的 "maximum of 25 °C"；
+<strong>反硝化侧手册没有任何说法，25 是工程裁决</strong>。共用一个字段会让两件事看起来是同一个事实。
+</div>
+
+<div class="warning-box">
+<span class="label">⚠⚠ 使用前必读：这组参数<strong>没有 RAS 出处</strong></span><br>
+<code>bfArealK = 0.58</code> 取自厂商设计手册按上游处理程度分档的<strong>最高一档</strong>，
+而<strong>那一档的原文条件是 <i>with chemical precipitation</i>（带化学除磷），RAS 不满足</strong>
+⇒ 取这一档是<strong>工程外推</strong>。<br>
+<code>denArealK = 1.6</code> <strong>没有任何出处</strong>——它是从已停用的旧体积口径继承下来的历史值，
+不是标定值也不是文献值。<code>denCarrierPSA = 500</code>（K1）是一个<strong>选择</strong>，不是实测。<br>
+⚠ <strong>要用别处的 k 覆盖默认值之前，必须先核三件事</strong>：
+① 参考温度是不是 10 °C（硝化）/ 20 °C（反硝化）；② 配的 θ 是不是同一个；③ 反解那个 k 时池内浓度是多少。
+<strong>三者任一不同，就不是同一个 k，不可直接填入</strong>——
+iRAS 在这里栽过一次（拿另一套体系的 0.6–0.7@15 °C 去质疑本套，结论是错的）。<br>
+⇒ 内置值用于<strong>方案比选与量级估算</strong>；具体项目应以填料厂家实测或本场中试数据覆盖，
+<strong>不应直接作为施工图依据</strong>。
 </div>
 
 <h4 id="sec10_2_1">10.2.1 三条必须知道的模型限制</h4>
 
-<p><strong>① 未做 TAN 浓度修正。</strong>
-硝化速率在高 TAN 时呈零级（速率恒定），低 TAN 时转为一级（速率随浓度下降）。
-文献与厂家给出的最大速率通常在<strong>氨饱和条件</strong>下测得，
-而真实 RAS 池内 TAN 常低于 1 mg/L，处于一级动力学区。
-本模型只做温度与盐度修正，<strong>不随 TAN 浓度衰减</strong>——
-这意味着在低 TAN 工况下算出的 BF 池容积可能偏小。
-保守设计应下调 VTR₂₀，或依靠 <code>safetyBio</code>（默认 1.15）吸收这部分不确定性。</p>
+<p><strong>① 浓度修正<u>已经做了</u>，但 S<sub>n</sub> 是设计目标不是实测值。</strong>
+<span style="color:#f59e0b">（本条在 v2.5 及更早的手册里写的是"未做 TAN 浓度修正、保守设计应下调 VTR₂₀"——
+那已经<strong>过期</strong>，照那句话再下调一次就是<strong>重复补偿</strong>。）</span>
+模型用 <code>r ∝ S<sub>n</sub><sup>0.7</sup></code> 处理低 TAN 时的一级动力学区。
+但 <code>bfDesignTAN</code> 回答的是<strong>「要把池内 TAN 压到此值以下需要多大滤池」</strong>，
+它是<strong>设计输入</strong>，不是运行实测值。把它填成实测值会让滤池算小。</p>
 
 <p><strong>② 未区分氨限制与氧限制。</strong>
 θ 描述的是温度对生物活性的影响，但该影响的强弱取决于反应受什么限制：
@@ -4436,37 +4480,49 @@ BF 池填料容积 = TAN 负荷 ÷ VTR(T, S)
 本模型统一使用单一 θ，在低温 + 供氧不足的工况下会高估温度惩罚，把 BF 池算得偏大。
 若生物滤池曝气不足或填料过厚，应据实调低 θ。</p>
 
-<p><strong>③ 低温外推需谨慎。</strong>
-单一 Arrhenius 系数在很低的温度下会偏离实测。iRAS 内置鱼种最低 tempOpt 为 12°C（三文鱼苗种），
-在常规冷水鱼范围内可用；若用于更低温物种或北欧低温工况，需另行校核。</p>
+<p><strong>③ 温度外推<u>两端</u>都要谨慎。</strong>
+<strong>高温端已封顶</strong>：θ 只修正到 <code>bfArealTempCap</code> = 25 °C，
+超过不再外推（手册原文即"not to correct above 20–25 °C"）。
+未封顶时温水种滤池会被系统性算小——反硝化侧曾因漏掉这一句而使 shrimp 30 °C 的池体偏小 32%。
+<strong>低温端未封</strong>：单一 Arrhenius 系数在很低温度下会偏离实测；
+iRAS 内置鱼种最低 tempOpt 为 12 °C（三文鱼苗种），常规冷水鱼范围内可用，
+若用于更低温物种或北欧低温工况需另行校核。</p>
 
 <h4 id="sec10_2_2">10.2.2 温度修正对照表</h4>
 
+<p>下表<strong>由模型实算得出</strong>（v2.6，默认 k = 0.58、S<sub>n</sub> = 0.5 mg/L、PSA = 500 m²/m³），
+不是手工计算。修正系数一列以 <strong>20 °C 为 1.0</strong>，便于与旧表对照。</p>
+
 <table>
-<tr><th>温度 °C</th><th>修正系数 θ^(T−20)</th><th>VTR kg/(m³·d)</th><th>典型物种</th></tr>
-<tr><td>10</td><td>0.386</td><td>0.193</td><td>冷水鱼苗种</td></tr>
-<tr><td>12</td><td>0.467</td><td>0.234</td><td>三文鱼苗种</td></tr>
-<tr><td>15</td><td>0.621</td><td>0.310</td><td>三文鱼成鱼</td></tr>
-<tr><td>16</td><td>0.683</td><td>0.341</td><td>大菱鲆全周期</td></tr>
-<tr><td>20</td><td>1.000</td><td>0.500</td><td>基准</td></tr>
-<tr><td>25</td><td>1.611</td><td>0.805</td><td>加州鲈 / 鳜鱼</td></tr>
-<tr><td>28</td><td>2.144</td><td>1.072</td><td>罗非鱼</td></tr>
-<tr><td>30</td><td>2.594</td><td>1.297</td><td>对虾</td></tr>
+<tr><th>温度 °C</th><th>修正系数（20 °C 基准）</th><th>面速率 淡水 g/(m²·d)</th><th>面速率 海水 30‰</th><th>等效 VTR kg/(m³填料·d)</th><th>典型物种</th></tr>
+<tr><td>10</td><td>0.422</td><td>0.357</td><td>0.250</td><td>0.179</td><td>冷水鱼苗种</td></tr>
+<tr><td>12</td><td>0.502</td><td>0.424</td><td>0.297</td><td>0.212</td><td>三文鱼苗种</td></tr>
+<tr><td>15</td><td>0.650</td><td>0.549</td><td>0.385</td><td>0.275</td><td>三文鱼成鱼</td></tr>
+<tr><td>16</td><td>0.708</td><td>0.599</td><td>0.419</td><td>0.299</td><td>大菱鲆全周期</td></tr>
+<tr><td>20</td><td>1.000</td><td>0.845</td><td>0.592</td><td>0.423</td><td>基准</td></tr>
+<tr><td>25</td><td>1.539</td><td>1.300</td><td>0.910</td><td>0.650</td><td>加州鲈 / 鳜鱼</td></tr>
+<tr><td>28</td><td><strong>1.539</strong></td><td><strong>1.300</strong></td><td><strong>0.910</strong></td><td><strong>0.650</strong></td><td>罗非鱼</td></tr>
+<tr><td>30</td><td><strong>1.539</strong></td><td><strong>1.300</strong></td><td><strong>0.910</strong></td><td><strong>0.650</strong></td><td>对虾</td></tr>
 </table>
 
+<p><strong>⚠ 28 °C 与 30 °C 两行<u>刻意与 25 °C 相同</u></strong>——这是 <code>bfArealTempCap</code> = 25 的封顶在起作用，
+不是排版错误。v2.5 及更早的手册在这两行写 2.144 / 2.594，<strong>那与模型不符</strong>。</p>
+
 <p><strong>盐度修正</strong>：f<sub>sal</sub> = max(1 − 0.01 × S, 0.3)。盐度 30‰ 时硝化效率降至 70%。
-下限 0.3 是防零保护，不代表物理极限。</p>
+下限 0.3 是防零保护，不代表物理极限。<strong>反硝化侧无此项</strong>（见上文"三处有意不同"②）。</p>
 
 <div class="note-box">
 <strong>为什么冷水鱼的 BF 池特别大</strong><br>
-三文鱼成鱼 15°C 的 VTR 只有 20°C 基准的 62%，而对虾 30°C 达到 259%——相差 4.2 倍。
+三文鱼成鱼 15 °C 的面速率只有 20 °C 基准的 65%，而封顶后温水种最高 154%——相差 2.4 倍。
+（旧的体积速率口径下这个差距是 4.2 倍，缩小的原因正是高温端封了顶，
+即<strong>温水种不再享受无限外推的速率红利</strong>，其滤池相应算大。）
 温度以指数形式作用在一个直接决定池容的速率上，这是同产量下冷水鱼 RAS 生物滤池
 造价远高于温水鱼的主要原因。做冷水鱼项目时，BF 池的容积与造价对水温设定特别敏感。
 </div>
 
 <h3 id="sec10_3">10.3 填料体积计算</h3>
 
-<div class="formula-block">BF 填料体积 = TAN_Daily × safetyBio / [VTR₂₀ × θ^(T−20) × f_sal]</div>
+<div class="formula-block">硝化填料体积 = TAN_Daily × safetyBio ÷ [ k × S<sub>n</sub><sup>0.7</sup> × θ<sup>(min(T,25)−10)</sup> × f_sal ] ÷ PSA</div>
 
 <h3 id="sec10_4">10.4 BF 粗孔曝气 <span class="tag-update">v1.1</span></h3>
 
@@ -4577,7 +4633,7 @@ BF O₂ = TAN × 4.57 + feedMax × o2DOMfactor<br>
 系统去除率 = 流量比 × 单次效率 = <strong>2% × 80% = 1.6%</strong><br>
 VDR(T) = VDR₂₀(<strong>0.8 kg N/(m³·d)</strong>) × 1.08^(T−20)<br>
 反硝化容积 = NO₃去除量 × safetyDenitri / VDR(T)<br>
-甲醇 = NO₃去除量 × 2.47 × <code>methanolSafetyFactor</code>(默认 1.3)= × <strong>3.21</strong> kg/d<br>
+甲醇 = NO₃去除量 × 2.47 × <code>methanolSafetyFactor</code>(默认 1.0)= × <strong>2.47</strong> kg/d<br>
 碱度回收 = NO₃去除量 × <strong>2.8</strong> kg CaCO₃/d　<span style="color:#c0392b">← 工程值, 非理论值 3.57</span>
 </div>
 
@@ -4589,7 +4645,7 @@ VDR(T) = VDR₂₀(<strong>0.8 kg N/(m³·d)</strong>) × 1.08^(T−20)<br>
 ⚠ 本项目的物质平衡断言组当年建立时, 外部核算<strong>连错三次</strong>, 三次都是口径问题,
 其中一条正是"<strong>碱度回收系数用了理论值 3.57 而非工程值 2.8</strong>"。
 ⇒ 凡引用系数, 先问一句: 这是<strong>化学计量给的上限</strong>, 还是<strong>工程实测的取值</strong>?<br>
-另: 甲醇 2.47 是化学计量比, 模型再乘 <code>methanolSafetyFactor</code> 1.3 得 3.21 g/g,
+另: 甲醇 2.47 是 Mokhayeri 2008 工业实测值(<strong>已含 5-15% 残余甲醇</strong>)。<strong>IRAS_MEOH_NOSAFETY(2026-08-30 用户裁决)</strong>: <code>methanolSafetyFactor</code> 默认由 1.3 改为 <strong>1.0</strong>, 即不再叠加裕度, 得 2.47 g/g,
 <strong>与文献中位一致</strong> —— 这里的安全系数不是保守裕量, 而是把化学计量比校到实测口径。
 </div>
 
@@ -6694,46 +6750,46 @@ iRAS 是<strong>均匀生长的阶段模型</strong>，不含拖尾，故 <code>
 <tr><td>存塘量 (t)</td><td>3.2</td><td>41.1</td><td>131.6</td><td>236.9</td></tr>
 <tr><td>峰值投饵 (kg/d)</td><td>95</td><td>616</td><td>1316</td><td>2251</td></tr>
 <tr><td>TAN 产生 (kg/d)</td><td>4.4</td><td>25.5</td><td>50.8</td><td>82.8</td></tr>
-<tr><td>CO₂ 产生 (kg/d)</td><td>66</td><td>437</td><td>924</td><td>1511</td></tr>
+<tr><td>CO₂ 产生 (kg/d)</td><td>80</td><td>522</td><td>1105</td><td>1822</td></tr>
 <tr><td>鱼峰值耗氧 (kg/h)</td><td>1.8</td><td>12.6</td><td>27.5</td><td>45.0</td></tr>
 <tr><td>循环流量 (m³/h)</td><td>424</td><td>2465</td><td>5481</td><td>10155</td></tr>
 <tr><td>系统水体 (m³)</td><td>106</td><td>822</td><td>2193</td><td>3385</td></tr>
-<tr><td>池内 CO₂ (mg/L)</td><td>10.0</td><td>11.4</td><td>10.8</td><td>9.5</td></tr>
-<tr><td>池内 NH₃-N (mg/L)</td><td>0.0049</td><td>0.0048</td><td>0.0022</td><td>0.0016</td></tr>
-<tr><td>池内 pH</td><td>7.56</td><td>7.49</td><td>7.20</td><td>7.17</td></tr>
+<tr><td>池内 CO₂ (mg/L)</td><td>7.5</td><td>8.9</td><td>8.6</td><td>7.6</td></tr>
+<tr><td>池内 NH₃-N (mg/L)</td><td>0.0046</td><td>0.0043</td><td>0.0021</td><td>0.0018</td></tr>
+<tr><td>池内 pH</td><td>7.69</td><td>7.60</td><td>7.29</td><td>7.26</td></tr>
 <tr><td>泵功率合计 (kW)</td><td>20.0</td><td>116.3</td><td>258.7</td><td>479.2</td></tr>
-<tr><td>阶段设备投资 (万元)</td><td>135.1</td><td>694.4</td><td>1439.0</td><td>2602.3</td></tr>
-<tr><td>模型告警条数</td><td>1</td><td>1</td><td>3</td><td>3</td></tr>
+<tr><td>阶段设备投资 (万元)</td><td>137.9</td><td>708.2</td><td>1468.9</td><td>2667.7</td></tr>
+<tr><td>模型告警条数</td><td>3</td><td>3</td><td>4</td><td>4</td></tr>
 </table>
 <p><b>全场汇总</b>:</p>
 <table>
 <tr><th>指标</th><th>数值</th><th>指标</th><th>数值</th></tr>
-<tr><td>工艺运行成本</td><td><b>37.68 元/kg</b></td><td>企业全成本</td><td><b>42.68 元/kg</b></td></tr>
-<tr><td>比电耗</td><td>10.19 kWh/kg</td><td>其中热泵</td><td>0.20 元/kg</td></tr>
-<tr><td>OPEX</td><td>28.64 元/kg</td><td>折旧</td><td>9.05 元/kg</td></tr>
-<tr><td>工程总投资</td><td>10760 万元</td><td>峰值流量</td><td>10155 m³/h</td></tr>
-<tr><td>系统总水体</td><td>9874 m³</td><td>用地</td><td>16.4 亩</td></tr>
+<tr><td>工艺运行成本</td><td><b>38.63 元/kg</b></td><td>企业全成本</td><td><b>43.68 元/kg</b></td></tr>
+<tr><td>比电耗</td><td>10.61 kWh/kg</td><td>其中热泵</td><td>0.21 元/kg</td></tr>
+<tr><td>OPEX</td><td>29.38 元/kg</td><td>折旧</td><td>9.25 元/kg</td></tr>
+<tr><td>工程总投资</td><td>11006 万元</td><td>峰值流量</td><td>10155 m³/h</td></tr>
+<tr><td>系统总水体</td><td>10181 m³</td><td>用地</td><td>16.7 亩</td></tr>
 </table>
 <p><b>成本构成</b> · 口径: <b>成鱼期</b>(大西洋三文鱼 1000 t/yr · 挪威 Bergen 冬季工况)· 全周期日均 元/日</p>
 <table>
 <tr><th>成本项</th><th>计算基础</th><th>元/日</th><th>占比</th></tr>
-<tr><td>饲料</td><td>日投饵量 × 饲料单价</td><td>24037</td><td>41.5%</td></tr>
-<tr><td>CAPEX 折旧</td><td>设备/8年 + 土建/20年 ÷ 365</td><td>13190</td><td>22.8%</td></tr>
-<tr><td>电费(泵/UV/杂项)</td><td>主泵+支路泵 ÷ motorEta + UV + 照明控制</td><td>8168</td><td>14.1%</td></tr>
-<tr><td>维护+保险+补水+排污</td><td>processExtraDaily(四项之和, 见 21.1.3)</td><td>6911</td><td>11.9%</td></tr>
-<tr><td>NaHCO₃</td><td>碱度投加 ÷ 0.595 × 单价</td><td>1294</td><td>2.2%</td></tr>
+<tr><td>饲料</td><td>日投饵量 × 饲料单价</td><td>24037</td><td>40.4%</td></tr>
+<tr><td>CAPEX 折旧</td><td>设备/8年 + 土建/20年 ÷ 365</td><td>13521</td><td>22.7%</td></tr>
+<tr><td>电费(泵/UV/杂项)</td><td>主泵+支路泵 ÷ motorEta + UV + 照明控制</td><td>8168</td><td>13.7%</td></tr>
+<tr><td>维护+保险+补水+排污</td><td>processExtraDaily(四项之和, 见 21.1.3)</td><td>7089</td><td>11.9%</td></tr>
+<tr><td>增氧(液氧或风机)</td><td>o2 模式=液氧; air 模式=K-101 电费</td><td>1475</td><td>2.5%</td></tr>
+<tr><td>NaHCO₃</td><td>碱度投加 ÷ 0.595 × 单价</td><td>1415</td><td>2.4%</td></tr>
+<tr><td>电费(BF 风机)</td><td>BF 粗孔曝气 × 24h</td><td>1073</td><td>1.8%</td></tr>
 <tr><td>电费(CO₂ 风机)</td><td>脱气塔风机 × 24h</td><td>987</td><td>1.7%</td></tr>
-<tr><td>增氧(液氧或风机)</td><td>o2 模式=液氧; air 模式=K-101 电费</td><td>905</td><td>1.6%</td></tr>
-<tr><td>甲醇</td><td>反硝化需求 × 单价</td><td>800</td><td>1.4%</td></tr>
-<tr><td>电费(BF 风机)</td><td>BF 粗孔曝气 × 24h</td><td>598</td><td>1.0%</td></tr>
-<tr><td>电费(热泵)</td><td>热泵电耗 × 电价</td><td>442</td><td>0.8%</td></tr>
+<tr><td>甲醇</td><td>反硝化需求 × 单价</td><td>614</td><td>1.0%</td></tr>
+<tr><td>电费(热泵)</td><td>热泵电耗 × 电价</td><td>462</td><td>0.8%</td></tr>
+<tr><td>电费(车间暖通)</td><td>车间显热 ÷ COP × 电价</td><td>276</td><td>0.5%</td></tr>
 <tr><td>电费(蛋分风机)</td><td>K-501 × 24h</td><td>215</td><td>0.4%</td></tr>
-<tr><td>电费(车间暖通)</td><td>车间显热 ÷ COP × 电价</td><td>215</td><td>0.4%</td></tr>
 <tr><td>电费(臭氧)</td><td>臭氧发生器 × 24h</td><td>178</td><td>0.3%</td></tr>
 <tr><td>电费(车间通风机)</td><td>KV-1003 × 24h</td><td>10</td><td>0.0%</td></tr>
 <tr><td>电费(除湿机)</td><td>除湿量 ÷ SMER × 电价</td><td>0</td><td>0.0%</td></tr>
-<tr><td><b>分项合计</b></td><td>—</td><td><b>57951</b></td><td><b>100.0%</b></td></tr>
-<tr><td><b>模型 totalAvg</b></td><td>含折旧的工艺运行成本</td><td><b>57951</b></td><td><b>100%</b></td></tr>
+<tr><td><b>分项合计</b></td><td>—</td><td><b>59522</b></td><td><b>100.0%</b></td></tr>
+<tr><td><b>模型 totalAvg</b></td><td>含折旧的工艺运行成本</td><td><b>59522</b></td><td><b>100%</b></td></tr>
 </table>
 <p style="font-size:9.5pt;color:#666;">✅ 分项合计 ⇔ totalAvg 闭合(差 &lt; 0.5%), 说明成本明细已全部过桥。</p>
 <!-- IRAS_GEN_CASE:case_salmon END -->
@@ -6855,46 +6911,46 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 <tr><td>存塘量 (t)</td><td>8.8</td><td>88.7</td><td>179.8</td></tr>
 <tr><td>峰值投饵 (kg/d)</td><td>264</td><td>1330</td><td>1618</td></tr>
 <tr><td>TAN 产生 (kg/d)</td><td>13.3</td><td>61.2</td><td>71.5</td></tr>
-<tr><td>CO₂ 产生 (kg/d)</td><td>193</td><td>984</td><td>1212</td></tr>
+<tr><td>CO₂ 产生 (kg/d)</td><td>229</td><td>1167</td><td>1436</td></tr>
 <tr><td>鱼峰值耗氧 (kg/h)</td><td>4.9</td><td>27.2</td><td>34.7</td></tr>
 <tr><td>循环流量 (m³/h)</td><td>1230</td><td>5319</td><td>5994</td></tr>
 <tr><td>系统水体 (m³)</td><td>351</td><td>1773</td><td>2997</td></tr>
-<tr><td>池内 CO₂ (mg/L)</td><td>10.0</td><td>11.9</td><td>13.0</td></tr>
-<tr><td>池内 NH₃-N (mg/L)</td><td>0.0022</td><td>0.0020</td><td>0.0019</td></tr>
-<tr><td>池内 pH</td><td>7.15</td><td>7.08</td><td>7.04</td></tr>
+<tr><td>池内 CO₂ (mg/L)</td><td>7.3</td><td>8.9</td><td>9.8</td></tr>
+<tr><td>池内 NH₃-N (mg/L)</td><td>0.0021</td><td>0.0018</td><td>0.0017</td></tr>
+<tr><td>池内 pH</td><td>7.28</td><td>7.20</td><td>7.16</td></tr>
 <tr><td>泵功率合计 (kW)</td><td>58.0</td><td>251.0</td><td>282.8</td></tr>
-<tr><td>阶段设备投资 (万元)</td><td>419.5</td><td>1654.8</td><td>1915.2</td></tr>
-<tr><td>模型告警条数</td><td>3</td><td>3</td><td>3</td></tr>
+<tr><td>阶段设备投资 (万元)</td><td>430.8</td><td>1702.3</td><td>1970.1</td></tr>
+<tr><td>模型告警条数</td><td>6</td><td>6</td><td>6</td></tr>
 </table>
 <p><b>全场汇总</b>:</p>
 <table>
 <tr><th>指标</th><th>数值</th><th>指标</th><th>数值</th></tr>
-<tr><td>工艺运行成本</td><td><b>59.14 元/kg</b></td><td>企业全成本</td><td><b>68.36 元/kg</b></td></tr>
-<tr><td>比电耗</td><td>20.66 kWh/kg</td><td>其中热泵</td><td>2.13 元/kg</td></tr>
-<tr><td>OPEX</td><td>43.24 元/kg</td><td>折旧</td><td>15.90 元/kg</td></tr>
-<tr><td>工程总投资</td><td>9454 万元</td><td>峰值流量</td><td>5994 m³/h</td></tr>
-<tr><td>系统总水体</td><td>7880 m³</td><td>用地</td><td>58.3 亩</td></tr>
+<tr><td>工艺运行成本</td><td><b>60.43 元/kg</b></td><td>企业全成本</td><td><b>69.71 元/kg</b></td></tr>
+<tr><td>比电耗</td><td>21.13 kWh/kg</td><td>其中热泵</td><td>2.21 元/kg</td></tr>
+<tr><td>OPEX</td><td>44.08 元/kg</td><td>折旧</td><td>16.35 元/kg</td></tr>
+<tr><td>工程总投资</td><td>9722 万元</td><td>峰值流量</td><td>5994 m³/h</td></tr>
+<tr><td>系统总水体</td><td>8147 m³</td><td>用地</td><td>60.1 亩</td></tr>
 </table>
 <p><b>成本构成</b> · 口径: <b>成鱼期</b>(大菱鲆 500 t/yr · 默认气候 (青岛))· 全周期日均 元/日</p>
 <table>
 <tr><th>成本项</th><th>计算基础</th><th>元/日</th><th>占比</th></tr>
-<tr><td>饲料</td><td>日投饵量 × 饲料单价</td><td>15823</td><td>36.6%</td></tr>
-<tr><td>CAPEX 折旧</td><td>设备/8年 + 土建/20年 ÷ 365</td><td>10404</td><td>24.1%</td></tr>
-<tr><td>维护+保险+补水+排污</td><td>processExtraDaily(四项之和, 见 21.1.3)</td><td>5210</td><td>12.1%</td></tr>
-<tr><td>电费(泵/UV/杂项)</td><td>主泵+支路泵 ÷ motorEta + UV + 照明控制</td><td>4836</td><td>11.2%</td></tr>
-<tr><td>电费(车间暖通)</td><td>车间显热 ÷ COP × 电价</td><td>1988</td><td>4.6%</td></tr>
-<tr><td>电费(热泵)</td><td>热泵电耗 × 电价</td><td>1872</td><td>4.3%</td></tr>
-<tr><td>NaHCO₃</td><td>碱度投加 ÷ 0.595 × 单价</td><td>829</td><td>1.9%</td></tr>
+<tr><td>饲料</td><td>日投饵量 × 饲料单价</td><td>15823</td><td>35.9%</td></tr>
+<tr><td>CAPEX 折旧</td><td>设备/8年 + 土建/20年 ÷ 365</td><td>10702</td><td>24.3%</td></tr>
+<tr><td>维护+保险+补水+排污</td><td>processExtraDaily(四项之和, 见 21.1.3)</td><td>5360</td><td>12.2%</td></tr>
+<tr><td>电费(泵/UV/杂项)</td><td>主泵+支路泵 ÷ motorEta + UV + 照明控制</td><td>4836</td><td>11.0%</td></tr>
+<tr><td>电费(热泵)</td><td>热泵电耗 × 电价</td><td>1940</td><td>4.4%</td></tr>
+<tr><td>电费(车间暖通)</td><td>车间显热 ÷ COP × 电价</td><td>1923</td><td>4.4%</td></tr>
+<tr><td>NaHCO₃</td><td>碱度投加 ÷ 0.595 × 单价</td><td>905</td><td>2.1%</td></tr>
+<tr><td>增氧(液氧或风机)</td><td>o2 模式=液氧; air 模式=K-101 电费</td><td>771</td><td>1.7%</td></tr>
+<tr><td>电费(BF 风机)</td><td>BF 粗孔曝气 × 24h</td><td>601</td><td>1.4%</td></tr>
 <tr><td>电费(CO₂ 风机)</td><td>脱气塔风机 × 24h</td><td>583</td><td>1.3%</td></tr>
-<tr><td>增氧(液氧或风机)</td><td>o2 模式=液氧; air 模式=K-101 电费</td><td>511</td><td>1.2%</td></tr>
-<tr><td>甲醇</td><td>反硝化需求 × 单价</td><td>495</td><td>1.1%</td></tr>
-<tr><td>电费(BF 风机)</td><td>BF 粗孔曝气 × 24h</td><td>355</td><td>0.8%</td></tr>
+<tr><td>甲醇</td><td>反硝化需求 × 单价</td><td>380</td><td>0.9%</td></tr>
 <tr><td>电费(蛋分风机)</td><td>K-501 × 24h</td><td>127</td><td>0.3%</td></tr>
 <tr><td>电费(臭氧)</td><td>臭氧发生器 × 24h</td><td>90</td><td>0.2%</td></tr>
 <tr><td>电费(车间通风机)</td><td>KV-1003 × 24h</td><td>61</td><td>0.1%</td></tr>
 <tr><td>电费(除湿机)</td><td>除湿量 ÷ SMER × 电价</td><td>0</td><td>0.0%</td></tr>
-<tr><td><b>分项合计</b></td><td>—</td><td><b>43184</b></td><td><b>100.0%</b></td></tr>
-<tr><td><b>模型 totalAvg</b></td><td>含折旧的工艺运行成本</td><td><b>43184</b></td><td><b>100%</b></td></tr>
+<tr><td><b>分项合计</b></td><td>—</td><td><b>44103</b></td><td><b>100.0%</b></td></tr>
+<tr><td><b>模型 totalAvg</b></td><td>含折旧的工艺运行成本</td><td><b>44103</b></td><td><b>100%</b></td></tr>
 </table>
 <p style="font-size:9.5pt;color:#666;">✅ 分项合计 ⇔ totalAvg 闭合(差 &lt; 0.5%), 说明成本明细已全部过桥。</p>
 <!-- IRAS_GEN_CASE:case_turbot END -->
@@ -6940,46 +6996,46 @@ Global Seafood Advocate 2019 "more often plumbed in side stream configuration")�
 <tr><td>存塘量 (t)</td><td>0.2</td><td>2.8</td><td>8.8</td></tr>
 <tr><td>峰值投饵 (kg/d)</td><td>22</td><td>139</td><td>264</td></tr>
 <tr><td>TAN 产生 (kg/d)</td><td>0.9</td><td>5.4</td><td>9.2</td></tr>
-<tr><td>CO₂ 产生 (kg/d)</td><td>18</td><td>108</td><td>200</td></tr>
+<tr><td>CO₂ 产生 (kg/d)</td><td>21</td><td>127</td><td>236</td></tr>
 <tr><td>鱼峰值耗氧 (kg/h)</td><td>0.5</td><td>3.4</td><td>6.4</td></tr>
 <tr><td>循环流量 (m³/h)</td><td>223</td><td>866</td><td>1466</td></tr>
 <tr><td>系统水体 (m³)</td><td>111</td><td>346</td><td>586</td></tr>
-<tr><td>池内 CO₂ (mg/L)</td><td>5.1</td><td>8.0</td><td>8.7</td></tr>
-<tr><td>池内 NH₃-N (mg/L)</td><td>0.0044</td><td>0.0043</td><td>0.0040</td></tr>
-<tr><td>池内 pH</td><td>7.40</td><td>7.21</td><td>7.17</td></tr>
+<tr><td>池内 CO₂ (mg/L)</td><td>4.2</td><td>6.7</td><td>7.5</td></tr>
+<tr><td>池内 NH₃-N (mg/L)</td><td>0.0092</td><td>0.0060</td><td>0.0054</td></tr>
+<tr><td>池内 pH</td><td>7.47</td><td>7.28</td><td>7.24</td></tr>
 <tr><td>泵功率合计 (kW)</td><td>10.5</td><td>40.9</td><td>69.2</td></tr>
-<tr><td>阶段设备投资 (万元)</td><td>71.6</td><td>245.1</td><td>411.3</td></tr>
-<tr><td>模型告警条数</td><td>3</td><td>5</td><td>5</td></tr>
+<tr><td>阶段设备投资 (万元)</td><td>72.3</td><td>248.1</td><td>416.1</td></tr>
+<tr><td>模型告警条数</td><td>4</td><td>5</td><td>5</td></tr>
 </table>
 <p><b>全场汇总</b>:</p>
 <table>
 <tr><th>指标</th><th>数值</th><th>指标</th><th>数值</th></tr>
-<tr><td>工艺运行成本</td><td><b>51.86 元/kg</b></td><td>企业全成本</td><td><b>165.11 元/kg</b></td></tr>
-<tr><td>比电耗</td><td>19.68 kWh/kg</td><td>其中热泵</td><td>2.52 元/kg</td></tr>
-<tr><td>OPEX</td><td>34.44 元/kg</td><td>折旧</td><td>17.42 元/kg</td></tr>
-<tr><td>工程总投资</td><td>2072 万元</td><td>峰值流量</td><td>1466 m³/h</td></tr>
-<tr><td>系统总水体</td><td>1342 m³</td><td>用地</td><td>10.9 亩</td></tr>
+<tr><td>工艺运行成本</td><td><b>52.70 元/kg</b></td><td>企业全成本</td><td><b>165.99 元/kg</b></td></tr>
+<tr><td>比电耗</td><td>19.45 kWh/kg</td><td>其中热泵</td><td>2.52 元/kg</td></tr>
+<tr><td>OPEX</td><td>35.08 元/kg</td><td>折旧</td><td>17.62 元/kg</td></tr>
+<tr><td>工程总投资</td><td>2095 万元</td><td>峰值流量</td><td>1466 m³/h</td></tr>
+<tr><td>系统总水体</td><td>1384 m³</td><td>用地</td><td>11.1 亩</td></tr>
 </table>
 <p><b>成本构成</b> · 口径: <b>养成后期</b>(南美白对虾 100 t/yr · 默认气候 (青岛))· 全周期日均 元/日</p>
 <table>
 <tr><th>成本项</th><th>计算基础</th><th>元/日</th><th>占比</th></tr>
-<tr><td>CAPEX 折旧</td><td>设备/8年 + 土建/20年 ÷ 365</td><td>2625</td><td>32.0%</td></tr>
-<tr><td>饲料</td><td>日投饵量 × 饲料单价</td><td>1851</td><td>22.6%</td></tr>
-<tr><td>维护+保险+补水+排污</td><td>processExtraDaily(四项之和, 见 21.1.3)</td><td>1213</td><td>14.8%</td></tr>
-<tr><td>电费(泵/UV/杂项)</td><td>主泵+支路泵 ÷ motorEta + UV + 照明控制</td><td>1209</td><td>14.7%</td></tr>
-<tr><td>电费(热泵)</td><td>热泵电耗 × 电价</td><td>503</td><td>6.1%</td></tr>
-<tr><td>增氧(液氧或风机)</td><td>o2 模式=液氧; air 模式=K-101 电费</td><td>170</td><td>2.1%</td></tr>
-<tr><td>NaHCO₃</td><td>碱度投加 ÷ 0.595 × 单价</td><td>151</td><td>1.8%</td></tr>
+<tr><td>CAPEX 折旧</td><td>设备/8年 + 土建/20年 ÷ 365</td><td>2655</td><td>31.9%</td></tr>
+<tr><td>饲料</td><td>日投饵量 × 饲料单价</td><td>1851</td><td>22.2%</td></tr>
+<tr><td>维护+保险+补水+排污</td><td>processExtraDaily(四项之和, 见 21.1.3)</td><td>1230</td><td>14.8%</td></tr>
+<tr><td>电费(泵/UV/杂项)</td><td>主泵+支路泵 ÷ motorEta + UV + 照明控制</td><td>1209</td><td>14.5%</td></tr>
+<tr><td>电费(热泵)</td><td>热泵电耗 × 电价</td><td>503</td><td>6.0%</td></tr>
+<tr><td>增氧(液氧或风机)</td><td>o2 模式=液氧; air 模式=K-101 电费</td><td>268</td><td>3.2%</td></tr>
+<tr><td>NaHCO₃</td><td>碱度投加 ÷ 0.595 × 单价</td><td>190</td><td>2.3%</td></tr>
 <tr><td>电费(CO₂ 风机)</td><td>脱气塔风机 × 24h</td><td>143</td><td>1.7%</td></tr>
-<tr><td>甲醇</td><td>反硝化需求 × 单价</td><td>95</td><td>1.2%</td></tr>
-<tr><td>电费(车间暖通)</td><td>车间显热 ÷ COP × 电价</td><td>91</td><td>1.1%</td></tr>
-<tr><td>电费(BF 风机)</td><td>BF 粗孔曝气 × 24h</td><td>89</td><td>1.1%</td></tr>
+<tr><td>电费(车间暖通)</td><td>车间显热 ÷ COP × 电价</td><td>94</td><td>1.1%</td></tr>
+<tr><td>甲醇</td><td>反硝化需求 × 单价</td><td>73</td><td>0.9%</td></tr>
+<tr><td>电费(BF 风机)</td><td>BF 粗孔曝气 × 24h</td><td>57</td><td>0.7%</td></tr>
 <tr><td>电费(蛋分风机)</td><td>K-501 × 24h</td><td>31</td><td>0.4%</td></tr>
 <tr><td>电费(臭氧)</td><td>臭氧发生器 × 24h</td><td>25</td><td>0.3%</td></tr>
 <tr><td>电费(车间通风机)</td><td>KV-1003 × 24h</td><td>8</td><td>0.1%</td></tr>
 <tr><td>电费(除湿机)</td><td>除湿量 ÷ SMER × 电价</td><td>0</td><td>0.0%</td></tr>
-<tr><td><b>分项合计</b></td><td>—</td><td><b>8203</b></td><td><b>100.0%</b></td></tr>
-<tr><td><b>模型 totalAvg</b></td><td>含折旧的工艺运行成本</td><td><b>8203</b></td><td><b>100%</b></td></tr>
+<tr><td><b>分项合计</b></td><td>—</td><td><b>8336</b></td><td><b>100.0%</b></td></tr>
+<tr><td><b>模型 totalAvg</b></td><td>含折旧的工艺运行成本</td><td><b>8336</b></td><td><b>100%</b></td></tr>
 </table>
 <p style="font-size:9.5pt;color:#666;">✅ 分项合计 ⇔ totalAvg 闭合(差 &lt; 0.5%), 说明成本明细已全部过桥。</p>
 <!-- IRAS_GEN_CASE:case_shrimp END -->
@@ -8292,7 +8348,7 @@ annualOpexForFinance = annualOpex − 维护费 + 苗种费
 </div>
 
 <div class="warning-box">
-<span class="label">⚠ 向后兼容</span><br>
+<span class="label">⚠⚠ <b>v2.6 之前本段描述的是<u>意图</u>，代码并未实现</b>：<code>finance-core</code> 一直读 <code>annualOpex</code>，<b>从未读过 <code>annualOpexForFinance</code></b> ⇒ 维护费双计、苗种费漏计。<code>IRAS_R26_FIN_OPEX_BASE</code>（2026-08-30）才把它接上，salmon 1000 t 实测全投资 IRR <b>11.08% → 13.26%</b>。⚠ <b>方向随物种翻转</b>：苗种占比高的物种（鳗鲡 43%）此前是 <b>IRR 被高估</b>。<br>⚠ 向后兼容</span><br>
 老版本主页面不导出 <code>annualOpexForFinance</code> 时，财务模块回退到 <code>annualOpex</code>。
 此时<strong>维护费会重复计算、苗种费缺失</strong>——两者方向相反：
 鲑鱼以维护重复为主（成本高估约 2.65 元/kg），鳗鲡以苗种缺失为主（成本<strong>低估约 42 元/kg</strong>）。
@@ -8341,7 +8397,13 @@ annualOpexForFinance = annualOpex − 维护费 + 苗种费
    − 修理费 (capex_eq × repairRate)<br>
    − 管理费 (revenue × adminRate)<br>
    − 人工成本<br>
-   − 所得税 (max(0, profit) × taxRate)<br>
+   − <b>所得税</b><br>
+   <span style="color:#f59e0b">⚠ v2.6 起（<code>IRAS_FIN_ADJTAX</code>）<b>两张现金流表用两个不同的所得税</b>：<br>
+   &nbsp;&nbsp;<b>全投资</b>（项目投资现金流量表）用 <b>调整所得税 = 息税前利润 × 税率</b>，<b>不扣利息</b>
+   ——《建设项目经济评价方法与参数》口径，因此<b>全投资 IRR 与融资结构无关</b>；<br>
+   &nbsp;&nbsp;<b>自有资金</b>与损益表用<b>实际所得税</b> max(0, 利润总额) × 税率（已扣利息，含利息税盾）。<br>
+   &nbsp;&nbsp;v2.5 及更早两张表共用同一个含利息税盾的税，导致<b>全投资 IRR 随自有资金比例漂移</b>
+   （实测 20%→11.11%、100%→10.80%）。<b>自校验：自有资金比例调到 100% 时，全投资 IRR 应与资本金 IRR 相等。</b></span><br>
 <br>
 2. 投资性现金流 (Investing CF)<br>
    t=0: − fixedAsset (建设期一次性投入)<br>
@@ -8928,10 +8990,10 @@ C4 另配两份取样: A 只带 warn 级、B 必带 danger 级, 后者专验结�
 <tr><td>windowRatio</td><td>数值</td><td>0.05</td><td>围护区</td><td>窗墙比</td></tr>
 <tr><td>airChangeRate</td><td>数值</td><td>1.0</td><td>围护区</td><td>ACH (1/h)</td></tr>
 <tr><td>ventHeatRecovery</td><td>数值</td><td>0</td><td>围护区</td><td>0-0.85</td></tr>
-<tr><td>VTR20</td><td>数值</td><td>500</td><td>工艺参数区</td><td>20°C 容积 TAN 去除率 g/(m³·d)。工程经验取值，具体项目应按填料厂家或设计单位数据覆盖。见 10.2</td></tr>
-<tr><td>thetaNit</td><td>数值</td><td>1.10</td><td>工艺参数区</td><td>硝化温度修正系数。见 10.2</td></tr>
-<tr><td>VDR20</td><td>数值</td><td>800</td><td>工艺参数区</td><td>20°C 容积反硝化速率 g NO₃-N/(m³·d)。见 10.2</td></tr>
-<tr><td>thetaDen</td><td>数值</td><td>1.08</td><td>工艺参数区</td><td>反硝化温度修正系数。见 10.2</td></tr>
+<tr><td>VTR20</td><td>数值</td><td>500</td><td>工艺参数区</td><td><b>⚠ v2.6 起已停用于选型</b>（面速率口径取代，见 10.2）。保留读取仅为历史方案 JSON 往返，<b>界面输入框已收回</b>。 原说明：20°C 容积 TAN 去除率 g/(m³·d)。工程经验取值，具体项目应按填料厂家或设计单位数据覆盖。见 10.2</td></tr>
+<tr><td>thetaNit</td><td>数值</td><td>1.10</td><td>工艺参数区</td><td><b>⚠ v2.6 起已停用于选型</b>（面速率口径取代，见 10.2）。保留读取仅为历史方案 JSON 往返，<b>界面输入框已收回</b>。 原说明：硝化温度修正系数。见 10.2</td></tr>
+<tr><td>VDR20</td><td>数值</td><td>800</td><td>工艺参数区</td><td><b>⚠ v2.6 起已停用于选型</b>（面速率口径取代，见 10.2）。保留读取仅为历史方案 JSON 往返，<b>界面输入框已收回</b>。 原说明：20°C 容积反硝化速率 g NO₃-N/(m³·d)。见 10.2</td></tr><tr><td>bfArealK</td><td>数值</td><td>0.58</td><td>工艺参数区</td><td>硝化面速率系数 g NH₄-N/(m²·d) @参考温度 10 °C。<b>⚠ 无 RAS 出处</b>：该档原文条件是 <i>with chemical precipitation</i>，RAS 不满足，取此档属工程外推。见 10.2</td></tr><tr><td>bfCarrierPSA</td><td>数值</td><td>500</td><td>工艺参数区</td><td>硝化载体比表面 m²/m³（K1 500 / K3 350 / K5 800）。见 10.2</td></tr><tr><td>bfArealTempCap</td><td>数值</td><td>25</td><td>工艺参数区</td><td>硝化温度修正上限 °C，超过不再外推。出自厂商手册明写的 “maximum of 25 °C”。见 10.2</td></tr><tr><td>bfDesignTAN</td><td>数值</td><td>0.5</td><td>工艺参数区</td><td>设计目标池内 TAN mg/L（S<sub>n</sub>）。<b>是设计输入不是运行实测值</b>。见 10.2.1 ①</td></tr><tr><td>denArealK</td><td>数值</td><td>1.6</td><td>工艺参数区</td><td>反硝化面速率系数 g NO₃-N/(m²·d) @参考温度 20 °C。<b>⚠⚠ 无任何出处</b>：继承自已停用的旧体积口径，非标定值非文献值。见 10.2</td></tr><tr><td>denCarrierPSA</td><td>数值</td><td>500</td><td>工艺参数区</td><td>反硝化载体比表面 m²/m³。默认 500（K1）是<b>一个选择，不是实测</b>。见 10.2</td></tr><tr><td>denTempCap</td><td>数值</td><td>25</td><td>工艺参数区</td><td>反硝化温度修正上限 °C。<b>⚠⚠ 工程裁决，反硝化侧手册无任何说法</b>——与 <code>bfArealTempCap</code> 是两个独立字段，因为两个 25 来源不同。见 10.2</td></tr>
+<tr><td>thetaDen</td><td>数值</td><td>1.08</td><td>工艺参数区</td><td>反硝化温度修正系数，<b>参考温度 20 °C</b>。见 10.2</td></tr>
 <tr><td>maintenanceRate <span class="tag-new">v1.9.2</span></td><td>数值</td><td>4.5</td><td>运营费率区</td><td>维护与备件 %/年。国产设备口径；进口高端交钥匙取 2-3</td></tr>
 <tr><td>maintenanceBase <span class="tag-new">v1.9.2</span></td><td>下拉</td><td>equipPlusInstall</td><td>运营费率区</td><td>维护费基数：equipOnly / equipPlusInstall(×1.6，剔土建) / totalProject</td></tr>
 <tr><td>insuranceRate <span class="tag-new">v1.9.2</span></td><td>数值</td><td>0.8</td><td>运营费率区</td><td>保险 %/年，按工程总投资计</td></tr>
@@ -9191,7 +9253,7 @@ v1.2 双节点稳态求解器虽经文献校准, 但实际车间空气温湿度�
 </p>
 
 <p style="margin-top: 30pt; text-align: center; font-size: 10pt; color: #666;">
-© 2026 海南登登科技咨询有限公司 · 孙程<br>
+© 2026 孙程<br>
 iras.cn · iras.dengdengtech.cn (国内) · github.com/chengsunmail/iras · 6881509@qq.com<br>
 本手册整合 iRAS v1.0 → v1.5 全部内容 · 完整版
 </p>

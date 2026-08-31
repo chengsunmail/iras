@@ -10,14 +10,14 @@
   数据源: sessionStorage['iRAS_pidExport'] (从 iRAS 主页面 "导出设备清单" 按钮传入)
          或用户手动加载 JSON 文件
 
-  Copyright (C) 2026 海南登登科技咨询有限公司
+  Copyright (C) 2026 孙程
   AGPL v3
 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iRAS 设备清单 v2.5</title>
+<title>iRAS 设备清单 v2.6</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -351,7 +351,7 @@ function renderStage(stage, idx, data) {
     });
   }
   if (e.rdf) equipRows.push(rowFromMod('RDF 微滤机', 'F-201', mod && mod.modulePerSpec.rdf, fmtM3h(e.rdf.flow), `${e.rdf.tssEff}% TSS 去除`));
-  if (e.bf) equipRows.push(rowFromVol('生物滤池 (MBBR)', 'B-301', e.bf.volume, `填料 K1/K3 · ${e.bf.fillRatio || 50}% 填充`, `VTR ${(e.bf.vtrAtT || 0).toFixed(0)} g/m³·d · 设计 TAN ${(e.bf.designTAN || 0).toFixed(1)} kg/d`));
+  if (e.bf) equipRows.push(rowFromVol('生物滤池 (MBBR)', 'B-301', e.bf.volume, `填料 K1/K3 · ${e.bf.fillRatio || 50}% 填充`, `面积 ${(e.bf.areaNitri || 0).toFixed(0)} m² · 面速率 ${(e.bf.arealRate || 0).toFixed(3)} gN/(m²·d) · k ${e.bf.bfArealK} · Sn ${e.bf.bfDesignTAN} mg/L · 载体 ${e.bf.bfCarrierPSA} m²/m³ · 温度上限 ${e.bf.bfArealTempCap} °C · 硝化面积 ${(e.bf.areaNitri||0).toFixed(0)} + 异养面积 ${(e.bf.areaCOD||0).toFixed(0)} = ${(e.bf.areaTotal||0).toFixed(0)} m² · 设计SALR ${e.bf.bfSALRDesign} (实际 ${(e.bf.salrActual||0).toFixed(2)}) g COD/(m²·d) · 溶解COD 可降解 ${(e.bf.codDissB||0).toFixed(2)} + 难降解 ${(e.bf.codDissR||0).toFixed(2)} mg/L (总产率 ${e.bf.codDissYield}% · 难降解 ${e.bf.codDissRefracYield}% · TSS 产率 ${e.bf.tssYield}% 饲料) · 设计 TAN ${(e.bf.designTAN || 0).toFixed(1)} kg/d · 等效 VTR ${(e.bf.vtrAtT || 0).toFixed(0)} g/m³·d`));
   if (e.uv) equipRows.push(rowFromMod('UV 反应器', 'D-401', mod && mod.modulePerSpec.uv, fmtKw(e.uv.powerKw), `剂量 ${e.uv.dose} mJ/cm² · 流量 ${(e.uv.flow||0).toFixed(0)} m³/h`));
   if (e.co2 && e.co2.enabled) {
     const sp = e.co2.spec || {};
@@ -416,7 +416,7 @@ function renderStage(stage, idx, data) {
     equipRows.push(rowFromVol('AOP 反应器', 'X-901', e.aop.volume, `${e.aop.type === 'integrated' ? '集成型 UV+O₃' : '分体式 UV+O₃'} · ${e.aop.flowPct}% 旁路`, `geosmin 去除 ${e.aop.geosminEff}% · DOM ${e.aop.domEff}% · 臭氧 ${(e.aop.ozoneKgD||0).toFixed(2)} kg/d`));
   }
   if (e.denitri && e.denitri.enabled) {
-    equipRows.push(rowFromVol('反硝化反应器', 'R-801', e.denitri.volume, `MBBR · ${e.denitri.flowPct}% 旁路 · ${e.denitri.no3Eff}% NO₃ 去除`, `脱氮 ${(e.denitri.no3RemovedKgD||0).toFixed(1)} kg/d · 甲醇 ${(e.denitri.methanolKgD||0).toFixed(1)} kg/d`));
+    equipRows.push(rowFromVol('反硝化反应器', 'R-801', e.denitri.volume, `MBBR · ${e.denitri.flowPct}% 旁路 · ${e.denitri.no3Eff}% NO₃ 去除`, `脱氮 ${(e.denitri.no3RemovedKgD||0).toFixed(1)} kg/d · 甲醇 ${(e.denitri.methanolKgD||0).toFixed(1)} kg/d · θ_den ${e.denitri.thetaDen} · 温度上限 ${e.denitri.denTempCap} °C (工程裁决, 无文献出处)`));
   }
   if (e.ozoneGen && e.ozoneGen.totalKgD > 0) {
     const ozMod = mod && mod.modulePerSpec.ozoneGenerator;
@@ -666,7 +666,7 @@ const SHARE_KEY = 'iRAS_equipmentExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.5';
+const IRAS_PAGE_VERSION = '2.6';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'

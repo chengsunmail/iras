@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iRAS 投资财务评价 v2.5</title>
+<title>iRAS 投资财务评价 v2.6</title>
 <!--
   iRAS v1.4: 投资财务评价独立页面
   数据源: localStorage['iRAS_financeExport'] (从主页面 "投资财务评价" 按钮传入)
@@ -318,7 +318,7 @@ const SHARE_KEY = 'iRAS_financeExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.5';
+const IRAS_PAGE_VERSION = '2.6';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
@@ -470,6 +470,15 @@ function renderAll(c) {
   html += renderRevenueTable(c);      // 表 4: 销售收入和税金
   html += renderProfitTable(c);       // 表 5: 损益表
   html += renderCashFlowTable(c, 'total');  // 表 6: 现金流量表 (全投资)
+  /* IRAS_FIN_ADJTAX (2026-08-30): 两张现金流表用【两个不同的所得税】, 必须说清楚,
+     否则读者拿表 6 的净额去对表 5 的利润表会对不上, 而那不是错。 */
+  html += `<div style="font-size:11px;color:#64748b;margin:-8px 0 14px 2px;line-height:1.7">
+    ⚠ 表 6（全投资）用<b>调整所得税</b> = 息税前利润 × ${(c.params.taxRate*100).toFixed(0)}%，<b>不扣利息</b>
+    ——《建设项目经济评价方法与参数》项目投资现金流量表口径。因此<b>全投资 IRR 与融资结构无关</b>；
+    自有资金比例调到 100% 时，它应与资本金 IRR 相等（可作自校验）。<br>
+    表 5（利润表）与表 7（自有资金）用<b>实际所得税</b>（已扣利息，含利息税盾），
+    满产年两者相差 ${fmt.wan((c.yearly[Math.min(3,c.params.years)]||{}).taxShield || 0)} 万元，即税盾本身。
+  </div>`;
   html += renderCashFlowTable(c, 'equity'); // 表 7: 现金流量表 (自有资金)
   html += renderSensitivityTable(c);  // 表 8: 敏感性分析
   html += renderCharts(c);            // 图表
@@ -557,7 +566,13 @@ function renderCostTable(c) {
   const total = sat.opCostTotal + sat.dep + sat.interest;
   const pct = v => total > 0 ? (v/total*100).toFixed(1) + '%' : '—';
   html += `<tr><td>1. 经营成本 (饲料/电/液氧/化学品 等 OPEX)</td><td>${fmt.wan(sat.operatingCost)}</td><td>${pct(sat.operatingCost)}</td></tr>`;
-  html += `<tr><td>2. 修理费 (${(c.params.repairRate*100).toFixed(1)}% × 设备)<br><span style="font-size:10px;color:#64748b;">主页面 OPEX 基数已剔除维护费，此处不重复计算</span></td><td>${fmt.wan(sat.repairCost)}</td><td>${pct(sat.repairCost)}</td></tr>`;
+  /* IRAS_R26_FIN_OPEX_BASE: 这行说明【曾经是假的】—— 本模块当时读的是 fin.annualOpex,
+     维护费在基数里又被这一行加了一遍。修复后它只在 opexBase='forFinance' 时成立;
+     退回老口径时必须照实说，不得两种情况印同一句话。 */
+  const _obNote = (c.annual && c.annual.opexBase === 'legacy')
+    ? '⚠ 本方案 JSON 无 annualOpexForFinance，OPEX 基数仍含维护费 —— 此处与基数<b>重复计入</b>，且苗种费未计。请用当前版本主页面重新导出。'
+    : '主页面 OPEX 基数已剔除维护费（并已并入苗种费），此处不重复计算';
+  html += `<tr><td>2. 修理费 (${(c.params.repairRate*100).toFixed(1)}% × 设备)<br><span style="font-size:10px;color:#64748b;">${_obNote}</span></td><td>${fmt.wan(sat.repairCost)}</td><td>${pct(sat.repairCost)}</td></tr>`;
   html += `<tr><td>3. 管理费 (${(c.params.adminRate*100).toFixed(1)}% × 销售收入)</td><td>${fmt.wan(sat.adminCost)}</td><td>${pct(sat.adminCost)}</td></tr>`;
   html += `<tr><td>4. 人工成本</td><td>${fmt.wan(sat.laborCost)}</td><td>${pct(sat.laborCost)}</td></tr>`;
   html += `<tr class="subtotal"><td>5. 经营成本小计</td><td>${fmt.wan(sat.opCostTotal)}</td><td>${pct(sat.opCostTotal)}</td></tr>`;
