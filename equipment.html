@@ -10,14 +10,14 @@
   数据源: sessionStorage['iRAS_pidExport'] (从 iRAS 主页面 "导出设备清单" 按钮传入)
          或用户手动加载 JSON 文件
 
-  Copyright (C) 2026 孙程
+  Copyright (C) 2026 孙程 <6881509@qq.com>
   AGPL v3
 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iRAS 设备清单 v2.6</title>
+<title>iRAS 设备清单 v2.7</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -252,7 +252,7 @@ function renderSiteEquipment(data) {
     <div class="stage-section" style="margin-top:24px; border-top: 2px solid #475569; padding-top:16px;">
       <h2 style="color:#7dd3fc; font-size:18px; margin-bottom:8px;">🏭 站级设备 (全场共用)</h2>
       <div style="color:#94a3b8; font-size:11px; margin-bottom:12px;">
-        站级设备不分阶段, 全场仅装一套 (含主备). 在 iRAS 主页面「③ 阶段汇总 & 站级设备」可调规格/数量/单价。
+        站级设备不分阶段, 全场仅装一套 (含主备). 在 iRAS 主页面「∑ 全场汇总 & 站级设备」可调规格/数量/单价。
         ${s.totalLOXKgD ? `全场日耗 <b style="color:#67e8f9">${s.totalLOXKgD.toFixed(0)} kg/d</b>` : ''}
       </div>
       <table class="equip-table">
@@ -416,7 +416,7 @@ function renderStage(stage, idx, data) {
     equipRows.push(rowFromVol('AOP 反应器', 'X-901', e.aop.volume, `${e.aop.type === 'integrated' ? '集成型 UV+O₃' : '分体式 UV+O₃'} · ${e.aop.flowPct}% 旁路`, `geosmin 去除 ${e.aop.geosminEff}% · DOM ${e.aop.domEff}% · 臭氧 ${(e.aop.ozoneKgD||0).toFixed(2)} kg/d`));
   }
   if (e.denitri && e.denitri.enabled) {
-    equipRows.push(rowFromVol('反硝化反应器', 'R-801', e.denitri.volume, `MBBR · ${e.denitri.flowPct}% 旁路 · ${e.denitri.no3Eff}% NO₃ 去除`, `脱氮 ${(e.denitri.no3RemovedKgD||0).toFixed(1)} kg/d · 甲醇 ${(e.denitri.methanolKgD||0).toFixed(1)} kg/d · θ_den ${e.denitri.thetaDen} · 温度上限 ${e.denitri.denTempCap} °C (工程裁决, 无文献出处)`));
+    equipRows.push(rowFromVol('反硝化反应器', 'R-801', e.denitri.volume, `MBBR · ${e.denitri.flowPct}% 旁路 · ${e.denitri.no3Eff}% NO₃ 去除`, `脱氮 ${(e.denitri.no3RemovedKgD||0).toFixed(1)} kg/d · 甲醇 ${(e.denitri.methanolKgD||0).toFixed(1)} kg/d`));
   }
   if (e.ozoneGen && e.ozoneGen.totalKgD > 0) {
     const ozMod = mod && mod.modulePerSpec.ozoneGenerator;
@@ -666,7 +666,7 @@ const SHARE_KEY = 'iRAS_equipmentExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.6';
+const IRAS_PAGE_VERSION = '2.7';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'

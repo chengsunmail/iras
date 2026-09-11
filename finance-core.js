@@ -138,27 +138,16 @@
     const capexEquip = fin.totalCapexEquip || 0;
     const capexCivil = (fin.totalCapexProject || 0) - capexEquip;
     const fixedAsset = fin.totalCapexProject || 0;
-    /* ══ IRAS_R26_FIN_OPEX_BASE (2026-08-30) —— OPEX 基数改用财务专用口径 ══
-       缺陷: 本模块一直读 `fin.annualOpex`, 而主页面 v1.9.2 起就专门导出了
-       `fin.annualOpexForFinance = annualOpex − 维护 + 苗种` 供本模块使用。
-       该字段【从未被任何代码读过】—— 只有 index 产出、manual 讲解、pid 内嵌样例。
-       后果 (salmon 1000 t 实测):
-         · 维护费双计: annualOpex 内含 annualMaint 396.9 万, 本模块又按
-           capexEquip × repairRate 加 110.7 万 —— 同一笔钱算两遍;
-         · 苗种费漏计: annualSeed 41.2 万一分未进财务评价。
-         净差 +355.7 万元/年 ⇒ 全投资 IRR 11.08% (应为 13.26%)、
-         资本金 IRR 14.62% (应为 18.44%)、NPV 少 2223 万。
-       ⚠ 方向随物种翻转: salmon 是维护 > 苗种 ⇒ 偏保守; 而 eel_200 的
-         fullCostPerKg − costPerKg = 56.0 元/kg 由苗种主导 ⇒ 漏苗种 ≫ 双计维护,
-         OPEX 被低估、IRR 被高估, 是【不安全方向】。index L16088 的注释
-         「鳗鲡苗种占企业全成本 43%, 漏算会让 IRR 严重失真」早已预见, 只是没接上。
-       ⚠ 回退分支保留 (manual §「财务模块专用口径」明写老方案 JSON 走这条),
-         但【必须给出可见信号】—— 回退时 opexBase='legacy', finance.html 据此
-         改写\"不重复计算\"那行说明。声称有防线, 就要给防线失败时的信号。 */
-    const _opexForFin = fin.annualOpexForFinance;
-    const _opexBaseIsForFinance = (typeof _opexForFin === 'number' && isFinite(_opexForFin) && _opexForFin > 0);
-    const annualOpexFull = _opexBaseIsForFinance ? _opexForFin : (fin.annualOpex || 0);
-    const opexBase = _opexBaseIsForFinance ? 'forFinance' : 'legacy';
+    /* IRAS_FIN_OPEX_BASE (2026-09-05): 财务 OPEX 基数必须读 annualOpexForFinance。
+       主页面 v1.9.2 起导出 annualOpexForFinance = annualOpex − 维护费 + 苗种费, 手册 §财务与
+       finance.html 表 4 脚注都写明"基数已剔除维护费", 但本处一直读 annualOpex:
+         · 维护费 (主页面 4.5%/yr) 进了基数, 下面又按 repairRate 加一遍 → 双算;
+         · 苗种费从未进财务 → 鳗鲡 1000 t 默认参数漏算 4,439 万/yr。
+       实测 (全投资 IRR): 三文鱼 10.7% → 12.9%; 鳗鲡 40.5% → 22.4%。
+       dscheck 41 条只查字段"存在", 不查"被消费", 所以一直绿 —— 同 HANDOFF §2 R4 那一型。
+       回退: 老版本主页面不导出该字段时仍用 annualOpex (此时维护费双算, 苗种漏算, 报告应提示)。 */
+    const annualOpexFull = (fin.annualOpexForFinance != null) ? fin.annualOpexForFinance : (fin.annualOpex || 0);
+    const opexBaseIsLegacy = (fin.annualOpexForFinance == null);
     const workingCapital = annualOpexFull * p.workingCap;
     const totalInvest = fixedAsset + workingCapital;
 
@@ -214,24 +203,9 @@
 
       const dep = t === 0 ? 0 : annualDep;
 
-      /* ══ IRAS_FIN_ADJTAX (2026-08-30) —— 项目投资现金流改用【调整所得税】 ══
-         缺陷: `tax` 按扣完利息的利润总额算(含利息税盾), 而 `cfTotal` 不扣利息却扣这个 tax
-         ⇒ 全投资口径混进了融资效应。实测全投资 IRR 随自有资金比例漂移:
-             自有 20% → 11.11% · 50% → 11.02% · 80% → 10.89% · 100% → 10.80%
-         理论上全投资口径与融资结构【无关】。《建设项目经济评价方法与参数》(第三版)
-         的项目投资现金流量表用的是【调整所得税】= 息税前利润 × 税率, 不扣利息。
-         ⇒ 拆成两个税:
-             taxAdjusted —— 项目投资口径, 按 EBIT 计, 进 cfTotal
-             tax         —— 企业口径, 含利息税盾, 进利润表与 cfEquity
-         ⚠ 两者之差就是利息税盾, cfEquity 里必须把它加回去, 否则资本金口径反而算少了。
-         ⚠ 幅度只有 0.31 pp, 但这是【定义性】问题 —— 设计院评审会当场问
-           "全投资 IRR 怎么会随融资比例变"。 */
-      const ebit = netRevenue - opCostTotal - dep;              // 息税前利润
-      const taxAdjusted = Math.max(0, ebit) * p.taxRate;        // 调整所得税 (项目投资口径)
-      const profitBefore = ebit - interest;                     // 利润总额 (企业口径)
-      const tax = Math.max(0, profitBefore) * p.taxRate;        // 所得税 (含利息税盾)
+      const profitBefore = netRevenue - opCostTotal - dep - interest;
+      const tax = Math.max(0, profitBefore) * p.taxRate;
       const profitNet = profitBefore - tax;
-      const taxShield = taxAdjusted - tax;                      // ≥ 0, 利息带来的税盾
 
       // 投资与现金流
       const investOutflow = (t === 0) ? fixedAsset : 0;
@@ -239,15 +213,12 @@
       const wcRecovery = (t === Y) ? workingCapital : 0;
       const salvage = (t === Y) ? totalSalvage : 0;       // Bug 14: 拆分后总残值
 
-      /* IRAS_FIN_ADJTAX: 项目投资现金流用【调整所得税】—— 与融资结构无关 */
-      const cfTotal = revenue - salesTax - opCostTotal - taxAdjusted
+      const cfTotal = revenue - salesTax - opCostTotal - tax
         - investOutflow - wcOutflow + wcRecovery + salvage;
 
       // Bug 2: 贷款只覆盖 fixedAsset, wc 全部由股东出
       const loanInflow = (t === 0) ? loan : 0;
-      /* IRAS_FIN_ADJTAX: 资本金口径用【实际所得税】, 故把 cfTotal 里多扣的税盾加回来。
-         漏掉 +taxShield 会让资本金 IRR 反而被低估 —— 修一个口径顺手压坏另一个, 是本类改动的典型错法。 */
-      const cfEquity = cfTotal + taxShield + loanInflow - interest - loanPrincipalRepay;
+      const cfEquity = cfTotal + loanInflow - interest - loanPrincipalRepay;
 
       yearly.push({
         year: t, ramp: r, revenue, salesTax, netRevenue,
@@ -255,7 +226,6 @@
         repairCost, adminCost, laborCost, opCostTotal,
         dep, interest, loanPrincipalRepay,
         profitBefore, tax, profitNet,
-        ebit, taxAdjusted, taxShield,          // IRAS_FIN_ADJTAX: 项目投资口径的税与税盾
         cfTotal, cfEquity,
         investOutflow, wcOutflow, wcRecovery, salvage
       });
@@ -314,6 +284,7 @@
     const bepPct = yieldKg > 0 ? bepKg / yieldKg * 100 : 0;
 
     return {
+      opexBase: { value: annualOpexFull, isLegacy: opexBaseIsLegacy },   // IRAS_FIN_OPEX_BASE: 供 UI/报告标注基数口径
       capex: {
         equip: capexEquip, civil: capexCivil,
         fixedAsset, workingCapital, totalInvest,
@@ -323,11 +294,7 @@
       annual: {
         revenue: satRow.revenue, opex: annualOpexFull, dep: annualDep,
         repair: capexEquip * p.repairRate, labor: p.laborCost,
-        avgInterest,                                 // Bug 13 暴露平均利息
-        /* IRAS_R26_FIN_OPEX_BASE: 'forFinance' = 已剔除维护、已并入苗种;
-           'legacy' = 老方案 JSON 无该字段, 退回 annualOpex ⇒ 维护双计 + 漏苗种。
-           UI 必须据此改写说明文案, 不得两种情况印同一句话。 */
-        opexBase
+        avgInterest                                  // Bug 13 暴露平均利息
       },
       loanSchedule,
       yearly,

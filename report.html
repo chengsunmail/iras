@@ -6,7 +6,6 @@
   数据源: localStorage['iRAS_reportExport'] (从主页面 "📄 生成可研报告" 按钮传入)
   输出: 按发改委规范的 16 章 docx 文档 (结构化内容)
 
-  Copyright (C) 2026 孙程
   Copyright (C) 2026 孙程 <6881509@qq.com>
 
   本程序是自由软件: 你可以根据自由软件基金会发布的
@@ -28,7 +27,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="孙程">
 <meta name="copyright" content="© 2026 孙程">
-<title>iRAS · 可研报告生成器 v2.6</title>
+<title>iRAS · 可研报告生成器 v2.7</title>
 <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
 <!-- v1.5: 共享财务计算模块 (与 finance.html 共用, Bug 6 修复) -->
 <script src="finance-core.js"></script>
@@ -2430,7 +2429,7 @@ const SHARE_KEY = 'iRAS_reportExport';
    ⚠ 它与所载入方案的 irasVersion 是两回事: 前者是"你在用哪版工具", 后者是
      "这份数据是哪版算的"。**两者不一致时必须告知用户** —— 旧方案在新页面上打开,
      缺字段会走各处兼容回退, 结果看起来正常但口径是混的。此前四页无一处提示。 */
-const IRAS_PAGE_VERSION = '2.6';
+const IRAS_PAGE_VERSION = '2.7';
 function irasWarnVersionMismatch(dataVersion) {
   if (!dataVersion || dataVersion === IRAS_PAGE_VERSION) return null;
   return '⚠ 版本不一致: 本页为 v' + IRAS_PAGE_VERSION + ', 而载入的方案由 v'
@@ -3231,11 +3230,7 @@ function buildContext() {
   // ------- capex 命名空间 -------
   // v1.5 审计回合 3: Bug 2 修复后, 自有/贷款拆分不再是 totalInvestment × ownPct
   //   贷款只覆盖固定资产, 流动资金 100% 自筹. 这里也要拆开避免报告模板写错.
-  /* IRAS_R26_FIN_OPEX_BASE: 流动资金基数须与 finance-core 同口径 (它已改读
-     annualOpexForFinance), 否则报告里的流动资金与财务表对不上。 */
-  const _opexFinBase = (typeof fin.annualOpexForFinance === 'number' && fin.annualOpexForFinance > 0)
-    ? fin.annualOpexForFinance : (fin.annualOpex || 0);
-  const _wc = _opexFinBase * 0.15;
+  const _wc = (fin.annualOpex || 0) * 0.15;
   const _fa = fin.totalCapexProject || 0;
   const _ownPct = 0.3;  // 与 finParams.ownPct 保持一致, 必要时下面 finParams 重新覆盖
   const capex = {
@@ -3399,7 +3394,7 @@ function buildContext() {
     irasVersion:     d.irasVersion || '1.5',
     /* v2.3.3: 页面版本跟随主页面(项目方决定)。
        ⚠ 此前写 'v1.5-alpha-1', 与 index 2.3.3 各自演进, 报告页脚长期显示旧版本。 */
-    templateVersion: 'v2.6',
+    templateVersion: 'v2.7',
     reportNumber:    `iRAS-${d.species}-${d.yieldTons}t-${new Date().toISOString().slice(0,10).replace(/-/g,'')}`
   };
 
