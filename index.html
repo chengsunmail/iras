@@ -1211,7 +1211,10 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> <span id="footerVersion">v2.1</span> · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> <span id="footerVersion">v—</span><!-- 初值故意不写版本号: 由 IRAS_META.version 在运行时填。
+           曾硬编码 v2.1 并停留三个版本 —— docver 26 个登记点里没有它, 因为它"运行时会被覆盖"就被当成不用管,
+           实际上 JS 跑起来前会闪一下旧版本号, 且一旦写版本填充的代码出错就永久显示错版本。
+           ⇒ 凡是版本号出现的地方, 要么由单一事实源填, 要么登记进 docver, 不能两者都不是。 --> · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -1989,7 +1992,7 @@
    ⚠ 版本号命名空间: 本库【两套编号并存】, 搜索代码时务必分清
    ══════════════════════════════════════════════════════════════════════════
 
-   ① 发布版本号  —— IRAS_META.version, 当前 2.4。由 docver 的 19 个登记点统一管辖
+   ① 发布版本号  —— IRAS_META.version (单一事实源)。由 docver 的登记点统一管辖
                     (index 3 / manual 4 / 下游四页 9 / README 3)。
 
    ② 特性批次哨兵 —— 代码里的 IRAS_V21_* / IRAS_V22_* / IRAS_V233_* /
@@ -14263,7 +14266,7 @@ function buildPIDExport() {
     pidSchema: '1.1',           // v1.5 Bug 35: schema 版本, 下游 (finance/report/pid) 校验
     pidSchemaMinSupported: '1.0',  // 最低支持版本 (向后兼容)
     generator: 'iRAS',
-    irasVersion: (typeof IRAS_META !== 'undefined' && IRAS_META.version) || '1.5',
+    irasVersion: (typeof IRAS_META !== 'undefined' && IRAS_META.version) || 'unknown',   // 回退值不写具体版本: 写 '1.5' 会让损坏的载荷看起来像一个真实的旧版本
     savedAt: new Date().toISOString(),
     species: currentSpecies,
     speciesName: sp ? sp.name : currentSpecies,

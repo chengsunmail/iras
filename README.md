@@ -223,8 +223,7 @@ iRAS **不适合**的场景:
 如在学术论文、工程报告或商业项目中使用 iRAS,请引用:
 
 ```
-孙程 (2026). iRAS 循环水养殖工程设计平台 (Version 1.9.0).
-孙程. https://iras.cn
+孙程 (2026). iRAS 循环水养殖工程设计平台 (Version 2.7). https://iras.cn
 ```
 
 或 BibTeX 格式:
@@ -234,9 +233,8 @@ iRAS **不适合**的场景:
   author       = {Sun, Cheng},
   title        = {iRAS: A Platform for Recirculating Aquaculture
                   System Engineering Design},
-  version      = {1.9.0},
+  version      = {2.7},
   year         = {2026},
-  publisher    = {Hainan Dengdeng Technology Consulting Co., Ltd.},
   url          = {https://iras.cn}
 }
 ```
