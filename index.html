@@ -38,7 +38,11 @@
 <meta name="googlebot" content="index,follow">
 <meta name="bingbot" content="index,follow">
 <meta name="baidu-site-verification" content="codeva-2bxZTCAggo" />
-<meta name="google-site-verification" content="待替换 — 在 Google Search Console 获取后填入">
+<!-- IRAS_V27_META_FIX (2026-10-14): Google 站点验证 meta 原为未填写的占位符, 已删除 ——
+     占位串会被 Google 当作一个(无效的)验证码读取, 且对外暴露未完成状态。
+     需要时: 在 Google Search Console 选「HTML 标记」方式取得 content 值, 在此处加
+     <meta name="google-site-verification" content="(真实验证码)">;
+     或改用 DNS TXT 记录 / HTML 验证文件方式, 则本页无需此行。 -->
 <link rel="canonical" href="https://iras.cn/">
 
 <!-- Open Graph (微信/微博/Facebook/LinkedIn 分享卡片) -->
@@ -1211,10 +1215,11 @@
 
   <footer class="text-center text-xs text-slate-500 py-6 space-y-1">
     <div>
-      <span class="text-slate-300 font-semibold">iRAS</span> <span id="footerVersion">v—</span><!-- 初值故意不写版本号: 由 IRAS_META.version 在运行时填。
-           曾硬编码 v2.1 并停留三个版本 —— docver 26 个登记点里没有它, 因为它"运行时会被覆盖"就被当成不用管,
-           实际上 JS 跑起来前会闪一下旧版本号, 且一旦写版本填充的代码出错就永久显示错版本。
-           ⇒ 凡是版本号出现的地方, 要么由单一事实源填, 要么登记进 docver, 不能两者都不是。 --> · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
+      <span class="text-slate-300 font-semibold">iRAS</span> <span id="footerVersion">v2.7</span><!-- IRAS_V27_META_FIX (2026-10-14): 页脚与「关于」弹窗的版本/日期字面量
+           均由 applyMetaToDOM 在运行时用 IRAS_META 覆盖, 但字面量本身是 no-JS / 查看源码 / 爬虫看到的值。
+           「关于」弹窗曾停在 v2.1 · 2026-08-01 长达六个版本: 页面自检只查【注入后】的 DOM, 字面量无人看守。
+           ⇒ 现三处字面量 (footerVersion / metaVersion / metaReleaseDate) 全部登记进 docver,
+             并要求与 IRAS_META.version / releaseDate 逐字相等 —— 改版本只改 IRAS_META, docver 会提醒同步这三处。 --> · 循环水养殖工程设计平台 · 开源 · <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">AGPL v3</a>
       · <a href="https://github.com/chengsunmail/iras" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">GitHub</a>
       · <a href="#" id="btnAbout" class="text-cyan-400 hover:text-cyan-300 underline no-print">关于</a>
     </div>
@@ -1240,7 +1245,7 @@
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
         <div>
           <div class="text-cyan-400 font-bold mb-1">版本信息</div>
-          <div>版本: <span id="metaVersion">v2.1</span> · 发布日期: <span id="metaReleaseDate">2026-08-01</span></div>
+          <div>版本: <span id="metaVersion">v2.7</span> · 发布日期: <span id="metaReleaseDate">2026-09-08</span></div>
           <div>开发: 孙程</div>
           <div>联系: 6881509@qq.com</div>
         </div>
@@ -2042,7 +2047,7 @@ const IRAS_META = {
      ── v2.3.3 (2026-08-13, 项目方定版): 字段流转工厂化 (IRAS_V233_FIELD_FLOW)。
        纯结构重构 + 断言 M15a–d, 13 条基线对【v2.3 新基线值】逐位不变。 */
   version: '2.7',
-  releaseDate: '2026-08-23',
+  releaseDate: '2026-09-08',   /* IRAS_V27_META_FIX: 原停在 v2.5 的 2026-08-23; 与 manual rel_v27 日期、docver 登记点同步 */
   author: '孙程',
   email: '6881509@qq.com',
   company: '孙程',
@@ -19007,7 +19012,8 @@ function runSelfTest(quiet) {
 /* v2.0.1 IRAS_V201_VERSION_SOURCE — 版本号单一事实源
    页脚与「版本信息」面板此前是硬编码字面量, 每次发版靠人记得手改.
    现改为从 IRAS_META 注入; HTML 里的字面量保留为 no-JS / SEO 回退,
-   并由自检项 meta_version_consistency 锁定二者一致 (漂移即 FAIL).
+   ⚠ IRAS_V27_META_FIX 订正: 自检 meta_version_consistency 读的是【注入后】的 DOM, 锁不住字面量 ——
+   「关于」弹窗字面量因此停在 v2.1 六个版本. 字面量现由 tools/check_doc_version.js 登记并要求与 IRAS_META 逐字相等.
    <title> / og:title / twitter:title 必须静态 (SEO), 仍是字面量, 同样受自检锁定. */
 function applyMetaToDOM() {
   try {
